@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ja"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>要求は「機械の中」ではなく「世界の側」にある｜刺さる記事アーカイブ</title>
+  <meta name="description" content="要求は画面や機能の一覧ではない。機械の導入によって、現実世界で成立してほしい状態である。">
+  <link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/world-and-machine.html">
+  <meta property="og:type" content="article"><meta property="og:title" content="要求は「機械の中」ではなく「世界の側」にある"><meta property="og:description" content="要求は画面や機能の一覧ではない。機械の導入によって、現実世界で成立してほしい状態である。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/world-and-machine.html">
+  <meta name="twitter:card" content="summary"><meta name="twitter:title" content="要求は「機械の中」ではなく「世界の側」にある"><meta name="twitter:description" content="要求は画面や機能の一覧ではない。機械の導入によって、現実世界で成立してほしい状態である。">
+  <link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js" defer></script>
+</head><body class="article-page" data-page="article" data-slug="world-and-machine">
+  <header class="site-header"><a class="brand" href="../index.html"><span class="brand-mark">刺</span><span><strong>刺さる記事アーカイブ</strong><small>ISSUE 001 · 2026.08.31</small></span></a><nav aria-label="主要ナビゲーション"><a href="../index.html#today">今日のおすすめ</a><a href="../index.html#archive">アーカイブ</a><a href="../index.html#themes">分野</a></nav><button class="quiet-button" type="button" data-favorite="world-and-machine" aria-pressed="false">♡ <span data-label>保存</span></button></header>
+  <main class="article-shell">
+    <p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　要求工学</p>
+    <header class="article-header">
+      <div class="tags"><span>要求工学</span><span>仕様設計</span><span>ソフトウェア設計</span></div>
+      <h1>要求は「機械の中」ではなく「世界の側」にある</h1>
+      <p class="original-title">The World and the Machine</p>
+      <div class="article-meta-row"><p><strong>Michael Jackson · 1995</strong><br>公開 2026.08.31　／　推定読了 18分</p><div class="article-score">9.8 <small>/ 10　刺さり度</small></div></div>
+    </header>
+    <div class="article-layout">
+      <article class="article-body">
+        <p class="lead-box">要求定義が難しいのは、顧客の言葉が曖昧だからだけではない。問題を聞きながら、私たちが無意識に「どんな画面・API・データ構造を作るか」へ視線を移してしまうからだ。</p>
+        <h2>なぜ読む価値があるか</h2>
+        <p>Michael Jackson は、この視線の移動そのものを誤りの源として扱う。要求は機械の内部状態ではない。機械を導入する世界に、何が成立してほしいかである。</p>
+        <p>1995年の論文だが、AIエージェントやRAGの設計にもそのまま効く。「回答を生成する」「検索を呼ぶ」は機械側の記述にすぎない。世界側の要求は、たとえば「担当者が根拠を検証できる」「権限外の文書が判断材料に混ざらない」「例外案件が人へ戻る」といった状態である。この区別がつかないまま評価項目を作ると、実装の自己採点になる。</p>
+        <h2>問題は世界にあり、機械は解決である</h2>
+        <p>ソフトウェアは無形に見えるため、計算、数学的構造、業務方針、創作物など、好きな像を投影できる。しかしJacksonは、ソフトウェア開発を工学と呼ぶ理由を、現実世界で実用目的を果たす物理的な機械を作ることに置く。ワープロの価値はコードの美しさではなく、文書の質や操作する人の負担で判断される。航空管制の要求はプログラムの中ではなく、航空機、空域、滑走路、管制塔の側にある。</p>
+        <p><strong>問題と要求は世界にあり、機械は私たちが構成する解決である。</strong></p>
+        <h2>世界と機械をつなぐ四つの面</h2>
+        <div class="concept-grid">
+          <section><h3>1. モデリング</h3><p>機械内部に世界の一部を写す。データベースの著者レコードと現実の作家が対応するような関係。</p></section>
+          <section><h3>2. インターフェース</h3><p>世界と機械が現象を共有する。センサー状態は現実の出来事であり、機械が観測する出来事でもある。</p></section>
+          <section><h3>3. エンジニアリング</h3><p>機械が世界へ因果的に働きかける。モーターを駆動し、現実の振る舞いを変える。</p></section>
+          <section><h3>4. 問題</h3><p>世界と問題の形が、解決機械の形を制約する。問題分解がソフトウェアの構成にも影響する。</p></section>
+        </div>
+        <p>モデルと世界は同じではない。「すべての小説には一人の著者がいる」という構造をDBへ置けば便利だが、共著、匿名、筆名、改訂版といった現実は落ちる。モデルは世界の一部とだけ記述を共有する。正規化やインデックスは機械側の真実であり、現実の小説についての真実ではない。</p>
+        <h2>世界を消してしまう四つの方法</h2>
+        <ul>
+          <li><strong>既知であるとして消す：</strong>既存製品に似ているというだけで、新しい問題まで既知とみなす。</li>
+          <li><strong>作る快楽によって消す：</strong>実装や精巧なモデルに魅了され、顧客が必要とした世界の記述の代わりにオブジェクトモデルを渡す。</li>
+          <li><strong>抽象化によって消す：</strong>記号が何を表すかを忘れる数学的技法を、開発全体の態度にする。</li>
+          <li><strong>曖昧さによって消す：</strong>機械内部の記述を「現実世界のモデル」と呼び、両者の違いを言葉で覆う。</li>
+        </ul>
+        <h2>事実と願いを同じ文にしない</h2>
+        <p>特に面白いのは、仕様文の<strong>直説法（indicative）</strong>と<strong>希求法（optative）</strong>の区別である。「現在そうである世界の性質」と「機械によってそうなってほしい性質」を混ぜると、前提・責任・制御主体が消える。</p>
+        <p>操作の事前条件Pがあるとき、機械がPでなければ操作を止めるのか、利用者がPでない操作をしてはいけないのか、それとも世界では常にPが成立すると仮定するのかは、まったく別の設計である。</p>
+        <h2>実務では三列に分ける</h2>
+        <ol><li><strong>世界の事実：</strong>現在どうなっているか。誰が何を観測し、何が例外になるか。</li><li><strong>世界への要求：</strong>導入後に何が真になってほしいか。誰にとっての価値か。</li><li><strong>機械の仕様：</strong>要求を成立させるため、機械の境界で何を観測し何を制御するか。</li></ol>
+        <p>AI評価でも、「正しい答えを出す」だけでは世界側の要求にならない。根拠の追跡可能性、再検討の余地、誤りを人が検出できる時間、権限と責任の配置まで書けば、はじめて機械の外へ出られる。</p>
+        <h2>限界と反論</h2>
+        <p>この論文は世界／機械の区別を鮮明にするが、世界に複数の利害や対立する価値があるとき、どの要求を採るべきかまでは解かない。また現代のプラットフォームや生成AIでは、利用によって世界も機械も継続的に変わり、境界が固定しにくい。それでも、誰がどの現象を観測・制御できるかを更新し続けよ、という読み替えが有効だ。</p>
+        <div class="reading-question"><span>READING QUESTION</span><p>いま作っている要求仕様の各文は、世界の事実、世界への願い、機械の振る舞いのどれか。三つを一文に混ぜていないか。</p></div>
+        <section class="related"><h2>関連して読む</h2><div class="related-grid"><a href="limits-of-correctness.html">正しさを証明しても、正しいことは保証できない</a><a href="artifacts-have-politics.html">技術は中立ではない——設計が先回りして権力を固定する</a></div></section>
+      </article>
+      <aside class="article-rail"><section class="rail-card"><span>WHY IT STICKS</span><p>要求、仕様、実装を「世界／機械」という一つの境界で整理できる。古典だが、AIエージェント設計にも直接効く。</p><div class="article-actions"><button type="button" data-read="world-and-machine" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="world-and-machine" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://www.researchgate.net/publication/234783472_World_and_the_machine" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>CITATION</span><p>Michael Jackson. “The World and the Machine.” ICSE, 1995, pp. 283–292.</p></section></aside>
+    </div>
+  </main>
+  <footer class="site-footer"><p><strong>刺さる記事アーカイブ</strong><span>技術・思想・学術の、あとから効く読み物。</span></p><a href="../index.html">アーカイブへ戻る ←</a></footer>
+</body></html>

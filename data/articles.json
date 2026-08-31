@@ -1,0 +1,72 @@
+[
+  {
+    "slug": "world-and-machine",
+    "title": "要求は「機械の中」ではなく「世界の側」にある",
+    "originalTitle": "The World and the Machine",
+    "authors": ["Michael Jackson"],
+    "year": 1995,
+    "publishedAt": "2026-08-31",
+    "tags": ["要求工学", "仕様設計", "ソフトウェア設計"],
+    "readingMinutes": 18,
+    "score": 9.8,
+    "sourceUrl": "https://www.researchgate.net/publication/234783472_World_and_the_machine",
+    "excerpt": "要求は画面や機能の一覧ではない。機械の導入によって、現実世界で成立してほしい状態である。",
+    "featured": true
+  },
+  {
+    "slug": "limits-of-correctness",
+    "title": "正しさを証明しても、正しいことは保証できない",
+    "originalTitle": "The Limits of Correctness",
+    "authors": ["Brian Cantwell Smith"],
+    "year": 1985,
+    "publishedAt": "2026-08-31",
+    "tags": ["技術哲学", "仕様設計", "AI信頼性"],
+    "readingMinutes": 19,
+    "score": 9.7,
+    "sourceUrl": "https://uobdv.github.io/Design-Verification/Supplementary/The_limits_of_Correctness.pdf",
+    "excerpt": "形式的な正しさが扱えるのはプログラムとモデルの関係であり、モデルと世界の適合ではない。",
+    "featured": false
+  },
+  {
+    "slug": "ontoclean",
+    "title": "「学生」は人の種類ではない——分類を壊す本質と役割の混同",
+    "originalTitle": "Evaluating Ontological Decisions with OntoClean",
+    "authors": ["Nicola Guarino", "Christopher Welty"],
+    "year": 2002,
+    "publishedAt": "2026-08-31",
+    "tags": ["オントロジー", "概念モデリング", "分類論"],
+    "readingMinutes": 16,
+    "score": 9.5,
+    "sourceUrl": "https://www.loa.istc.cnr.it/old/Papers/CACM2002.pdf",
+    "excerpt": "is-aに見える関係を、本質、役割、部分、材料、実例へ分解する分類設計の検査法。",
+    "featured": false
+  },
+  {
+    "slug": "checklist",
+    "title": "平均点を捨てて、AIの「振る舞い」をテストする",
+    "originalTitle": "Beyond Accuracy: Behavioral Testing of NLP Models with CheckList",
+    "authors": ["Marco Tulio Ribeiro", "Tongshuang Wu", "Carlos Guestrin", "Sameer Singh"],
+    "year": 2020,
+    "publishedAt": "2026-08-31",
+    "tags": ["AI評価", "LLM信頼性", "テスト設計"],
+    "readingMinutes": 17,
+    "score": 9.4,
+    "sourceUrl": "https://aclanthology.org/2020.acl-main.442/",
+    "excerpt": "一つの正答率ではなく、能力×テスト型の行列でAIの壊れ方を発見する。",
+    "featured": false
+  },
+  {
+    "slug": "artifacts-have-politics",
+    "title": "技術は中立ではない——設計が先回りして権力を固定する",
+    "originalTitle": "Do Artifacts Have Politics?",
+    "authors": ["Langdon Winner"],
+    "year": 1980,
+    "publishedAt": "2026-08-31",
+    "tags": ["STS", "技術哲学", "制度設計"],
+    "readingMinutes": 16,
+    "score": 9.2,
+    "sourceUrl": "https://www.jstor.org/stable/20024652",
+    "excerpt": "設計や配置は、効率だけでなく、誰を通し、誰へ権限を集中させるかを長期間固定する。",
+    "featured": false
+  }
+]
