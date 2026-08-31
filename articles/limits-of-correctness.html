@@ -2,10 +2,10 @@
 <html lang="ja"><head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <title>正しさを証明しても、正しいことは保証できない｜刺さる記事アーカイブ</title>
-  <meta name="description" content="形式的な正しさが扱えるのはプログラムとモデルの関係であり、モデルと世界の適合ではない。">
+  <meta name="description" content="形式検証はプログラムとモデルの整合を保証する。モデルが現実世界に合っているかは、別の検証を要する。">
   <link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/limits-of-correctness.html">
-  <meta property="og:type" content="article"><meta property="og:title" content="正しさを証明しても、正しいことは保証できない"><meta property="og:description" content="形式的な正しさが扱えるのはプログラムとモデルの関係であり、モデルと世界の適合ではない。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/limits-of-correctness.html">
-  <meta name="twitter:card" content="summary"><meta name="twitter:title" content="正しさを証明しても、正しいことは保証できない"><meta name="twitter:description" content="形式的な正しさが扱えるのはプログラムとモデルの関係であり、モデルと世界の適合ではない。">
+  <meta property="og:type" content="article"><meta property="og:title" content="正しさを証明しても、正しいことは保証できない"><meta property="og:description" content="形式検証はプログラムとモデルの整合を保証する。モデルが現実世界に合っているかは、別の検証を要する。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/limits-of-correctness.html">
+  <meta name="twitter:card" content="summary"><meta name="twitter:title" content="正しさを証明しても、正しいことは保証できない"><meta name="twitter:description" content="形式検証はプログラムとモデルの整合を保証する。モデルが現実世界に合っているかは、別の検証を要する。">
   <link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js" defer></script>
 </head><body class="article-page" data-page="article" data-slug="limits-of-correctness">
   <header class="site-header"><a class="brand" href="../index.html"><span class="brand-mark">刺</span><span><strong>刺さる記事アーカイブ</strong><small>ISSUE 001 · 2026.08.31</small></span></a><nav aria-label="主要ナビゲーション"><a href="../index.html#today">今日のおすすめ</a><a href="../index.html#archive">アーカイブ</a><a href="../index.html#themes">分野</a></nav><button class="quiet-button" type="button" data-favorite="limits-of-correctness" aria-pressed="false">♡ <span data-label>保存</span></button></header>
@@ -14,28 +14,28 @@
     <header class="article-header"><div class="tags"><span>技術哲学</span><span>仕様設計</span><span>AI信頼性</span></div><h1>正しさを証明しても、正しいことは保証できない</h1><p class="original-title">The Limits of Correctness</p><div class="article-meta-row"><p><strong>Brian Cantwell Smith · 1985</strong><br>公開 2026.08.31　／　推定読了 19分</p><div class="article-score">9.7 <small>/ 10　刺さり度</small></div></div></header>
     <div class="article-layout">
       <article class="article-body">
-        <p class="lead-box">形式検証への反対ではない。検証が保証する関係を正確に限定し、その外側——モデルと世界の適合——を「証明済み」という言葉で隠すな、という論文である。</p>
+        <p class="lead-box">形式検証は、プログラムと仕様の整合を強く保証する。Smithは、その保証をモデルと世界の適合まで広げて語る危険を指摘する。</p>
         <h2>なぜ読む価値があるか</h2>
         <p>1985年、Brian Cantwell Smithは「プログラムを正しいと証明する」という言い方の危うさを、核攻撃警報の実例から解剖した。40年以上後のAI安全でも、問いはほとんど変わっていない。仕様通りに振る舞うことと、世界の中で適切に振る舞うことは別である。</p>
         <h2>月をミサイルと判定したシステム</h2>
         <p>1960年、グリーンランドの弾道ミサイル早期警戒システムは、ソ連の大量ミサイルが米国へ向かっていると示した。だが国際緊張は高くなく、ソ連首脳はニューヨークにいた。人間の常識的判断により反撃は行われなかった。原因は、月から反射したレーダー信号だった。設計者のモデルに月の出が入っていなかったのである。</p>
-        <p>仮にプログラムが形式仕様に完全に一致していたとしても、この誤警報は防げただろうか。Smithの答えは否である。証明できるのは、プログラムと仕様という二つの形式的記述の整合であり、仕様の背後にあるモデルが世界に適切かどうかではない。</p>
+        <p>プログラムが形式仕様に完全に一致していても、この誤警報は防げない。証明できるのは、プログラムと仕様という二つの形式的記述の整合である。仕様の背後にあるモデルが世界に適しているかは、別に確かめる必要がある。</p>
         <h2>コンピュータ、モデル、世界を分ける</h2>
         <div class="concept-grid"><section><h3>コンピュータ</h3><p>モデルの語彙で書かれた表現を操作し、現実世界へ行為する。</p></section><section><h3>モデル</h3><p>世界の一部だけを抽象化した、システムが世界を見るための眼鏡。</p></section><section><h3>世界</h3><p>モデルが捨てたものも含む、行為の結果が生じる実際の状況。</p></section></div>
         <p>形式手法はプログラムとモデル内の仕様との関係を扱える。しかしモデルと、それが埋め込まれる世界との関係は、同じ方法では保証できない。</p>
-        <p>モデルは必ず抽象化する。薬のモデルは患者の体重を扱い、音楽の好みを捨てる。交通モデルはタクシー運転手の気質を捨てる。何かを捨てなければ世界の無限の豊かさに溺れ、分析も行為もできない。したがってモデルの部分性は欠陥ではなく、働くための条件である。</p>
+        <p>モデルは必ず抽象化する。薬のモデルは患者の体重を扱い、音楽の好みを捨てる。交通モデルはタクシー運転手の気質を捨てる。分析や行為のためには、世界の一部を選び、残りを捨てなければならない。モデルが部分的であることは、モデルが働くための条件である。</p>
         <p>ところがコンピュータは抽象世界に閉じていない。電源につながれ、現実の飛行機を着陸させ、薬を投与し、レーダーや兵器を制御する。部分的モデルに基づく行為が、モデルを超える世界へ結果を生む。この非対称が「完全な正しさ」の限界になる。</p>
         <h2>仕様が意図を取り逃がす</h2>
         <p>Smithは単純な因数分解の仕様を使う。「CについてA×B=CとなるAとBを返せ」。これに対し、常にA=1、B=Cを返すプログラムは仕様を満たし、正しさも証明できる。しかし設計者が欲しかったのは自明でない因数だ。仕様が意図を書き落としただけである。</p>
-        <p>冷蔵庫の例はさらに面白い。「内部を3〜6度に保つ」という仕様だけでは、構造的に安全、1トン未満、騒音を出さない、扉を開けても飛翔物を放たない、といった常識的背景が落ちる。逆に、トースターを庫内に入れる、逆さにする、宇宙空間で使う、電源を抜く、といった不適切な使用まで仕様へ列挙することもできない。</p>
-        <h2>「正しい人」ではなく「信頼できる人」</h2>
+        <p>冷蔵庫の例では、「内部を3〜6度に保つ」という仕様から、構造的に安全、1トン未満、騒音を出さない、扉を開けても飛翔物を放たない、といった常識的背景が落ちる。かといって、トースターを庫内に入れる、逆さにする、宇宙空間で使う、電源を抜く、といった不適切な使用をすべて仕様へ列挙することもできない。</p>
+        <h2>人とシステムを評価する別の語彙</h2>
         <p>人間について、人格全体が「正しい」とは通常言わない。信頼できる、経験がある、判断力がある、と言う。指示は必ず不完全で、状況に応じた解釈や責任に頼るからだ。個々の行為は正誤を持てるが、人やシステム全体を文脈から切り離して完全に正しいとは言えない。</p>
-        <p>Smithはコンピュータにも、証明だけでなく、実際に置かれる状況での経験、フィードバック、失敗からの回復余地が必要だと考える。シミュレーションはモデル内の関係を試すが、モデルと世界の関係を試せない。そこには、次の「月の出」が必ず残る。</p>
+        <p>Smithはコンピュータにも、実際に使われる状況での経験、フィードバック、失敗からの回復余地が必要だと考える。シミュレーションが試せるのはモデル内の関係である。モデルと世界の関係には、次の「月の出」が残る。</p>
         <h2>保証を四層に分ける</h2>
         <ol><li>実装が技術仕様に合うか。</li><li>技術仕様が意図した要求を表すか。</li><li>要求の背後にある世界モデルが、実運用へ十分に適合するか。</li><li>不適合が起きたとき、検出・停止・回復・責任追跡ができるか。</li></ol>
-        <p>「評価セットで合格した」は主に一、二層目の一部である。三、四層目を保証したことにはならない。高リスクな自動化では性能を上げるだけでなく、判断を遅くする、保留を許す、人間の介入時間を確保することが安全設計になり得る。</p>
+        <p>評価セットへの合格が示す範囲は、主に一、二層目の一部である。三、四層目には別の検証が要る。高リスクな自動化では、判断を遅くする、保留を許す、人間の介入時間を確保するといった設計も安全性を高める。</p>
         <h2>限界と反論</h2>
-        <p>この議論から「形式検証は無意味」と結論するのは誤読である。プログラムと仕様の不整合を除く価値は大きい。現代の安全工学は、形式検証だけでなくハザード分析、保証ケース、監視、運用手順を組み合わせ、Smithが指摘した外側も扱おうとしている。</p>
+        <p>形式検証には、プログラムと仕様の不整合を除く大きな価値がある。Smithの議論は、その保証範囲を限定する。現代の安全工学は、形式検証にハザード分析、保証ケース、監視、運用手順を組み合わせ、モデルと世界の適合も扱おうとしている。</p>
         <p>また「モデルと世界の理論がない」という1985年の断言は、現在の因果推論、適応システム、HCI、STSの蓄積を踏まえれば弱めて読むべきだ。それでも、どの方法も世界を完全に閉じないという境界条件は残る。</p>
         <div class="reading-question"><span>READING QUESTION</span><p>あなたが「このAIは正しい」と言うとき、どの二つの記述の一致を確認したのか。そして、その外側に何を仮定しているか。</p></div>
         <section class="related"><h2>関連して読む</h2><div class="related-grid"><a href="world-and-machine.html">要求は「機械の中」ではなく「世界の側」にある</a><a href="checklist.html">平均点を捨てて、AIの「振る舞い」をテストする</a></div></section>
