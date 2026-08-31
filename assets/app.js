@@ -48,7 +48,7 @@
       return (!query || text.includes(query)) && (state.tag === 'すべて' || article.tags.includes(state.tag)) && (!state.savedOnly || state.favorites.has(article.slug));
     });
     const count = document.querySelector('[data-result-count]');
-    if (count) count.textContent = `${filtered.length} ARTICLES`;
+    if (count) count.textContent = `${filtered.length}本の記事`;
     if (!filtered.length) {
       container.innerHTML = '<div class="empty-state"><strong>該当する記事がありません</strong><p>検索語やタグを変えてみてください。</p></div>';
       return;

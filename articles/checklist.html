@@ -8,7 +8,7 @@
   <meta name="twitter:card" content="summary"><meta name="twitter:title" content="平均点を捨てて、AIの「振る舞い」をテストする"><meta name="twitter:description" content="能力×テスト型の行列を使い、AIがどの能力・条件で失敗するかを特定する。">
   <link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js" defer></script>
 </head><body class="article-page" data-page="article" data-slug="checklist">
-  <header class="site-header"><a class="brand" href="../index.html"><span class="brand-mark">刺</span><span><strong>刺さる記事アーカイブ</strong><small>ISSUE 001 · 2026.08.31</small></span></a><nav aria-label="主要ナビゲーション"><a href="../index.html#today">今日のおすすめ</a><a href="../index.html#archive">アーカイブ</a><a href="../index.html#themes">分野</a></nav><button class="quiet-button" type="button" data-favorite="checklist" aria-pressed="false">♡ <span data-label>保存</span></button></header>
+  <header class="site-header"><a class="brand" href="../index.html"><span class="brand-mark">刺</span><span><strong>刺さる記事アーカイブ</strong><small>技術・思想・学術の個人誌</small></span></a><p class="issue-date">2026年8月31日　創刊号</p><nav aria-label="主要ナビゲーション"><a href="../index.html">トップ</a><a href="../index.html#today">今日のおすすめ</a><a href="../index.html#archive">記事一覧</a><a href="../index.html#themes">分野</a></nav><button class="quiet-button" type="button" data-favorite="checklist" aria-pressed="false">♡ <span data-label>保存</span></button></header>
   <main class="article-shell">
     <p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　AI評価</p>
     <header class="article-header"><div class="tags"><span>AI評価</span><span>LLM信頼性</span><span>テスト設計</span></div><h1>平均点を捨てて、AIの「振る舞い」をテストする</h1><p class="original-title">Beyond Accuracy: Behavioral Testing of NLP Models with CheckList</p><div class="article-meta-row"><p><strong>Marco Tulio Ribeiro, Tongshuang Wu, Carlos Guestrin, Sameer Singh · 2020</strong><br>公開 2026.08.31　／　推定読了 17分</p><div class="article-score">9.4 <small>/ 10　刺さり度</small></div></div></header>
@@ -39,10 +39,10 @@
         <h2>限界と反論</h2>
         <p>著者自身が述べるように、CheckListはデータ版管理、ラベル誤り、注釈者の偏り、最悪ケースのセキュリティ、解釈可能性を直接扱わない。また合格は公平性の証明ではない。設計者が思いついた能力と変形しか検査できず、テンプレートが不自然なら実運用を代表しない。</p>
         <p>生成LLMでは出力の自由度が高く、期待値を判定する仕組み自体が難しい。現時点のCheckListは、<strong>要求をテスト可能な関係へ変換する文法</strong>として役立つ。評価法を完成させるには、判定器や実運用データを別に設計する必要がある。</p>
-        <div class="reading-question"><span>READING QUESTION</span><p>いまのAI評価表は、能力の欠陥を発見できる構造か。それとも欠陥を一つの平均値へ溶かす構造か。</p></div>
+        <div class="reading-question"><span>読後に考える</span><p>いまのAI評価表は、能力の欠陥を発見できる構造か。それとも欠陥を一つの平均値へ溶かす構造か。</p></div>
         <section class="related"><h2>関連して読む</h2><div class="related-grid"><a href="limits-of-correctness.html">正しさを証明しても、正しいことは保証できない</a><a href="world-and-machine.html">要求は「機械の中」ではなく「世界の側」にある</a></div></section>
       </article>
-      <aside class="article-rail"><section class="rail-card"><span>WHY IT STICKS</span><p>一つの得点を、能力ごとの失敗条件へ分解する。LLM評価の設計会議でそのまま使える。</p><div class="article-actions"><button type="button" data-read="checklist" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="checklist" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://aclanthology.org/2020.acl-main.442/" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>CITATION</span><p>Ribeiro, Wu, Guestrin &amp; Singh. “Beyond Accuracy.” ACL 2020, pp. 4902–4912.</p></section></aside>
+      <aside class="article-rail"><section class="rail-card"><span>読む価値</span><p>一つの得点を、能力ごとの失敗条件へ分解する。LLM評価の設計会議でそのまま使える。</p><div class="article-actions"><button type="button" data-read="checklist" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="checklist" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://aclanthology.org/2020.acl-main.442/" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>Ribeiro, Wu, Guestrin &amp; Singh. “Beyond Accuracy.” ACL 2020, pp. 4902–4912.</p></section></aside>
     </div>
   </main>
   <footer class="site-footer"><p><strong>刺さる記事アーカイブ</strong><span>技術・思想・学術の、あとから効く読み物。</span></p><a href="../index.html">アーカイブへ戻る ←</a></footer>
