@@ -140,7 +140,7 @@ nav a:hover, nav a:first-child { background: rgba(248, 247, 240, .12); color: #f
 .featured-visual::after { width: 210px; height: 180px; left: -100px; bottom: -110px; }
 .visual-top { z-index: 1; display: flex; justify-content: space-between; align-items: start; color: var(--mist); font-size: 8px; letter-spacing: .13em; }
 .visual-top b { width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid var(--line-strong); color: var(--deep-moss); font: 17px var(--serif); }
-.featured-visual p { z-index: 1; margin: 0; padding-bottom: 11px; border-bottom: 2px solid var(--moss); color: var(--mist-strong); font: 12px/1.9 var(--serif); }
+.featured-issue-mark { z-index: 1; width: max-content; padding: 5px 0 4px; border-top: 1px solid var(--moss); border-bottom: 1px solid var(--moss); color: var(--mist-strong); font: 700 10px var(--serif); letter-spacing: .16em; }
 .featured-copy { min-width: 0; padding: 20px 22px; display: flex; flex-direction: column; }
 .featured-tools { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
 .tags { display: flex; gap: 5px; flex-wrap: wrap; }
@@ -285,7 +285,6 @@ nav a:hover, nav a:first-child { background: rgba(248, 247, 240, .12); color: #f
   .section-heading time { display: none; }
   .featured-card { grid-template-columns: 1fr; }
   .featured-visual { min-height: 138px; border-right: 0; border-bottom: 1px solid var(--line); }
-  .featured-visual p { max-width: 250px; }
   .featured-copy { padding: 17px; }
   .featured-tools { align-items: flex-start; flex-direction: column; }
   .featured-copy h2 { font-size: 24px; }

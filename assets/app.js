@@ -81,11 +81,10 @@
       container.innerHTML = '<div class="empty-state"><strong>今日のおすすめは準備中です</strong><p>featured: true の記事を1本指定してください。</p></div>';
       return;
     }
-    const lead = escapeHtml(article.featuredLead || article.excerpt).replaceAll('\n', '<br>');
     container.innerHTML = `
-      <div class="featured-visual">
+      <div class="featured-visual" aria-hidden="true">
         <div class="visual-top"><span>${escapeHtml(article.featuredKicker || article.originalTitle)}</span><b>01</b></div>
-        <p>${lead}</p>
+        <span class="featured-issue-mark">本日の一篇</span>
       </div>
       <div class="featured-copy">
         <div class="featured-tools">

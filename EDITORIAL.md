@@ -23,7 +23,7 @@
 トップページの「今日まず読むならこれ」は、`data/articles.json` で `featured: true` になっている記事から生成する。`index.html` に記事名や紹介文を直接書かない。
 
 - `featured: true` は常に1本だけにする。ほかの記事は `false` にする。
-- おすすめ記事には、短い分類表示として `featuredKicker`、大きな導入文として `featuredLead` を付ける。改行したい位置は `featuredLead` 内の改行で指定する。
+- おすすめ記事には、左上の短い分類表示として `featuredKicker` を付ける。大きなキャッチコピーは置かず、記事名と紹介文をそのまま見せる。
 - 発行日、号数、号名、編集後記は `data/daily.json` に記録する。日次更新では `date`、`issueNumber`、`issueLabel`、`editorNote.title`、`editorNote.body` を更新する。
 - 新しい号を公開するときは `data/articles.json` と `data/daily.json` を更新すればよく、トップページのHTMLを編集する必要はない。
 
