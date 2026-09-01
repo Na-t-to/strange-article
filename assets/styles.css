@@ -68,8 +68,8 @@ h1 { margin: 6px 0 0; color: var(--sumi-strong); font: 700 31px/1.4 var(--serif)
 .title-cell a { display: -webkit-box; overflow: hidden; color: var(--sumi-strong); font: 700 16.5px/1.5 var(--serif); -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .title-cell a:hover { color: var(--indigo); }
 .title-cell .original-title, .title-cell .row-actions { display: none; }
-.archive-table tr:hover .title-cell .original-title, .archive-table tr:focus-within .title-cell .original-title { display: block; margin-top: 4px; font-size: 12px; }
-.archive-table tr:hover .title-cell .row-actions, .archive-table tr:focus-within .title-cell .row-actions { display: inline-flex; margin-top: 7px; }
+.archive-table tr:hover .title-cell .original-title, .archive-table tr:focus-within .title-cell .original-title, .archive-table tr.is-expanded .title-cell .original-title { display: block; margin-top: 4px; font-size: 12px; }
+.archive-table tr:hover .title-cell .row-actions, .archive-table tr:focus-within .title-cell .row-actions, .archive-table tr.is-expanded .title-cell .row-actions { display: inline-flex; margin-top: 7px; }
 .tag-cell { color: var(--moss); }.tag-cell span { display: inline-block; margin: 0 8px 2px 0; }
 .source-cell { color: var(--sumi); }.source-cell span { color: var(--indigo); }
 .empty-state { padding: 24px 2px; color: var(--sumi); font: 14px/1.9 var(--serif); }.empty-state strong { color: var(--deep-moss); }

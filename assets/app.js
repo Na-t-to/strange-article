@@ -5,7 +5,7 @@
   const loadSet = (key) => { try { return new Set(JSON.parse(localStorage.getItem(key) || '[]')); } catch { return new Set(); } };
   const saveSet = (key, value) => { try { localStorage.setItem(key, JSON.stringify([...value])); } catch { /* optional */ } };
   const esc = (value) => String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
-  const state = { favorites: loadSet(keys.favorites), read: loadSet(keys.read), query: '', tag: 'すべて', date: 'すべて', savedOnly: false, sort: 'publishedAt', direction: 'desc', page: 1, pageSize: 25 };
+  const state = { favorites: loadSet(keys.favorites), read: loadSet(keys.read), expanded: new Set(), query: '', tag: 'すべて', date: 'すべて', savedOnly: false, sort: 'publishedAt', direction: 'desc', page: 1, pageSize: 25 };
   let articles = [];
 
   function syncButtons() {
@@ -42,8 +42,10 @@
 
   function row(article) {
     const read = state.read.has(article.slug);
+    const expanded = state.expanded.has(article.slug);
     const author = article.authors.length > 2 ? `${article.authors[0]} ほか${article.authors.length - 1}名` : article.authors.join(' / ');
-    return `<tr data-slug="${esc(article.slug)}" class="${read ? 'is-read' : ''}"><td class="date-cell">${esc(article.publishedAt)}</td><td class="title-cell"><a href="${esc(articleHref(article.slug))}">${esc(article.title)}</a><span class="original-title">${esc(article.originalTitle)}</span><div class="row-actions"><button type="button" data-read="${esc(article.slug)}" aria-pressed="${read}">✓ <span data-label>${read ? '既読' : '未読'}</span></button><button type="button" data-favorite="${esc(article.slug)}" aria-pressed="${state.favorites.has(article.slug)}">♡ <span data-label>${state.favorites.has(article.slug) ? '保存済み' : '保存'}</span></button></div></td><td class="tag-cell">${article.tags.map((tag) => `<span>${esc(tag)}</span>`).join('')}</td><td class="source-cell">${esc(author)}<br><span>${esc(article.year)}</span></td><td class="length-cell">${esc(article.readingMinutes)}分</td></tr>`;
+    const classes = [read ? 'is-read' : '', expanded ? 'is-expanded' : ''].filter(Boolean).join(' ');
+    return `<tr data-slug="${esc(article.slug)}" class="${classes}" aria-expanded="${expanded}"><td class="date-cell">${esc(article.publishedAt)}</td><td class="title-cell"><a href="${esc(articleHref(article.slug))}">${esc(article.title)}</a><span class="original-title">${esc(article.originalTitle)}</span><div class="row-actions"><button type="button" data-read="${esc(article.slug)}" aria-pressed="${read}">✓ <span data-label>${read ? '既読' : '未読'}</span></button><button type="button" data-favorite="${esc(article.slug)}" aria-pressed="${state.favorites.has(article.slug)}">♡ <span data-label>${state.favorites.has(article.slug) ? '保存済み' : '保存'}</span></button></div></td><td class="tag-cell">${article.tags.map((tag) => `<span>${esc(tag)}</span>`).join('')}</td><td class="source-cell">${esc(author)}<br><span>${esc(article.year)}</span></td><td class="length-cell">${esc(article.readingMinutes)}分</td></tr>`;
   }
 
   function renderRows() {
@@ -80,6 +82,8 @@
   }
 
   document.addEventListener('click', (event) => {
+    const archiveRow = event.target.closest('#article-list tr');
+    if (archiveRow) { state.expanded.add(archiveRow.dataset.slug); archiveRow.classList.add('is-expanded'); archiveRow.setAttribute('aria-expanded', 'true'); }
     const favorite = event.target.closest('[data-favorite]');
     if (favorite) { event.preventDefault(); const slug = favorite.dataset.favorite; state.favorites.has(slug) ? state.favorites.delete(slug) : state.favorites.add(slug); saveSet(keys.favorites, state.favorites); renderRows(); renderFeatured(); syncButtons(); return; }
     const read = event.target.closest('[data-read]');
@@ -90,6 +94,11 @@
     if (page) { state.page += page.dataset.page === 'next' ? 1 : -1; renderRows(); document.querySelector('#archive')?.scrollIntoView({ behavior: 'smooth' }); return; }
     const saved = event.target.closest('[data-saved-filter]');
     if (saved) { state.savedOnly = !state.savedOnly; document.querySelectorAll('[data-saved-filter]').forEach((node) => { node.classList.toggle('is-active', state.savedOnly); node.setAttribute('aria-pressed', String(state.savedOnly)); }); state.page = 1; renderRows(); return; }
+  });
+  document.addEventListener('focusin', (event) => {
+    const archiveRow = event.target.closest('#article-list tr');
+    if (!archiveRow) return;
+    state.expanded.add(archiveRow.dataset.slug); archiveRow.classList.add('is-expanded'); archiveRow.setAttribute('aria-expanded', 'true');
   });
   document.querySelector('#archive-search')?.addEventListener('input', (event) => { state.query = event.target.value; state.page = 1; renderRows(); });
   document.querySelector('#tag-filter')?.addEventListener('change', (event) => { state.tag = event.target.value; state.page = 1; renderRows(); });
