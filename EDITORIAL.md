@@ -20,11 +20,11 @@
 
 ## 日次更新のデータ規約
 
-トップページの「今日まず読むならこれ」は、`data/articles.json` で `featured: true` になっている記事から生成する。`index.html` に記事名や紹介文を直接書かない。
+トップページの「本日追加」は、`data/articles.json` で `featured: true` になっている記事から生成する。`index.html` に記事名や紹介文を直接書かない。
 
 - `featured: true` は常に1本だけにする。ほかの記事は `false` にする。
-- おすすめ記事には、左上の短い分類表示として `featuredKicker` を付ける。大きなキャッチコピーは置かず、記事名と紹介文をそのまま見せる。
-- 発行日、号数、号名、編集後記は `data/daily.json` に記録する。日次更新では `date`、`issueNumber`、`issueLabel`、`editorNote.title`、`editorNote.body` を更新する。
+- `featured` は順序や評価を表す番号ではなく、その日の静的HTMLへ載せる対象を示すだけにする。`featuredKicker` や採点値は持たない。
+- 号数や編集後記は使わない。日次更新では `date`、`lastUpdated`、`candidateCount`、`adoptedCount`、`collectionNote`、`selectionCriteria` を `data/daily.json` に記録し、`node scripts/build-index.cjs` でトップの静的HTMLへ反映する。
 - 新しい号を公開するときは `data/articles.json` と `data/daily.json` を更新すればよく、トップページのHTMLを編集する必要はない。
 
 ## 記事の厚さ
