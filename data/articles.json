@@ -10,6 +10,9 @@
     "readingMinutes": 58,
     "sourceUrl": "https://www.cl.cam.ac.uk/~afb21/CognitiveDimensions/CDtutorial.pdf",
     "excerpt": "要求書、評価表、コード、管理画面は、内容だけでなく表記の構造によって考え方を強制する。粘性、隠れた依存、早すぎる決定など14の語で診断する。",
+    "image": "assets/visual-cognitive-dimensions.jpg",
+    "imageAlt": "絡み合う依存線と動かしにくい情報ブロックを、手で組み替えようとする図版",
+    "imageCaption": "表記は情報を見せるだけでなく、変更の仕方にも摩擦を与える。",
     "featured": true
   },
   {
