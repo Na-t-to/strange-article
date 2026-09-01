@@ -12,7 +12,7 @@ const run = `自動収集 / 最終実行 ${stamp} / 候補${daily.candidateCount
 function todayBlock() {
   const article = articles.find((item) => item.featured === true);
   if (!article) return '<article class="collection-entry" id="featured-article"><p class="empty-state"><strong>今日は採用なし。</strong>前回の追加は一覧から確認できます。</p></article>';
-  const visual = article.image ? `<figure class="entry-visual"><img src="${esc(article.image)}" alt="${esc(article.imageAlt || '')}" width="1536" height="1024"><figcaption>${esc(article.imageCaption || '')}</figcaption></figure>` : '';
+  const visual = article.image ? `<figure class="entry-visual"><img src="${esc(article.image)}" alt="${esc(article.imageAlt || '')}" width="800" height="533"><figcaption>${esc(article.imageCaption || '図版：自動生成')}</figcaption></figure>` : '';
   return `<article class="collection-entry" id="featured-article">${visual}<div class="entry-copy"><p class="entry-label">追加日 ${esc(article.publishedAt)}</p><h2><a href="articles/${esc(article.slug)}.html">${esc(article.title)}</a></h2><p class="original-title">${esc(article.originalTitle)}</p><p class="entry-excerpt">${esc(article.excerpt)}</p><div class="entry-meta"><span>${article.tags.map((tag) => `<span>${esc(tag)}</span>`).join('')}</span><span>${esc(article.authors.join(' / '))} · ${esc(article.year)} · 読了 ${esc(article.readingMinutes)}分</span><span class="row-actions"><button type="button" data-read="${esc(article.slug)}" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="${esc(article.slug)}" aria-pressed="false">♡ <span data-label>保存</span></button></span></div></div></article>`;
 }
 

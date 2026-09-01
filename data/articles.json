@@ -10,9 +10,9 @@
     "readingMinutes": 58,
     "sourceUrl": "https://www.cl.cam.ac.uk/~afb21/CognitiveDimensions/CDtutorial.pdf",
     "excerpt": "要求書、評価表、コード、管理画面は、内容だけでなく表記の構造によって考え方を強制する。粘性、隠れた依存、早すぎる決定など14の語で診断する。",
-    "image": "assets/visual-cognitive-dimensions.jpg",
+    "image": "assets/visual-cognitive-dimensions.webp",
     "imageAlt": "絡み合う依存線と動かしにくい情報ブロックを、手で組み替えようとする図版",
-    "imageCaption": "表記は情報を見せるだけでなく、変更の仕方にも摩擦を与える。",
+    "imageCaption": "図版：自動生成",
     "featured": true
   },
   {
@@ -26,6 +26,9 @@
     "readingMinutes": 46,
     "sourceUrl": "https://www.researchgate.net/publication/234783472_World_and_the_machine",
     "excerpt": "要求とは、機械の導入後に現実世界で成立してほしい状態である。画面や機能は、その状態を実現する手段にあたる。",
+    "image": "assets/visual-world-and-machine.webp",
+    "imageAlt": "人の暮らす複雑な地形と、それを縮約した機械が信号で結ばれる図版",
+    "imageCaption": "図版：自動生成",
     "featured": false
   },
   {
@@ -39,6 +42,9 @@
     "readingMinutes": 45,
     "sourceUrl": "https://uobdv.github.io/Design-Verification/Supplementary/The_limits_of_Correctness.pdf",
     "excerpt": "形式検証はプログラムとモデルの整合を保証する。モデルが現実世界に合っているかは、別の検証を要する。",
+    "image": "assets/visual-limits-of-correctness.webp",
+    "imageAlt": "整然と動く検証装置の外側で、断線や亀裂などの異常が起きている図版",
+    "imageCaption": "図版：自動生成",
     "featured": false
   },
   {
@@ -52,6 +58,9 @@
     "readingMinutes": 47,
     "sourceUrl": "https://www.loa.istc.cnr.it/old/Papers/CACM2002.pdf",
     "excerpt": "is-aに見える関係を、本質、役割、部分、材料、実例へ分解する分類設計の検査法。",
+    "image": "assets/visual-ontoclean.webp",
+    "imageAlt": "一人の人物が複数の役割を着脱し、分類棚の誤った枝が裂ける図版",
+    "imageCaption": "図版：自動生成",
     "featured": false
   },
   {
@@ -65,6 +74,9 @@
     "readingMinutes": 47,
     "sourceUrl": "https://aclanthology.org/2020.acl-main.442/",
     "excerpt": "能力×テスト型の行列を使い、AIがどの能力・条件で失敗するかを特定する。",
+    "image": "assets/visual-checklist.webp",
+    "imageAlt": "異なる条件を並べた検査盤を機械の腕が点検し、単一の計器が脇へ退けられた図版",
+    "imageCaption": "図版：自動生成",
     "featured": false
   },
   {
@@ -78,6 +90,9 @@
     "readingMinutes": 46,
     "sourceUrl": "https://www.jstor.org/stable/20024652",
     "excerpt": "設計や配置は、誰が利用でき、誰へ権限が集まるかを長期にわたって決める。効率だけでは評価できない。",
+    "image": "assets/visual-artifacts-have-politics.webp",
+    "imageAlt": "低い橋が小型車だけを通し、バスと歩行者の経路を分けている図版",
+    "imageCaption": "図版：自動生成",
     "featured": false
   }
 ]
