@@ -11,12 +11,13 @@
   <header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date" data-issue-date>最終更新 2026-09-01 10:00</p></header>
   <main class="article-shell">
     <p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　技術哲学</p>
-    <header class="article-header"><div class="tags"><span>技術哲学</span><span>仕様設計</span><span>AI信頼性</span></div><h1>正しさを証明しても、正しいことは保証できない</h1><p class="original-title">The Limits of Correctness</p><div class="article-meta-row"><p><strong>Brian Cantwell Smith · 1985</strong><br>公開 2026.08.31　／　推定読了 45分</p></div></header>
+    <header class="article-header"><div class="tags"><span>技術哲学</span><span>仕様設計</span><span>AI信頼性</span></div><h1>正しさを証明しても、正しいことは保証できない</h1><p class="original-title">The Limits of Correctness</p><div class="article-meta-row"><p><strong>Brian Cantwell Smith · 1985</strong><br>公開 2026.08.31　／　推定読了 50分</p></div></header>
     <figure class="article-visual"><img src="../assets/visual-limits-of-correctness.webp" alt="整然と動く検証装置の外側で、断線や亀裂などの異常が起きている図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
     <div class="article-layout">
       <article class="article-body">
         <p class="lead-box">形式検証は、プログラムと仕様の整合を強く保証する。Smithは、その保証をモデルと世界の適合まで広げて語る危険を指摘する。</p>
-        <h2>この文章を収録する理由</h2>
+        <aside class="everyday-example"><span>身近な例（原文外）</span><p>カーナビが、登録された道路の中から最短経路を正確に計算した。しかし現地では昨夜の土砂崩れで道が閉鎖されている。計算は間違っていない。間違っていたのは、計算が前提にした地図と現在の道路状況の対応である。「正しく計算した」と「目的地へ着ける」は、別の保証になる。</p></aside>
+        <h2>収集条件との対応</h2>
         <p>1985年、Brian Cantwell Smithは「プログラムを正しいと証明する」という言い方の危うさを、核攻撃警報の実例から解剖した。40年以上後のAI安全でも、問いはほとんど変わっていない。仕様通りに振る舞うことと、世界の中で適切に振る舞うことは別である。</p>
         <p>大事なのは、Smithが形式検証を無価値だと言っているのではないことだ。証明を作ろうとすれば、曖昧だったモデルと仕様を明示せざるを得ず、多くのバグが見つかる。彼が批判するのは、その限定された成果を「システムが意図どおりであることの証明」と呼び、保証範囲を現実世界まで膨らませることである。</p>
         <p>講演の背景には、発射警報から通信、誘導、戦場シミュレーションまでコンピュータへ依存し始めた1980年代の核兵器体系がある。短時間で反撃を決める構想では、誤りを後から訂正する余地がない。だからSmithは、個々のバグの数ではなく、「正しさ」という保証概念がそもそも何を覆えるかを問う。安全保障の極端な事例を使うが、議論の骨格は医療、交通、行政、AIの自動判断にも移せる。</p>
@@ -24,6 +25,7 @@
         <p>1960年、グリーンランドの弾道ミサイル早期警戒システムは、ソ連の大量ミサイルが米国へ向かっていると示した。だが国際緊張は高くなく、ソ連首脳はニューヨークにいた。人間の常識的判断により反撃は行われなかった。原因は、月から反射したレーダー信号だった。設計者のモデルに月の出が入っていなかったのである。</p>
         <p>プログラムが形式仕様に完全に一致していても、この誤警報は防げない。証明できるのは、プログラムと仕様という二つの形式的記述の整合である。仕様の背後にあるモデルが世界に適しているかは、別に確かめる必要がある。</p>
         <p>この事故では人間が、国際緊張の程度、システムが導入直後であること、ソ連首脳がニューヨークにいることを総合し、警報の外側を読んだ。完全自動の発射判断なら、その余白はない。Smithの問いは「人間を入れれば安全」という単純な話でもない。スリーマイル島のように、人が介入できても適切に行動できない場合がある。人間を除けば形式化しやすいが、モデル外の異常に対応しにくい。人間を入れれば柔軟性は増すが、人の行動を完全には仕様化できない。この交換条件自体を設計対象にせよ、という話である。</p>
+        <aside class="everyday-example"><span>身近な例（原文外）</span><p>煙感知器が湯気に反応して鳴ったとする。センサーは「一定量の粒子を検知したら鳴る」という仕様どおりに動いている。しかし家の中で知りたいのは「火事かどうか」であって、「粒子があるか」ではない。湯気を煙として扱うモデルが、現実の区別を落としている。</p></aside>
         <h2>正しさの前にある四つの難題</h2>
         <p>Smithはモデルの議論へ進む前に、現実のシステムで「正しさ」を語る難しさを四方向から示す。</p>
         <ol>
@@ -46,6 +48,7 @@
         <p>ところがコンピュータは抽象世界に閉じていない。電源につながれ、現実の飛行機を着陸させ、薬を投与し、レーダーや兵器を制御する。部分的モデルに基づく行為が、モデルを超える世界へ結果を生む。この非対称が「完全な正しさ」の限界になる。</p>
         <p>Smithはこれを、<strong>モデルは部分的だが、行為は部分的ではない</strong>と捉える。交通信号が「車」を金属量と通過時間で表現しても、交差点へ入るのはモデル上の車ではなく、実際の自転車や遅いトラクターである。金属検知器が自転車を拾わず、想定速度より遅い車両が交差点を渡り切る前に信号が変われば、捨てた細部が事故の側から戻ってくる。</p>
         <p>フィードバックは、この不一致を知る一つの方法になる。ロボットが内部の三次元モデルに従って部品をつかみ、視覚や力覚からずれを検出するように、行為はモデルを世界へ照合する。しかしフィードバック自体も、何を測るかという別のモデルに依存する。照合を重ねても、世界との対応を最終的に証明する一点へは到達しない。</p>
+        <aside class="everyday-example"><span>身近な例（原文外）</span><p>ロボット掃除機が部屋の地図どおりに全床面を走り切り、「清掃完了」と表示した。ところが床に落ちた靴下を避けた周囲だけ、ごみが残っている。走行経路の完了は証明できても、「部屋がきれいになった」という生活上の目的までは証明していない。完了表示が何を測っているかを見なければならない。</p></aside>
         <h2>「モデル理論」が世界との対応を証明するわけではない</h2>
         <p>哲学と数理論理にはmodel theoryという精密な分野がある。名前だけを見れば、モデルが世界をどれだけ正しく表すかを扱う理論に思える。しかしSmithの整理では、形式的なモデル理論が扱うのは、記述・プログラムと、その記述を真にする形式モデルとの関係である。モデルが実際の世界へ適合するかという右側の関係ではない。</p>
         <p>左側にはプログラムP、仕様S、共有された形式モデルMがある。ここでは、PがSを満たすかを数学的に示せる。右側にはMと現実世界Wがある。MがWの重要な特徴を含み、無視した特徴が目的に影響しないかは、観察、実験、経験、異常事例、歴史的知識を使って調べる。右側にも論証は作れるが、左側と同じ種類の閉じた証明にはならない。</p>
@@ -56,9 +59,11 @@
         <p>冷蔵庫の例では、「内部を3〜6度に保つ」という仕様から、構造的に安全、1トン未満、騒音を出さない、扉を開けても飛翔物を放たない、といった常識的背景が落ちる。かといって、トースターを庫内に入れる、逆さにする、宇宙空間で使う、電源を抜く、といった不適切な使用をすべて仕様へ列挙することもできない。</p>
         <p>冷蔵庫の仕様を厳しくしすぎれば、正常な使用条件でも不合格になる。緩くすれば、冷たいビニール袋や一トンの装置まで合格する。利用条件を追加しても、「適切な利用」の背景をさらに定義する必要が生じる。仕様は、書かれた条件だけで閉じず、契約当事者が共有する常識や環境の安定性に支えられる。人間が読む契約はその背景を解釈できるが、プログラムは書かれていない背景を当然には持たない。</p>
         <p>ここからSmithは、一般に「正しさの証明」と呼ばれるものを、より控えめに<strong>相対的一貫性（relative consistency）</strong>の証明と呼ぶべきだと主張する。プログラムと仕様が、共有するモデルの内部で両立していることは示せる。しかし、仕様が意図を捉えているか、モデルが現実の関連部分を捉えているかは右側に残る。月の出は、プログラムの間違いではなく、この右側の不適合だった。</p>
+        <aside class="everyday-example"><span>身近な例（原文外）</span><p>「箱の中を3〜6度に保て」という条件だけなら、巨大な氷を毎日入れて床を水浸しにする装置でも合格できるかもしれない。欲しかったのは食品を安全に保存でき、家庭で普通に使える冷蔵庫である。仕様に書かなかった常識は、条件を満たしただけでは戻ってこない。</p></aside>
         <h2>シミュレーションが試せないもの</h2>
         <p>実環境で試せないなら、精密なシミュレーションを作ればよいように見える。しかしシミュレーターも同じモデルで構成される。プログラムがモデル内の様々な状況で振る舞えることは試せても、そのモデルが現実の重要な変化を含んでいるかは試せない。シミュレーションはプログラムとモデルの関係を広く検査するが、モデルと世界の関係を外から保証しない。</p>
         <p>この指摘は、合成データによるLLM評価にも当てはまる。生成器、評価対象、判定器が似た前提や語彙を共有すると、三者の整合性は高く見える。だが、実務文書の省略、組織固有の例外、利用者の誤解、時間制約が同じ世界モデルに入っていなければ、評価の内部で美しく閉じるほど外部妥当性が見えにくくなる。</p>
+        <aside class="everyday-example"><span>身近な例（原文外）</span><p>家計簿アプリを、毎月の家賃・食費・光熱費だけで一年分シミュレーションし、「赤字にならない」と確認したとする。実際の一年には家電の故障、冠婚葬祭、値上げが入る。計算を何千回繰り返しても、想定していない出費は一度も現れない。シミュレーションの精密さと、想定の広さは別である。</p></aside>
         <h2>人とシステムを評価する別の語彙</h2>
         <p>人間について、人格全体が「正しい」とは通常言わない。信頼できる、経験がある、判断力がある、と言う。指示は必ず不完全で、状況に応じた解釈や責任に頼るからだ。個々の行為は正誤を持てるが、人やシステム全体を文脈から切り離して完全に正しいとは言えない。</p>
         <p>Smithはコンピュータにも、実際に使われる状況での経験、フィードバック、失敗からの回復余地が必要だと考える。シミュレーションが試せるのはモデル内の関係である。モデルと世界の関係には、次の「月の出」が残る。</p>
@@ -86,7 +91,7 @@
         <div class="reading-question"><span>読後に考える</span><p>あなたが「このAIは正しい」と言うとき、どの二つの記述の一致を確認したのか。そして、その外側に何を仮定しているか。</p></div>
         <section class="related"><h2>関連して読む</h2><div class="related-grid"><a href="world-and-machine.html">要求は「機械の中」ではなく「世界の側」にある</a><a href="checklist.html">平均点を捨てて、AIの「振る舞い」をテストする</a></div></section>
       </article>
-      <aside class="article-rail"><section class="rail-card"><span>収録理由</span><p>「正しい」という言葉が何を保証し、何を保証しないかを、モデルと世界の関係から切り分ける。</p><div class="article-actions"><button type="button" data-read="limits-of-correctness" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="limits-of-correctness" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://uobdv.github.io/Design-Verification/Supplementary/The_limits_of_Correctness.pdf" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>Brian Cantwell Smith. “The Limits of Correctness.” ACM SIGCAS Computers and Society 14(1), 1985.</p></section></aside>
+      <aside class="article-rail"><section class="rail-card"><span>収集条件との対応</span><p>「正しい」という言葉が何を保証し、何を保証しないかを、モデルと世界の関係から切り分ける。</p><div class="article-actions"><button type="button" data-read="limits-of-correctness" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="limits-of-correctness" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://uobdv.github.io/Design-Verification/Supplementary/The_limits_of_Correctness.pdf" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>Brian Cantwell Smith. “The Limits of Correctness.” ACM SIGCAS Computers and Society 14(1), 1985.</p></section></aside>
     </div>
   </main>
   <footer class="site-footer"><p><strong>変な読み物置き場</strong><span>／ 自動収集される技術・思想・学術の索引。</span></p><a href="../index.html">アーカイブへ戻る ←</a></footer>

@@ -11,12 +11,13 @@
   <header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date" data-issue-date>最終更新 2026-09-01 10:00</p></header>
   <main class="article-shell">
     <p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　AI評価</p>
-    <header class="article-header"><div class="tags"><span>AI評価</span><span>LLM信頼性</span><span>テスト設計</span></div><h1>平均点を捨てて、AIの「振る舞い」をテストする</h1><p class="original-title">Beyond Accuracy: Behavioral Testing of NLP Models with CheckList</p><div class="article-meta-row"><p><strong>Marco Tulio Ribeiro, Tongshuang Wu, Carlos Guestrin, Sameer Singh · 2020</strong><br>公開 2026.08.31　／　推定読了 47分</p></div></header>
+    <header class="article-header"><div class="tags"><span>AI評価</span><span>LLM信頼性</span><span>テスト設計</span></div><h1>平均点を捨てて、AIの「振る舞い」をテストする</h1><p class="original-title">Beyond Accuracy: Behavioral Testing of NLP Models with CheckList</p><div class="article-meta-row"><p><strong>Marco Tulio Ribeiro, Tongshuang Wu, Carlos Guestrin, Sameer Singh · 2020</strong><br>公開 2026.08.31　／　推定読了 52分</p></div></header>
     <figure class="article-visual"><img src="../assets/visual-checklist.webp" alt="異なる条件を並べた検査盤を機械の腕が点検し、単一の計器が脇へ退けられた図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
     <div class="article-layout">
       <article class="article-body">
         <p class="lead-box">単一の正答率は、モデルが「どこで、どんな規則で壊れるか」を消してしまう。CheckListは、AI評価をデータセットの採点から、要求された振る舞いのテストへ移す。</p>
-        <h2>この文章を収録する理由</h2>
+        <aside class="everyday-example"><span>身近な例（原文外）</span><p>算数テストで平均80点の子が二人いたとする。一人は足し算も掛け算も八割できる。もう一人は足し算が満点で、掛け算はほぼ全滅している。平均点だけなら同じだが、次に教えるべき内容はまったく違う。AIの総合正答率も、どの能力が欠けているかを同じように隠す。</p></aside>
+        <h2>収集条件との対応</h2>
         <p>元はNLP分類器向けだが、能力×テスト型の行列はLLMやRAGの評価にも使える。論文は、評価対象を「問題集」から「能力の仕様」へ変え、モデルが失敗する条件を修正可能な単位で示す。</p>
         <p>この転換は、評価の目的を変える。ベンチマークはモデル同士の順位づけには強いが、製品を直す人が「次に何を直すか」を必ずしも教えない。CheckListは、利用場面で必要な能力を先に列挙し、それぞれへ反例をぶつける。点数を出すことより、欠けている振る舞いを発見することが主目的になる。</p>
         <p>論文の題名にあるBeyond Accuracyは、精度を捨てるという意味ではない。保持データでの精度は、同じ分布から来る未知例への一般化を測るために要る。CheckListが足すのは、分布中の出現頻度と切り離して「当然できるべき基本動作」「変えてはいけない出力」「期待方向へ変わるべき出力」を検査する層である。</p>
@@ -26,6 +27,7 @@
         <p>平均値には、二種類の隠蔽がある。一つは分布の隠蔽で、頻出する簡単な例が高得点を作り、稀だが重大な失敗を薄める。もう一つは原因の隠蔽で、否定、時制、固有名詞、主語と目的語のどれが壊れているかを一つの数字へ溶かす。モデルを改善するには、誤答を「データ点」ではなく、共通する失敗規則として束ねる必要がある。</p>
         <p>そこで著者たちは、ソフトウェア工学のブラックボックス型<strong>振る舞いテスト（behavioral testing）</strong>を導入する。内部構造や訓練データではなく、入力と出力の関係だけを検査するので、異なるモデルや外部APIも同じ仕様で比較できる。</p>
         <p>ブラックボックスであることは妥協ではない。商用APIの内部へアクセスできなくても、同じテストを適用できる。モデルのアーキテクチャや学習データが変わっても、製品が守るべき振る舞いはテスト資産として残る。評価をモデル研究の付属物から、要求仕様の回帰テストへ移せる。</p>
+        <aside class="everyday-example"><span>身近な例（原文外）</span><p>レストランの総合満足度が4.5でも、アレルギー表示だけ毎回間違うなら、アレルギーのある客には使えない。頻度の低い重大事故は、多数の「料理がおいしかった」に薄められる。平均とは別に、絶対に外せない振る舞いを一本ずつ検査する必要がある。</p></aside>
         <h2>能力×テスト型の行列</h2>
         <p>行には、語彙・品詞、分類関係、ノイズ耐性、固有表現、公平性、時間、否定、照応、意味役割、論理などの<strong>能力（capability）</strong>を並べる。列は三種類のテストで構成する。</p>
         <p>能力はタスクに応じて具体化する。語彙能力なら、感情分析では「good」を肯定と扱えるか、重複質問判定では「teacher」と「accredited teacher」の差を保てるか、機械読解では比較級と最上級を結びつけられるかを見る。同じ「否定」でも、感情の反転、質問の非同一化、文脈中の人物属性の否定では期待する振る舞いが違う。</p>
@@ -35,6 +37,7 @@
           <section><h3>DIR：方向性期待テスト</h3><p>入力を変えたとき、出力が期待方向へ動くことを確認する。否定的な文を足したのに感情スコアが上がれば失敗。</p></section>
         </div>
         <p>INVとDIRの巧さは、多くの場合に完全な正解ラベルを作らず、変形前後の関係を検査できることだ。LLM評価なら、表記ゆれで法的結論が変わらない、根拠文書を削れば確信度が下がる、権限のない情報を追加しても回答へ混入しない、といった関係をテストできる。</p>
+        <aside class="everyday-example"><span>三つの違い（原文外）</span><p>感想文を判定するAIなら、MFTは「料理は悪くない」を肯定寄りに扱えるかを単独で試す。INVは「東京の店」を「大阪の店」に替えても、同じ感想なら評価が変わらないかを見る。DIRは末尾に「二度と行かない」を足したとき、好意度が上がらないことを確かめる。正解文を一つ決めるのではなく、変えてよいものと、変えるべき方向を指定している。</p></aside>
         <h2>三種類のテストは、異なる失敗仮説を持つ</h2>
         <p>MFTは、複雑な実データから交絡を取り除く。映画レビュー中に否定表現が含まれていて正答したとしても、モデルが否定を理解したとは限らない。作品名、俳優名、頻出語から正解できるからだ。「The food is not poor.」のように他の手掛かりを減らせば、否定された否定語を扱えるかへ焦点を合わせられる。MFTの簡単さは現実性の不足ではなく、原因を切り分けるための設計である。</p>
         <p>INVは、意味を保つ変形に対する安定性を問う。航空会社への投稿中のChicagoをDallasへ変えても、感情は変わらないはずだ。文字を隣と入れ替えた軽い誤字、無関係なURL、意味を変えない短縮形も同じである。元入力の正解ラベルが分からなくても、変形前後で同じ予測を保つという関係は検査できる。</p>
@@ -47,6 +50,7 @@
         <p>テンプレートの直積は強力だが、すべての組合せが自然になるとは限らない。そこでツールはmasked language modelを使い、「I really {mask} the flight.」の穴へenjoyed、liked、loved、regretなど文脈に合いそうな候補を出す。人が肯定・否定・中立へ分けて語彙表に保存し、複数のテストで再利用する。自動生成と人の意味判断を分業する設計である。</p>
         <p>WordNetの同義語・反義語、都市名、国名、人名、国籍・宗教・性別などの保護属性語彙も候補生成に使う。摂動関数は、隣接文字の交換、短縮形、名前・場所の置換を自然データへ一括適用する。テストスイートを保存・共有できるため、モデルを変更しても同じ能力要求を再実行できる。</p>
         <p>ただし、生成器の偏りはテストへも入る。言語モデルが提案しやすい自然な表現だけを使えば、稀な方言、専門用語、崩れた入力が落ちる。テンプレートと候補生成は、評価者の着想を広げる道具であって、実運用分布を自動的に代表する装置ではない。</p>
+        <aside class="everyday-example"><span>身近な例（原文外）</span><p>傘へ真上から一度だけ水をかけて漏れなかったとしても、横殴りの雨や開閉を繰り返した後まで丈夫とは言えない。一つの試し方を百本の傘へ繰り返すのと、壊れ方の種類を増やすのは別である。テンプレートで件数を増やす前に、「どんな壊れ方を探す型なのか」を決める必要がある。</p></aside>
         <h2>人間並みのモデルが、単純な否定で壊れる</h2>
         <p>論文は感情分析、重複質問判定、機械読解で商用・研究モデルを調べた。通常ベンチマークでは人間並みとされるモデルにも、単純な否定、時間関係、照応、主語と目的語の区別で大きな失敗があった。</p>
         <p>たとえば「昔はこの航空会社が嫌いだったが、今は好きだ」の現在側を優先できない。「その料理は悪くない」のような否定を扱えない。文末の否定では、複数の商用モデルがほぼ全面的に失敗した。ランダムなURLや地名変更だけで感情判定が変わる例もある。</p>
@@ -71,8 +75,9 @@
         <p>RAGなら、次のような行列にできる。MFTでは「同じ論点について新旧二つの規程があれば最新版を選ぶ」「根拠がなければ不存在を捏造せず保留する」。INVでは、段落順、ファイル名、表記ゆれ、無関係文書の追加で結論が変わらないことを試す。DIRでは、反対根拠を追加したとき確信度が下がる、権威の高い一次資料を追加したとき引用がそちらへ移る、といった方向を定める。</p>
         <p>エージェントなら、最終回答だけでなく行動列をテストする。必要情報が欠けたら質問へ戻る、権限のない操作は実行しない、可逆な確認を先に行う、外部送信前に承認を求める。これらは正解文の一致ではなく、状態遷移のMFT・INV・DIRとして書ける。</p>
         <p>結果の報告も平均点から変える。各セルに、対象能力、テスト型、失敗率、代表反例、影響、修正担当、再発防止テストを残す。これなら、モデル更新で総合点が上がっても、重大な能力が退行していないかを追える。</p>
+        <aside class="everyday-example"><span>身近な例（原文外）</span><p>冷蔵庫の中身から献立を提案するAIを考える。「卵と玉ねぎで作れる料理を挙げる」は最小機能テストになる。「玉ねぎ」を「たまねぎ」と書いても提案が変わらないかは不変性テストである。「卵アレルギー」と追加したら卵料理の提案が減るべきだ、というのが方向性期待テストになる。献立の完全な正解を決めなくても、安全に必要な関係は検査できる。</p></aside>
         <h2>実務では「能力契約」として運用する</h2>
-        <p>以下は原論文のNLP分類実験を、生成AI開発へ広げた編集部の提案である。最初にユースケースごとの能力契約を書く。「最新規程を優先する」「根拠のない事項は保留する」「契約当事者と義務者を区別する」のように、観測可能な振る舞いへする。抽象的な「法務を理解する」「安全に答える」は、そのままではテストにならない。</p>
+        <p>以下は原論文のNLP分類実験を、生成AI開発へ広げた応用案である。最初にユースケースごとの能力契約を書く。「最新規程を優先する」「根拠のない事項は保留する」「契約当事者と義務者を区別する」のように、観測可能な振る舞いへする。抽象的な「法務を理解する」「安全に答える」は、そのままではテストにならない。</p>
         <p>次に、各能力について正常な最小例、境界例、意味保存変形、意味変化の方向、禁止行動を作る。失敗した例は単発のバグ票で終わらせず、どの能力契約へ属するかを付ける。同じ原因の反例をテンプレートへまとめ、修正後も残す。モデルの世代が変わっても、業務要求の履歴としてテストスイートが育つ。</p>
         <p>RAGでは検索と生成を分けて記録する。正しい文書が取得されたか、取得文書から正しい箇所を選んだか、箇所を忠実に要約したか、根拠が不足したとき保留したか。同じ最終誤答でも、検索能力、引用整合、推論、表現のどこが壊れたかで修正方法が違う。</p>
         <p>エージェントでは、入力と最終出力だけでなく途中の状態遷移を黒箱として観測する。権限不足を検知した後に停止したか、外部送信前に承認状態へ移ったか、失敗したツールを無限に再試行しないか、情報が足りなければ質問状態へ戻るか。完全な内部推論を読めなくても、許可された行動列の契約は検査できる。</p>
@@ -87,7 +92,7 @@
         <div class="reading-question"><span>読後に考える</span><p>いまのAI評価表は、能力の欠陥を発見できる構造か。それとも欠陥を一つの平均値へ溶かす構造か。</p></div>
         <section class="related"><h2>関連して読む</h2><div class="related-grid"><a href="limits-of-correctness.html">正しさを証明しても、正しいことは保証できない</a><a href="world-and-machine.html">要求は「機械の中」ではなく「世界の側」にある</a><a href="cognitive-dimensions.html">考えにくさは頭のせいではない——表記がつくる14種類の摩擦</a></div></section>
       </article>
-      <aside class="article-rail"><section class="rail-card"><span>収録理由</span><p>一つの得点を、能力ごとの失敗条件へ分解する。LLM評価の設計会議でそのまま使える。</p><div class="article-actions"><button type="button" data-read="checklist" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="checklist" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://aclanthology.org/2020.acl-main.442/" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>Ribeiro, Wu, Guestrin &amp; Singh. “Beyond Accuracy.” ACL 2020, pp. 4902–4912.</p></section></aside>
+      <aside class="article-rail"><section class="rail-card"><span>収集条件との対応</span><p>一つの得点を、能力ごとの失敗条件へ分解する。LLM評価の設計会議でそのまま使える。</p><div class="article-actions"><button type="button" data-read="checklist" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="checklist" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://aclanthology.org/2020.acl-main.442/" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>Ribeiro, Wu, Guestrin &amp; Singh. “Beyond Accuracy.” ACL 2020, pp. 4902–4912.</p></section></aside>
     </div>
   </main>
   <footer class="site-footer"><p><strong>変な読み物置き場</strong><span>／ 自動収集される技術・思想・学術の索引。</span></p><a href="../index.html">アーカイブへ戻る ←</a></footer>

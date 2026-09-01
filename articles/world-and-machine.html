@@ -22,7 +22,7 @@
       <article class="article-body">
         <p class="lead-box">要求定義を難しくする一因は、問題を聞く途中で視線が「どんな画面・API・データ構造を作るか」へ移ることにある。顧客の言葉の曖昧さだけでは説明できない。</p>
         <aside class="everyday-example"><span>身近な例（原文外）</span><p>朝7時に起きたいので、目覚まし時計を6時50分に鳴るよう設定した。時計は指定時刻に正しく鳴ったが、枕の下にあって音が聞こえず、結局寝坊した。このとき時計は仕様どおりに動いている。それでも「7時に起きる」という目的は達成されていない。Jacksonが分けようとするのは、この二種類の成功である。</p></aside>
-        <h2>この文章を収録する理由</h2>
+        <h2>収集条件との対応</h2>
         <p>Michael Jacksonは、要求を、機械を導入したあとに現実世界で成立してほしい状態として定義する。機械の内部状態や機能一覧は、その要求を実現する手段にあたる。</p>
         <p>1995年の論文だが、AIエージェントやRAGの設計にもそのまま使える。「回答を生成する」「検索を呼ぶ」は機械側の記述である。世界側の要求には、「担当者が根拠を検証できる」「権限外の文書が判断材料に混ざらない」「例外案件が人へ戻る」などが入る。世界側の要求と機械側の記述を混同した評価項目は、実装した機能の有無しか採点しない。</p>
         <p>この論文の射程は、単に「ユーザーを理解しよう」という一般論ではない。Jacksonは、世界と機械に属する現象を分け、その境界で何が共有され、誰がその現象を制御するのかまで記述する。要求、仕様、プログラムという三つの成果物を、抽象度の違いではなく、<strong>何について語る文なのか</strong>によって区別するところが強い。</p>
@@ -88,7 +88,7 @@
         <p>AI評価の世界側要求には、根拠の追跡可能性、再検討の余地、誤りを人が検出できる時間、権限と責任の配置が入る。「正しい答えを出す」は、機械の出力仕様にとどまる。</p>
         <p>三列の間には、必ず推論を書く。世界の事実Dと機械の仕様Sを合わせると、なぜ世界への要求Rが成立するのか。式にすればD, S ⊢ Rである。重要なのは式そのものより、Dに何を置いたかだ。「検索結果には必要な最新版が含まれる」「引用元を表示すれば人は誤りを見抜ける」「担当者は期限内に例外を確認する」。こうした前提が無言のままなら、機械が仕様どおりでも要求は満たされない。</p>
         <h2>AIエージェントを世界／機械で書き直す</h2>
-        <p>以下は論文の事例ではなく、この区別を現在のAI設計へ適用した編集部の例である。契約レビューAIについて「PDFを読み、条項を抽出し、リスクを三段階で評価する」と書いたとする。これはほぼ機械側の能力記述であり、導入後の世界に何を成立させたいかがまだない。</p>
+        <p>以下は論文の事例ではなく、この区別を現在のAI設計へ応用した例である。契約レビューAIについて「PDFを読み、条項を抽出し、リスクを三段階で評価する」と書いたとする。これはほぼ機械側の能力記述であり、導入後の世界に何を成立させたいかがまだない。</p>
         <p>世界への要求は、たとえば「担当弁護士が重大な逸脱条項を締結前に認識できる」「判断根拠と原文位置を第三者が追跡できる」「AIが扱えない条項は、扱えないと分かる形で人へ戻る」「機密区分に反する文書が検索対象へ入らない」と書ける。これらは出力文字列だけでなく、人、期限、原文、権限、レビュー工程で成立する状態である。</p>
         <p>仕様は境界の現象へ落とす。「信頼度が閾値未満なら保留フラグを出す」「各指摘にページと条番号を付ける」「利用者の権限トークンで検索集合を制限する」「人が承認するまで締結システムへ送信しない」。ここで初めて機械が観測・制御できる文になる。しかし仕様だけから要求は出ない。ページ番号があれば本当に根拠追跡できるか、保留案件を人が期限内に見るか、権限情報が最新かという世界の事実が必要である。</p>
         <p>評価項目も三層へ分かれる。プログラムの単体テストは、保留フラグや権限フィルターが実装どおり動くかを見る。仕様のテストは、境界で期待した入力と出力が得られるかを見る。要求の評価は、重大な逸脱が締結前に発見されたか、根拠確認時間が短くなったか、例外が放置されなかったかを現場で見る。一つの正答率で三層を代理させると、機械の成功を世界の成功と誤認する。</p>
@@ -103,7 +103,7 @@
         <div class="reading-question"><span>読後に考える</span><p>いま作っている要求仕様の各文は、世界の事実、世界への願い、機械の振る舞いのどれか。三つを一文に混ぜていないか。</p></div>
         <section class="related"><h2>関連して読む</h2><div class="related-grid"><a href="limits-of-correctness.html">正しさを証明しても、正しいことは保証できない</a><a href="artifacts-have-politics.html">技術は中立ではない——設計が先回りして権力を固定する</a><a href="cognitive-dimensions.html">考えにくさは頭のせいではない——表記がつくる14種類の摩擦</a></div></section>
       </article>
-      <aside class="article-rail"><section class="rail-card"><span>収録理由</span><p>要求、仕様、実装を「世界／機械」という一つの境界で整理できる。古典だが、AIエージェント設計にも直接効く。</p><div class="article-actions"><button type="button" data-read="world-and-machine" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="world-and-machine" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><section class="rail-card"><span>この記事の見取り図</span><ol class="article-map"><li>世界で何を実現したいか</li><li>機械は何を観測できるか</li><li>機械は何を制御できるか</li><li>両者を結ぶ仮定は正しいか</li></ol></section><a class="source-link" href="https://www.researchgate.net/publication/234783472_World_and_the_machine" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>Michael Jackson. “The World and the Machine.” ICSE, 1995, pp. 283–292.</p></section></aside>
+      <aside class="article-rail"><section class="rail-card"><span>収集条件との対応</span><p>要求、仕様、実装を「世界／機械」という一つの境界で整理できる。古典だが、AIエージェント設計にも直接効く。</p><div class="article-actions"><button type="button" data-read="world-and-machine" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="world-and-machine" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><section class="rail-card"><span>この記事の見取り図</span><ol class="article-map"><li>世界で何を実現したいか</li><li>機械は何を観測できるか</li><li>機械は何を制御できるか</li><li>両者を結ぶ仮定は正しいか</li></ol></section><a class="source-link" href="https://www.researchgate.net/publication/234783472_World_and_the_machine" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>Michael Jackson. “The World and the Machine.” ICSE, 1995, pp. 283–292.</p></section></aside>
     </div>
   </main>
   <footer class="site-footer"><p><strong>変な読み物置き場</strong><span>／ 自動収集される技術・思想・学術の索引。</span></p><a href="../index.html">アーカイブへ戻る ←</a></footer>

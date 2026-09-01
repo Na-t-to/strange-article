@@ -22,7 +22,7 @@
       <article class="article-body">
         <p class="lead-box">変更のたびに同じ箇所を直す。何に影響するか分からない。必要な情報がそろう前に分類を決めさせられる。二つの版を並べて見られない。これらは「使う人が不慣れ」という一語でまとめるには、形が違いすぎる。GreenとBlackwellは、その違いに名前を付けた。</p>
 
-        <h2>この文章を収録する理由</h2>
+        <h2>収集条件との対応</h2>
         <p>Thomas GreenとAlan Blackwellの「認知的次元（Cognitive Dimensions）」は、プログラミング言語、表計算、紙の手帳、電話機、フォーム、図式、文書エディタを、同じ語彙で比べるための枠組みである。対象は画面に限られない。情報を保存し、表示し、組み替えるものを、著者たちは<strong>情報アーティファクト</strong>と呼ぶ。</p>
         <p>この枠組みが与えるのは総合点ではない。「この道具は使いやすい」と結論するための尺度でもない。変更への抵抗はどれくらいか。依存関係は見えるか。まだ分からないことを先に決めさせていないか。途中結果を確かめられるか。構成要素の役割を見ただけで推測できるか。使いにくさを十数種類へ分け、どの活動にとって何が問題なのかを話せるようにする。</p>
         <p>要求工学との接続は強い。要求書、業務フロー、評価表、概念モデル、プロンプト、エージェントの設定画面も情報アーティファクトである。内容が正しくても、その表記が比較を妨げたり、例外を後から追加しにくくしたり、未確定事項を確定値として入力させたりすれば、設計者の思考は歪む。成果物の品質だけを見ていると、そこへ至る作業が受けた制約を見落とす。</p>
@@ -113,7 +113,7 @@
         <p>したがってレビューでは、「欠点は何か」より「誰のどの活動へ、どの負担を移したか」と聞く。実装者の負担を利用者の記憶へ移したのか。入力時の負担を後日の変更へ移したのか。探索の自由を監査の容易さへ交換したのか。トレードオフの行き先が見えれば、設計判断を説明できる。</p>
 
         <h2>要求書を診断する</h2>
-        <p>ここからは教程の直接の事例ではなく、編集部による適用である。要求書を情報アーティファクトとして見ると、内容の正誤とは別の欠陥が見える。</p>
+        <p>ここからは教程の直接の事例ではなく、この枠組みの応用例である。要求書を情報アーティファクトとして見ると、内容の正誤とは別の欠陥が見える。</p>
         <p><strong>粘性：</strong>同じ業務語の定義を章ごとに複写していないか。ルール変更時に、要求、受入条件、画面仕様、テストケースを手で同期する必要があるか。共通IDや参照を導入すれば反復は減るが、参照先を開かなければ読めない可視性の低下も起きる。</p>
         <p><strong>隠れた依存：</strong>一つの例外条件が、どの要求とテストへ影響するか分かるか。「本人確認済みなら上限を引き上げる」という規則を変えたとき、通知、審査、監査ログ、既存顧客の扱いへ波及することが見えるか。トレーサビリティ表を作るだけでなく、逆方向の検索と変更差分が必要になる。</p>
         <p><strong>早すぎる決定：</strong>発見した概念を、まだ境界が分からない段階で一つのカテゴリへ固定していないか。「顧客」「契約」「案件」のどれへ属するか決まらない事実を置いておけるか。未分類をエラーにすると、入力者は最も近い箱へ押し込み、後でその分類が現実の構造として読まれる。</p>
@@ -163,7 +163,7 @@
         <div class="reading-question"><span>読後に考える</span><p>いま最も頻繁に使う要求書、評価表、管理画面のうち、「一つの変更」を最も多くの手作業へ増幅するものはどれか。その粘性を下げたとき、負担はどの次元へ移るだろうか。</p></div>
         <section class="related"><h2>関連して読む</h2><div class="related-grid"><a href="world-and-machine.html">要求は「機械の中」ではなく「世界の側」にある</a><a href="ontoclean.html">「学生」は人の種類ではない——分類を壊す本質と役割の混同</a><a href="checklist.html">平均点を捨てて、AIの「振る舞い」をテストする</a></div></section>
       </article>
-      <aside class="article-rail"><section class="rail-card"><span>収録理由</span><p>使いにくさを「慣れ」の問題へ戻さず、変更、依存、比較、仮置きなど具体的な認知作業として話せる。</p><div class="article-actions"><button type="button" data-read="cognitive-dimensions" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="cognitive-dimensions" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://www.cl.cam.ac.uk/~afb21/CognitiveDimensions/CDtutorial.pdf" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>Thomas Green and Alan Blackwell. “Cognitive Dimensions of Information Artefacts: a tutorial.” Version 1.2, 1998. 75 pp.</p><p>枠組みを最初に提案した<a href="https://www.cl.cam.ac.uk/~afb21/CognitiveDimensions/papers/Green1989.pdf" target="_blank" rel="noreferrer">1989年の原論文</a>も全文公開されている。</p></section></aside>
+      <aside class="article-rail"><section class="rail-card"><span>収集条件との対応</span><p>使いにくさを「慣れ」の問題へ戻さず、変更、依存、比較、仮置きなど具体的な認知作業として話せる。</p><div class="article-actions"><button type="button" data-read="cognitive-dimensions" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="cognitive-dimensions" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://www.cl.cam.ac.uk/~afb21/CognitiveDimensions/CDtutorial.pdf" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>Thomas Green and Alan Blackwell. “Cognitive Dimensions of Information Artefacts: a tutorial.” Version 1.2, 1998. 75 pp.</p><p>枠組みを最初に提案した<a href="https://www.cl.cam.ac.uk/~afb21/CognitiveDimensions/papers/Green1989.pdf" target="_blank" rel="noreferrer">1989年の原論文</a>も全文公開されている。</p></section></aside>
     </div>
   </main>
   <footer class="site-footer"><p><strong>変な読み物置き場</strong><span>／ 自動収集される技術・思想・学術の索引。</span></p><a href="../index.html">アーカイブへ戻る ←</a></footer>
