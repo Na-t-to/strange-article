@@ -21,6 +21,7 @@
     });
     document.querySelectorAll('[data-saved-count]').forEach((node) => { node.textContent = String(state.favorites.size); });
     document.querySelectorAll('[data-saved-wrap]').forEach((node) => { node.hidden = state.favorites.size === 0; });
+    document.querySelectorAll('[data-saved-utility]').forEach((node) => { node.hidden = state.favorites.size === 0; });
   }
 
   function filteredArticles() {
@@ -89,8 +90,6 @@
     if (page) { state.page += page.dataset.page === 'next' ? 1 : -1; renderRows(); document.querySelector('#archive')?.scrollIntoView({ behavior: 'smooth' }); return; }
     const saved = event.target.closest('[data-saved-filter]');
     if (saved) { state.savedOnly = !state.savedOnly; document.querySelectorAll('[data-saved-filter]').forEach((node) => { node.classList.toggle('is-active', state.savedOnly); node.setAttribute('aria-pressed', String(state.savedOnly)); }); state.page = 1; renderRows(); return; }
-    const random = event.target.closest('[data-random]');
-    if (random && articles.length) location.href = articleHref(articles[Math.floor(Math.random() * articles.length)].slug);
   });
   document.querySelector('#archive-search')?.addEventListener('input', (event) => { state.query = event.target.value; state.page = 1; renderRows(); });
   document.querySelector('#tag-filter')?.addEventListener('change', (event) => { state.tag = event.target.value; state.page = 1; renderRows(); });
