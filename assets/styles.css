@@ -133,6 +133,7 @@ nav a:hover, nav a:first-child { background: rgba(248, 247, 240, .12); color: #f
 .eyebrow { display: block; color: var(--rust); font-size: 9px; font-weight: 700; letter-spacing: .12em; }
 
 .featured-card { grid-area: feature; min-width: 0; display: grid; grid-template-columns: 205px minmax(0, 1fr); overflow: hidden; border: 1px solid var(--line-strong); border-radius: 0; background: var(--paper-soft); }
+.featured-card > .loading-state, .featured-card > .empty-state { grid-column: 1 / -1; width: 100%; }
 .featured-visual { min-height: 260px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; border-right: 1px solid var(--line); color: var(--deep-moss); background: radial-gradient(110% 85% at 12% 4%, rgba(219, 228, 218, .96), rgba(219, 228, 218, .34) 58%, rgba(248, 247, 240, .92)); }
 .featured-visual::before, .featured-visual::after { content: ""; position: absolute; border: 1px solid rgba(45, 74, 62, .13); border-radius: 62% 38% 47% 53% / 55% 44% 56% 45%; }
 .featured-visual::before { width: 190px; height: 160px; right: -92px; top: -45px; }

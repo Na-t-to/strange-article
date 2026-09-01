@@ -1,6 +1,7 @@
 (() => {
   const articlePage = document.body.dataset.page === 'article';
   const dataUrl = articlePage ? '../data/articles.json' : 'data/articles.json';
+  const dailyUrl = 'data/daily.json';
   const articleHref = (slug) => articlePage ? `${slug}.html` : `articles/${slug}.html`;
   const keys = { favorites: 'sasu-favorites-v1', read: 'sasu-read-v1' };
 
@@ -73,6 +74,54 @@
     syncButtons();
   }
 
+  function renderFeatured(article) {
+    const container = document.querySelector('#featured-article');
+    if (!container) return;
+    if (!article) {
+      container.innerHTML = '<div class="empty-state"><strong>今日のおすすめは準備中です</strong><p>featured: true の記事を1本指定してください。</p></div>';
+      return;
+    }
+    const lead = escapeHtml(article.featuredLead || article.excerpt).replaceAll('\n', '<br>');
+    container.innerHTML = `
+      <div class="featured-visual">
+        <div class="visual-top"><span>${escapeHtml(article.featuredKicker || article.originalTitle)}</span><b>01</b></div>
+        <p>${lead}</p>
+      </div>
+      <div class="featured-copy">
+        <div class="featured-tools">
+          <div class="tags">${article.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}</div>
+          <div class="card-actions">
+            <button class="icon-button labelled" type="button" data-read="${escapeHtml(article.slug)}" aria-pressed="${state.read.has(article.slug)}"><span>✓</span><span data-label>未読</span></button>
+            <button class="icon-button labelled" type="button" data-favorite="${escapeHtml(article.slug)}" aria-pressed="${state.favorites.has(article.slug)}"><span>♡</span><span data-label>保存</span></button>
+          </div>
+        </div>
+        <h2>${escapeHtml(article.title)}</h2>
+        <p class="original-title">${escapeHtml(article.originalTitle)}</p>
+        <p class="dek">${escapeHtml(article.excerpt)}</p>
+        <div class="featured-footer">
+          <p><strong>${escapeHtml(article.authors.join(' / '))} · ${article.year}</strong><small>読了 ${article.readingMinutes}分 ／ 刺さり度 ${article.score}</small></p>
+          <a class="primary-button" href="${articleHref(article.slug)}">解説を読む ↗</a>
+        </div>
+      </div>`;
+  }
+
+  function renderDailyMeta(daily) {
+    const [year, month, day] = String(daily.date).split('-').map(Number);
+    const dateLabel = `${year}年${month}月${day}日`;
+    const issueLabel = daily.issueLabel || `第${daily.issueNumber}号`;
+    const issueDate = document.querySelector('[data-issue-date]');
+    const issueHeading = document.querySelector('[data-issue-heading]');
+    const editorTitle = document.querySelector('[data-editor-title]');
+    const editorBody = document.querySelector('[data-editor-body]');
+    if (issueDate) issueDate.textContent = `${dateLabel}　${issueLabel}`;
+    if (issueHeading) {
+      issueHeading.dateTime = daily.date;
+      issueHeading.textContent = `${dateLabel}号`;
+    }
+    if (editorTitle) editorTitle.textContent = daily.editorNote?.title || '';
+    if (editorBody) editorBody.textContent = daily.editorNote?.body || '';
+  }
+
   function renderTags() {
     const container = document.querySelector('#tag-filters');
     if (!container) return;
@@ -124,12 +173,29 @@
     state.query = event.target.value; renderCards();
   });
 
-  fetch(dataUrl)
-    .then((response) => { if (!response.ok) throw new Error('記事一覧を読み込めませんでした'); return response.json(); })
-    .then((data) => { articles = data; renderTags(); renderCards(); renderCounts(); syncButtons(); })
+  const loadJson = (url) => fetch(url).then((response) => {
+    if (!response.ok) throw new Error(`${url}を読み込めませんでした`);
+    return response.json();
+  });
+
+  const initialData = articlePage
+    ? Promise.all([loadJson(dataUrl), Promise.resolve(null)])
+    : Promise.all([loadJson(dataUrl), loadJson(dailyUrl)]);
+
+  initialData
+    .then(([data, daily]) => {
+      articles = data;
+      if (!articlePage) {
+        renderFeatured(articles.find((article) => article.featured === true));
+        renderDailyMeta(daily);
+      }
+      renderTags(); renderCards(); renderCounts(); syncButtons();
+    })
     .catch(() => {
       const container = document.querySelector('#article-list');
       if (container) container.innerHTML = '<div class="empty-state"><strong>記事一覧を読み込めませんでした</strong><p>ページを再読み込みしてください。</p></div>';
+      const featured = document.querySelector('#featured-article');
+      if (featured) featured.innerHTML = '<div class="empty-state"><strong>今日のおすすめを読み込めませんでした</strong><p>ページを再読み込みしてください。</p></div>';
       syncButtons();
     });
 })();

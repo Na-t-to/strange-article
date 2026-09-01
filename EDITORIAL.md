@@ -18,3 +18,17 @@
 - Kentaro Minami「[AI語に親しむ](https://ktrmnm.jp/blog/2026-08-29-what-is-ai-ism-jp/)」
 - Kentaro Minami「[AI語を受容する](https://ktrmnm.jp/blog/2026-08-29-accept-ai-ism/)」
 
+## 日次更新のデータ規約
+
+トップページの「今日まず読むならこれ」は、`data/articles.json` で `featured: true` になっている記事から生成する。`index.html` に記事名や紹介文を直接書かない。
+
+- `featured: true` は常に1本だけにする。ほかの記事は `false` にする。
+- おすすめ記事には、短い分類表示として `featuredKicker`、大きな導入文として `featuredLead` を付ける。改行したい位置は `featuredLead` 内の改行で指定する。
+- 発行日、号数、号名、編集後記は `data/daily.json` に記録する。日次更新では `date`、`issueNumber`、`issueLabel`、`editorNote.title`、`editorNote.body` を更新する。
+- 新しい号を公開するときは `data/articles.json` と `data/daily.json` を更新すればよく、トップページのHTMLを編集する必要はない。
+
+## 記事の厚さ
+
+記事はリンク紹介や結論だけの要約にしない。目安は日本語4,000〜7,000字とし、原文の長さと内容に応じて増減する。少なくとも、問題設定、中心的主張、論証の流れ、重要概念、具体例、既存の見方との差分、実務への接続、反論または適用限界、読後に考える問いを、原文の論理を追える密度で書く。
+
+本数より内容を優先する。十分な一次資料と論証を確認できない日は、記事数を減らす。
