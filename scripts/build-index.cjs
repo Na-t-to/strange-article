@@ -22,6 +22,14 @@ function tableBlock() {
   return `<div class="table-wrap"><table class="archive-table"><thead><tr><th><button type="button" data-sort-key="publishedAt">追加日</button></th><th><button type="button" data-sort-key="title">タイトル</button></th><th><button type="button" data-sort-key="tags">分野</button></th><th><button type="button" data-sort-key="year">出典・年</button></th><th><button type="button" data-sort-key="readingMinutes">分量</button></th></tr></thead><tbody id="article-list">${body}</tbody></table></div>`;
 }
 
+function conditionsBlock() {
+  const tracks = daily.selectionTracks || [];
+  const renderedTracks = tracks.map((track, index) => `<section class="criteria-track"><h3>${index + 1}. ${esc(track.title)}</h3><p>${esc(track.summary || '')}</p><ul>${(track.criteria || []).map((item) => `<li>${esc(item)}</li>`).join('')}</ul></section>`).join('');
+  const fallback = (daily.selectionCriteria || []).length ? `<ul>${daily.selectionCriteria.map((item) => `<li>${esc(item)}</li>`).join('')}</ul>` : '';
+  const adoption = daily.adoptionRule ? `<p class="adoption-rule"><strong>採用条件</strong>${esc(daily.adoptionRule)}</p>` : '';
+  return `<p data-collection-note>${esc(daily.collectionNote || '')}</p><div data-selection-criteria>${renderedTracks || fallback}${adoption}</div>`;
+}
+
 function replaceBetween(source, start, end, value) {
   const a = source.indexOf(start); const b = source.indexOf(end);
   if (a < 0 || b < 0 || b < a) throw new Error(`marker not found: ${start}`);
@@ -32,9 +40,8 @@ let html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 html = replaceBetween(html, '<!-- GENERATED:today:start -->', '<!-- GENERATED:today:end -->', todayBlock());
 html = replaceBetween(html, '<!-- GENERATED:table:start -->', '<!-- GENERATED:table:end -->', tableBlock());
 html = replaceBetween(html, '<!-- GENERATED:data:start -->', '<!-- GENERATED:data:end -->', `<script type="application/json" id="article-data">${JSON.stringify(articles).replaceAll('<', '\\u003c')}</script>`);
+html = replaceBetween(html, '<!-- GENERATED:conditions:start -->', '<!-- GENERATED:conditions:end -->', conditionsBlock());
 html = html.replace(/<span data-result-count>.*?<\/span>/, `<span data-result-count>全${articles.length}本</span>`);
-html = html.replace(/<p data-collection-note>.*?<\/p>/, `<p data-collection-note>${esc(daily.collectionNote || '')}</p>`);
-html = html.replace(/<ul data-selection-criteria>.*?<\/ul>/s, `<ul data-selection-criteria>${(daily.selectionCriteria || []).map((item) => `<li>${esc(item)}</li>`).join('')}</ul>`);
 html = html.replace(/<p data-run-summary>.*?<\/p>/g, `<p data-run-summary>${esc(run)}</p>`);
 fs.writeFileSync(path.join(root, 'index.html'), html);
 console.log(`built index: ${articles.length} articles, ${daily.adoptedCount ?? 0} adopted`);
