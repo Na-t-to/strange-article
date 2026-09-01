@@ -21,17 +21,11 @@ body::before { content: ""; position: fixed; inset: 0; pointer-events: none; opa
 a { color: inherit; text-decoration: none; }
 button, input, select { font: inherit; color: inherit; border-radius: 0; }
 button, select { cursor: pointer; }
-.site-header { max-width: 1240px; margin: 0 auto; padding: 28px 34px 0; display: grid; grid-template-columns: minmax(240px, 1fr) auto; gap: 10px 26px; border-bottom: 1px solid var(--line); }
+.site-header { max-width: 1240px; margin: 0 auto; padding: 28px 34px 18px; display: flex; align-items: flex-start; justify-content: space-between; gap: 26px; border-bottom: 1px solid var(--line); }
 .brand { display: inline-flex; flex-direction: column; gap: 6px; align-self: start; }
 .brand strong { color: var(--deep-moss); font: 700 29px/1.2 var(--serif); letter-spacing: .045em; }
 .brand small { color: var(--sumi); font: 11px/1.6 var(--sans); letter-spacing: .08em; }
 .issue-date { margin: 4px 0 0; color: var(--indigo); font: 11px/1.6 var(--sans); letter-spacing: .06em; text-align: right; }
-nav { display: flex; grid-column: 1 / -1; gap: 22px; padding: 13px 0 11px; border-top: 1px solid var(--line-light); }
-nav a { position: relative; padding: 0 0 6px; color: var(--sumi); font: 12px var(--sans); letter-spacing: .06em; }
-nav a:hover, nav a.is-current { color: var(--deep-moss); }
-nav a.is-current::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--moss); }
-.quiet-button { align-self: start; justify-self: end; padding: 5px 0; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--indigo); font: 11px var(--sans); }
-.quiet-button.is-active { color: var(--rust); border-color: var(--rust); }
 .page-shell { max-width: 1240px; margin: 0 auto; padding: 42px 34px 72px; display: grid; grid-template-columns: minmax(0, 1fr) 270px; gap: 54px; }
 .main-column { min-width: 0; }
 .section-heading, .list-heading { display: flex; align-items: end; justify-content: space-between; gap: 20px; padding-bottom: 14px; border-bottom: 2px solid var(--deep-moss); }
@@ -85,7 +79,7 @@ h1 { margin: 6px 0 0; color: var(--sumi-strong); font: 700 31px/1.4 var(--serif)
 .noscript-note { margin: 10px 0 0; color: var(--rust); font: 11px/1.7 var(--sans); }
 .site-footer { max-width: 1240px; margin: 0 auto; padding: 24px 34px 38px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 13px 28px; border-top: 2px solid var(--deep-moss); }.site-footer p { margin: 0; }.site-footer strong { margin-right: 12px; color: var(--deep-moss); font: 700 15px var(--serif); }.site-footer span, .site-footer p:not(:first-child) { color: var(--sumi); font: 11px var(--sans); }.site-footer a { margin-left: auto; color: var(--indigo); font: 11px var(--sans); }
 @media (max-width: 850px) { .site-header, .page-shell, .site-footer { padding-left: 20px; padding-right: 20px; }.page-shell { grid-template-columns: 1fr; gap: 34px; }.sidebar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }.sidebar-section { margin: 0; }.archive-tools { grid-template-columns: repeat(2, 1fr); }.archive-table { min-width: 760px; } }
-@media (max-width: 560px) { .site-header { grid-template-columns: 1fr; gap: 10px; }.issue-date { text-align: left; }.quiet-button { justify-self: start; }.sidebar { display: block; }.sidebar-section { margin-bottom: 24px; }.archive-tools { grid-template-columns: 1fr; } h1 { font-size: 24px; }.section-heading time { font-size: 9px; }.site-footer a { margin-left: 0; } }
+@media (max-width: 560px) { .site-header { flex-direction: column; gap: 10px; }.issue-date { text-align: left; }.sidebar { display: block; }.sidebar-section { margin-bottom: 24px; }.archive-tools { grid-template-columns: 1fr; } h1 { font-size: 24px; }.section-heading time { font-size: 9px; }.site-footer a { margin-left: 0; } }
 
 /* 個別記事も、本文と右欄を横罫だけで組む。 */
 .article-shell { max-width: 1040px; margin: 0 auto; padding: 28px 34px 64px; }
@@ -105,8 +99,6 @@ h1 { margin: 6px 0 0; color: var(--sumi-strong); font: 700 31px/1.4 var(--serif)
   .site-header, .page-shell, .site-footer, .article-shell { padding-left: 18px; padding-right: 18px; }
   .brand strong { font-size: 27px; }
   .brand small { font-size: 11px; }
-  nav { gap: 17px; overflow-x: auto; white-space: nowrap; }
-  nav a { font-size: 11.5px; }
   .page-shell { padding-top: 30px; }
   .section-heading { align-items: flex-start; flex-direction: column; gap: 8px; }
   .section-heading time { font-size: 10.5px; }
