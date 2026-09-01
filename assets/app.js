@@ -1,7 +1,5 @@
 (() => {
   const articlePage = document.body.dataset.page === 'article';
-  const dataUrl = articlePage ? '../data/articles.json' : 'data/articles.json';
-  const dailyUrl = articlePage ? '../data/daily.json' : 'data/daily.json';
   const articleHref = (slug) => articlePage ? `${slug}.html` : `articles/${slug}.html`;
   const keys = { favorites: 'sasu-favorites-v1', read: 'sasu-read-v1' };
   const loadSet = (key) => { try { return new Set(JSON.parse(localStorage.getItem(key) || '[]')); } catch { return new Set(); } };
@@ -43,7 +41,8 @@
 
   function row(article) {
     const read = state.read.has(article.slug);
-    return `<tr data-slug="${esc(article.slug)}" class="${read ? 'is-read' : ''}"><td class="date-cell">${esc(article.publishedAt)}</td><td class="title-cell"><a href="${esc(articleHref(article.slug))}">${esc(article.title)}</a><span class="original-title">${esc(article.originalTitle)}</span><div class="row-actions"><button type="button" data-read="${esc(article.slug)}" aria-pressed="${read}">✓ <span data-label>${read ? '既読' : '未読'}</span></button><button type="button" data-favorite="${esc(article.slug)}" aria-pressed="${state.favorites.has(article.slug)}">♡ <span data-label>${state.favorites.has(article.slug) ? '保存済み' : '保存'}</span></button></div></td><td class="tag-cell">${article.tags.map((tag) => `<span>${esc(tag)}</span>`).join('')}</td><td class="source-cell">${esc(article.authors.join(' / '))}<br><span>${esc(article.year)}</span></td><td class="length-cell">${esc(article.readingMinutes)}分</td></tr>`;
+    const author = article.authors.length > 2 ? `${article.authors[0]} ほか${article.authors.length - 1}名` : article.authors.join(' / ');
+    return `<tr data-slug="${esc(article.slug)}" class="${read ? 'is-read' : ''}"><td class="date-cell">${esc(article.publishedAt)}</td><td class="title-cell"><a href="${esc(articleHref(article.slug))}">${esc(article.title)}</a><span class="original-title">${esc(article.originalTitle)}</span><div class="row-actions"><button type="button" data-read="${esc(article.slug)}" aria-pressed="${read}">✓ <span data-label>${read ? '既読' : '未読'}</span></button><button type="button" data-favorite="${esc(article.slug)}" aria-pressed="${state.favorites.has(article.slug)}">♡ <span data-label>${state.favorites.has(article.slug) ? '保存済み' : '保存'}</span></button></div></td><td class="tag-cell">${article.tags.map((tag) => `<span>${esc(tag)}</span>`).join('')}</td><td class="source-cell">${esc(author)}<br><span>${esc(article.year)}</span></td><td class="length-cell">${esc(article.readingMinutes)}分</td></tr>`;
   }
 
   function renderRows() {
@@ -79,16 +78,6 @@
     if (dateSelect) dateSelect.innerHTML = ['すべて', ...new Set(articles.map((article) => article.publishedAt).sort().reverse())].map((date) => `<option value="${esc(date)}" ${date === state.date ? 'selected' : ''}>${esc(date)}</option>`).join('');
   }
 
-  function renderDaily(daily) {
-    const stamp = daily.lastUpdated || `${daily.date} 10:00`;
-    const formatted = stamp.length >= 16 ? stamp.slice(0, 16).replace('T', ' ') : stamp;
-    document.querySelectorAll('[data-issue-date], [data-issue-heading]').forEach((node) => { node.textContent = `最終更新 ${formatted}`; if (node.tagName === 'TIME') node.dateTime = daily.lastUpdated || daily.date; });
-    const run = `自動収集 / 最終実行 ${formatted} / 候補${daily.candidateCount ?? 0}件・採用${daily.adoptedCount ?? 0}件`;
-    document.querySelectorAll('[data-run-summary], [data-footer-run]').forEach((node) => { node.textContent = run; });
-    const note = document.querySelector('[data-collection-note]'); if (note && daily.collectionNote) note.textContent = daily.collectionNote;
-    const criteria = document.querySelector('[data-selection-criteria]'); if (criteria && Array.isArray(daily.selectionCriteria)) criteria.innerHTML = daily.selectionCriteria.map((item) => `<li>${esc(item)}</li>`).join('');
-  }
-
   document.addEventListener('click', (event) => {
     const favorite = event.target.closest('[data-favorite]');
     if (favorite) { event.preventDefault(); const slug = favorite.dataset.favorite; state.favorites.has(slug) ? state.favorites.delete(slug) : state.favorites.add(slug); saveSet(keys.favorites, state.favorites); renderRows(); renderFeatured(); syncButtons(); return; }
@@ -106,8 +95,9 @@
   document.querySelector('#archive-search')?.addEventListener('input', (event) => { state.query = event.target.value; state.page = 1; renderRows(); });
   document.querySelector('#tag-filter')?.addEventListener('change', (event) => { state.tag = event.target.value; state.page = 1; renderRows(); });
   document.querySelector('#date-filter')?.addEventListener('change', (event) => { state.date = event.target.value; state.page = 1; renderRows(); });
-  document.querySelector('#sort-select')?.addEventListener('change', (event) => { const [key, direction] = event.target.value.split(':'); state.sort = key; state.direction = direction; state.page = 1; renderRows(); });
-
-  const load = (url) => fetch(url).then((response) => { if (!response.ok) throw new Error(url); return response.json(); });
-  Promise.all([load(dataUrl), load(dailyUrl)]).then(([data, daily]) => { articles = data; renderFilters(); renderRows(); if (!articlePage) renderFeatured(); renderDaily(daily); syncButtons(); }).catch(() => { syncButtons(); });
+  if (articlePage) { syncButtons(); return; }
+  try {
+    articles = JSON.parse(document.querySelector('#article-data')?.textContent || '[]');
+    renderFilters(); renderRows(); renderFeatured(); syncButtons();
+  } catch { syncButtons(); }
 })();
