@@ -5,7 +5,7 @@
   const loadSet = (key) => { try { return new Set(JSON.parse(localStorage.getItem(key) || '[]')); } catch { return new Set(); } };
   const saveSet = (key, value) => { try { localStorage.setItem(key, JSON.stringify([...value])); } catch { /* optional */ } };
   const esc = (value) => String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
-  const state = { favorites: loadSet(keys.favorites), read: loadSet(keys.read), expanded: new Set(), query: '', tag: 'すべて', date: 'すべて', savedOnly: false, sort: 'publishedAt', direction: 'desc', page: 1, pageSize: 25 };
+  const state = { favorites: loadSet(keys.favorites), read: loadSet(keys.read), query: '', tag: 'すべて', date: 'すべて', savedOnly: false, sort: 'publishedAt', direction: 'desc', page: 1, pageSize: 25 };
   let articles = [];
 
   function syncButtons() {
@@ -42,10 +42,8 @@
 
   function row(article) {
     const read = state.read.has(article.slug);
-    const expanded = state.expanded.has(article.slug);
     const author = article.authors.length > 2 ? `${article.authors[0]} ほか${article.authors.length - 1}名` : article.authors.join(' / ');
-    const classes = [read ? 'is-read' : '', expanded ? 'is-expanded' : ''].filter(Boolean).join(' ');
-    return `<tr data-slug="${esc(article.slug)}" class="${classes}" aria-expanded="${expanded}"><td class="date-cell">${esc(article.publishedAt)}</td><td class="title-cell"><a href="${esc(articleHref(article.slug))}">${esc(article.title)}</a><span class="original-title">${esc(article.originalTitle)}</span><div class="row-actions"><button type="button" data-read="${esc(article.slug)}" aria-pressed="${read}">✓ <span data-label>${read ? '既読' : '未読'}</span></button><button type="button" data-favorite="${esc(article.slug)}" aria-pressed="${state.favorites.has(article.slug)}">♡ <span data-label>${state.favorites.has(article.slug) ? '保存済み' : '保存'}</span></button></div></td><td class="tag-cell">${article.tags.map((tag) => `<span>${esc(tag)}</span>`).join('')}</td><td class="source-cell">${esc(author)}<br><span>${esc(article.year)}</span></td><td class="length-cell">${esc(article.readingMinutes)}分</td></tr>`;
+    return `<tr data-slug="${esc(article.slug)}" class="${read ? 'is-read' : ''}"><td class="date-cell">${esc(article.publishedAt)}</td><td class="title-cell"><a href="${esc(articleHref(article.slug))}">${esc(article.title)}</a><span class="original-title">${esc(article.originalTitle)}</span><div class="row-actions"><button type="button" data-read="${esc(article.slug)}" aria-pressed="${read}">✓ <span data-label>${read ? '既読' : '未読'}</span></button><button type="button" data-favorite="${esc(article.slug)}" aria-pressed="${state.favorites.has(article.slug)}">♡ <span data-label>${state.favorites.has(article.slug) ? '保存済み' : '保存'}</span></button></div></td><td class="tag-cell">${article.tags.map((tag) => `<span>${esc(tag)}</span>`).join('')}</td><td class="source-cell">${esc(author)}<br><span>${esc(article.year)}</span></td><td class="length-cell">${esc(article.readingMinutes)}分</td></tr>`;
   }
 
   function renderRows() {
@@ -62,7 +60,7 @@
   function renderPagination(pages) {
     const nav = document.querySelector('[data-pagination]'); if (!nav) return;
     if (pages <= 1) { nav.innerHTML = ''; return; }
-    nav.innerHTML = `<button type="button" data-page="prev" ${state.page === 1 ? 'disabled' : ''}>前へ</button><span>${state.page} / ${pages}</span><button type="button" data-page="next" ${state.page === pages ? 'disabled' : ''}>次へ</button>`;
+    nav.innerHTML = `<button type="button" data-page-action="prev" ${state.page === 1 ? 'disabled' : ''}>前へ</button><span>${state.page} / ${pages}</span><button type="button" data-page-action="next" ${state.page === pages ? 'disabled' : ''}>次へ</button>`;
   }
 
   function renderFeatured() {
@@ -82,23 +80,16 @@
   }
 
   document.addEventListener('click', (event) => {
-    const archiveRow = event.target.closest('#article-list tr');
-    if (archiveRow) { state.expanded.add(archiveRow.dataset.slug); archiveRow.classList.add('is-expanded'); archiveRow.setAttribute('aria-expanded', 'true'); }
     const favorite = event.target.closest('[data-favorite]');
     if (favorite) { event.preventDefault(); const slug = favorite.dataset.favorite; state.favorites.has(slug) ? state.favorites.delete(slug) : state.favorites.add(slug); saveSet(keys.favorites, state.favorites); renderRows(); renderFeatured(); syncButtons(); return; }
     const read = event.target.closest('[data-read]');
     if (read) { event.preventDefault(); const slug = read.dataset.read; state.read.has(slug) ? state.read.delete(slug) : state.read.add(slug); saveSet(keys.read, state.read); renderRows(); renderFeatured(); syncButtons(); return; }
     const sort = event.target.closest('[data-sort-key]');
     if (sort) { const key = sort.dataset.sortKey; if (state.sort === key) state.direction = state.direction === 'asc' ? 'desc' : 'asc'; else { state.sort = key; state.direction = key === 'title' || key === 'tags' ? 'asc' : 'desc'; } state.page = 1; renderRows(); return; }
-    const page = event.target.closest('[data-page]');
-    if (page) { state.page += page.dataset.page === 'next' ? 1 : -1; renderRows(); document.querySelector('#archive')?.scrollIntoView({ behavior: 'smooth' }); return; }
+    const page = event.target.closest('[data-page-action]');
+    if (page) { state.page += page.dataset.pageAction === 'next' ? 1 : -1; renderRows(); document.querySelector('#archive')?.scrollIntoView({ behavior: 'smooth' }); return; }
     const saved = event.target.closest('[data-saved-filter]');
     if (saved) { state.savedOnly = !state.savedOnly; document.querySelectorAll('[data-saved-filter]').forEach((node) => { node.classList.toggle('is-active', state.savedOnly); node.setAttribute('aria-pressed', String(state.savedOnly)); }); state.page = 1; renderRows(); return; }
-  });
-  document.addEventListener('focusin', (event) => {
-    const archiveRow = event.target.closest('#article-list tr');
-    if (!archiveRow) return;
-    state.expanded.add(archiveRow.dataset.slug); archiveRow.classList.add('is-expanded'); archiveRow.setAttribute('aria-expanded', 'true');
   });
   document.querySelector('#archive-search')?.addEventListener('input', (event) => { state.query = event.target.value; state.page = 1; renderRows(); });
   document.querySelector('#tag-filter')?.addEventListener('change', (event) => { state.tag = event.target.value; state.page = 1; renderRows(); });
