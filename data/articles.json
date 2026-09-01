@@ -1,5 +1,20 @@
 [
   {
+    "slug": "cognitive-dimensions",
+    "title": "考えにくさは頭のせいではない——表記がつくる14種類の摩擦",
+    "originalTitle": "Cognitive Dimensions of Information Artefacts: a tutorial",
+    "authors": ["Thomas Green", "Alan Blackwell"],
+    "year": 1998,
+    "publishedAt": "2026-09-01",
+    "tags": ["HCI", "情報表現", "ソフトウェア設計"],
+    "readingMinutes": 58,
+    "score": 9.7,
+    "sourceUrl": "https://www.cl.cam.ac.uk/~afb21/CognitiveDimensions/CDtutorial.pdf",
+    "excerpt": "要求書、評価表、コード、管理画面は、内容だけでなく表記の構造によって考え方を強制する。粘性、隠れた依存、早すぎる決定など14の語で診断する。",
+    "featuredKicker": "COGNITIVE DIMENSIONS",
+    "featured": true
+  },
+  {
     "slug": "world-and-machine",
     "title": "要求は「機械の中」ではなく「世界の側」にある",
     "originalTitle": "The World and the Machine",
@@ -12,7 +27,7 @@
     "sourceUrl": "https://www.researchgate.net/publication/234783472_World_and_the_machine",
     "excerpt": "要求とは、機械の導入後に現実世界で成立してほしい状態である。画面や機能は、その状態を実現する手段にあたる。",
     "featuredKicker": "WORLD / MACHINE",
-    "featured": true
+    "featured": false
   },
   {
     "slug": "limits-of-correctness",
