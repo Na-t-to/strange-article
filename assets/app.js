@@ -94,9 +94,19 @@
   document.querySelector('#archive-search')?.addEventListener('input', (event) => { state.query = event.target.value; state.page = 1; renderRows(); });
   document.querySelector('#tag-filter')?.addEventListener('change', (event) => { state.tag = event.target.value; state.page = 1; renderRows(); });
   document.querySelector('#date-filter')?.addEventListener('change', (event) => { state.date = event.target.value; state.page = 1; renderRows(); });
+
   if (articlePage) { syncButtons(); return; }
-  try {
-    articles = JSON.parse(document.querySelector('#article-data')?.textContent || '[]');
-    renderFilters(); renderRows(); renderFeatured(); syncButtons();
-  } catch { syncButtons(); }
+
+  const renderArchive = () => { renderFilters(); renderRows(); renderFeatured(); syncButtons(); };
+  const embeddedArticles = () => JSON.parse(document.querySelector('#article-data')?.textContent || '[]');
+
+  (async () => {
+    try {
+      const response = await fetch('data/articles.json', { cache: 'no-store' });
+      articles = response.ok ? await response.json() : embeddedArticles();
+      renderArchive();
+    } catch {
+      try { articles = embeddedArticles(); renderArchive(); } catch { syncButtons(); }
+    }
+  })();
 })();
