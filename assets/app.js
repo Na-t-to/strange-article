@@ -79,6 +79,20 @@
     if (dateSelect) dateSelect.innerHTML = ['すべて', ...new Set(articles.map((article) => article.publishedAt).sort().reverse())].map((date) => `<option value="${esc(date)}" ${date === state.date ? 'selected' : ''}>${esc(date)}</option>`).join('');
   }
 
+  function renderCollectionMeta(daily) {
+    if (!daily || typeof daily !== 'object') return;
+    const rawStamp = String(daily.lastUpdated || `${daily.date || ''} 10:00`);
+    const stamp = rawStamp.length >= 16 ? rawStamp.slice(0, 16).replace('T', ' ') : rawStamp;
+    const run = `自動収集 / 最終実行 ${stamp} / 候補${daily.candidateCount ?? 0}件・採用${daily.adoptedCount ?? 0}件`;
+    document.querySelectorAll('[data-run-summary]').forEach((node) => { node.textContent = run; });
+    document.querySelectorAll('[data-collection-note]').forEach((node) => { node.textContent = daily.collectionNote || ''; });
+    const tracks = daily.selectionTracks || [];
+    const renderedTracks = tracks.map((track, index) => `<section class="criteria-track"><h3>${index + 1}. ${esc(track.title)}</h3><p>${esc(track.summary || '')}</p><ul>${(track.criteria || []).map((item) => `<li>${esc(item)}</li>`).join('')}</ul></section>`).join('');
+    const fallback = (daily.selectionCriteria || []).length ? `<ul>${daily.selectionCriteria.map((item) => `<li>${esc(item)}</li>`).join('')}</ul>` : '';
+    const adoption = daily.adoptionRule ? `<p class="adoption-rule"><strong>採用条件</strong>${esc(daily.adoptionRule)}</p>` : '';
+    document.querySelectorAll('[data-selection-criteria]').forEach((node) => { node.innerHTML = `${renderedTracks || fallback}${adoption}`; });
+  }
+
   document.addEventListener('click', (event) => {
     const favorite = event.target.closest('[data-favorite]');
     if (favorite) { event.preventDefault(); const slug = favorite.dataset.favorite; state.favorites.has(slug) ? state.favorites.delete(slug) : state.favorites.add(slug); saveSet(keys.favorites, state.favorites); renderRows(); renderFeatured(); syncButtons(); return; }
@@ -102,8 +116,12 @@
 
   (async () => {
     try {
-      const response = await fetch('data/articles.json', { cache: 'no-store' });
-      articles = response.ok ? await response.json() : embeddedArticles();
+      const [articleResponse, dailyResponse] = await Promise.all([
+        fetch('data/articles.json', { cache: 'no-store' }),
+        fetch('data/daily.json', { cache: 'no-store' })
+      ]);
+      articles = articleResponse.ok ? await articleResponse.json() : embeddedArticles();
+      if (dailyResponse.ok) renderCollectionMeta(await dailyResponse.json());
       renderArchive();
     } catch {
       try { articles = embeddedArticles(); renderArchive(); } catch { syncButtons(); }
