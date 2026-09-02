@@ -1,5 +1,53 @@
 [
   {
+    "slug": "legal-rag-hallucinations",
+    "title": "引用が実在しても、法務AIは間違える——RAG型リーガルリサーチの失敗を分解する",
+    "originalTitle": "Hallucination-Free? Assessing the Reliability of Leading AI Legal Research Tools",
+    "authors": ["Varun Magesh", "Faiz Surani", "Matthew Dahl", "Mirac Suzgun", "Christopher D. Manning", "Daniel E. Ho"],
+    "year": 2025,
+    "publishedAt": "2026-09-02",
+    "tags": ["法務×AI", "RAG", "LLM信頼性"],
+    "readingMinutes": 51,
+    "sourceUrl": "https://onlinelibrary.wiley.com/doi/full/10.1111/jels.12413",
+    "excerpt": "実在する判例を引用しても、その判例が主張を支えているとは限らない。202件の法的質問を人手評価し、正確性と根拠適合性を分けてRAG型法務AIの失敗を測る。",
+    "image": "assets/visual-legal-rag-hallucinations.svg",
+    "imageAlt": "複数の法的資料から回答へ線が伸び、その途中で検索の分岐と引用の照合を行う線画",
+    "imageCaption": "図版：自動生成",
+    "featured": true
+  },
+  {
+    "slug": "tau-bench",
+    "title": "一度成功したエージェントを信用しない——同じ仕事を繰り返して信頼性を測る",
+    "originalTitle": "τ-bench: A Benchmark for Tool-Agent-User Interaction in Real-World Domains",
+    "authors": ["Shunyu Yao", "Noah Shinn", "Pedram Razavi", "Karthik Narasimhan"],
+    "year": 2024,
+    "publishedAt": "2026-09-02",
+    "tags": ["AIエージェント", "AI評価", "LLM信頼性"],
+    "readingMinutes": 48,
+    "sourceUrl": "https://arxiv.org/html/2406.12045",
+    "excerpt": "成功率だけでは、会話の揺らぎに耐えるか分からない。ユーザー・API・業務ルールを含む状態遷移を反復し、pass^kで「毎回成功できるか」を測る。",
+    "image": "assets/visual-tau-bench.svg",
+    "imageAlt": "同じ出発点から複数の経路が走り、同じ終点へ届く経路と途中で外れる経路を示す線画",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
+    "slug": "context-interaction",
+    "title": "コンテキストは相互作用の途中で作られる——事前に列挙した属性だけでは意味を捉えきれない",
+    "originalTitle": "What We Talk About When We Talk About Context",
+    "authors": ["Paul Dourish"],
+    "year": 2004,
+    "publishedAt": "2026-09-02",
+    "tags": ["HCI", "概念モデリング", "要求工学"],
+    "readingMinutes": 45,
+    "sourceUrl": "https://www.dourish.com/publications/2004/PUC2004-context.pdf",
+    "excerpt": "場所・時刻・属性を集めても、文脈そのものを保存したことにはならない。何が関係するかは活動の途中で変わり、参加者のやり取りによって作られる。",
+    "image": "assets/visual-context-interaction.svg",
+    "imageAlt": "紙片のような要素が、やり取りに合わせて関係を変えながら一つの場を作る線画",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
     "slug": "programming-as-theory-building",
     "title": "コードを渡しても、設計は渡らない——プログラミングは理論構築である",
     "originalTitle": "Programming as Theory Building",
@@ -13,7 +61,7 @@
     "image": "assets/visual-programming-as-theory-building.webp",
     "imageAlt": "一人が都市と計算機を重ねた地図を持ち、もう一人へ図面と途切れた接続線を渡そうとする図版",
     "imageCaption": "図版：自動生成",
-    "featured": true
+    "featured": false
   },
   {
     "slug": "ragchecker",
