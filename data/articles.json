@@ -1,5 +1,21 @@
 [
   {
+    "slug": "programming-as-theory-building",
+    "title": "コードを渡しても、設計は渡らない——プログラミングは理論構築である",
+    "originalTitle": "Programming as Theory Building",
+    "authors": ["Peter Naur"],
+    "year": 1985,
+    "publishedAt": "2026-09-02",
+    "tags": ["ソフトウェア設計", "熟達研究", "認識論"],
+    "readingMinutes": 56,
+    "sourceUrl": "https://pages.cs.wisc.edu/~remzi/Naur.pdf",
+    "excerpt": "プログラムの本体はコードや文書ではなく、世界と実装の対応を説明し、変更へ応答できる開発者の理論にある。",
+    "image": "assets/visual-programming-as-theory-building.webp",
+    "imageAlt": "一人が都市と計算機を重ねた地図を持ち、もう一人へ図面と途切れた接続線を渡そうとする図版",
+    "imageCaption": "図版：自動生成",
+    "featured": true
+  },
+  {
     "slug": "cognitive-dimensions",
     "title": "考えにくさは頭のせいではない——表記がつくる14種類の摩擦",
     "originalTitle": "Cognitive Dimensions of Information Artefacts: a tutorial",
@@ -13,7 +29,7 @@
     "image": "assets/visual-cognitive-dimensions.webp",
     "imageAlt": "絡み合う依存線と動かしにくい情報ブロックを、手で組み替えようとする図版",
     "imageCaption": "図版：自動生成",
-    "featured": true
+    "featured": false
   },
   {
     "slug": "world-and-machine",
