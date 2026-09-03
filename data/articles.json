@@ -1,5 +1,53 @@
 [
   {
+    "slug": "goal-obstacles",
+    "title": "「失敗したらどうする？」を後付けにしない——ゴールから障害を系統的に導く",
+    "originalTitle": "Handling Obstacles in Goal-Oriented Requirements Engineering",
+    "authors": ["Axel van Lamsweerde", "Emmanuel Letier"],
+    "year": 2000,
+    "publishedAt": "2026-09-03",
+    "tags": ["要求工学", "仕様設計", "信頼性"],
+    "readingMinutes": 58,
+    "sourceUrl": "https://www.cs.ucf.edu/~turgut/heng_than.pdf",
+    "excerpt": "正常系の最後に例外を足すのではなく、ゴールを壊す現実的な条件をドメイン知識から導き、予防・低減・回復・緩和へ要求そのものを組み替える。",
+    "image": "assets/visual-goal-obstacles.svg",
+    "imageAlt": "上部の目標から複数の経路が伸び、途中の障害を枝分かれさせて別の解決経路へ組み替える線画",
+    "imageCaption": "図版：自動生成",
+    "featured": true
+  },
+  {
+    "slug": "inquiry-based-requirements",
+    "title": "要求は書いた瞬間には完成しない——質問とシナリオで隠れた前提を掘り出す",
+    "originalTitle": "Inquiry-Based Requirements Analysis",
+    "authors": ["Colin Potts", "Kenji Takahashi", "Annie I. Antón"],
+    "year": 1994,
+    "publishedAt": "2026-09-03",
+    "tags": ["要求工学", "シナリオ", "設計プロセス"],
+    "readingMinutes": 55,
+    "sourceUrl": "https://users.ece.utexas.edu/~perry/education/SE-Intro/potts-sw94.pdf",
+    "excerpt": "要求、質問、回答、仮定、シナリオ、変更要求を結び、具体的な場面からまだ名前のない条件や未解決事項を発見する。",
+    "image": "assets/visual-inquiry-based-requirements.svg",
+    "imageAlt": "要求の紙片から質問札と具体的な場面が枝分かれし、修正された要求へ戻っていく線画",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
+    "slug": "lost-in-the-middle",
+    "title": "長いコンテキストに入れば読める、とは限らない——情報の位置で崩れるLLM",
+    "originalTitle": "Lost in the Middle: How Language Models Use Long Contexts",
+    "authors": ["Nelson F. Liu", "Kevin Lin", "John Hewitt", "Ashwin Paranjape", "Michele Bevilacqua", "Fabio Petroni", "Percy Liang"],
+    "year": 2024,
+    "publishedAt": "2026-09-03",
+    "tags": ["LLM信頼性", "RAG", "AI評価"],
+    "readingMinutes": 52,
+    "sourceUrl": "https://arxiv.org/pdf/2307.03172",
+    "excerpt": "正解資料が入力に存在しても、置く位置だけで性能が変わる。context windowの長さと、内部の情報を安定して利用できる能力を分けて測る。",
+    "image": "assets/visual-lost-in-the-middle.svg",
+    "imageAlt": "長い巻物の両端では信号が強く、中央に置かれた重要な紙片だけが細い線でつながる様子を描いた線画",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
     "slug": "legal-rag-hallucinations",
     "title": "引用が実在しても、法務AIは間違える——RAG型リーガルリサーチの失敗を分解する",
     "originalTitle": "Hallucination-Free? Assessing the Reliability of Leading AI Legal Research Tools",
@@ -13,7 +61,7 @@
     "image": "assets/visual-legal-rag-hallucinations.svg",
     "imageAlt": "複数の法的資料から回答へ線が伸び、その途中で検索の分岐と引用の照合を行う線画",
     "imageCaption": "図版：自動生成",
-    "featured": true
+    "featured": false
   },
   {
     "slug": "tau-bench",
