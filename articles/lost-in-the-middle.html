@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ja"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>長いコンテキストに入れば読める、とは限らない——情報の位置で崩れるLLM｜変な読み物置き場</title>
+  <meta name="description" content="Lost in the Middleの制御実験から、コンテキスト長と情報利用能力を分け、RAGで取得件数・文書順序・reader評価をどう設計すべきかを整理する。">
+  <link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/lost-in-the-middle.html">
+  <meta property="og:type" content="article"><meta property="og:title" content="長いコンテキストに入れば読める、とは限らない——情報の位置で崩れるLLM"><meta property="og:description" content="長い入力を受け付けられることと、その中の情報を均等に使えることは別の能力である。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/lost-in-the-middle.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-lost-in-the-middle.svg">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="長いコンテキストに入れば読める、とは限らない"><meta name="twitter:description" content="関連資料の位置を動かすだけで性能が変わる。長文脈を評価する方法を見直す。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-lost-in-the-middle.svg">
+  <link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260901-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="lost-in-the-middle">
+  <header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date" data-issue-date>最終更新 2026-09-03 14:09</p></header>
+  <main class="article-shell">
+    <p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　LLM信頼性</p>
+    <header class="article-header">
+      <div class="tags"><span>LLM信頼性</span><span>RAG</span><span>AI評価</span></div>
+      <h1>長いコンテキストに入れば読める、とは限らない——情報の位置で崩れるLLM</h1>
+      <p class="original-title">Lost in the Middle: How Language Models Use Long Contexts</p>
+      <div class="article-meta-row"><p><strong>Nelson F. Liu / Kevin Lin / John Hewitt / Ashwin Paranjape / Michele Bevilacqua / Fabio Petroni / Percy Liang · 2024</strong><br>公開 2026.09.03　／　推定読了 52分</p></div>
+    </header>
+    <figure class="article-visual"><img src="../assets/visual-lost-in-the-middle.svg" alt="長い巻物の両端では信号が強く、中央に置かれた重要な紙片だけが細い線でつながる様子を描いた線画" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+    <div class="article-layout">
+      <article class="article-body">
+        <p class="lead-box">100K、200K、100万tokenまで入力できる。こうしたcontext windowの数字は「そこまでの情報をモデルが利用できる」ように読める。しかし入力欄へ入ることと、必要な情報を安定して取り出せることは別の能力である。Liuらは、答えを含む文書の<strong>内容を変えず、置く位置だけを変える</strong>制御実験を行った。評価した当時の複数モデルでは、関連情報が先頭か末尾にあると性能が高く、中央へ移すと落ちるU字型の挙動が現れた。論文の長期的な価値は、特定世代のモデルが弱かったという事実より、長いコンテキストを「最大token数」ではなく<strong>位置を変えても情報を使えるか</strong>で評価する手順を示した点にある。</p>
+
+        <h2>収集条件との対応</h2>
+        <p>本稿は2023年にarXivへ公開され、2024年にTransactions of the Association for Computational Linguisticsへ掲載された。NaturalQuestionsを使ったmulti-document QAと、意味要素をほぼ取り除いたkey-value retrievalという二つの実験で、入力長と関連情報の位置を独立に操作する。コードと評価データも公開されている。</p>
+        <p>高速更新分野の論文として採用した理由は、モデル名や絶対性能ではなく、評価変数の切り分けが現在も使えるからだ。既収録のRAGCheckerは検索と生成の失敗を主張単位へ分け、法務RAG論文は引用の実在と根拠適合性を分ける。本稿はその手前で、<strong>正しい資料がコンテキストに入った後、readerがその資料を使えるか</strong>を独立して測る。</p>
+
+        <h2>context windowは、利用可能性の上限であって利用品質の保証ではない</h2>
+        <p>長文脈モデルの説明では、何tokenを受け付けるかが分かりやすい指標になる。だが、その値は入力として処理できる最大長を主に示す。ある文書の一部が入力範囲内に存在することと、その情報が回答へ正確に反映されることは同義ではない。</p>
+        <p>Liuらはここを直接検査した。もしモデルが長いコンテキスト全体を頑健に使えるなら、答えを含む文書を1番目、10番目、20番目へ動かしても、他の条件が同じなら精度は大きく変わらないはずである。位置によって性能が変われば、「入力可能」より細かい利用能力に偏りがあると分かる。</p>
+        <p>この発想は評価設計として単純だが強い。通常のベンチマークでは、ある質問に対して関連文書がどこへ並んだかは偶然に任される。平均精度が高くても、先頭に答えが集まりやすいデータだった可能性がある。位置を独立変数として操作すれば、同じ情報をどこまで均等に扱えるかを検査できる。</p>
+
+        <h2>最初の実験——答えを含む文書は一つ、残りはもっともらしいノイズ</h2>
+        <p>multi-document QAでは、質問と複数のWikipedia passageをモデルへ渡す。文書のうち一つだけが正解を含み、残りは検索器が取得した関連性の高いdistractorである。無関係なランダム文書ではなく、質問と語彙的・意味的に近いが答えを含まない文書を混ぜるため、RAGに近い状況になる。</p>
+        <p>質問はNaturalQuestions-Openから、長い回答が段落になっている2,655件を使用する。答え文書の位置を変え、文書数を10、20、30へ増減する。正解内容は同じで、文書順だけを変える。</p>
+        <p>評価されたのはMPT-30B-Instruct、LongChat-13B 16K、GPT-3.5-Turbo系、Claude 1.3系など当時のモデルである。現在のモデル性能を表す比較表として読むべきではない。見るべきなのは、同一モデルの内部で位置を変えたときに何が起きたかである。</p>
+
+        <h2>答えが中央へ行くと、U字型に落ちた</h2>
+        <p>結果は多くのモデルでU字型になった。関連文書が最初にあると高く、中央へ行くほど下がり、末尾で再び上がる。論文は先頭側の有利さをprimacy bias、末尾側をrecency biasとして説明する。</p>
+        <p>GPT-3.5-Turboでは、20文書・30文書の条件で中央付近へ答えを置いたとき、性能が20ポイント以上落ちる場合があり、最悪条件では文書を一つも与えないclosed-bookの56.1%を下回った。正しい答えを含む資料を渡したのに、その置き方によっては資料なしより悪くなったことになる。</p>
+        <p>ここから「資料は少ない方が良い」と一般化することはできない。関連文書が複数必要な仕事もあり、モデル世代も変わる。論文が示したのは、追加情報には便益と処理負荷の両方があり、コンテキスト量を増やせば単調に性能が上がるとは限らないという評価上の警告である。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>机の上に20枚の資料を並べ、そのうち一枚だけに回答の根拠があるとする。「20枚すべて机に置けた」ことは、必要な一枚を毎回同じ確率で参照できることを意味しない。資料を増やした結果、探す時間や取り違えが増えるなら、机の広さと調査能力は別に測る必要がある。</p></aside>
+
+        <h2>長い版のモデルだから、短い範囲でも使い方が上手いとは限らなかった</h2>
+        <p>当時は同系統に標準context版と拡張context版が存在した。GPT-3.5-Turboと16K版、Claude 1.3と100K版などである。論文では、両方のcontext windowに収まる10文書・20文書条件において、位置ごとの性能曲線がかなり似た。</p>
+        <p>つまり最大入力長を伸ばす技術が、その範囲内での情報利用を自動的に改善したわけではなかった。context length extensionとcontext utilizationを別の能力として測る必要がある。</p>
+        <p>この区別は現在のモデル比較でも使える。最大token数のベンチマークだけでなく、同じ長さの入力で重要情報の位置、ノイズ量、必要資料数を変え、利用品質を比較する。仕様上「全文を入力できる」と、製品上「全文から必要箇所を安定して使える」を同じ要件にしない。</p>
+
+        <h2>自然言語の推論が原因なのか——UUIDだけの検索問題に落とす</h2>
+        <p>multi-document QAで中央が弱い理由には、質問理解、文書の意味、推論、知識の競合など多くの可能性がある。そこで著者らは、意味処理を極力外したsynthetic key-value retrievalを用意する。</p>
+        <p>入力はJSON形式のランダムなUUID key-value pairの集合で、質問されたkeyに対応するvalueをそのまま返す。各keyとvalueは意味を持たず、必要なのは一致する文字列を見つけることだけである。75、140、300組と長さを増やし、正解pairを置く位置を変える。</p>
+        <p>Claude 1.3系はこの課題をほぼ完全に解いた一方、GPT-3.5-Turbo系やMPT-30B-Instructなどは140・300組で中央が弱くなる傾向を示した。モデルによって差があるため、「Transformerは必ず中央を読めない」という結論ではない。それでも自然言語の複雑な推論を除いても位置依存が出るモデルがあることは、単なるQA知識不足だけでは説明できない。</p>
+
+        <h2>queryを先頭にも置くと、単純検索は改善したがQAはほぼ救えなかった</h2>
+        <p>decoder-onlyモデルでは通常、文書を読んでいる時点で末尾に置かれた質問tokenを参照できない。著者らは、質問を文書の前と後ろの両方へ置くquery-aware contextualizationを試した。</p>
+        <p>key-value retrievalでは効果が大きかった。GPT-3.5-Turbo 16Kを含むモデルが、300 key-valueの条件でもほぼ完全な性能へ改善した。一方multi-document QAでは、位置依存の傾向はほとんど改善せず、先頭以外ではわずかに悪化する条件もあった。</p>
+        <p>この差は、prompt trickを一般処方箋として扱う危険を示す。単純な検索能力のボトルネックには効いても、関連文書の意味を読み、質問へ結びつける仕事では別の問題が残る。改善策は、どの下位能力へ効いたのかを分けて評価する必要がある。</p>
+
+        <h2>encoder-decoderも、訓練時より長くなると中央が弱くなった</h2>
+        <p>論文はdecoder-onlyだけでなくFlan-UL2やFlan-T5-XXLも調べる。Flan-UL2は訓練時の2,048 token以内では、答えの位置によるbest/worst差が1.9ポイントと比較的小さかった。しかし訓練時より長い入力へ伸ばすと、中央で性能が落ちるU字型が現れた。Flan-T5-XXLにも同様の傾向がある。</p>
+        <p>著者らは双方向encoderが各文書を後続文書も含めてcontextualizeできることを一つの仮説として挙げるが、原因を確定してはいない。ここでも有用なのは、「アーキテクチャAが優秀」という順位より、訓練時系列長の内外を分けて試した設計である。</p>
+
+        <h2>RAGではretriever recallが上がっても、reader精度は先に頭打ちになった</h2>
+        <p>制御実験では答えを含む文書が必ず一つ入っていた。実際のRAGでは、top-kを増やすほど正解資料が含まれる可能性は上がるが、readerへ渡すノイズも増える。著者らはNaturalQuestions-Openでretriever-reader構成を使い、kを5から50まで増やして両者を比較した。</p>
+        <p>Contrieverのrecallは文書数を増やすと伸び続けたが、reader側の回答性能はかなり早く飽和した。20文書から50文書へ増やしても、GPT-3.5-Turboの改善は約1.5ポイント、Claude 1.3は約1ポイントにとどまった。入力token、レイテンシ、費用は増えるため、追加取得の限界効用が小さい。</p>
+        <p>RAGを検索器だけで評価すると、この問題を見落とす。top-k recallが高いことは必要資料が候補集合に入ったことを示すが、生成モデルがその資料を使ったことまでは示さない。retrievalとreader utilizationを別々に測る必要がある。</p>
+
+        <h2>「多く取る」より、順番と打ち切りが設計変数になる</h2>
+        <p>論文は実務的な方向として、retrieved documentのrerankingで重要文書を前方へ置くこと、必要に応じてranked listを途中で切ることを挙げる。これは単なるtoken節約ではない。readerが位置とノイズ量に敏感なら、検索結果の順序そのものが生成品質へ影響する。</p>
+        <p>RAGでよくある「recallを上げるためtop-kを増やす」という操作には、検索側の便益とreader側の負担が同時に乗る。最適なkは検索器単体では決まらない。質問タイプ、必要根拠数、モデルの長文脈利用能力、回答時の引用要件などを含めて評価する必要がある。</p>
+        <p>複数資料の統合が必要な仕事なら、重要文書一件を先頭へ置けば済むわけでもない。必要な資料群の相対位置を変える、多数の関連文書の間にノイズを挟む、矛盾資料を置く、といった評価へ発展させられる。</p>
+
+        <h2>実務へ持ち込むなら、「正解資料を取得した」で検索テストを終えない</h2>
+        <p>ここからは原文を踏まえた編集上の推論である。RAGのテストセットでは、retrieval successとanswer successの間に一段階追加できる。正解資料がcontext内に存在する条件を固定した上で、資料の位置、前後のノイズ、context長を変え、回答が安定するかを測る。</p>
+        <p>たとえば同じ質問について、正解文書を1番目、5番目、10番目、末尾へ移す。文書内容と質問は変えない。位置だけで正答率や引用精度が大きく動けば、検索器の改善だけでは直らないreader-sideの弱点がある。</p>
+        <p>さらに、top-kを1、3、5、10、20と増やし、retriever recall、reader accuracy、引用適合性、token量、レイテンシを同時に記録する。recallは伸びるのに回答品質が止まる点があれば、その先は「資料をもっと取る」よりreranking、要約、分割処理、段階的読解など別の設計を試す。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>契約書20件を比較するシステムで、必要条項を含む契約が検索結果の12番目にあるとする。検索評価では「top20に入った」ので成功になる。しかし回答モデルが上位数件しか実質的に使わず、その契約を根拠へ反映しないなら、製品としては失敗している。検索成功と回答利用の間を測る必要がある。</p></aside>
+
+        <h2>context評価に「位置の頑健性」を入れる</h2>
+        <p>論文が最後に提案する評価原則は明快である。長いcontextを頑健に利用できると主張するなら、関連情報の位置を変えたときのbest-caseとworst-caseの差が小さいことを示すべきだ、とする。</p>
+        <p>平均点だけでは、特定位置に極端な弱点があるモデルを見逃す。CheckListの言葉で言えば、位置は一つのbehavioral capability testになる。同じ意味内容を保ったまま位置だけを変えるmetamorphic testとして実装しやすい。</p>
+        <p>評価データの並び順をランダム化するだけでは足りない。狙って先頭・中央・末尾へ置き、長さも変える。複数条件のworst-caseを保存すると、「最大入力長は伸びたが中央利用は改善していない」といった差を発見できる。</p>
+
+        <h2>限界——2023年のモデル挙動を、2026年のモデルへそのまま移さない</h2>
+        <p>この論文で評価されたモデルはGPT-3.5-Turbo、Claude 1.3、MPT-30B、LongChatなどであり、現在の長文脈モデルとは世代が違う。絶対精度、最大context、位置依存の大きさを現行モデルの仕様として引用するのは不適切である。</p>
+        <p>課題も限定される。multi-document QAは正解文書が一つ、key-value retrievalは単純一致である。複数文書を統合する法的推論、長文要約、コード理解、会話履歴などでは別の位置効果があり得る。U字型があらゆるタスクの普遍法則だとは示していない。</p>
+        <p>query-aware contextualizationの結果もタスク依存だった。単純取得には劇的に効いたがQAには効かなかった。したがって「質問を前後に二回置けばよい」という実装レシピではなく、下位能力を分けるアブレーションとして読む方がよい。</p>
+        <p>それでも評価方法は古びにくい。新しいモデルが出るたび、同じ内容を位置だけ変える検査を再実行できる。性能が改善したなら改善を確認でき、別の偏りへ変わったならそれも検出できる。</p>
+
+        <h2>この論文から残る設計原則</h2>
+        <p>長いcontext windowは、たくさんの情報を入力へ載せる能力を示す。それだけで、重要情報をどこに置いても安定して使える能力までは保証しない。入力可能長、retriever recall、reader utilization、最終回答品質を別の測定対象として持つ。</p>
+        <p>そしてRAGで資料数を増やすときは、検索側の「見つかる確率」だけで判断しない。追加資料がreaderに与えるノイズ、位置変化、token費用まで含めて測る。正解資料があるのに答えられない失敗を、検索失敗として隠さない。</p>
+
+        <div class="reading-question"><span>読後に考える</span><p>現在のRAGや長文入力テストで、正解資料の位置を1番目・中央・末尾へ入れ替えても結果は同じだろうか。top-kを増やしたとき、retriever recallと最終回答品質はどこまで一緒に伸び、どこから別々に動くだろうか。</p></div>
+        <section class="related"><h2>関連して読む</h2><div class="related-grid"><a href="ragchecker.html">RAGの失敗を一つの点数に潰さない</a><a href="legal-rag-hallucinations.html">引用が実在しても、法務AIは間違える</a><a href="checklist.html">平均点を捨てて、AIの「振る舞い」をテストする</a></div></section>
+      </article>
+      <aside class="article-rail"><section class="rail-card"><span>収集条件との対応</span><p>LLM信頼性・RAG評価の高速更新分野から採用。関連情報の位置とcontext長を制御し、「入力できる長さ」と「情報を使える能力」を分離して測る。コード・データも公開されている。</p><div class="article-actions"><button type="button" data-read="lost-in-the-middle" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="lost-in-the-middle" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://arxiv.org/pdf/2307.03172" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>Nelson F. Liu, Kevin Lin, John Hewitt, Ashwin Paranjape, Michele Bevilacqua, Fabio Petroni, Percy Liang. “Lost in the Middle: How Language Models Use Long Contexts.” Transactions of the Association for Computational Linguistics, Vol. 12, 2024.</p></section></aside>
+    </div>
+  </main>
+  <footer class="site-footer"><p><strong>変な読み物置き場</strong><span>／ 自動収集される技術・思想・学術の索引。</span></p><a href="../index.html">アーカイブへ戻る ←</a></footer>
+</body></html>
