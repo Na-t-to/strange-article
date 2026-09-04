@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 533" role="img" aria-labelledby="t d">
+<title id="t">Rational design process visual</title><desc id="d">A messy discovery path is reorganized into a clean sequence of design documents.</desc>
+<rect width="800" height="533" fill="#EFEFE8"/>
+<path d="M75 380 C145 310 105 225 205 210 S260 350 355 315 S375 150 470 180 S525 345 610 300 S650 190 725 130" fill="none" stroke="#9C5A3C" stroke-width="5" stroke-linecap="round"/>
+<g fill="#EFEFE8" stroke="#2D4A3E" stroke-width="3">
+<rect x="105" y="85" width="125" height="82"/><rect x="270" y="85" width="125" height="82"/><rect x="435" y="85" width="125" height="82"/><rect x="600" y="85" width="125" height="82"/>
+</g>
+<g stroke="#4A7C6F" stroke-width="3"><line x1="230" y1="126" x2="270" y2="126"/><line x1="395" y1="126" x2="435" y2="126"/><line x1="560" y1="126" x2="600" y2="126"/></g>
+<g fill="#3B4A63" font-family="serif" font-size="15" text-anchor="middle">
+<text x="168" y="118">REQUIREMENTS</text><text x="333" y="118">MODULES</text><text x="498" y="118">INTERFACES</text><text x="663" y="118">DESIGN</text>
+</g>
+<text x="82" y="425" font-family="serif" font-size="20" fill="#3B4A63">DISCOVERY</text>
+<text x="105" y="64" font-family="serif" font-size="20" fill="#3B4A63">DOCUMENTED RATIONALE</text>
+</svg>
