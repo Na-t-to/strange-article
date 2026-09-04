@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ja"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>法務RAGは「正解文書を取れた」で終わらない——必要箇所をどこまで正確に切り出せるか｜変な読み物置き場</title>
+  <meta name="description" content="LegalBench-RAGから、法務検索を文書ID取得ではなく、質問に必要な最小限の根拠スパンをどこまで正確に回収できたかで評価する考え方を整理する。">
+  <link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/legalbench-rag.html">
+  <meta property="og:type" content="article"><meta property="og:title" content="法務RAGは「正解文書を取れた」で終わらない——必要箇所をどこまで正確に切り出せるか"><meta property="og:description" content="検索成功を、文書単位から根拠スパン単位へ細かくする。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/legalbench-rag.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-legalbench-rag.svg">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="法務RAGは「正解文書を取れた」で終わらない"><meta name="twitter:description" content="LegalBench-RAGから、精密な法務検索の評価単位を読む。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-legalbench-rag.svg">
+  <link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260904-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="legalbench-rag">
+  <header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-04 14:53</p></header>
+  <main class="article-shell">
+    <p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　法務×AI</p>
+    <header class="article-header">
+      <div class="tags"><span>法務×AI</span><span>RAG</span><span>AI評価</span></div>
+      <h1>法務RAGは「正解文書を取れた」で終わらない——必要箇所をどこまで正確に切り出せるか</h1>
+      <p class="original-title">LegalBench-RAG: A Benchmark for Retrieval-Augmented Generation in the Legal Domain</p>
+      <div class="article-meta-row"><p><strong>Nicholas Pipitone / Ghita Houir Alami · 2024</strong><br>公開 2026.09.04　／　推定読了 49分</p></div>
+    </header>
+    <figure class="article-visual"><img src="../assets/visual-legalbench-rag.svg" alt="長い契約書の中から質問に必要な短い根拠部分だけを切り出し、検索結果へつなぐ線画" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+    <div class="article-layout">
+      <article class="article-body">
+        <p class="lead-box">検索テストで「正解契約書がtop 10に入った」と確認できた。それでも、回答モデルへ渡されたのが数ページ分の大きなchunkなら、必要な一文が大量の周辺情報に埋もれる。LegalBench-RAGは法務RAGの検索成功を、文書IDの取得より細かく定義する。質問に答えるために必要な<strong>最小限の法的テキストを、どこまで漏らさず、余計な文字を混ぜずに回収できたか</strong>を測る。</p>
+
+        <h2>収集条件との対応</h2>
+        <p>LegalBench-RAGは2024年に公開された法務向けretrieval benchmarkで、既存のLegalBenchに含まれる契約・プライバシーポリシー系タスクを、検索評価へ作り替えた研究である。CUAD、MAUD、ContractNLI、PrivacyQAの四つを使い、元の設問へ答えるのに必要な箇所を原文書中の文字位置まで戻してground truthにしている。公開版は714文書、約8千万文字、約6,900件のqueryで構成される。</p>
+        <p>既収録の法務RAG幻覚評価は、検索後の回答について「引用が実在するか」「引用が主張を支えるか」「最終回答が正しいか」を分けた。本稿はさらに前段へ戻り、<strong>そもそも必要な根拠部分を検索器が取れているか</strong>を単独で測る。RAGCheckerが検索と生成の失敗を分けた一般論を、法務文書の具体的な評価データへ落とした位置にある。</p>
+
+        <h2>LegalBenchでは、最初から必要な文脈が渡されていた</h2>
+        <p>LegalBenchは法的推論能力を測る大規模ベンチマークだが、多くのタスクでは回答に必要な条項や文脈が問題文と一緒に与えられる。その条件では、モデルが「与えられた法的テキストを読めるか」は測れても、巨大な文書集合からそのテキストを探せるかは測れない。</p>
+        <p>実際のRAGでは、質問から先にretrieverが動き、候補文書やchunkを選ぶ。その検索段階が失敗すれば、後段のLLMがどれだけ賢くても正答の材料がない。逆に検索が正しくても、不要な周辺情報を大量に付ければ、長いcontextによるコスト、レイテンシ、見落とし、誤った引用の余地が増える。</p>
+        <p>そこで著者らは、LegalBenchの設問を元のコーパスへ逆にたどる。質問へ答えるための条項が、どのファイルの何文字目から何文字目までにあるかを対応付けた。</p>
+
+        <h2>ground truthを「正解文書」ではなく「正解スパン」にする</h2>
+        <p>LegalBench-RAGの特徴は、正解を文書名だけで持たないことだ。一つのqueryに対し、関連するファイルと正確なcharacter rangeの組を持つ。必要箇所が離れていれば複数スパンになる。</p>
+        <p>たとえば「この契約にfirst refusal、first offer、first negotiationの権利があるか」と尋ねるとする。文書全体を正解と扱えば、契約書を一つ当てるだけでretrieval successになる。しかし実務で欲しいのは、回答を決める条項付近である。LegalBench-RAGはそこまで狭く正解範囲を置く。</p>
+        <p>この設計によってprecisionの意味が厳しくなる。必要な一文を含んでいても、その前後に大量の無関係な文章を返せば、回収したテキスト全体のうち正解部分の比率は下がる。単に「含んでいたか」だけでは高得点にならない。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>裁判例検索で、目的の判示が載っている判決PDFを取得できたとする。検索器がPDF全体30ページを一つのcontextとして返せば、document recallは成功でも、根拠抽出としては粗い。判示の2段落まで絞って返せれば、後段モデルも人間も検証しやすい。</p></aside>
+
+        <h2>データ作成そのものが、法務RAG評価の難しさを示している</h2>
+        <p>著者らは、既存データのラベルをそのまま機械変換して終えていない。annotation categoryを自然な質問へ変換する対応表を手作業で整え、曖昧なカテゴリを除外し、文書の説明文も人手確認する。類似した文書説明が衝突しないかもembedding similarityで探している。</p>
+        <p>理由は単純で、retrieval benchmarkの正解ラベルが粗ければ、precisionとrecallの数字自体を信用できないからだ。特に契約書では、似た表現が複数箇所に現れ、同じ文書内に関連条項が複数ある。何を「必要十分な根拠」とするかが曖昧なら、検索器の良し悪しを測れない。</p>
+        <p>ここは法務AIの評価セット設計へそのままつながる。質問だけ作って正解回答を書くより、<strong>この設問で取得すべき資料・箇所を先に定義する</strong>方が、検索層の診断に使える。</p>
+
+        <h2>top-kを増やすと、recallは上がるがprecisionは落ちる</h2>
+        <p>論文の実験では、取得件数kを1から64まで増やすと、予想通りrecallは上がり、precisionは下がる。必要箇所を拾いやすくなる代わりに、不要テキストも増える。</p>
+        <p>この交換条件はRAGではかなり重要だ。「検索漏れを怖がってtop 20にする」という設計は、retriever recallだけ見れば改善するかもしれない。しかしreader側では、不要文書の増加、context length、引用候補の増加という別のコストが出る。Lost in the Middleが示した位置依存まで考えると、正解資料を入れさえすればよいとも言えない。</p>
+        <p>したがって検索評価では、Recall@kだけでなくPrecision@k、取得文字量、最終回答品質を一緒に持つ方がよい。法務では人間が引用を確認するため、検証時間も加えてよい。</p>
+
+        <h2>「高度なrerankerを足せば勝つ」とも限らなかった</h2>
+        <p>著者らは固定長chunkとrecursive character splitter、さらに一般用途のCohere rerankerの有無を比較した。実験条件ではrecursive splitter単独が最も良く、reranker追加は全体性能を改善しなかった。</p>
+        <p>この結果を「rerankerは不要」と一般化してはいけない。使用モデル、データ、2024年時点の実装に依存する。ただ、検索パイプラインでは部品の評判から性能を推定せず、対象ドメインのground truthで測る必要があるという例にはなる。法律文書の専門語や長い契約構造では、汎用rerankerが期待通りに順位を直すとは限らない。</p>
+
+        <h2>MAUDが難しかったことから分かる、法務文書の難しさ</h2>
+        <p>四つのデータセットの中ではPrivacyQAが比較的容易で、M&A契約を扱うMAUDが最も難しかった。著者らは、MAUDの専門的な法律用語と複雑な文書が一因だと考察する。</p>
+        <p>ここから「法務検索」という一つの平均点だけで製品を評価する危険も見える。プライバシーポリシー、NDA、M&A契約では、文書長、表現、論点の局所性が違う。同じretrieverでも性能分布は大きく変わる。実務向けテストセットでは資料種別や論点類型ごとの内訳を残した方がよい。</p>
+
+        <h2>限界——このベンチマークは法律全体を代表しない</h2>
+        <p>LegalBench-RAGの文書は契約書とプライバシーポリシーが中心で、法令、判例、行政資料を横断するリーガルリサーチとは性質が違う。また各queryは一つの文書で答えられるよう作られており、複数資料を組み合わせる調査を直接測らない。</p>
+        <p>ground truthも、元データのexpert annotationをもとにした契約条項中心の正解である。日本法リサーチへ移すなら、条文本文、定義規定、附則、ガイドライン、裁判例の判示・事案・管轄など、資料種別ごとに「必要箇所」の定義を作り直す必要がある。</p>
+
+        <h2>実務へ持ち込むなら、検索評価を三段階に分ける</h2>
+        <p>法務RAGでこの考え方を使うなら、まず<strong>資料取得</strong>を見る。中心法令・裁判例・ガイドラインがtop-kに入ったか。次に<strong>箇所取得</strong>を見る。その資料のうち、回答に必要な条文、判示、定義、例外を取れたか。最後に<strong>コンテキスト効率</strong>を見る。必要箇所に対して、どれだけ不要な文字を一緒に渡したか。</p>
+        <p>この三つを分ければ、「中心資料は見つけたが根拠箇所がずれた」「必要箇所は取れたがノイズが多すぎた」「検索は成功したがreaderが使えなかった」を別の失敗として扱える。改善担当もretriever、chunking、reranking、readerへ分けやすい。</p>
+
+        <h2>この論文から残る設計原則</h2>
+        <p>法務RAGの検索成功を、ファイル名や文書IDのhitだけで終わらせない。最終回答を支える最小限の根拠範囲までground truthに持つ。検索漏れを減らすrecallと、余計な情報を減らすprecisionを両方測る。</p>
+        <p>その上で、検索結果を後段モデルが本当に使えたかは別に評価する。検索、根拠抽出、回答生成を分ければ、「RAG全体の点数」が上がった／下がっただけでは見えない改善箇所が見つかる。</p>
+
+        <div class="reading-question"><span>読後に考える</span><p>いまの法務リサーチAIのテストで「中心資料を取得できた」を成功にしているなら、その資料のどの段落・条文・判示まで取るべきかをground truthにしたとき、検索評価はどれくらい変わるだろうか。</p></div>
+        <section class="related"><h2>関連して読む</h2><div class="related-grid"><a href="legal-rag-hallucinations.html">引用が実在しても、法務AIは間違える</a><a href="ragchecker.html">RAGの失敗を一つの点数に潰さない</a><a href="lost-in-the-middle.html">長いコンテキストに入れば読める、とは限らない</a><a href="checklist.html">平均点を捨てて、AIの「振る舞い」をテストする</a></div></section>
+      </article>
+      <aside class="article-rail"><section class="rail-card"><span>収集条件との対応</span><p>法務×AI・RAG評価の高速更新分野。検索段階のground truthを文書単位から文字スパン単位へ細かくし、precision/recallで診断できる公開ベンチマーク。</p><div class="article-actions"><button type="button" data-read="legalbench-rag" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="legalbench-rag" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://arxiv.org/html/2408.10343" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>Nicholas Pipitone, Ghita Houir Alami. “LegalBench-RAG: A Benchmark for Retrieval-Augmented Generation in the Legal Domain.” arXiv:2408.10343, 2024.</p></section></aside>
+    </div>
+  </main>
+  <footer class="site-footer"><p><strong>変な読み物置き場</strong><span>／ 自動収集される技術・思想・学術の索引。</span></p><a href="../index.html">アーカイブへ戻る ←</a></footer>
+</body></html>
