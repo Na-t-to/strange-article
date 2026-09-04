@@ -1,7 +1,7 @@
 (() => {
   const articlePage = document.body.dataset.page === 'article';
   const noteScript = document.createElement('script');
-  noteScript.src = articlePage ? '../assets/notes.js?v=20260904-1' : 'assets/notes.js?v=20260904-1';
+  noteScript.src = articlePage ? '../assets/notes.js?v=20260904-2' : 'assets/notes.js?v=20260904-2';
   document.head.append(noteScript);
   const articleHref = (slug) => articlePage ? `${slug}.html` : `articles/${slug}.html`;
   const keys = { favorites: 'sasu-favorites-v1', read: 'sasu-read-v1' };
