@@ -1,5 +1,8 @@
 (() => {
   const articlePage = document.body.dataset.page === 'article';
+  const noteScript = document.createElement('script');
+  noteScript.src = articlePage ? '../assets/notes.js?v=20260904-1' : 'assets/notes.js?v=20260904-1';
+  document.head.append(noteScript);
   const articleHref = (slug) => articlePage ? `${slug}.html` : `articles/${slug}.html`;
   const keys = { favorites: 'sasu-favorites-v1', read: 'sasu-read-v1' };
   const loadSet = (key) => { try { return new Set(JSON.parse(localStorage.getItem(key) || '[]')); } catch { return new Set(); } };
