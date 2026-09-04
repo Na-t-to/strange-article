@@ -1,0 +1,50 @@
+[
+  {
+    "slug": "legalbench-rag",
+    "title": "法務RAGは「正解文書を取れた」で終わらない——必要箇所をどこまで正確に切り出せるか",
+    "originalTitle": "LegalBench-RAG: A Benchmark for Retrieval-Augmented Generation in the Legal Domain",
+    "authors": ["Nicholas Pipitone", "Ghita Houir Alami"],
+    "year": 2024,
+    "publishedAt": "2026-09-04",
+    "tags": ["法務×AI", "RAG", "AI評価"],
+    "readingMinutes": 49,
+    "sourceUrl": "https://arxiv.org/html/2408.10343",
+    "excerpt": "法務RAGの検索を、文書IDや大きなchunkの取得ではなく、質問に必要な最小限の法的テキストを正確に回収できたかで測る。",
+    "image": "assets/visual-legalbench-rag.svg",
+    "imageAlt": "長い契約書の中から質問に必要な短い根拠部分だけを切り出し、検索結果へつなぐ線画",
+    "imageCaption": "図版：自動生成",
+    "featured": true
+  },
+  {
+    "slug": "rational-design-process",
+    "title": "設計は実際には迷走する——それでも「合理的に見える文書」を作る意味",
+    "originalTitle": "A Rational Design Process: How and Why to Fake It",
+    "authors": ["David Lorge Parnas", "Paul C. Clements"],
+    "year": 1986,
+    "publishedAt": "2026-09-04",
+    "tags": ["ソフトウェア設計", "要求工学", "設計プロセス"],
+    "readingMinutes": 47,
+    "sourceUrl": "https://www.laputan.org/pub/papers/Fake.pdf",
+    "excerpt": "要求も設計も最初から一直線には決まらない。だからこそ、後から検証・保守できる形に意思決定を整理し直し、文書そのものを設計の媒体にする。",
+    "image": "assets/visual-rational-design-process.svg",
+    "imageAlt": "曲がりくねった探索経路の上に、後から整理された一直線の設計文書が重ねられる線画",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
+    "slug": "agentdojo",
+    "title": "外部データを読めるエージェントは、その文章に命令されうる——AgentDojoで測る実用性と安全性",
+    "originalTitle": "AgentDojo: A Dynamic Environment to Evaluate Prompt Injection Attacks and Defenses for LLM Agents",
+    "authors": ["Edoardo Debenedetti", "Jie Zhang", "Mislav Balunović", "Luca Beurer-Kellner", "Marc Fischer", "Florian Tramèr"],
+    "year": 2024,
+    "publishedAt": "2026-09-04",
+    "tags": ["AIエージェント", "セキュリティ", "AI評価"],
+    "readingMinutes": 50,
+    "sourceUrl": "https://arxiv.org/html/2406.13352",
+    "excerpt": "メールやWebページなどの外部データに埋め込まれた命令で、エージェントが本来の仕事から逸れる。正常時の成功率と攻撃下の成功率を分けて測る。",
+    "image": "assets/visual-agentdojo.svg",
+    "imageAlt": "ユーザー指示と外部データが同じエージェントへ流れ込み、外部データ側から別の命令が差し込まれる線画",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  }
+]
