@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ja"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>設計は実際には迷走する——それでも「合理的に見える文書」を作る意味｜変な読み物置き場</title>
+  <meta name="description" content="ParnasとClementsの古典から、設計過程が一直線に進まないことを前提に、要求・設計判断・変更理由を検証可能な文書へ整理し直す意味を読む。">
+  <link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/rational-design-process.html">
+  <meta property="og:type" content="article"><meta property="og:title" content="設計は実際には迷走する——それでも「合理的に見える文書」を作る意味"><meta property="og:description" content="探索は迷走してよい。成果物は、後から検証できる形へ整理し直す。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/rational-design-process.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-rational-design-process.svg">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="設計は実際には迷走する"><meta name="twitter:description" content="Parnas/Clementsの古典から、設計文書を意思決定の媒体として読む。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-rational-design-process.svg">
+  <link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260904-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="rational-design-process">
+  <header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-04 14:53</p></header>
+  <main class="article-shell">
+    <p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　ソフトウェア設計</p>
+    <header class="article-header">
+      <div class="tags"><span>ソフトウェア設計</span><span>要求工学</span><span>設計プロセス</span></div>
+      <h1>設計は実際には迷走する——それでも「合理的に見える文書」を作る意味</h1>
+      <p class="original-title">A Rational Design Process: How and Why to Fake It</p>
+      <div class="article-meta-row"><p><strong>David Lorge Parnas / Paul C. Clements · 1986</strong><br>公開 2026.09.04　／　推定読了 47分</p></div>
+    </header>
+    <figure class="article-visual"><img src="../assets/visual-rational-design-process.svg" alt="曲がりくねった探索経路の上に、後から整理された一直線の設計文書が重ねられる線画" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+    <div class="article-layout">
+      <article class="article-body">
+        <p class="lead-box">要求を確定し、設計し、実装する。完成した工程表だけを見ると、設計は上から下へ進むように見える。ParnasとClementsは1986年の論文で、その姿は現実の開発をほとんど表していないと書いた。要求は最初から全部分からず、実装途中で新しい事実が見つかり、外部事情で条件が変わり、人は誤る。それでも彼らは工程を捨てない。実際の発見過程をそのまま保存する代わりに、後から検証・保守できるよう、要求と設計判断を<strong>合理的な依存関係へ整理し直す</strong>。</p>
+
+        <h2>収集条件との対応</h2>
+        <p>David ParnasとPaul Clementsの「A Rational Design Process: How and Why to Fake It」は、IEEE Transactions on Software Engineeringに1986年に掲載された古典である。題名の「fake」は、経緯を隠して成功物語を作るという意味ではない。現実の設計は探索と手戻りを含むため、発見順をそのまま文書へ写すのではなく、最終的に成立した要求・設計判断・依存関係を、読み手が追える順序へ再構成するという提案だ。</p>
+        <p>既収録のPeter Naurは、プログラムの価値がコードだけではなく開発者の頭の中の「理論」にあると論じた。本稿はそこへ別の方向から接続する。頭の中にしかない理解を完全には移せないとしても、少なくとも後続者が同じ質問を何度もやり直さずに済むよう、何を決め、何を前提にし、何が変わればどこを見直すかを文書へ落とす。</p>
+
+        <h2>なぜ現実の設計は、合理的な順序で進まないのか</h2>
+        <p>論文は最初に、完全に合理的な設計工程が成立しない理由を並べる。発注者自身が欲しいものを完全には知らない。必要な事実の一部は実装を進めて初めて分かる。人間は最初から全詳細を同時に扱えない。外部事情で要求は変わる。人は間違える。既存資産を流用する経済的制約もある。</p>
+        <p>この説明で面白いのは、手戻りを「工程違反」として扱わないことだ。後から判明した事実が以前の判断を壊すなら、戻るしかない。最初の設計案に執着して形式だけ守る方が不合理になる。</p>
+        <p>要求工学で言えば、これは「要求を全部聞き切ってから設計へ進む」という単純な段階モデルへの警告になる。Inquiry-Based Requirements Analysisが質問とシナリオを往復させたように、要求の理解そのものが設計の途中で育つ。</p>
+
+        <h2>それでも理想工程を捨てない理由</h2>
+        <p>現実が理想通りに進まないなら、工程表は無意味にも見える。Parnasらの答えは逆で、理想工程は<strong>発見手順の実況</strong>ではなく、設計判断を整理するための参照モデルとして使う。</p>
+        <p>理想があると、次に何を考えるべきかが分かる。レビューでは「予定通り進んだか」より、「必要な成果物があり、その成果物が満たすべき条件を満たしているか」を確認できる。人が交代しても、どこまで合意されているかを追いやすい。</p>
+        <p>論文は開発プロセスを活動名ではなく<strong>work products</strong>で記述する。各段階について、次に何を作るのか、その成果物は何を満たすべきか、誰が作るのか、何を情報源にするのかを定める。著者らは、成果物が定義されていない工程の進捗管理は「mindreaders」にしかできない、とかなり強い言い方をする。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>「法務リサーチAIを改善する」という作業だけでは、進捗は人の頭の中にある。「失敗分類を作る」「90問のテストセットを作る」「各設問の中心資料を定義する」「評価基準を固定する」と成果物へ分ければ、途中参加者でも何が終わり、何が未完成かを確認できる。</p></aside>
+
+        <h2>要求文書は、説明文ではなく参照装置として作る</h2>
+        <p>論文の要求文書に対する注文はかなり厳しい。実装方法へ依存しないこと。すべての記述を満たす製品なら受け入れ可能と言える程度に完全であること。まだ情報がない部分は、空白を隠さず明示すること。そして文章を最初から順に読む「紹介文」ではなく、開発中に何度も引ける参照文書として組織すること。</p>
+        <p>この「未知を明示する」は重要である。未確定事項を埋めるまで着手禁止にするのでも、適当な仮定で確定済みに見せるのでもない。分からない箇所を文書内の所定位置へ残し、変更が予想される前提として扱う。</p>
+        <p>要求の中には、外部との入出力、出力値、時間制約、精度、将来変わりそうな箇所、望ましくない事象が起きたときの振る舞いまで含める。最後の二つは現在でも刺さる。すべてを同じ変更容易性で設計することはできないため、どこが変わりやすいかを要求側で示す。また正常系を満たせないときの方針をプログラマへ丸投げしない。</p>
+
+        <h2>文書は「設計後に書く説明」ではなく、設計の媒体になる</h2>
+        <p>論文の中心はここにある。多くのドキュメントが読まれないのは、完成後に義務として書かれ、開発者自身も使っていないからだと著者らは指摘する。後付け文書は、書いた本人にとっても重要ではないため、古くなりやすい。</p>
+        <p>代わりに、要求文書、module guide、interface specification、module design documentを、開発中の判断そのものに使う。設計判断は文書へ組み込まれるまで「決まった」と扱わない。変更があれば、影響する後続文書も更新する。</p>
+        <p>これは議事録を増やせという話ではない。むしろ著者らは、思いついた順に書くstream of consciousnessや、処理の実行順に並べるstream of executionを批判する。読み手が後から事実を探せず、欠落や変更影響を見つけにくいからだ。</p>
+
+        <h2>文書の構造を、書き始める前に設計する</h2>
+        <p>彼らが勧める方法は、まず「この文書はどんな質問に答える必要があるか」を列挙し、その質問を細分化して節構成へ変えることだ。一つの事実には一つの置き場所を与え、同じ情報を別の節へ重複させない。</p>
+        <p>ここは情報アーキテクチャとして読むと分かりやすい。同じ仕様がプロンプト、Slack、テスト仕様書、議事録へ少しずつ違う文言で散ると、どれが正なのか分からなくなる。一つの決定に一つの正本を置き、他は参照する。変更時にはその場所を直せばよい。</p>
+        <p>さらに、採用しなかった設計案と却下理由も残す。数か月後の保守者は、同じ代替案を思いつく可能性が高い。却下理由が残っていなければ、過去の検討をもう一度やり直すことになる。</p>
+
+        <h2>「きれいな設計史」を捏造することとは違う</h2>
+        <p>この論文を雑に読むと、「後から筋の通った物語へ改竄してよい」とも読める。しかし実際には逆で、著者らは不明点、変更、却下した案まで記録する。消すのは発見時の偶然な順序であって、判断に必要な情報ではない。</p>
+        <p>数学の証明も、発見した順番のまま論文には載らない。試行錯誤を経て、最終的に何が何から導かれるかを読み手向けに整理する。ソフトウェア設計文書も同じで、後続者が「真相にたどり着くために発見過程を再演する」必要はない。</p>
+
+        <h2>限界——文書化すれば暗黙知が消えるわけではない</h2>
+        <p>Peter Naurの議論が示す通り、文書を整えても、設計者が持つ背景理解のすべてを保存できるわけではない。また、小さな変更のたびに大規模文書を完全同期させる運用は、文書の維持費が利益を上回ることもある。</p>
+        <p>1986年の論文は、形式仕様やモジュール文書をかなり重く想定している。現在の小規模チームへそのまま持ち込む必要はない。残すべきなのは、要求・設計判断・インターフェース・変更可能性・失敗時方針を別々の成果物として意識し、各事実の正本を決める考え方である。</p>
+
+        <h2>この論文から残る設計原則</h2>
+        <p>探索は非線形でよい。要求発見の途中で戻り、実装から設計へ戻り、新しい事実で前提を変えることは失敗ではない。ただし、最終成果物まで発見順のままにしない。何が要求で、どの設計判断がそれに応え、何が変わればどこを直すのかを、後から別の人が追える形へ整理する。</p>
+        <p>つまり、合理性を「最初から迷わないこと」に置かない。迷った後で、判断を検証可能な形にできることへ置く。</p>
+
+        <div class="reading-question"><span>読後に考える</span><p>いま担当している仕事で、重要な判断の「正本」はどこにあるだろうか。Slack、会議、プロンプト、テスト表へ同じ判断が散っているなら、後から変更理由と影響範囲を一か所から追えるだろうか。</p></div>
+        <section class="related"><h2>関連して読む</h2><div class="related-grid"><a href="programming-as-theory-building.html">コードを渡しても、設計は渡らない</a><a href="inquiry-based-requirements.html">要求は書いた瞬間には完成しない</a><a href="goal-obstacles.html">「失敗したらどうする？」を後付けにしない</a><a href="cognitive-dimensions.html">考えにくさは頭のせいではない</a></div></section>
+      </article>
+      <aside class="article-rail"><section class="rail-card"><span>収集条件との対応</span><p>要求工学・ソフトウェア設計の古典発掘枠。現実の設計が非線形であることを前提に、成果物と文書構造で検証可能性を作る。</p><div class="article-actions"><button type="button" data-read="rational-design-process" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="rational-design-process" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://www.laputan.org/pub/papers/Fake.pdf" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>David Lorge Parnas, Paul C. Clements. “A Rational Design Process: How and Why to Fake It.” IEEE Transactions on Software Engineering, SE-12(2), 251–257, 1986.</p></section></aside>
+    </div>
+  </main>
+  <footer class="site-footer"><p><strong>変な読み物置き場</strong><span>／ 自動収集される技術・思想・学術の索引。</span></p><a href="../index.html">アーカイブへ戻る ←</a></footer>
+</body></html>
