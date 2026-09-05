@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ja"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AIエージェントは、いつ聞き、いつ動くべきか——1999年のMixed-Initiative UIから考える｜変な読み物置き場</title>
+  <meta name="description" content="Eric HorvitzのMixed-Initiative UIを手がかりに、不確実なユーザー意図のもとで「何もしない・確認する・実行する」を、誤作動と見逃しのコストから設計する。">
+  <link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/mixed-initiative-ui.html">
+  <meta property="og:type" content="article"><meta property="og:title" content="AIエージェントは、いつ聞き、いつ動くべきか——1999年のMixed-Initiative UIから考える"><meta property="og:description" content="自動化の強さを一律に決めず、不確実性と誤作動・見逃しのコストから待つ・聞く・動くを切り替える。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/mixed-initiative-ui.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-mixed-initiative-ui.svg">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="AIエージェントは、いつ聞き、いつ動くべきか"><meta name="twitter:description" content="Mixed-Initiative UIから、AIの確認・自動実行・介入タイミングを考える。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-mixed-initiative-ui.svg">
+  <link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260904-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="mixed-initiative-ui">
+  <header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-05 14:49</p></header>
+  <main class="article-shell">
+    <p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　HCI</p>
+    <header class="article-header">
+      <div class="tags"><span>HCI</span><span>AIエージェント</span><span>意思決定</span></div>
+      <h1>AIエージェントは、いつ聞き、いつ動くべきか——1999年のMixed-Initiative UIから考える</h1>
+      <p class="original-title">Principles of Mixed-Initiative User Interfaces</p>
+      <div class="article-meta-row"><p><strong>Eric Horvitz · 1999</strong><br>公開 2026.09.05　／　推定読了 47分</p></div>
+    </header>
+    <figure class="article-visual"><img src="../assets/visual-mixed-initiative-ui.svg" alt="待つ・確認する・実行するという三つの選択肢が、不確実性と誤作動のコストに応じて切り替わる線画" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+    <div class="article-layout">
+      <article class="article-body">
+        <p class="lead-box">AIに操作権限を渡すと、すぐ「どこまで自動化するか」という話になる。Eric Horvitzが1999年に提示したMixed-Initiative UIは、その問いをもう少し細かくする。システムはユーザーの目的を完全には知らない。その不確実性のもとで、何もしない、短く確認する、先に動く、精度を落として安全なところまで進める、ユーザーに仕上げてもらう、といった行動を選べる。自動化率を決めるより、<strong>誤って動く損失と、助けなかった損失を場面ごとに比べる</strong>。</p>
+
+        <h2>収集条件との対応</h2>
+        <p>Horvitzの論文はCHI 1999に掲載された。題材は、Microsoft Outlook上でメールを読み、予定登録を支援するLookOutという研究システムである。現在のLLMもtoolを呼び、メールやカレンダーを読み、利用者の代わりに操作する。そのため25年以上前の議論でも、「ユーザー意図を推定して自動操作するシステム」を設計するときの論点がかなりそのまま残る。</p>
+        <p>論文が提示するのは、自動化と直接操作の優劣ではない。直接操作だけでは面倒な仕事を自動化しつつ、推定が外れることを前提に、ユーザーが介入・修正・停止できる形へ組み合わせる。既収録のSWE-agentが「AIにとって使いやすい道具」を設計対象にしたのに対し、こちらは<strong>AIが人間へどのタイミングで介入し、どこまで勝手に進めるか</strong>を設計対象にする。</p>
+
+        <h2>自動化の問題は「精度が何％なら動かしてよいか」だけでは決まらない</h2>
+        <p>同じ90％の確信でも、失敗したときの損失が違えば行動は変わる。予定表を今日のページへ開く程度なら、外してもユーザーが一回戻れば済む。外部へメールを送る、ファイルを削除する、契約条件を確定する操作なら、同じ誤推定率でも許容しにくい。</p>
+        <p>Horvitzは、システムがユーザーの目標を持っている確率だけを見るのではなく、正しく介入した利益、誤って介入した損失、介入しなかったことで失う利益、何も起きない場面で静かにしている価値を組み合わせ、期待効用として行動を選ぶ考え方を示す。</p>
+        <p>ここで重要なのは、閾値が固定値でないことだ。利用者が集中している最中なら、不要な割り込みのコストが高くなる。時間に追われていて支援の価値が高いなら、見逃しのコストが上がる。同じ推定確率でも、状況が変われば「動くべきか」の境界も変わる。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>法務AIが「この契約は自動更新条項を含む可能性が高い」と判断したとする。該当箇所へスクロールして色を付けるだけなら、多少外れても損失は小さい。契約管理台帳へ更新期限を確定登録し、担当者へ通知まで飛ばすなら、誤りの後処理が大きい。同じ認識結果でも、許される自動化の深さは違う。</p></aside>
+
+        <h2>LookOutは「何もしない・聞く・動く」を選ぶ</h2>
+        <p>LookOutは、開いているメールの件名や本文から、利用者が予定確認や予定登録をしたい確率を推定する。その推定と行動の費用対効果に応じて、三つの選択肢を持つ。何もしないで通常のOutlook操作を続けてもらう。短い対話で意図を確認する。予定登録支援を起動する。</p>
+        <p>確認ダイアログは、単に「安全だから毎回出す」ものではない。質問にもコストがある。毎回「実行していいですか」と聞くシステムは、誤操作を減らせても、利用者の仕事を細切れにする。論文は、確認によって得られる情報の価値と、確認そのものが生む煩わしさを同じ意思決定の中へ入れる。</p>
+        <p>この考え方を図にすると、確信度が低い領域では何もしない。中間では確認する。十分高くなると自動実行する、という三領域を作れる。ただし境界は操作の重大性や利用者の状況で動く。確認は自動化と手動操作の中間にある第三のモードになる。</p>
+
+        <h2>不確実なら、仕事をゼロか百かで扱わない</h2>
+        <p>LookOutにはもう一つ面白い設計がある。メールから具体的な日付と時刻を確定できない場合、予定登録を諦めるか、適当な時刻を埋めるかの二択にしない。「来週」「5月」「午後」といった粗い時間範囲までしか分からなければ、その範囲のカレンダーを開き、利用者に続きを操作してもらう。</p>
+        <p>Horvitzはこれを、現在の不確実性に合わせてサービスの精度を狭める考え方として説明する。分からない細部まで埋めるより、正しくできるところまで進める。結果を利用者が編集・完成できることも原則の一つに含まれる。</p>
+        <p>生成AIでは、回答の完全性が高いほど良いという評価を置きやすい。しかし、必要な事実の一部しか取れていないときには、「ここまでは根拠がある」「この条件は確認が必要」という途中成果物の方が価値を持つ場面がある。完全な回答を無理に作るほど、誤った補完が増える。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>ユーザーが「来月あたり大阪で友達と飲みたい」と言ったとき、日付・店・人数を勝手に決めて予約まで進める必要はない。「来月の空いている土曜を表示する」「候補エリアを出す」までなら、意図の一部だけ分かった状態でも役に立つ。不確実性を、停止理由ではなく出力粒度の決定材料にできる。</p></aside>
+
+        <h2>誤作動は避け切れないので、外したときの費用を下げる</h2>
+        <p>論文の原則には、誤った推定のコストを小さくすることも含まれる。間違って起動した支援がすぐ消える、自然な操作で拒否できる、ユーザーが直接停止できる。推定器を完璧にしてから自動化するという順序ではなく、推定が外れても致命傷にならないUIを先に用意する。</p>
+        <p>LookOutの手動モードには、自動モードならシステムが介入したはずの場面を小さな印で知らせる仕組みもあった。利用者は、自動化へ切り替える前に「このシステムはどこで動こうとするのか」を観察できる。自動化の方針をいきなり本番動作として試さず、影の提案として見せる。</p>
+        <p>現在のAIエージェントへ移すと、これはdry runやpreviewに近い。実行予定のtool callを表示する、書き込み前に差分を見せる、最初はread-onlyで運用する。モデルの判断能力だけで安全性を作らず、誤判断が現実へ出るまでに緩衝材を置く。</p>
+
+        <h2>介入する内容だけでなく、介入する「時刻」も判断対象になる</h2>
+        <p>支援が正しくても、タイミングが悪ければ邪魔になる。Horvitzは利用者の注意状態を推定し、今すぐ知らせる利益と、作業を中断させる損失を比較する。急ぎでない支援なら、利用者が別作業に集中している間は待ち、割り込みの費用が下がった時点で提示する。</p>
+        <p>ここで「正しい通知」を作る評価だけでは足りない。同じ内容でも、いつ提示されたかで利用価値が変わる。エージェントの評価を最終的なタスク成功だけで見ると、途中で何回ユーザーを止めたか、どの確認が本当に必要だったかが見えにくい。</p>
+
+        <h2>12の原則を、現在のエージェント設計へ読み替える</h2>
+        <p>論文はMixed-Initiative UIの設計原則を12項目に整理している。価値のある自動化を選ぶ。ユーザー目標の不確実性を扱う。注意状態を考えて介入時刻を決める。費用・便益・不確実性から行動を選ぶ。必要なときだけ対話で不確実性を解く。ユーザーが直接起動・停止できるようにする。誤推定の損失を小さくする。不確実性に応じてサービス精度を下げる。ユーザーが結果を仕上げやすくする。社会的に適切に振る舞う。直近の共同作業を記憶する。利用を観察しながら学習を続ける。</p>
+        <p>25年以上前の項目なので、今日そのまま実装仕様になるわけではない。特に継続学習や社会的振る舞いは、プライバシー、説明可能性、モデル更新管理など現在の追加論点を必要とする。それでも、エージェントを「高精度なら勝手に動くソフト」とみなさず、人間との共同作業として分解している点は古びていない。</p>
+
+        <h2>権限設計と組み合わせると、さらに具体的になる</h2>
+        <p>AgentDojoが示したように、モデルが外部データを読みながらwrite toolを持つと、誤判断は現実の状態変更へつながる。Mixed-Initiative UIの期待効用だけで、悪意あるprompt injectionを防げるわけではない。モデルが「ユーザーはこれを望んでいる」と高確率で誤認すること自体が攻撃され得るからだ。</p>
+        <p>両者を組み合わせると、設計項目を分けられる。まずシステム側で許可可能な行動範囲を絞る。その範囲の中で、どの操作は自動実行し、どれは確認し、どれは提案だけに留めるかを決める。高リスク操作はモデルの確信度にかかわらず承認を要求する、といった硬い規則も置ける。</p>
+        <p>つまり「モデルがどれだけ確信しているか」は判断材料の一つでしかない。操作の可逆性、影響範囲、第三者への外部送信、金銭、法的効果、利用者の注意状態などを含めて、自動化の深さを決める。</p>
+
+        <h2>評価項目にすると、「自動化できたか」より多くのものが見える</h2>
+        <p>この論文をAI評価へ持ち込むなら、タスク成功率だけでなく介入方針を検査できる。明確な依頼では不要な確認を挟まないか。重要な情報が欠けたときに勝手に補完せず質問できるか。確認が不要な軽微操作で毎回止まらないか。確信できない細部だけを保留して、確実な部分は前へ進められるか。誤起動をユーザーが簡単に止められるか。</p>
+        <p>さらにCheckListのINVやDIRとも相性がよい。操作の影響を小さくしても結論の内容は変わらないが、自動実行の許容度は上がるはずだ。逆に、外部送信や削除を含むように変更すれば、確認が増える方向を期待できる。質問文の言い換えだけで確認回数が乱高下するなら、介入方針が不安定である。</p>
+
+        <aside class="everyday-example"><span>評価への応用例（原文外）</span><p>同じ「このメールに対応して」という依頼を、①下書きを作る、②本人名義で送信する、③添付ファイルも外部へ送る、の三段階に変える。最終文面の品質だけでなく、どこで確認を要求するかを見る。能力評価と権限評価を一つの正答率へ混ぜずに済む。</p></aside>
+
+        <h2>限界——効用の数字は、自然には出てこない</h2>
+        <p>期待効用で行動を選ぶ枠組みは明快だが、実際には「誤って通知した損失」「確認を一回増やす損失」「予定登録を見逃した損失」を正確な数値にするのは難しい。利用者、業務、時刻、操作内容で値が変わる。モデルが出す確率自体が校正されていなければ、計算を精密にしても入力が怪しい。</p>
+        <p>またLookOutは予定管理という比較的限定された領域の研究プロトタイプである。現在の汎用エージェントは、Web、メール、コード、社内文書、外部サービスをまたぎ、操作結果の影響も広い。1999年の実験結果をそのまま現代システムの性能根拠にはできない。</p>
+        <p>残る価値は、数式の数値そのものより、設計判断を分解する方法にある。「自動化するか」を一個の設定値にせず、意図の不確実性、誤作動の費用、見逃しの費用、確認の費用、介入時刻、可逆性、結果の修正可能性を別々に考える。自律性を機能名ではなく、意思決定規則として設計できる。</p>
+
+        <div class="reading-question"><span>読後に考える</span><p>いま設計しているAIで「毎回確認する」「一定の確信度を超えたら自動実行する」と決めている操作はないだろうか。その境界を、誤作動・見逃し・確認・取り消しのコストへ分解すると、同じルールのままでよいだろうか。</p></div>
+        <section class="related"><h2>関連して読む</h2><div class="related-grid"><a href="swe-agent-aci.html">AIエージェントにも「使いやすい道具」がある</a><a href="agentdojo.html">外部データを読めるエージェントは、その文章に命令されうる</a><a href="context-interaction.html">コンテキストは相互作用の途中で作られる</a><a href="checklist.html">平均点を捨てて、AIの「振る舞い」をテストする</a></div></section>
+      </article>
+      <aside class="article-rail"><section class="rail-card"><span>収集条件との対応</span><p>HCI・AIエージェントの古典発掘枠。自律性を「強い／弱い」でなく、不確実性と行動コストに応じた介入方針として設計する。</p><div class="article-actions"><button type="button" data-read="mixed-initiative-ui" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="mixed-initiative-ui" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/11/chi99horvitz.pdf" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>Eric Horvitz. “Principles of Mixed-Initiative User Interfaces.” CHI ’99, pp. 159–166, ACM, 1999.</p></section></aside>
+    </div>
+  </main>
+  <footer class="site-footer"><p><strong>変な読み物置き場</strong><span>／ 自動収集される技術・思想・学術の索引。</span></p><a href="../index.html">アーカイブへ戻る ←</a></footer>
+</body></html>
