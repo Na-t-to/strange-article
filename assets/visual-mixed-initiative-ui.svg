@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 533" role="img" aria-labelledby="t d">
+<title id="t">Mixed-initiative interaction visual</title><desc id="d">Three possible agent actions—wait, ask, and act—are selected according to uncertainty and the cost of mistakes.</desc>
+<rect width="800" height="533" fill="#EFEFE8"/>
+<g fill="none" stroke="#2D4A3E" stroke-width="3">
+  <circle cx="150" cy="267" r="68"/><circle cx="400" cy="267" r="68"/><circle cx="650" cy="267" r="68"/>
+  <path d="M218 267H332M468 267H582" stroke="#4A7C6F"/>
+</g>
+<g fill="#3B4A63" font-family="serif" text-anchor="middle">
+  <text x="150" y="260" font-size="22">WAIT</text><text x="150" y="289" font-size="14">uncertain / costly</text>
+  <text x="400" y="260" font-size="22">ASK</text><text x="400" y="289" font-size="14">resolve uncertainty</text>
+  <text x="650" y="260" font-size="22">ACT</text><text x="650" y="289" font-size="14">high expected value</text>
+</g>
+<path d="M102 390 C250 350 550 350 698 390" fill="none" stroke="#9C5A3C" stroke-width="5" stroke-linecap="round"/>
+<text x="400" y="427" font-family="serif" font-size="18" text-anchor="middle" fill="#3B4A63">UNCERTAINTY × COST OF ERROR</text>
+<text x="400" y="102" font-family="serif" font-size="22" text-anchor="middle" fill="#3B4A63">MIXED INITIATIVE</text>
+</svg>
