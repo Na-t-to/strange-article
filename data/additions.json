@@ -1,5 +1,53 @@
 [
   {
+    "slug": "verified-concept-synthesis",
+    "title": "形式検証に通っても、意図した設計とは限らない——LLMの設計候補をシナリオで絞る",
+    "originalTitle": "Verified LLM-Driven Synthesis for Concept Design",
+    "authors": ["Alcino Cunha"],
+    "year": 2026,
+    "publishedAt": "2026-09-05",
+    "tags": ["仕様設計", "シナリオ", "LLM信頼性"],
+    "readingMinutes": 52,
+    "sourceUrl": "https://arxiv.org/pdf/2607.15718",
+    "excerpt": "安全性不変条件を満たすだけでは、意図した設計は一つに決まらない。正例・負例のシナリオを機械検証可能な仕様として加え、LLMが出す設計候補を絞り込む。",
+    "image": "assets/visual-verified-concept-synthesis.svg",
+    "imageAlt": "LLMが設計候補を出し、形式モデルと検証器が不変条件・シナリオを検査し、反例を次の候補へ戻す線画",
+    "imageCaption": "図版：自動生成",
+    "featured": true
+  },
+  {
+    "slug": "mixed-initiative-ui",
+    "title": "AIエージェントは、いつ聞き、いつ動くべきか——1999年のMixed-Initiative UIから考える",
+    "originalTitle": "Principles of Mixed-Initiative User Interfaces",
+    "authors": ["Eric Horvitz"],
+    "year": 1999,
+    "publishedAt": "2026-09-05",
+    "tags": ["HCI", "AIエージェント", "意思決定"],
+    "readingMinutes": 47,
+    "sourceUrl": "https://www.microsoft.com/en-us/research/wp-content/uploads/2016/11/chi99horvitz.pdf",
+    "excerpt": "自動化の強さを一律に決めず、ユーザー意図の不確実性と誤作動・見逃しのコストから「何もしない・確認する・実行する」を切り替える。",
+    "image": "assets/visual-mixed-initiative-ui.svg",
+    "imageAlt": "待つ・確認する・実行するという三つの選択肢が、不確実性と誤作動のコストに応じて切り替わる線画",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
+    "slug": "why-diagrams-work",
+    "title": "同じ情報でも、表し方で考えるコストは変わる——なぜ図は文章より強いことがあるのか",
+    "originalTitle": "Why a Diagram is (Sometimes) Worth Ten Thousand Words",
+    "authors": ["Jill H. Larkin", "Herbert A. Simon"],
+    "year": 1987,
+    "publishedAt": "2026-09-05",
+    "tags": ["認知科学", "情報表現", "HCI"],
+    "readingMinutes": 49,
+    "sourceUrl": "https://onlinelibrary.wiley.com/doi/pdf/10.1111/j.1551-6708.1987.tb00863.x",
+    "excerpt": "文章と図が同じ情報を持っていても、必要な情報の探索、関係の認識、推論に必要な計算量は変わる。図が強い条件を情報処理として説明する。",
+    "image": "assets/visual-why-diagrams-work.svg",
+    "imageAlt": "同じ情報が、一方では長い列として、もう一方では位置関係を持つまとまりとして配置され、探索コストの違いを示す線画",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
     "slug": "legalbench-rag",
     "title": "法務RAGは「正解文書を取れた」で終わらない——必要箇所をどこまで正確に切り出せるか",
     "originalTitle": "LegalBench-RAG: A Benchmark for Retrieval-Augmented Generation in the Legal Domain",
@@ -13,7 +61,7 @@
     "image": "assets/visual-legalbench-rag.svg",
     "imageAlt": "長い契約書の中から質問に必要な短い根拠部分だけを切り出し、検索結果へつなぐ線画",
     "imageCaption": "図版：自動生成",
-    "featured": true
+    "featured": false
   },
   {
     "slug": "rational-design-process",
