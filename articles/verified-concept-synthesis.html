@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ja"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>形式検証に通っても、意図した設計とは限らない——LLMの設計候補をシナリオで絞る｜変な読み物置き場</title>
+  <meta name="description" content="Verified LLM-Driven Synthesis for Concept Designから、安全性不変条件を満たすだけでは設計意図が決まらない問題と、正負のシナリオを機械検証可能な設計制約として使う方法を読む。">
+  <link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/verified-concept-synthesis.html">
+  <meta property="og:type" content="article"><meta property="og:title" content="形式検証に通っても、意図した設計とは限らない——LLMの設計候補をシナリオで絞る"><meta property="og:description" content="不変条件は安全性を検査できても、望む振る舞いを一意には決めない。正負のシナリオで設計意図を検証可能にする。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/verified-concept-synthesis.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-verified-concept-synthesis.svg">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="形式検証に通っても、意図した設計とは限らない"><meta name="twitter:description" content="LLM設計を、不変条件と正負シナリオの両方で絞り込む。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-verified-concept-synthesis.svg">
+  <link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260904-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="verified-concept-synthesis">
+  <header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-05 14:49</p></header>
+  <main class="article-shell">
+    <p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　仕様設計</p>
+    <header class="article-header">
+      <div class="tags"><span>仕様設計</span><span>シナリオ</span><span>LLM信頼性</span></div>
+      <h1>形式検証に通っても、意図した設計とは限らない——LLMの設計候補をシナリオで絞る</h1>
+      <p class="original-title">Verified LLM-Driven Synthesis for Concept Design</p>
+      <div class="article-meta-row"><p><strong>Alcino Cunha · 2026</strong><br>公開 2026.09.05　／　推定読了 52分</p></div>
+    </header>
+    <figure class="article-visual"><img src="../assets/visual-verified-concept-synthesis.svg" alt="LLMが設計候補を出し、形式モデルと検証器が不変条件・シナリオを検査し、反例を次の候補へ戻す線画" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+    <div class="article-layout">
+      <article class="article-body">
+        <p class="lead-box">形式検証で「安全性不変条件を破らない」と証明できても、設計者が欲しかったシステムになったとは限らない。共有禁止を守る最も簡単な設計は、共有機能そのものを使えなくすることかもしれない。Alcino Cunhaの2026年の研究は、LLMに設計候補を生成させ、形式検証で危険な候補を落とす。その過程でさらに厄介な問題が見える。<strong>検証条件が正しくても、条件だけでは設計意図を十分に指定していない</strong>。そこで正例・負例のシナリオを、単なる説明ではなく機械的に検査できる仕様として加える。</p>
+
+        <h2>収集条件との対応</h2>
+        <p>この論文は2026年7月公開の新しい研究で、Concept Designというソフトウェア設計法へ形式意味論とLLMによる設計合成を組み合わせる。対象は概念同士を連携させるreaction、つまり「ある概念で起きた行動を受けて、別の概念で何を起こすか」という調整ロジックである。</p>
+        <p>既収録のInquiry-Based Requirements Analysisもシナリオを使うが、役割は異なる。Pottsらは具体的な場面を動かして、まだ名前のない条件・期限・役割を発見した。本稿では、ある程度分かってきた意図を<strong>「この実行列は許す」「この実行列は拒む」</strong>という検査可能な例へ変え、LLMが提案する設計の探索空間を狭める。要求発見から仕様化へ、一段先の使い方になる。</p>
+
+        <h2>Concept Designは、機能を「概念」として切り出す</h2>
+        <p>論文の土台となるConcept Designでは、認証、ラベル付け、共有、通知、アクセス制御のような機能を、焦点の定まった自己完結的なconceptとして扱う。一つのconceptは状態とactionを持ち、他のconceptの内部へ直接依存しない。</p>
+        <p>アプリ全体の振る舞いは、concept間をつなぐreactionで作る。たとえば「Enrollmentで登録が完了したらAccessControlへroleを反映する」「共有操作が起きたらNotificationで相手へ通知する」といった同期規則である。</p>
+        <p>この分解は再利用しやすい一方、危険な振る舞いはconcept単体より、concept同士の接続から生まれることがある。各部品が正しくても、reactionの組合せによって安全条件を破る。そのため論文はreactionへ形式意味論を与え、Alloyで状態遷移を検査できるようにする。</p>
+
+        <h2>LLMは候補を作り、検証器は反例を返す</h2>
+        <p>研究のsynthesis procedureはCEGISに近い反復を取る。LLMが自然言語の設計情報からreactionの候補を作る。候補を形式モデルへ翻訳し、Alloyで安全性不変条件を検査する。破る実行列が見つかればcounterexampleをLLMへ返し、次の候補を作らせる。</p>
+        <p>ここではLLMが正しさを自己採点しない。自然言語モデルは探索器として使い、満たすべき形式条件は別の検証器で判定する。LLMが「修正しました」と説明しても、不変条件を破れば落ちる。</p>
+        <p>限定されたスコープ内ではあるが、論文の評価対象では形式検証を比較的短時間で回せた。モデル生成の柔軟さと、形式手法の機械的な拒否能力を組み合わせる構成である。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>契約管理システムで「承認前の契約を外部送信してはいけない」という安全条件を置く。LLMにワークフローを作らせ、外部送信へ至る状態遷移の中に未承認契約が存在する反例を検証器が見つけたら、その経路を見せて作り直させる。文章レビューより、禁止状態を具体的な実行列として返せる。</p></aside>
+
+        <h2>ところが、不変条件だけで設計すると「正しい変な設計」ができる</h2>
+        <p>論文の面白いところは、形式検証を導入して終わらないところにある。安全性不変条件だけを与えてLLMへ設計させると、検証には通るが意図として不自然な候補が出る。</p>
+        <p>原因は単純で、同じ不変条件を満たす設計が多数存在するからだ。「機密ラベルの付いた情報を不適切に共有してはいけない」という条件なら、正しい権限制御を作る方法もある。機密ラベルを一切付けられなくする方法もある。共有自体を禁止する方法もある。どれも禁止状態へ到達しないので、安全性だけを見れば合格し得る。</p>
+        <p>形式検証は、書かれた仕様に対して強い。書かれていない意図までは保証しない。仕様不足を検証器の厳密さでは埋められない。</p>
+
+        <h2>安全性と有用性を一つの条件に押し込まない</h2>
+        <p>この失敗は「不変条件をもっと増やせばよい」とも見える。しかし、人が望む振る舞いをすべて一般的な論理式として最初から書くのは重い。しかも設計初期では、意図自体がまだ例の形でしか分からないことがある。</p>
+        <p>そこで論文は、安全性を表すinvariantとは別に、<strong>positive scenario</strong>と<strong>negative scenario</strong>を使う。positive scenarioは「この振る舞いは実現できてほしい」。negative scenarioは「この振る舞いは起きてほしくない」。</p>
+        <p>これにより、「危険状態へ行かない」に加えて「普通の共有はできる」「適切な条件ではラベルを付けられる」といった望ましい経路を残せる。禁止事項だけで設計を定義したときに起きる、機能停止による“安全化”を見つけやすい。</p>
+
+        <h2>自然言語の補足より、シナリオが強かった理由</h2>
+        <p>研究では、不変条件に加えて自然言語promptで意図を説明する方法と、正負のシナリオで意図を示す方法を比較する。評価対象では、シナリオによる誘導の方が意図した設計を安定して回復した。</p>
+        <p>理由の一つは、シナリオが検証可能なことにある。「普通のユーザー体験を壊さないで」「ラベル付けを自然に扱って」と自然言語で書けば、解釈はLLMへ残る。シナリオなら、特定のaction列が存在可能か、禁止されているかを形式モデル上で判定できる。</p>
+        <p>つまりシナリオはLLMへのヒントであると同時に、生成後のテストにもなる。同じ仕様資産を、探索の誘導と合否判定の両方へ使える。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>「承認フローは使いやすくしてください」と書く代わりに、「起案→一次承認→最終承認→送信は可能」「起案→送信は不可能」「差戻し後に修正→再申請は可能」という実行例を置く。説明文の“使いやすい”を解釈させるより、許す経路と拒む経路を具体化できる。</p></aside>
+
+        <h2>シナリオは、仕様書より書きやすいが、ただの例ではない</h2>
+        <p>正例と負例の利点は、利用者や設計者が一般規則を完全に言語化できなくても、「これはOK」「これはNG」を判断できることにある。論文はさらに、LLM自身に候補シナリオを提案させ、ユーザーが分類するelicitation方法を試す。</p>
+        <p>LLMが不変条件を破りそうなprefixと、それを修復するsuffixを含む候補を出し、人はその振る舞いを許すか拒むか答える。人の仕事を、形式仕様をゼロから書くことから、具体例を判定することへ変える。</p>
+        <p>これは要求工学のInquiry Cycleとよくつながる。具体例を動かすと、隠れていた条件が見える。本稿では、その例をそのまま検証器へ接続できる形まで押し進めている。</p>
+
+        <h2>ただし、少数のシナリオへ過学習する</h2>
+        <p>シナリオを入れれば意図が完全に決まるわけではない。論文では、最小限のシナリオだけを与えた場合、その例の個数や順序にだけ合わせた設計が生まれることがあった。指定した一例は通るが、同じ意味を持つ少し違う経路では不自然な制約が残る。</p>
+        <p>これはAI評価のテストセット過学習と似ている。例が具体的で検査可能になるほど、設計者は「この例を通す」ことと「背後の一般的な意図を満たす」ことを区別しなければならない。</p>
+        <p>論文でも、より幅のあるシナリオを追加すると改善するケースがある。正例・負例は仕様を完成させる魔法ではなく、未記述の意図を少しずつ露出させる媒体になる。</p>
+
+        <h2>シナリオ収集も、数を増やせば単調に良くなるわけではない</h2>
+        <p>LLMにシナリオ候補を提案させる実験では、十分な数を集めると意図した設計を回復できたケースが多かった。一方、必要な振る舞いを取り逃がしたり、LLMの提案が非決定的だったりして、安定して完全なカバレッジを得られない。</p>
+        <p>10個より20個の方が常に良い、という単純な結果でもなかった。追加候補が既存例と重複すれば情報は増えない。肝心の分岐を一つ取り逃がせば、個数が多くても設計空間は十分に絞れない。</p>
+        <p>シナリオ数より、どの意味的な差分を覆ったかを見る必要がある。正常系、境界、禁止経路、修復経路、繰り返し、順序違いなど、設計判断を変える差分を持たせる方が重要になる。</p>
+
+        <h2>形式検証とCheckListは、意外に近い</h2>
+        <p>CheckListは、AIの振る舞いを能力とMFT・INV・DIRへ分解し、「何を変えても結果が変わらないべきか」「何を変えたらどちらへ動くべきか」をテスト可能にした。本稿のpositive/negative scenarioも、設計意図を観測可能な実行関係へ変える。</p>
+        <p>共通しているのは、抽象的な品質語をそのまま評価しないことだ。「適切」「安全」「自然」「正しい設計」と書く代わりに、入力・状態・変形・実行列の関係として合否を定義する。違うのは、本稿ではそのテストが完成品の評価だけでなく、設計候補を生成する探索そのものへ入っている点である。</p>
+        <p>テストは最後の検査票ではなく、設計空間を削る仕様になる。</p>
+
+        <h2>法務・業務AIへ持ち込むなら、「禁止」だけで仕様を書かない</h2>
+        <p>原論文はConcept Designを対象にしている。以下は応用である。法務AIや業務AIでは安全側へ倒すため、「根拠がなければ答えない」「権限がなければ実行しない」「不明なら確認する」という禁止・停止条件を増やしやすい。</p>
+        <p>しかし禁止条件だけなら、何もしないAIが最も安全になる。実用品として必要なのは、「十分な根拠があるときは回答できる」「権限内なら処理を完了できる」「一部不明でも確実な部分は提示できる」といったpositive scenarioである。</p>
+        <p>安全性評価とutility評価を分けるAgentDojoとも同じ問題意識がある。危険を避けたことと、仕事をしたことは別に測る。設計段階では、この二つを正負のシナリオとして最初から持つと、過剰拒否を仕様上の失敗として扱える。</p>
+
+        <aside class="everyday-example"><span>法務リサーチAIへの応用例（原文外）</span><p>負例として「中心法令が取得できていないのに断定する」を禁止するだけでは、すべて「判断できません」と返す設計でも合格する。正例として「中心法令と直接根拠が揃った場合は、根拠を示して結論まで回答できる」を置く。さらに「根拠はあるが射程が一部不明なら、その不明点だけ留保する」を加えると、拒否か断定かの二択から抜けられる。</p></aside>
+
+        <h2>検証済みというラベルが、意味する範囲を狭く保つ</h2>
+        <p>論文自身も限界をかなり明示している。Alloyによる検証はbounded verificationであり、設定した個数・実行ステップの範囲を超えて無限に正しさを証明するものではない。スコープを広げれば計算費用も増える。</p>
+        <p>自然言語から形式モデルへの翻訳も別の故障点になる。LLMがreactionの意味を誤って形式化した場合、検証器は「誤って翻訳されたモデル」が条件を満たすことを厳密に確認するだけである。自然言語の意図と形式仕様が一致しているかは、別に担保する必要がある。</p>
+        <p>評価も3アプリケーション、12設計variantを中心とする限定された実験で、主なモデル設定も一つである。シナリオ誘導が一般に自然言語promptを上回ると広く断言できる規模ではない。</p>
+
+        <h2>この研究から残る設計原則</h2>
+        <p>この論文の価値は、「LLM＋形式手法」という組合せそのものより、仕様の不足がどこで露出するかを示したところにある。不変条件を厳密に検査しても、意図した設計が一つに定まらない。設計候補の多様さが、仕様に書かれていない選好を可視化する。</p>
+        <p>そこで、抽象的な規則だけでなく、許す実行例と拒む実行例を持つ。例はLLMへの説明で終わらせず、生成された設計に対して再び機械的に検査する。反例が出たら、設計だけでなく仕様側にも不足がなかったかを見る。</p>
+        <p>「検証に落ちた」は設計の欠陥を示す。「検証に通ったのに変」は、仕様の欠落を示すことがある。この二種類を区別できる。</p>
+
+        <div class="reading-question"><span>読後に考える</span><p>いま使っている評価基準や安全要件は、「してはいけないこと」ばかりを詳しくしすぎていないだろうか。合格するが役に立たない設計を落とすためのpositive scenarioを、同じ精度で書けるだろうか。</p></div>
+        <section class="related"><h2>関連して読む</h2><div class="related-grid"><a href="inquiry-based-requirements.html">要求は書いた瞬間には完成しない——質問とシナリオで隠れた前提を掘り出す</a><a href="checklist.html">平均点を捨てて、AIの「振る舞い」をテストする</a><a href="goal-obstacles.html">「失敗したらどうする？」を後付けにしない</a><a href="rational-design-process.html">設計は実際には迷走する——それでも「合理的に見える文書」を作る意味</a></div></section>
+      </article>
+      <aside class="article-rail"><section class="rail-card"><span>収集条件との対応</span><p>仕様設計・LLM信頼性の高速更新分野枠。形式検証の「合格」と設計意図の一致を分け、正負シナリオを検証可能な仕様として使う。</p><div class="article-actions"><button type="button" data-read="verified-concept-synthesis" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="verified-concept-synthesis" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://arxiv.org/pdf/2607.15718" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>Alcino Cunha. “Verified LLM-Driven Synthesis for Concept Design.” arXiv:2607.15718, July 2026.</p></section></aside>
+    </div>
+  </main>
+  <footer class="site-footer"><p><strong>変な読み物置き場</strong><span>／ 自動収集される技術・思想・学術の索引。</span></p><a href="../index.html">アーカイブへ戻る ←</a></footer>
+</body></html>
