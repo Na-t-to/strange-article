@@ -1,9 +1,9 @@
 {
-  "date": "2026-09-04",
-  "lastUpdated": "2026-09-04T14:53:00+09:00",
-  "candidateCount": 18,
+  "date": "2026-09-05",
+  "lastUpdated": "2026-09-05T14:49:00+09:00",
+  "candidateCount": 22,
   "adoptedCount": 3,
-  "collectionNote": "要求工学、仕様設計、HCI、概念モデリング、分散認知、法務RAG、RAG評価、エージェント評価・セキュリティの一次情報を横断して探索。既収録のRAGChecker、τ-bench、法務RAG幻覚評価と重なる候補は避け、検索そのものの粒度を測るLegalBench-RAG、設計過程と設計文書の関係を扱うParnas/Clements、外部データを読むエージェントの安全性を状態付き環境で測るAgentDojoを採用した。",
+  "collectionNote": "要求工学、仕様設計、概念モデリング、HCI、分散認知、外部表現、AI評価、RAG、エージェント設計・安全性、MLシステム設計の一次情報を横断して探索。既収録のCheckList、Inquiry-Based Requirements、Cognitive Dimensions、AgentDojo等との重複を比較し、ユーザー意図の不確実性と介入方針を扱うMixed-Initiative UI、同一情報でも探索・推論コストが変わる理由を扱うLarkin/Simon、形式検証だけでは設計意図が不足する問題を正負シナリオで補うVerified LLM-Driven Synthesis for Concept Designを採用した。",
   "selectionTracks": [
     {
       "title": "古典発掘枠",
