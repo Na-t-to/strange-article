@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 533" role="img" aria-labelledby="t d">
+<title id="t">Verified concept synthesis visual</title><desc id="d">An LLM proposes a design, a verifier checks invariants and scenarios, and counterexamples feed back into the next proposal.</desc>
+<rect width="800" height="533" fill="#EFEFE8"/>
+<g fill="#EFEFE8" stroke="#2D4A3E" stroke-width="3">
+  <rect x="80" y="190" width="150" height="95"/><rect x="325" y="190" width="150" height="95"/><rect x="570" y="190" width="150" height="95"/>
+  <rect x="325" y="355" width="150" height="75"/>
+</g>
+<g fill="#3B4A63" font-family="serif" text-anchor="middle"><text x="155" y="230" font-size="20">LLM</text><text x="155" y="257" font-size="14">design proposal</text><text x="400" y="230" font-size="20">FORMAL MODEL</text><text x="400" y="257" font-size="14">reactions</text><text x="645" y="230" font-size="20">VERIFY</text><text x="645" y="257" font-size="14">invariants + scenarios</text><text x="400" y="386" font-size="18">COUNTEREXAMPLE</text><text x="400" y="409" font-size="13">refine the next proposal</text></g>
+<g fill="none" stroke="#4A7C6F" stroke-width="4"><path d="M230 238H325"/><path d="M475 238H570"/><path d="M645 285V330C645 370 520 392 475 392"/><path d="M325 392C255 392 155 350 155 285"/></g>
+<path d="M90 120H710" stroke="#9C5A3C" stroke-width="5" stroke-linecap="round"/>
+<text x="400" y="98" font-family="serif" font-size="21" text-anchor="middle" fill="#3B4A63">SAFETY IS NOT THE SAME AS INTENT</text>
+</svg>
