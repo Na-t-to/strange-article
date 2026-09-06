@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 533" role="img" aria-labelledby="t d">
+<title id="t">Model-written evaluations visual</title><desc id="d">A model generates many candidate tests, a filter removes weak cases, and the surviving tests reveal behavior patterns across several models.</desc>
+<rect width="800" height="533" fill="#EFEFE8"/>
+<g fill="none" stroke="#2D4A3E" stroke-width="3"><rect x="65" y="190" width="170" height="110"/><rect x="315" y="190" width="170" height="110"/><rect x="565" y="145" width="170" height="200"/></g>
+<g stroke="#9C5A3C" stroke-width="4" fill="none"><path d="M235 245h76"/><path d="M485 245h76"/></g>
+<g fill="#4A7C6F"><circle cx="110" cy="130" r="9"/><circle cx="145" cy="110" r="9"/><circle cx="180" cy="130" r="9"/><circle cx="110" cy="350" r="9"/><circle cx="145" cy="370" r="9"/><circle cx="180" cy="350" r="9"/></g>
+<g stroke="#4A7C6F" stroke-width="4"><line x1="605" y1="305" x2="605" y2="230"/><line x1="650" y1="305" x2="650" y2="190"/><line x1="695" y1="305" x2="695" y2="255"/></g>
+<g fill="#3B4A63" font-family="serif" text-anchor="middle"><text x="150" y="235" font-size="20">GENERATE</text><text x="150" y="265" font-size="16">candidate tests</text><text x="400" y="235" font-size="20">FILTER</text><text x="400" y="265" font-size="16">labels / quality</text><text x="650" y="190" font-size="18">BEHAVIOR</text><text x="650" y="215" font-size="18">PROFILE</text><text x="400" y="420" font-size="18">evaluation design becomes a searchable space</text></g>
+</svg>
