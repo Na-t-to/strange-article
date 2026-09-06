@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 533" role="img" aria-labelledby="t d">
+<title id="t">Distributed cognition visual</title><desc id="d">People, notes, tools, and a shared display form one connected cognitive system, with information moving among them.</desc>
+<rect width="800" height="533" fill="#EFEFE8"/>
+<g fill="#EFEFE8" stroke="#2D4A3E" stroke-width="3"><circle cx="170" cy="245" r="62"/><circle cx="630" cy="245" r="62"/><rect x="330" y="90" width="140" height="100"/><rect x="310" y="335" width="180" height="105"/></g>
+<g fill="none" stroke="#4A7C6F" stroke-width="4"><path d="M232 220L330 160"/><path d="M470 160l98 60"/><path d="M222 285l95 75"/><path d="M578 285l-95 75"/><path d="M400 190v140"/></g>
+<g fill="none" stroke="#9C5A3C" stroke-width="3" stroke-dasharray="8 7"><path d="M120 330C235 485 565 485 680 330"/></g>
+<g fill="#3B4A63" font-family="serif" text-anchor="middle"><text x="170" y="250" font-size="20">PERSON</text><text x="630" y="250" font-size="20">PERSON</text><text x="400" y="135" font-size="18">SHARED</text><text x="400" y="160" font-size="18">REPRESENTATION</text><text x="400" y="380" font-size="18">TOOLS +</text><text x="400" y="405" font-size="18">USE HISTORY</text><text x="400" y="490" font-size="18">cognition follows functional relations</text></g>
+</svg>
