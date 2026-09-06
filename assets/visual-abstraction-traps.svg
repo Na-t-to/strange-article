@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 533" role="img" aria-labelledby="t d">
+<title id="t">Abstraction traps visual</title><desc id="d">A narrow technical box sits inside a wider social system while five labels mark ways relevant context can be left outside the boundary.</desc>
+<rect width="800" height="533" fill="#EFEFE8"/>
+<rect x="75" y="70" width="650" height="385" fill="none" stroke="#4A7C6F" stroke-width="3" stroke-dasharray="10 8"/>
+<rect x="275" y="165" width="250" height="200" fill="none" stroke="#2D4A3E" stroke-width="4"/>
+<g fill="#3B4A63" font-family="serif" text-anchor="middle"><text x="400" y="215" font-size="22">TECHNICAL FRAME</text><text x="400" y="250" font-size="17">data → model → output</text><text x="400" y="112" font-size="21">SOCIAL + TECHNICAL SYSTEM</text></g>
+<g fill="#9C5A3C" font-family="serif" font-size="17"><text x="105" y="165">FRAMING</text><text x="560" y="165">PORTABILITY</text><text x="95" y="310">FORMALISM</text><text x="565" y="310">RIPPLE EFFECT</text><text x="325" y="425">SOLUTIONISM</text></g>
+<g stroke="#9C5A3C" stroke-width="3"><line x1="205" y1="160" x2="270" y2="195"/><line x1="560" y1="160" x2="530" y2="195"/><line x1="210" y1="305" x2="270" y2="285"/><line x1="560" y1="305" x2="530" y2="285"/><line x1="400" y1="400" x2="400" y2="370"/></g>
+</svg>
