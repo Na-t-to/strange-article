@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ja"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>人の頭だけを見ても仕事は説明できない——分散認知で人・道具・履歴を一つのシステムとして見る｜変な読み物置き場</title>
+  <meta name="description" content="Hollan, Hutchins, KirshのDistributed Cognitionから、認知の単位を個人から人・道具・外部表現・履歴の機能的な関係へ広げるHCIの見方を読む。">
+  <link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/distributed-cognition.html">
+  <meta property="og:type" content="article"><meta property="og:title" content="人の頭だけを見ても仕事は説明できない——分散認知で人・道具・履歴を一つのシステムとして見る"><meta property="og:description" content="記憶や判断は頭の中だけで完結しない。人、画面、紙、履歴、他者の間を情報が移動する仕組み全体を設計対象にする。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/distributed-cognition.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-distributed-cognition.svg">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="人の頭だけを見ても仕事は説明できない"><meta name="twitter:description" content="分散認知から、人・道具・外部表現を一つの認知システムとして見る。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-distributed-cognition.svg">
+  <link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260904-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="distributed-cognition">
+  <header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-06 14:26</p></header>
+  <main class="article-shell">
+    <p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　HCI</p>
+    <header class="article-header">
+      <div class="tags"><span>HCI</span><span>認知科学</span><span>情報表現</span></div>
+      <h1>人の頭だけを見ても仕事は説明できない——分散認知で人・道具・履歴を一つのシステムとして見る</h1>
+      <p class="original-title">Distributed Cognition: Toward a New Foundation for Human-Computer Interaction Research</p>
+      <div class="article-meta-row"><p><strong>James Hollan / Edwin Hutchins / David Kirsh · 2000</strong><br>公開 2026.09.06　／　推定読了 44分</p></div>
+    </header>
+    <figure class="article-visual"><img src="../assets/visual-distributed-cognition.svg" alt="複数の人、共有表現、道具と利用履歴が相互につながり、一つの認知システムとして情報をやり取りする線画" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+    <div class="article-layout">
+      <article class="article-body">
+        <p class="lead-box">仕事中の記憶や判断は、頭の中だけで行われていない。付箋の位置、使い込まれた画面、同僚が残した印、並べたファイル、過去の操作履歴が、覚える・比べる・次の行動を決める仕事を引き受けている。Hollan、Hutchins、Kirshは、認知の単位を個人へ固定せず、<strong>人・他者・道具・外部表現の間で情報がどう変換され、伝わり、再利用されるか</strong>を見る。HCIの評価対象も「人がUIを使う瞬間」から、仕事を成立させる認知システム全体へ広がる。</p>
+
+        <h2>収集条件との対応</h2>
+        <p>2000年のACM Transactions on Computer-Human Interaction掲載論文で、distributed cognitionをHCIの理論的基盤として提示する。著者らの航空・船舶ナビゲーションなどのフィールド研究を踏まえ、人間とコンピュータの境界、外部表現、社会的分業、利用履歴を一つの分析枠組みに入れる。</p>
+        <p>既収録のLarkin/Simonは、同じ情報でも図と文章で探索・推論コストが変わる理由を説明した。Cognitive Dimensionsは、表記と操作環境が思考へ与える摩擦を分類した。本稿は分析単位をさらに広げる。<strong>誰が何を頭で覚えるかだけでなく、どの情報を道具へ置き、誰から誰へ渡し、その痕跡が後の判断をどう変えるか</strong>を見る。</p>
+
+        <h2>最初に変えるのは「認知がどこにあるか」という境界</h2>
+        <p>伝統的な認知研究では、個人を分析単位にしやすい。情報が外界から入り、頭の中で処理され、行動が出る。この境界が適切な問題も多い。</p>
+        <p>分散認知は、対象によっては個人という境界が狭すぎると考える。航空機の運航、船の航海、共同作業では、一人の頭の中だけを完全に説明しても、システム全体がどう正しい判断へ至るかを説明できない。複数の人と人工物が役割を分け、途中結果を受け渡しているからである。</p>
+        <p>分析単位を決める基準は「同じ部屋にいるか」でも「同じ組織に所属するか」でもない。特定の認知的な仕事を実現するため、どの要素が機能的に結びついているかを見る。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>契約レビューで、一人の担当者が条文を読み、AIが論点候補を出し、法令DBが根拠を返し、コメント欄で弁護士が補足し、過去案件の修正履歴が判断材料になるとする。「担当者の能力」だけを測っても、実際の判断性能は説明できない。情報がどの順番で誰と何へ渡るかが、システムの能力になる。</p></aside>
+
+        <h2>第一の原則——認知プロセスは人の皮膚で終わるとは限らない</h2>
+        <p>分散認知の第一の原則は、分析単位の境界を機能関係に合わせることである。ある計算や記憶の一部が紙の上で行われ、別の一部が人の頭で行われ、結果を同僚が読み取るなら、その一連を一つの認知プロセスとして扱える。</p>
+        <p>ここで「コンピュータも人間と同じ意味で考えている」と主張しているわけではない。どの媒体で起きたかを先に決めず、仕事の中で情報がどんな表現へ変換され、どう次の処理を可能にしたかを追う。</p>
+        <p>この見方にすると、UIは外部から人へ情報を渡す単なる窓ではなくなる。表示配置、入力方式、履歴、物理的な位置関係そのものが認知過程の一部として機能する。</p>
+
+        <h2>第二の原則——頭の中と外部資源の協調を見る</h2>
+        <p>人は、記憶、注意、計画などの内部資源だけで仕事をしていない。紙、机、画面、道具、周囲の人を使い、内部でやる計算を減らす。外部資源の配置を変えることで、問題そのものを簡単にすることもある。</p>
+        <p>著者らは、熟練者が設計者の想定外の方法で環境構造を利用する例を重視する。ファイルをゴミ箱の近くへ置いて「後で削除する」ことを記憶する。関連ファイルを画面上で近くへ寄せる。こうした使い方はデータ構造上の意味ではなく、空間配置を記憶装置として利用している。</p>
+        <p>「不要な散らかり」をきれいに消すと、この外部記憶まで消えることがある。デザイン上の整然さと、仕事上の認知支援は同じではない。</p>
+
+        <h2>社会的な組織も、認知の構造になり得る</h2>
+        <p>複数人のチームでは、全員がすべてを知る必要はない。役割を分け、誰がどの情報を持つかを安定させれば、チーム全体として大きな情報を扱える。社会組織そのものが、情報を保存・配布・変換するarchitectureとして働く。</p>
+        <p>このとき重要なのは人数ではなく、情報の流れである。ある担当者の出力が別の担当者の入力になり、その変換が定型化される。チェックリスト、声かけ、表示、役割分担が、誰か一人の記憶力へ依存しない処理を作る。</p>
+        <p>逆に、役割変更やUI変更でこの流れを壊すと、個々人の能力は変わっていなくてもチーム性能が落ちる。</p>
+
+        <h2>外部表現は、情報を保存するだけでなく処理を変える</h2>
+        <p>紙や画面へ情報を置く価値は、記憶の肩代わりだけではない。表示方法が、次に何へ注意を向けるか、どの関係を比較しやすいかを変える。</p>
+        <p>これはLarkin/Simonの議論と接続する。内部記憶で二つの事実を保持して比較する代わりに、外部表現上で隣に置けば視覚的に比較できる。分散認知では、その変換が誰とどの人工物の間で起きるかまで追う。</p>
+        <p>要求表、証拠マップ、エラー一覧、マーカー、読書メモも同じである。単に情報を保存しているだけではなく、後の注意配分と探索順序を変える。</p>
+
+        <h2>「使った跡」には、次の行動を支える情報がある</h2>
+        <p>論文の特に面白い提案がhistory-enriched digital objectsである。物理世界では、利用履歴が自然に物へ残る。よく握るドアノブの部分は摩耗する。読みかけの本は前回の場所で開きやすい。机の紙の積み方にも最近使った順序が表れる。</p>
+        <p>デジタル環境では、こうした痕跡が「きれいなUI」のために消えやすい。しかし計算機は、物理物より豊富な操作履歴を記録できる。誰がどこを編集したか、何度参照されたか、どこからコピーされたか、どの項目が最近使われたかを、対象そのものへ重ねて示せる。</p>
+        <p>著者らは、コードの編集・コピー履歴やメニュー利用履歴などを例に、historyを作業材料へ戻す可能性を論じる。履歴は監査ログとして後から検索するだけでなく、現在の判断を支える外部表現になり得る。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>評価表で「この設問は過去4回すべて検索段階で失敗」「この根拠資料は3人のレビューで毎回除外」と行のそばに履歴が見えれば、次の調査順序が変わる。履歴を別画面のログへ閉じ込めるのと、作業対象の近くへ表示するのでは、同じ情報でも認知上の役割が違う。</p></aside>
+
+        <h2>熟練者の工夫は、仕様書だけ見ても見つからない</h2>
+        <p>分散認知をHCIへ使うため、著者らはcognitive ethnographyを重視する。実際の現場を観察し、参加者が道具や表示へどんな意味を与え、想定外の使い方で仕事を簡単にしているかを見る。</p>
+        <p>設計者が「このボタンは検索用」「この一覧は結果確認用」と意図していても、利用者は一覧の並び順をタスク管理に使ったり、入力途中の状態を保留マークとして使ったりする。その工夫は機能仕様には書かれていない。</p>
+        <p>だから現行業務を新システムへ移すとき、機能を全部実装したのに仕事がやりにくくなることがある。旧ツールの偶然の特徴が、認知システムでは重要な役割を持っていたからである。</p>
+
+        <h2>観察、理論、設計を往復する</h2>
+        <p>論文は、分散認知を一度適用して終わる分析方法にしない。現場観察から認知の仕組みを見つけ、実験で確かめ、設計へ反映し、新しい道具が入った現場をまた観察する循環を提案する。</p>
+        <p>新しいUIは、以前の認知システムへ部品を一つ追加するだけではない。人の役割、情報の置き場所、覚える必要のあること、他者への伝え方を再編成する。導入後の現場を観察しないと、本当に何を変えたか分からない。</p>
+
+        <h2>AIを入れるとき、評価単位を「AIの回答」だけにしない</h2>
+        <p>現在のAI製品へこの論文を持ち込むと、モデル単体の評価と業務システムの評価を分けやすくなる。AIの正答率が同じでも、人が結果をどう受け取り、外部資料とどう照合し、次の担当者へ何を残せるかで仕事全体の性能は変わる。</p>
+        <p>特に、AIが人の記憶や探索を肩代わりする場合、代わりに何が失われるかを見る必要がある。検索結果を一つの回答へ要約すると探索コストは下がるが、資料同士の違いを人が比較する機会も減るかもしれない。自動入力で作業は速くなるが、入力という行為が担っていた確認作業まで消えるかもしれない。</p>
+        <p>「AIが何％正しいか」と並行して、「人＋AI＋資料＋履歴の系が、必要な情報を保持・変換・検証できるか」を評価する。</p>
+
+        <h2>Cognitive Dimensionsとの違い</h2>
+        <p>Cognitive Dimensionsは、表記や操作環境の摩擦を語るための診断語彙を提供する。viscosity、hidden dependencies、premature commitmentなどを使えば、道具の使いにくさを分解できる。</p>
+        <p>分散認知は、それより先に「何を一つの認知システムとして見るか」を決める。ある摩擦が一人のUI操作では不便でも、チームの確認機能として必要かもしれない。逆に個人画面が使いやすくても、他者へ情報が伝わらなければ全体では弱い。</p>
+        <p>両方を使うなら、まず仕事を支える人・道具・表現の関係を描き、その中の具体的な表記や操作をCognitive Dimensionsで診断できる。</p>
+
+        <h2>この論文の限界</h2>
+        <p>分散認知は分析対象を広げるため、境界をどこに置くかの判断が難しくなる。人、道具、組織、歴史を際限なく含めれば説明は巨大になる。特定の仕事を成立させる機能関係へ絞る必要がある。</p>
+        <p>また、論文中のデジタル環境は2000年前後のもので、個別UIの提案は現在そのまま使うものではない。残る価値は、認知を個人の内部処理に閉じず、外部表現や利用履歴を設計可能な認知資源として扱う考え方にある。</p>
+
+        <h2>持ち帰れる設計原則</h2>
+        <p>業務を観察するとき、「誰が何をするか」と同じくらい「情報がどこに置かれ、どんな形へ変換され、誰へ渡るか」を記録する。現行ツールの一見どうでもよい使い方が、記憶や調整を担っていないか確認する。履歴は監査用データだけでなく、現在の仕事を助ける表示へ変えられないか考える。</p>
+        <p>人間の負荷を減らすとは、人間の処理を機械へ移すことだけではない。人と外部資源の組合せ全体で、覚える・探す・比較する・伝える仕事を再配置することでもある。</p>
+
+        <div class="reading-question"><span>読後に考える</span><p>いま改善しようとしている業務で、担当者が「頭で覚えている」と思っていたもののうち、実際には画面の並び、ファイル名、Slack、付箋、履歴、他の担当者へ分散している情報は何だろう。新機能でそれを消したとき、どの認知機能まで一緒に消えるだろうか。</p></div>
+        <section class="related"><h2>関連して読む</h2><div class="related-grid"><a href="cognitive-dimensions.html">考えにくさは頭のせいではない——表記がつくる14種類の摩擦</a><a href="why-diagrams-work.html">同じ情報でも、表し方で考えるコストは変わる</a><a href="context-interaction.html">「コンテキスト」は入力欄に入れれば済むものではない</a><a href="programming-as-theory-building.html">コードを渡しても、プログラムは引き継げない</a></div></section>
+      </article>
+      <aside class="article-rail"><section class="rail-card"><span>収集条件との対応</span><p>HCI・認知科学の古典発掘枠。認知の分析単位を個人から、人・道具・外部表現・履歴の機能的な関係へ広げ、AIを含む業務設計を考える。</p><div class="article-actions"><button type="button" data-read="distributed-cognition" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="distributed-cognition" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://escholarship.org/uc/item/8sb9s5rm" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>James Hollan, Edwin Hutchins, David Kirsh. “Distributed Cognition: Toward a New Foundation for Human-Computer Interaction Research.” ACM TOCHI 7(2), 2000, pp. 174–196.</p></section></aside>
+    </div>
+  </main>
+  <footer class="site-footer"><p><strong>変な読み物置き場</strong><span>／ 自動収集される技術・思想・学術の索引。</span></p><a href="../index.html">アーカイブへ戻る ←</a></footer>
+</body></html>
