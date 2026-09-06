@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ja"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>評価項目そのものをLLMに作らせる——未知の振る舞いを大量に探すModel-Written Evaluations｜変な読み物置き場</title>
+  <meta name="description" content="Perez et al.のDiscovering Language Model Behaviors with Model-Written Evaluationsから、LLMで評価データを生成・選別し、人手だけでは拾いにくい振る舞いを探索する方法を読む。">
+  <link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/model-written-evaluations.html">
+  <meta property="og:type" content="article"><meta property="og:title" content="評価項目そのものをLLMに作らせる——未知の振る舞いを大量に探すModel-Written Evaluations"><meta property="og:description" content="評価セットを固定された採点表として扱わず、LLMに候補を大量生成させ、振る舞いの探索空間を広げる。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/model-written-evaluations.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-model-written-evals.svg">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="評価項目そのものをLLMに作らせる"><meta name="twitter:description" content="Model-Written Evaluationsから、評価設計を大量生成と選別の問題として読む。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-model-written-evals.svg">
+  <link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260904-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="model-written-evaluations">
+  <header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-06 14:26</p></header>
+  <main class="article-shell">
+    <p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　AI評価</p>
+    <header class="article-header">
+      <div class="tags"><span>AI評価</span><span>LLM信頼性</span><span>評価設計</span></div>
+      <h1>評価項目そのものをLLMに作らせる——未知の振る舞いを大量に探すModel-Written Evaluations</h1>
+      <p class="original-title">Discovering Language Model Behaviors with Model-Written Evaluations</p>
+      <div class="article-meta-row"><p><strong>Ethan Perez ほか · 2023</strong><br>公開 2026.09.06　／　推定読了 46分</p></div>
+    </header>
+    <figure class="article-visual"><img src="../assets/visual-model-written-evals.svg" alt="モデルが大量の評価候補を生成し、別の判定工程で選別した後、複数モデルの振る舞いを比較する線画" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+    <div class="article-layout">
+      <article class="article-body">
+        <p class="lead-box">評価セットを作るとき、人間が先に「何を測るか」を思いつき、設問を書き、正解ラベルを付ける。すると、評価できる振る舞いの範囲は作成者の発想と作業時間に縛られる。PerezらはこのボトルネックへLLMを入れ、<strong>評価したい振る舞いを指定すると、テスト例そのものを大量生成し、別のモデルや人間で品質を選別する</strong>方法を試した。狙いは採点を自動化することだけではない。まだ十分に調べていない振る舞いを、評価データの生成によって探索することにある。</p>
+
+        <h2>収集条件との対応</h2>
+        <p>2023年のACL Findings掲載論文で、154種類のmodel-written evaluationを作り、生成データの品質を人手で検証し、モデルサイズやRLHFに伴って変化する振る舞いを調べている。単なる「LLMでデータ拡張をした」研究ではなく、評価セットの作り方そのものを研究対象にしている。</p>
+        <p>既収録のCheckListは、平均精度から離れ、能力とテスト形式を分解して振る舞いを検査する方法を示した。本稿が追加するのは、<strong>その能力や失敗パターンに対する設問を、どう広く大量に作るか</strong>という工程である。評価基準を細分化した後、各項目のテストケースを人手だけで何十件も作る必要があるのか、という次の問題に答える。</p>
+
+        <h2>評価データの作成は、見落としやすいボトルネックである</h2>
+        <p>モデルの能力が増えるほど、調べたい振る舞いも増える。事実知識、バイアス、迎合、特定条件での拒否、長文脈での挙動などを一つずつ人間が設計すると、評価項目の発見と例題作成が追いつかない。</p>
+        <p>既存データを流用できる分野ならまだよい。しかし新しいモデル特性を調べたいとき、都合のよい既存コーパスがあるとは限らない。テンプレート生成は安いが、文型や条件の多様性が狭くなりやすい。</p>
+        <p>そこで著者らは、LLMを「解答者」だけでなく「評価データの作成者」として使う。人間は測りたい振る舞いと生成条件を与え、モデルが多数の候補を作る。人間の仕事をゼロにする発想ではない。人間の作業を、個々の問題を書くことから<strong>評価仕様・生成条件・選別方法を設計すること</strong>へ移す。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>法務リサーチAIで「質問文にもっともらしいが無関係な法令名が書かれていても引っ張られない」という能力を測りたいとする。人が30問を書く代わりに、法領域、誤誘導の強さ、正しい中心法令との距離などを条件に候補を数百問生成し、重複・ラベル不整合・不自然な事例を落とす。人が設計すべき中心は、設問本文より「何を変数として揺らすか」になる。</p></aside>
+
+        <h2>最も単純な形は「ラベルを決めてから問題を生成する」</h2>
+        <p>論文の基本形では、まず評価したい振る舞いを決める。出力はYes/Noや選択肢のような有限集合として置き、特定のラベルを正解にする入力を生成モデルへ作らせる。</p>
+        <p>ここで順序が重要である。問題を自由生成して後からラベル付けするだけでは、生成しやすい一方のラベルへ偏る可能性がある。先に出力クラスを指定して、その答えになる入力を生成すれば、クラスごとの件数を制御しやすい。</p>
+        <p>ただし生成モデルが「この問題の正解はA」と言っただけでは信用できない。そこで別のモデルをdiscriminatorとして使い、入力に対する正解ラベルを再判定する。生成時に指定したラベルと一致しやすい候補を残す。</p>
+
+        <h2>生成と判定を分けると、評価セット自体をテストできる</h2>
+        <p>この二段階は、RAGのretrieverとgeneratorを分けるのと似ている。評価例を作る機能と、その例が要件を満たすか確認する機能を分離する。さらに複雑な例では、「この人物設定を含む」「この条件は満たす」「特定の単語は使わない」のような複数要件を個別に判定してフィルタできる。</p>
+        <p>評価データ生成にLLMを使うとき一番危険なのは、モデルが作った誤ラベルを大量に増幅することだ。著者らはここを認識し、生成データそのものを人間評価にかけている。単に「モデルが作ったから安い」で終えず、<strong>評価器の品質を評価するメタ評価</strong>まで含める。</p>
+
+        <h2>人手の量はゼロか百かではなく、段階的に変えられる</h2>
+        <p>論文は複数の生成方法を試す。最小構成では、評価したい振る舞いを自然言語で指示し、モデルに多数のYes/No問題を作らせる。もう少し人手を入れる方法では、数件の手書き例をプロンプトに渡し、複数文・複数選択肢の問題を作る。</p>
+        <p>さらに複雑なWinogender系データでは、開発者が生成とフィルタを複数段に組み立てる。職業名の変換、文の生成、各種条件の検査などを分け、欲しいデータの制約を工程として作る。このパイプラインの開発自体には研究者の作業時間がかかっている。</p>
+        <p>つまり自動生成の価値は「人手不要」ではない。<strong>一度評価データ生成器を設計すれば、例数と条件の組合せを大幅に増やせる</strong>ところにある。</p>
+
+        <h2>154個の評価セットは、「何を評価するか」の探索でもある</h2>
+        <p>著者らは、性格傾向、倫理的・政治的見解、危険な目標に関する発言傾向、権威への服従、迎合など、多数の振る舞いについてデータセットを作った。ここで個別の振る舞いの是非より重要なのは、評価対象を細かく名前付けし、それぞれに多数のテスト例を生成してモデル群を比較できるようにした点である。</p>
+        <p>一つの「安全性スコア」に集約する前に、別々の振る舞いとして観測する。どの項目がモデルサイズで増え、どれが減り、どれが学習方法で反転するかを見られる。</p>
+        <p>たとえば論文では、ユーザーが先に示した見解へモデルが合わせる<strong>sycophancy</strong>を評価している。政治、哲学、NLP研究など内容の異なる質問で同じ傾向を調べ、モデルサイズやRLHFの条件と関係づけた。「迎合っぽい」という感想を、反復可能なテストセットへ変えた例である。</p>
+
+        <h2>評価項目を作ることと、評価値を計算することは別工程になる</h2>
+        <p>通常、評価設計では設問と採点が一体化して見えやすい。Model-Written Evaluationsを分解すると、少なくとも四工程になる。</p>
+        <ol>
+          <li><strong>behavior specification：</strong>何の振る舞いを検査したいか定義する。</li>
+          <li><strong>example generation：</strong>条件を満たす候補を広く作る。</li>
+          <li><strong>example validation：</strong>ラベル、関連性、多様性、難易度などを確認する。</li>
+          <li><strong>model evaluation：</strong>確定したテストを対象モデルへ実施する。</li>
+        </ol>
+        <p>この分離をすると、「評価結果が悪い」の前に、「評価セットが本当にその能力を測っているか」を独立に検査できる。</p>
+
+        <h2>CheckListと組み合わせると、評価設計の役割分担が見える</h2>
+        <p>CheckListはcapabilityとtest typeを決める。たとえば「中心法令を特定する」「無関係な固有名詞では結論を変えない」「決定的事実を変えると結論が所定方向へ動く」といった期待する振る舞いを置ける。</p>
+        <p>Model-Written Evaluationsは、その一マスに入る具体例を増やすのに向く。能力の定義そのものをモデルへ丸投げするより、人間が重要能力を定義し、LLMで変種を探索し、人間または独立した判定器で品質を確定する方が役割を分けやすい。</p>
+        <p>すると90問の固定テストセットとは別に、「中心法令取得 × 誘導情報あり」のような能力セルごとに候補を大量生成し、回帰テストへ適したケースを抽出する運用が考えられる。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>「契約期間に関係ない当事者名変更では判定を維持する」というINVテストを作るなら、会社名、人名、所在地、金額表記などの変更候補をLLMに生成させる。その後「本当に法的結論へ影響しない変更か」を別工程で検査する。テストケース作成を自動化しても、何を不変条件とみなすかは人間の設計判断として残る。</p></aside>
+
+        <h2>人間評価では、生成例の品質はかなり高かった</h2>
+        <p>論文ではcrowdworkerが生成例の関連性やラベルを評価している。多くのデータで、ラベルへの同意率は90〜100％に達した。Winogenderを再構成した複雑なデータでも、個別の品質条件について高い適合率を報告している。</p>
+        <p>この結果は「LLM生成ならそのまま評価データに使える」という意味ではない。生成・フィルタ・人間確認を組み合わせた工程で、従来より少ない手作業から大規模な評価セットを作れる可能性を示す。</p>
+
+        <h2>評価生成モデルの限界が、そのまま評価の盲点になる</h2>
+        <p>著者らは制約も詳しく書いている。生成モデル自身が理解していない概念では、良い評価例を作れない。複数の厳しい条件を同時に満たす例も苦手だった。事実知識を測る評価では、作成モデルが正解知識を持っていなければ高品質な問題を作れない。</p>
+        <p>モデルが学習データから得た偏りは、生成する評価にも現れる。特定言語・人種などについて低品質な例が増える可能性がある。生成モデルと判定モデルが似た偏りを持てば、二段階にしても同じ穴を共有する。</p>
+        <p>また、例の多様性が十分でない評価もあった。モデルは「典型的な」問題を量産しやすく、件数だけ増えて境界事例が増えないことがある。評価項目数と評価ケース数が多いことを、カバレッジの高さと取り違えない注意が必要になる。</p>
+
+        <h2>評価設計へ持ち込むなら、LLMは「候補発見器」として使いやすい</h2>
+        <p>実務で強い使い方は、確定済みの正解データを全自動で作らせることより、テスト候補の探索を広げることだろう。人間は、能力、失敗モード、変化させる変数、合格条件を決める。LLMは、その仕様を満たしそうな具体例を大量に出す。</p>
+        <p>その後、重複排除、ルール検査、専門家確認、別モデル判定を通し、回帰テストへ昇格させる。失敗が見つかったら、その失敗の近傍をさらに生成する。評価セットを一度作って終わりにせず、発見した弱点から局所的に成長させられる。</p>
+
+        <h2>この論文から残る設計原則</h2>
+        <p>評価基準を設計する人と、具体例を大量に作る仕事を分ける。評価データそのものに品質基準を置く。設問数ではなく、振る舞い・条件・境界事例のカバレッジを見る。生成モデルと対象モデルが同じ盲点を共有する前提で、人手や異種の検査を残す。</p>
+        <p>一番大きな示唆は、評価セットを「完成した試験問題集」と見る必要がないことだ。評価したい能力を記述できれば、その周囲の事例空間をモデルと一緒に探索できる。</p>
+
+        <div class="reading-question"><span>読後に考える</span><p>いま使っている評価項目のうち、「項目名は決まっているが具体例を十分に作れていない」ものはどれだろう。そこへLLMを入れるなら、生成条件と、生成されたテストを合格させる品質検査を別々に書けるだろうか。</p></div>
+        <section class="related"><h2>関連して読む</h2><div class="related-grid"><a href="checklist.html">平均点を捨てて、AIの「振る舞い」をテストする</a><a href="ragchecker.html">RAGの失敗を一つの点数に潰さない</a><a href="ai-agents-that-matter.html">エージェントの「最高精度」は、そのまま価値ではない</a><a href="legal-rag-hallucinations.html">法務RAGの「もっともらしい誤答」はどこで生まれるのか</a></div></section>
+      </article>
+      <aside class="article-rail"><section class="rail-card"><span>収集条件との対応</span><p>AI評価・LLM信頼性の高速更新分野枠。評価項目を固定された手作業成果物とせず、モデルによる大量生成・選別・人間検証で未知の振る舞いを探索する。</p><div class="article-actions"><button type="button" data-read="model-written-evaluations" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="model-written-evaluations" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://aclanthology.org/2023.findings-acl.847/" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>Ethan Perez et al. “Discovering Language Model Behaviors with Model-Written Evaluations.” Findings of ACL 2023, pp. 13387–13434.</p></section></aside>
+    </div>
+  </main>
+  <footer class="site-footer"><p><strong>変な読み物置き場</strong><span>／ 自動収集される技術・思想・学術の索引。</span></p><a href="../index.html">アーカイブへ戻る ←</a></footer>
+</body></html>
