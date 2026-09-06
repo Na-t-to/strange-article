@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ja"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>抽象化すると、現場の問題が消えることがある——社会技術システムで起きる5つの罠｜変な読み物置き場</title>
+  <meta name="description" content="Selbst et al.のFairness and Abstraction in Sociotechnical Systemsから、技術システムの境界を狭く切ることで社会的な要求を取り落とす5つのabstraction trapを読む。">
+  <link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/abstraction-traps.html">
+  <meta property="og:type" content="article"><meta property="og:title" content="抽象化すると、現場の問題が消えることがある——社会技術システムで起きる5つの罠"><meta property="og:description" content="Framing、Portability、Formalism、Ripple Effect、Solutionism。AI設計で社会的な文脈を落とす5つの失敗を整理する。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/abstraction-traps.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-abstraction-traps.svg">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="抽象化すると、現場の問題が消えることがある"><meta name="twitter:description" content="社会技術システムを技術だけで切り出すと起きる5つの罠。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-abstraction-traps.svg">
+  <link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260904-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="abstraction-traps">
+  <header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-06 14:26</p></header>
+  <main class="article-shell">
+    <p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　社会技術システム</p>
+    <header class="article-header">
+      <div class="tags"><span>社会技術システム</span><span>AI設計</span><span>制度設計</span></div>
+      <h1>抽象化すると、現場の問題が消えることがある——社会技術システムで起きる5つの罠</h1>
+      <p class="original-title">Fairness and Abstraction in Sociotechnical Systems</p>
+      <div class="article-meta-row"><p><strong>Andrew D. Selbst / danah boyd / Sorelle A. Friedler / Suresh Venkatasubramanian / Janet Vertesi · 2019</strong><br>公開 2026.09.06　／　推定読了 45分</p></div>
+    </header>
+    <figure class="article-visual"><img src="../assets/visual-abstraction-traps.svg" alt="狭い技術システムの箱を広い社会技術システムが囲み、その境界にFraming、Portability、Formalism、Ripple Effect、Solutionismの五つの罠が置かれた線画" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+    <div class="article-layout">
+      <article class="article-body">
+        <p class="lead-box">抽象化は工学を成立させる強い道具である。入力、出力、評価指標を決めれば、複雑な現実の一部を計算可能な問題へ変えられる。ただし、達成したいものが「公平な採用」「適正な刑事判断」「法務担当者が妥当な根拠で判断できること」のような社会的な状態なら、<strong>抽象化で外へ追い出した人・制度・手続が、実は評価対象そのものだった</strong>ということが起こる。Selbstらは、その失敗を5種類のtrapとして整理する。</p>
+
+        <h2>収集条件との対応</h2>
+        <p>2019年のFAT*論文で、fair machine learningを主な題材に、Science and Technology Studiesの知見を使って技術設計の境界設定を検討している。公平性の個別アルゴリズムを提案する論文ではない。社会的な目的を技術問題へ写すとき、どこで意味が欠落するかを診断する文章である。</p>
+        <p>既収録のDourishはcontextを固定属性の集合として持ち込む危うさを論じ、Winnerは設計が権限や選択肢を固定すると論じた。本稿はそれらを設計レビューへ持ち込みやすい形にする。<strong>何をシステム境界の中へ入れたか、他の現場へ移植できると思っていないか、社会概念を数式へ潰していないか、導入による環境変化を無視していないか、そもそも技術を作るべきか</strong>という五つの質問に変わる。</p>
+
+        <h2>技術問題へ変換できた時点で、すでに大きな判断が終わっている</h2>
+        <p>機械学習では、対象をfeatureとlabelへ変換し、モデルの入力と出力を定義する。問題がその形式へ入れば、accuracyやprecisionなどを計算できる。だが、入力・出力を決める前に「この問題のどこまでをモデルで扱うか」という境界設定がある。</p>
+        <p>たとえば再犯リスクスコアの公平性を、スコアの統計的性質だけで評価したとする。実際の刑事司法では、裁判官がスコアを見て判断を変え、検察・弁護・被告人の行動も変わる。最終的な社会結果を公平にしたいなら、スコア出力だけを閉じたシステムとして評価することは狭すぎる可能性がある。</p>
+        <p>著者らが問題にするのは抽象化そのものではない。何かを捨てなければ設計も分析もできない。問題は、捨てた要素が目的達成に必要だったのに、それを<strong>実装詳細の外側</strong>だと誤認することである。</p>
+
+        <h2>1. Framing Trap——評価したい結果が起きる範囲より、モデルの箱が小さい</h2>
+        <p>Framing Trapは、社会的な基準が成立するシステム全体をモデル化せず、技術部品だけを評価単位にしてしまう失敗である。</p>
+        <p>モデルの出力が統計的な公平条件を満たしていても、その出力を人間がどう使うかで最終結果が変わるなら、モデル単体の保証をend-to-endの保証として扱えない。裁判官が特定ケースだけスコアを上書きするなら、その判断規則も結果形成の一部になる。</p>
+        <p>ここでの問いは「もっと大量の社会属性をfeatureに入れよう」ではない。誰の判断、どの手続、どの情報流通まで含めないと、達成したい社会状態を説明できないかを調べる。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>法務AIの回答だけを「根拠付きで正しい」と評価しても、UIが引用元を開きにくく、担当者が検証せずそのまま社内回答へ転記するなら、実運用の検証可能性は低い。目的が「担当者が検証可能な判断を行うこと」なら、回答生成器だけでなく表示・確認・承認まで評価範囲に入る。</p></aside>
+
+        <h2>2. Portability Trap——別の現場でも同じ抽象化が通用すると思う</h2>
+        <p>工学では再利用できる設計が好まれる。同じAPI、同じモデル、同じ指標を複数領域へ持ち込めれば効率がよい。社会的な目的では、この長所が危険になる場合がある。</p>
+        <p>Portability Trapは、ある社会状況に合わせて作った技術的解決を、文脈が違う場所へ移しても同じ意味を持つと考える失敗である。featureの分布が変わる「domain shift」だけでは捉えきれない。制度、役割、救済手続、当事者間の権力、利用目的そのものが違うことがある。</p>
+        <p>ある会社の契約審査で「高リスク」とされる条件を、別会社へそのまま移しても同じ意味にはならない。事業モデル、許容リスク、権限、レビュー体制が違えば、ラベルの意味まで変わる。移植可能性はコードの互換性だけで決まらない。</p>
+
+        <h2>3. Formalism Trap——社会概念の意味を、一つの測定式で使い切ったと思う</h2>
+        <p>公平性のような概念は、数式へ落とさなければアルゴリズムで扱いにくい。そこでグループごとの選択率や誤判定率などを定義する。Formalism Trapは、その形式化を<strong>概念そのものの完全な定義</strong>と扱うと起こる。</p>
+        <p>論文は法を例に、この違いを詳しく示す。雇用差別のdisparate impactで知られる80％という数値基準は、法的判断の全体ではない。その後に、業務上の必要性や、より差別性の低い代替手段があるかなどの手続が続く。数値だけを「法的公平性」と呼ぶと、制度が持つ判断過程を落とす。</p>
+        <p>社会概念には、手続性、文脈依存性、異議申立て可能性がある。同じ結果でも、なぜその結果になったかで法的・倫理的評価が違うことがある。関係者の間で意味が争われ続ける概念もある。形式化は必要でも、形式化した指標の射程を明示する必要がある。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>契約レビューAIで「重要条項を95％検出」という指標を置いても、「重要」の意味が利用企業・取引類型・担当者の役割で変わるなら、95％は固定した定義の中での性能にすぎない。指標の数字を上げる前に、何を重要とした分類規則が現場の判断を十分に表しているか確認する必要がある。</p></aside>
+
+        <h2>4. Ripple Effect Trap——技術を入れた後も、周囲が同じままだと思う</h2>
+        <p>技術は既存の環境へ置かれるだけではない。導入されると、人が技術に合わせて行動し、役割や権限、評価方法も変わる。</p>
+        <p>リスクスコアを裁判官へ見せれば、裁判官はその値を参考にする。やがて「自分の専門判断」と「アルゴリズムの判断」の関係も変わるかもしれない。対象者がスコアの仕組みを知れば、入力行動を変える可能性もある。導入前に測った社会問題と、導入後に存在する社会問題が同じとは限らない。</p>
+        <p>著者らは、技術が社会の価値配分まで変える可能性を指摘する。測定しやすい目的が評価指標になると、その目的が組織で優先され始める。すると「技術が既存目標を最適化した」だけでなく、技術が目標の重みまで変えたことになる。</p>
+
+        <h2>5. Solutionism Trap——技術を作ることが、問題設定の前提になっている</h2>
+        <p>最後のtrapは最も根本的である。研究や製品開発が技術分野から始まると、「どんなモデルを作るか」は問えても、「モデルを作ることが適切か」を問う機会がなくなる。</p>
+        <p>社会的な問題は、制度変更、資源配分、人員配置、ルールの廃止などで解いた方がよい場合がある。技術的な解決が既存の権力関係を固定したり、新たな問題を作ったりするなら、実装しないことも設計判断になる。</p>
+        <p>これは反技術の主張ではない。著者らは、技術が有効な場合も当然認める。その前に、技術介入が目的に合うという仮説を検証対象へ戻す。</p>
+
+        <h2>五つの罠は、順番を逆にすると設計レビューになる</h2>
+        <p>論文の終盤で著者らは、五つを逆順に考える提案をする。実装へ進む前に、まず技術解決が適切かを問う。次に、導入が現場を変えても問題設定が成立するかを見る。社会的な概念を形式化できる範囲を確認する。対象現場固有の人・制度・技術を十分にモデル化する。最後に、社会的な結果を生む関係者までシステム境界へ入っているか確かめる。</p>
+        <p>この順序は、いきなりfeatureやモデル方式から議論するのを防ぐ。要求工学で言えば、実装候補へ入る前に「何を世界側の成功とするか」「誰の行動がその成功を作るか」を戻して確認する手順になる。</p>
+
+        <h2>抽象化の問題は「詳しさ不足」とは少し違う</h2>
+        <p>情報をもっと詳細に書けば解決するとは限らない。重要なのは、どの種類の事実を落としているかである。画面仕様を100ページ書いても、担当者がなぜその画面を使うのか、誰が結果へ異議を申し立てられるのかが境界外なら、Framing Trapは残る。</p>
+        <p>逆に、すべての社会要因をモデルへ入れることも不可能である。実務では「この目的に対して、この境界で十分」という主張を作り、その主張が壊れる条件を把握する必要がある。抽象化は捨てる作業だからこそ、<strong>何を捨てたかを説明できること</strong>が品質になる。</p>
+
+        <h2>Dourish、Winner、Jacksonと並べると見えるもの</h2>
+        <p>Dourishは、contextが外部から付与する固定属性ではなく、活動の中で意味を持つと論じた。SelbstらのPortability/Formalism Trapは、その問題がML設計でどう現れるかを示す。</p>
+        <p>Winnerは、技術の形が権力や選択肢を固定し得ると論じた。Ripple Effect Trapは、導入後に人の役割や力関係が変わることを設計時に見る。</p>
+        <p>Jacksonは要求を世界側の状態として書き、機械の仕様と分けた。Framing Trapは、世界側の要求を成立させる人や制度を早く機械の外へ追い出すと、評価対象を狭くしすぎることを教える。</p>
+
+        <h2>AI製品へ持ち込むなら、評価対象の境界をレビューする</h2>
+        <p>法務AI、審査AI、社内エージェントのように、人間の判断と制度の中へ入る製品では、モデル評価だけで品質を言い切りにくい。モデル精度、検索品質、UI、レビュー手順、組織の責任分担が一緒に最終結果を作る。</p>
+        <p>設計レビューで「この指標は何の代理か」「誰の行動を境界外にしたか」「別企業でもラベルの意味は同じか」「導入で現場の行動が変わったら評価は成立するか」を質問すると、単なる機能要件から抜けられる。</p>
+
+        <h2>この論文の限界</h2>
+        <p>論文の中心はfair-MLであり、五つのtrapがあらゆるソフトウェアへ同じ強さで当てはまるわけではない。入力と出力の意味が安定し、社会的な解釈がほぼ不要な計算では、抽象化と移植性は通常どおり大きな長所になる。</p>
+        <p>また、trapは自動判定できるチェックリストではない。「どこまで社会をモデル化すれば十分か」にはドメイン知識と利害関係者との調査が要る。論文自身も、社会科学との協働や現場理解を設計工程へ入れる必要を強調する。</p>
+
+        <h2>持ち帰れる設計原則</h2>
+        <p>技術の箱を描いたら、その外で結果を変える人と制度を書き足す。社会概念を指標へ変えたら、指標に入らなかった意味を書く。再利用するときはコードではなく前提条件を比較する。導入後の行動変化を評価計画へ含める。そして、実装前に「そもそも技術で解く必要があるか」を一度問う。</p>
+
+        <div class="reading-question"><span>読後に考える</span><p>いま作っているAI機能の評価範囲を箱で描いたとき、その箱の外にいる人や手続のうち、最終結果を変えられるものは何だろう。その要素を外へ置いたまま、製品全体について言い切っている評価指標はないだろうか。</p></div>
+        <section class="related"><h2>関連して読む</h2><div class="related-grid"><a href="context-interaction.html">「コンテキスト」は入力欄に入れれば済むものではない</a><a href="artifacts-have-politics.html">技術は中立ではない——設計が先回りして権力を固定する</a><a href="world-and-machine.html">要求は「機械の中」ではなく「世界の側」にある</a><a href="ontoclean.html">「学生」は人の種類ではない——分類を壊す本質と役割の混同</a></div></section>
+      </article>
+      <aside class="article-rail"><section class="rail-card"><span>収集条件との対応</span><p>社会技術システム・AI設計の古典発掘枠。社会的な要求を技術問題へ抽象化するときの失敗を五つに分解し、システム境界・指標・移植・導入効果をレビューできる。</p><div class="article-actions"><button type="button" data-read="abstraction-traps" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="abstraction-traps" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://sorelle.friedler.net/papers/sts_fat2019.pdf" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>Andrew D. Selbst et al. “Fairness and Abstraction in Sociotechnical Systems.” FAT* 2019, pp. 59–68.</p></section></aside>
+    </div>
+  </main>
+  <footer class="site-footer"><p><strong>変な読み物置き場</strong><span>／ 自動収集される技術・思想・学術の索引。</span></p><a href="../index.html">アーカイブへ戻る ←</a></footer>
+</body></html>
