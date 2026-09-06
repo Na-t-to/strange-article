@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ja"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>安全は部品の信頼性だけでは決まらない——制約・制御・フィードバックで事故を見る｜変な読み物置き場</title>
+  <meta name="description" content="Nancy LevesonのA New Accident Model for Engineering Safer Systemsから、事故を部品故障の連鎖ではなく、安全制約を維持できなかった制御問題として捉える考え方を読む。">
+  <link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/system-safety-constraints.html">
+  <meta property="og:type" content="article"><meta property="og:title" content="安全は部品の信頼性だけでは決まらない——制約・制御・フィードバックで事故を見る"><meta property="og:description" content="正常に動く部品同士でも、組合せと制御が悪ければ危険になる。事故分析を制約・制御・フィードバックの問題として組み直す。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/system-safety-constraints.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-system-safety-constraints.svg">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="安全は部品の信頼性だけでは決まらない"><meta name="twitter:description" content="LevesonのSTAMPから、複雑なシステムの事故を制御問題として読む。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-system-safety-constraints.svg">
+  <link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260904-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="system-safety-constraints">
+  <header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-06 14:26</p></header>
+  <main class="article-shell">
+    <p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　システム安全</p>
+    <header class="article-header">
+      <div class="tags"><span>システム安全</span><span>仕様設計</span><span>ソフトウェア設計</span></div>
+      <h1>安全は部品の信頼性だけでは決まらない——制約・制御・フィードバックで事故を見る</h1>
+      <p class="original-title">A New Accident Model for Engineering Safer Systems</p>
+      <div class="article-meta-row"><p><strong>Nancy Leveson · 2004</strong><br>公開 2026.09.06　／　推定読了 48分</p></div>
+    </header>
+    <figure class="article-visual"><img src="../assets/visual-system-safety-constraints.svg" alt="人・ソフトウェア・機器を含む複数の構成要素へ安全制約が伝わり、フィードバックが上位の制御へ戻る線画" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+    <div class="article-layout">
+      <article class="article-body">
+        <p class="lead-box">事故原因を「どの部品が壊れたか」「誰が最後に間違えたか」から探すと、正常に動いていた部品同士の組合せ、設計時の前提、情報の遅れ、組織の判断が抜けることがある。Nancy Levesonは、複雑な社会技術システムの安全を<strong>守るべき制約を、制御とフィードバックによって維持できているか</strong>という問題として捉える。すると、事故分析で探す対象が、故障の列からシステム全体の制御関係へ広がる。</p>
+
+        <h2>収集条件との対応</h2>
+        <p>Levesonの論文は2004年にSafety Scienceへ掲載された。航空宇宙や産業安全を題材にしているが、ソフトウェアを含む複雑なシステムで「正常な部品を組み合わせても全体として危険になり得る」「要求やフィードバックの欠陥が事故原因になる」という議論は、AIエージェントや業務自動化にも残る。</p>
+        <p>既収録の「正しさを証明しても、正しいことは保証できない」は、仕様と世界のずれを扱った。本稿はそこから一歩進み、世界の中で安全を保つために、どんな制約を誰が維持し、どんな情報が戻らなければならないかを事故モデルとして具体化する。「失敗したら誰を責めるか」より、<strong>どの制御が不足していたか</strong>を探すための語彙が増える。</p>
+
+        <h2>事故モデルは、調査で「何を見るか」を先に決めている</h2>
+        <p>Levesonは、事故モデルを単なる説明図として扱わない。どのデータを集め、何を原因候補とみなし、どこで調査を止めるかを左右する枠組みだと考える。</p>
+        <p>古典的なモデルの多くは、故障や人為ミスなどの出来事を時間順の連鎖として表す。物理部品の故障が主要因で、構成が比較的単純なら、この形式は有効である。ある部品が壊れ、それが次の故障を起こし、最終的な損失へ至るなら、鎖を途中で切る対策を考えやすい。</p>
+        <p>ところが複雑なシステムでは、事故の直前に起きた出来事だけを並べても足りない。ソフトウェアは仕様どおり動いていた。センサーも壊れていない。人も与えられた情報に従って判断した。それでも、部品間の相互作用や前提の不一致によって危険な状態へ入ることがある。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>契約レビューAIが、条文抽出、法令検索、回答生成の各モジュールでは個別テストに合格しているとする。ところが検索側が「現在有効な法令」を返す前提と、回答側が「入力資料は時点適合済み」とみなす前提が食い違えば、部品故障なしに誤った結論を出せる。見るべき対象は各部品の正答率だけでなく、部品間で守るべき制約になる。</p></aside>
+
+        <h2>「根本原因」は、どこで掘るのをやめたかでも変わる</h2>
+        <p>出来事の鎖を過去へたどると、原理上はいくらでも前へ伸ばせる。操作ミスの前には訓練があり、その前には手順設計があり、その前には予算判断や組織構造がある。どこを「根本」と呼ぶかには停止規則が入り込む。</p>
+        <p>論文はBhopalの事故を例に、事故直前の一つの作業ミスだけを起点にする危うさを示す。安全余裕は、コスト圧力、保守削減、人員削減などの積み重ねで長い時間をかけて失われていた。最後の引き金を除いても、別の小さな出来事が損失を起こした可能性がある。</p>
+        <p>事故調査の目的が責任追及なら、特定の人や部品を見つけたところで止める合理性がある。再発防止が目的なら、それでは情報が足りない。なぜその人がその判断をしたのか、なぜ誤った情報が表示されたのか、なぜ設計レビューでその前提が残ったのかまで調べる必要がある。</p>
+
+        <h2>安全と信頼性は同じ指標ではない</h2>
+        <p>Levesonの議論で重要なのが、<strong>reliabilityとsafetyの分離</strong>である。部品が仕様どおり動く確率は、その部品の信頼性として測れる。しかし「その部品が安全か」は、単独では決められない。同じ弁でも、どの設備のどこに置かれ、いつ開閉され、誤操作時に何が起きるかで安全性が変わる。</p>
+        <p>安全は、複数の構成要素が特定の環境で相互作用したときに現れる性質として扱われる。だから高信頼の部品を集めれば自動的に安全なシステムになるわけではない。正常な動作同士が危険な組合せを作る場合もある。</p>
+        <p>この区別はソフトウェアで特に効く。ソフトウェアは物理部品のように摩耗せず、要求どおり忠実に動いた結果として危険な制御を出すことがある。その場合、バグを「コードが仕様から外れたこと」だけに限定すると原因を見失う。</p>
+
+        <h2>STAMPでは、安全を「制約を維持する制御問題」として見る</h2>
+        <p>論文が提示するSTAMPでは、システムに許してよい振る舞いの範囲を<strong>安全制約</strong>として表す。安全を保つとは、構成要素の自由な動きを完全に止めることではない。危険な状態へ入らないよう、必要な制約を設計・運用・組織の各段階で維持することである。</p>
+        <p>制約を維持するにはcontrollerが必要になる。controllerは機械の制御器だけを指さない。オペレーター、管理者、企業、規制機関も、下位の活動へ方針や手順、命令、資源配分を与えるという意味で制御構造に含まれる。</p>
+        <p>そして制御は片道では成立しない。下位で何が起きたかを知るfeedbackが要る。指示を出しても結果を観測できなければ、上位は古い世界像のまま次の判断をする。</p>
+
+        <h2>「命令した」と「実際にそうなった」の間に事故が入る</h2>
+        <p>論文には、弁へ開放命令を出したとき、表示が「弁が実際に開いた」ことではなく「弁へ電力が供給された」ことを示していた事故例が出てくる。操作自体は送られ、表示も変わる。だが、controllerが必要としている情報と、feedbackが表している情報が違う。</p>
+        <p>ここで故障しているのは、単純なセンサー一個とは限らない。「何を観測すれば安全な判断ができるか」という設計判断が不足している。自動化が進むほど、人は対象の状態を直接見ず、設計者が作った表示を通じて世界を知る。その表示項目自体が安全設計になる。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>AIエージェントが「メール送信APIは200を返した」と表示しても、利用者が知りたいのは「正しい宛先へ、確認済みの内容が送られた」かもしれない。API成功だけをfeedbackにすると、制御側の世界モデルが必要以上に楽観的になる。観測値の意味まで要求として書く必要がある。</p></aside>
+
+        <h2>controllerは世界の「モデル」を持って動く</h2>
+        <p>制御器は、現在の対象状態と、自分が操作するとどう変わるかについて何らかのprocess modelを持つ。人間なら頭の中の理解、ソフトウェアなら状態変数やロジックとして表れる。</p>
+        <p>事故は、このモデルが現実と食い違ったときにも起きる。対象が変化したのにモデルが更新されない。複数のcontrollerが別々の前提を持つ。情報の伝達に時間差がある。誰かが他者も同じ情報を持っていると思い込む。制御アルゴリズムが正しくても、入力された世界像が古ければ不適切な行動を選べる。</p>
+        <p>この見方では、要求定義に「何をするか」だけでなく、「判断に必要な状態を何として持つか」「その状態は誰が更新するか」「どれくらいの遅延まで許すか」が入る。</p>
+
+        <h2>失敗を分類すると、修正箇所が見える</h2>
+        <p>Levesonは危険へつながる制御上の欠陥を分類する。大きく見ると、必要な安全制約そのものを見つけていない、制約を守らせる制御行動が不適切、行動は適切でも実行過程で失敗、必要なfeedbackが不足または誤っている、といった型がある。</p>
+        <p>さらに、制御アルゴリズムの欠陥、controllerが持つprocess modelの不一致、複数controller間の調整不足、通信上の欠陥、時間遅延などへ降りられる。事故を「精度不足」の一語へ畳まず、失敗した機能へ戻せる。</p>
+        <p>この分類は既収録のRAGCheckerやCheckListとも似た使い方ができる。総合成績を出すだけでなく、何が壊れたかを再現可能な単位へ分け、改善先を決める。</p>
+
+        <h2>システムは運用中に少しずつ別物になる</h2>
+        <p>論文はadaptationを事故モデルの中心に置く。組織や人は、コスト、納期、生産性などの圧力へ反応して運用を変える。一つ一つの変更は局所的には合理的でも、長期間では安全境界へ近づくことがある。</p>
+        <p>だからリリース時点の安全評価だけでは不十分になる。制約を維持する仕組みが、製品変更、組織変更、新しい利用法、例外運用の蓄積に追随できるかを見る必要がある。変更された一部と、変わらないまま残った別部分の組合せも危険要因になる。</p>
+        <p>AI製品なら、モデル更新、検索コーパス更新、プロンプト変更、権限追加、ユーザーの利用習慣の変化が別々の速度で進む。初回評価で安全だった構成が、半年後も同じ制御関係を持つ保証はない。</p>
+
+        <h2>要求設計へ持ち込むなら、「危険な状態」から制約を書く</h2>
+        <p>STAMPの発想を要求設計へ移すと、機能一覧から安全要件を付け足す順序を変えられる。まず、世界で起きてはいけない損失や危険状態を置く。次に、その状態を避けるために必要な制約を書く。その制約を誰・どの機能が維持するか、どのfeedbackで確認するかを決める。</p>
+        <p>たとえば法務リサーチAIなら、「引用URLが存在する」は一つの部品条件にすぎない。世界側の危険として「適用不能な法令を根拠に担当者が判断する」を置けば、時点・管轄・権威の制約、資料選別、表示、レビュー導線、変更検知まで必要になる。事故モデルはそのまま製品仕様にはならないが、要件漏れを探す質問生成器として使える。</p>
+
+        <h2>この論文の限界</h2>
+        <p>STAMPは、複雑な事故を広く説明できる代わりに、分析対象も広くなる。組織、規制、設計、運用まで含めれば、単純な故障解析より多くの関係を記述する必要がある。どの制約を置くか、controllerの境界をどこに置くかには分析者の判断も残る。</p>
+        <p>また、この論文は2004年の事故モデル提案であり、現在のSTPAやCASTの詳細手順を網羅するものではない。価値が残るのは個別手法の最新版としてではなく、<strong>安全評価の単位を部品から制御された社会技術システムへ広げる</strong>という問題設定である。</p>
+
+        <h2>持ち帰れる設計原則</h2>
+        <p>部品の正しさを確認した後に、部品間で守るべき制約を見る。行動を指示する経路と、結果を知るfeedbackを対で設計する。controllerがどんな世界モデルを前提に判断しているかを明示する。リリース後の変更で制約が弱くならないかを監視する。</p>
+        <p>この四つを置くと、「個々の機能は全部動いているのに、なぜ全体として危ないのか」を説明しやすくなる。</p>
+
+        <div class="reading-question"><span>読後に考える</span><p>いま評価しているAI機能で、各モジュールが個別に合格していても起こり得る事故は何だろう。その事故を防ぐ制約と、制約が守られていると判断するためのfeedbackを、それぞれ誰が持つべきだろうか。</p></div>
+        <section class="related"><h2>関連して読む</h2><div class="related-grid"><a href="limits-of-correctness.html">正しさを証明しても、正しいことは保証できない</a><a href="goal-obstacles.html">「失敗したらどうする？」を後付けにしない</a><a href="artifacts-have-politics.html">技術は中立ではない——設計が先回りして権力を固定する</a><a href="mixed-initiative-ui.html">AIエージェントは、いつ聞き、いつ動くべきか</a></div></section>
+      </article>
+      <aside class="article-rail"><section class="rail-card"><span>収集条件との対応</span><p>システム安全・仕様設計の古典発掘枠。複雑なソフトウェア集約型システムの事故を、部品故障だけでなく制約・制御・フィードバック・組織の適応まで含めて診断する。</p><div class="article-actions"><button type="button" data-read="system-safety-constraints" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="system-safety-constraints" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://ocw.mit.edu/courses/16-355j-software-engineering-concepts-fall-2005/resources/safescien_single/" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>Nancy Leveson. “A New Accident Model for Engineering Safer Systems.” Safety Science 42(4), 2004, pp. 237–270.</p></section></aside>
+    </div>
+  </main>
+  <footer class="site-footer"><p><strong>変な読み物置き場</strong><span>／ 自動収集される技術・思想・学術の索引。</span></p><a href="../index.html">アーカイブへ戻る ←</a></footer>
+</body></html>
