@@ -1,5 +1,69 @@
 [
   {
+    "slug": "system-safety-constraints",
+    "title": "安全は部品の信頼性だけでは決まらない——制約・制御・フィードバックで事故を見る",
+    "originalTitle": "A New Accident Model for Engineering Safer Systems",
+    "authors": ["Nancy Leveson"],
+    "year": 2004,
+    "publishedAt": "2026-09-06",
+    "tags": ["システム安全", "仕様設計", "ソフトウェア設計"],
+    "readingMinutes": 48,
+    "sourceUrl": "https://ocw.mit.edu/courses/16-355j-software-engineering-concepts-fall-2005/resources/safescien_single/",
+    "excerpt": "複雑なシステムの事故を、壊れた部品や最後の人為ミスだけで説明せず、安全制約を誰がどう維持し、どんなフィードバックを受けるかという制御問題として捉える。",
+    "image": "assets/visual-system-safety-constraints.svg",
+    "imageAlt": "人・ソフトウェア・機器を含む複数の構成要素へ安全制約が伝わり、フィードバックが上位の制御へ戻る線画",
+    "imageCaption": "図版：自動生成",
+    "featured": true
+  },
+  {
+    "slug": "model-written-evaluations",
+    "title": "評価項目そのものをLLMに作らせる——未知の振る舞いを大量に探すModel-Written Evaluations",
+    "originalTitle": "Discovering Language Model Behaviors with Model-Written Evaluations",
+    "authors": ["Ethan Perez", "Sam Ringer", "Kamile Lukosiute", "Karina Nguyen", "Edwin Chen"],
+    "year": 2023,
+    "publishedAt": "2026-09-06",
+    "tags": ["AI評価", "LLM信頼性", "評価設計"],
+    "readingMinutes": 46,
+    "sourceUrl": "https://aclanthology.org/2023.findings-acl.847/",
+    "excerpt": "評価したい振る舞いを定義し、LLMにテスト候補を大量生成させ、別モデルと人間で品質を選別する。評価データ作成を、固定作業から振る舞い探索へ変える。",
+    "image": "assets/visual-model-written-evals.svg",
+    "imageAlt": "モデルが大量の評価候補を生成し、別の判定工程で選別した後、複数モデルの振る舞いを比較する線画",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
+    "slug": "abstraction-traps",
+    "title": "抽象化すると、現場の問題が消えることがある——社会技術システムで起きる5つの罠",
+    "originalTitle": "Fairness and Abstraction in Sociotechnical Systems",
+    "authors": ["Andrew D. Selbst", "danah boyd", "Sorelle A. Friedler", "Suresh Venkatasubramanian", "Janet Vertesi"],
+    "year": 2019,
+    "publishedAt": "2026-09-06",
+    "tags": ["社会技術システム", "AI設計", "制度設計"],
+    "readingMinutes": 45,
+    "sourceUrl": "https://sorelle.friedler.net/papers/sts_fat2019.pdf",
+    "excerpt": "社会的な目的を技術問題へ抽象化すると、必要な人・制度・手続まで境界の外へ落とすことがある。Framing、Portability、Formalism、Ripple Effect、Solutionismの5つで診断する。",
+    "image": "assets/visual-abstraction-traps.svg",
+    "imageAlt": "狭い技術システムの箱を広い社会技術システムが囲み、その境界に五つの抽象化の罠が置かれた線画",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
+    "slug": "distributed-cognition",
+    "title": "人の頭だけを見ても仕事は説明できない——分散認知で人・道具・履歴を一つのシステムとして見る",
+    "originalTitle": "Distributed Cognition: Toward a New Foundation for Human-Computer Interaction Research",
+    "authors": ["James Hollan", "Edwin Hutchins", "David Kirsh"],
+    "year": 2000,
+    "publishedAt": "2026-09-06",
+    "tags": ["HCI", "認知科学", "情報表現"],
+    "readingMinutes": 44,
+    "sourceUrl": "https://escholarship.org/uc/item/8sb9s5rm",
+    "excerpt": "記憶や判断を個人の頭の中だけで捉えず、人、他者、外部表現、道具、利用履歴の間で情報がどう移動し変換されるかを一つの認知システムとして見る。",
+    "image": "assets/visual-distributed-cognition.svg",
+    "imageAlt": "複数の人、共有表現、道具と利用履歴が相互につながり、一つの認知システムとして情報をやり取りする線画",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
     "slug": "verified-concept-synthesis",
     "title": "形式検証に通っても、意図した設計とは限らない——LLMの設計候補をシナリオで絞る",
     "originalTitle": "Verified LLM-Driven Synthesis for Concept Design",
@@ -13,7 +77,7 @@
     "image": "assets/visual-verified-concept-synthesis.svg",
     "imageAlt": "LLMが設計候補を出し、形式モデルと検証器が不変条件・シナリオを検査し、反例を次の候補へ戻す線画",
     "imageCaption": "図版：自動生成",
-    "featured": true
+    "featured": false
   },
   {
     "slug": "mixed-initiative-ui",
