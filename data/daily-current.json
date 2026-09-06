@@ -1,9 +1,9 @@
 {
-  "date": "2026-09-05",
-  "lastUpdated": "2026-09-05T14:49:00+09:00",
-  "candidateCount": 22,
-  "adoptedCount": 3,
-  "collectionNote": "要求工学、仕様設計、概念モデリング、HCI、分散認知、外部表現、AI評価、RAG、エージェント設計・安全性、MLシステム設計の一次情報を横断して探索。既収録のCheckList、Inquiry-Based Requirements、Cognitive Dimensions、AgentDojo等との重複を比較し、ユーザー意図の不確実性と介入方針を扱うMixed-Initiative UI、同一情報でも探索・推論コストが変わる理由を扱うLarkin/Simon、形式検証だけでは設計意図が不足する問題を正負シナリオで補うVerified LLM-Driven Synthesis for Concept Designを採用した。",
+  "date": "2026-09-06",
+  "lastUpdated": "2026-09-06T14:26:00+09:00",
+  "candidateCount": 27,
+  "adoptedCount": 4,
+  "collectionNote": "要求工学、システム安全、HCI、分散認知、社会技術システム、AI評価、legal AI、RAG、データ・モデル文書化、人間AI協働の一次情報を横断して探索。LegalBench本体、Human-AI Interaction Guidelines、Model Cards、Datasheets、Ackerman、Hutchinsのcockpit論文なども比較し、既収録記事との重複と実務への持ち帰りやすさを評価した。今回は、事故を制約と制御の問題として再構成するLeveson、評価ケース自体をLLMで探索するPerezら、社会的要求を技術へ抽象化するときの5つの罠を整理するSelbstら、人・道具・外部表現・履歴を一つの認知システムとして見るHollan/Hutchins/Kirshを採用した。",
   "selectionTracks": [
     {
       "title": "古典発掘枠",
