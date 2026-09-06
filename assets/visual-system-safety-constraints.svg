@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 533" role="img" aria-labelledby="t d">
+<title id="t">System safety constraints visual</title><desc id="d">A layered control system sends constraints downward and receives feedback upward while several components continue operating.</desc>
+<rect width="800" height="533" fill="#EFEFE8"/>
+<g fill="none" stroke="#2D4A3E" stroke-width="3">
+  <rect x="255" y="65" width="290" height="72"/><rect x="210" y="210" width="380" height="84"/><rect x="120" y="386" width="150" height="72"/><rect x="325" y="386" width="150" height="72"/><rect x="530" y="386" width="150" height="72"/>
+</g>
+<g fill="none" stroke="#9C5A3C" stroke-width="4">
+  <path d="M400 137v70"/><path d="M300 294l-80 88"/><path d="M400 294v88"/><path d="M500 294l80 88"/>
+</g>
+<g fill="none" stroke="#4A7C6F" stroke-width="3" stroke-dasharray="9 8">
+  <path d="M180 386C170 265 250 165 330 137"/><path d="M620 386C630 265 550 165 470 137"/>
+</g>
+<g fill="#3B4A63" font-family="serif" text-anchor="middle"><text x="400" y="108" font-size="21">SAFETY CONSTRAINTS</text><text x="400" y="260" font-size="21">CONTROL / PROCESS MODEL</text><text x="195" y="430" font-size="17">people</text><text x="400" y="430" font-size="17">software</text><text x="605" y="430" font-size="17">equipment</text><text x="675" y="250" font-size="16">feedback</text></g>
+</svg>
