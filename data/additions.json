@@ -1,5 +1,69 @@
 [
   {
+    "slug": "reliable-eval",
+    "title": "一つのプロンプトで評価を決めない——意味を保った言い換えまで含めて信頼性を測る",
+    "originalTitle": "ReliableEval: A Recipe for Stochastic LLM Evaluation via Method of Moments",
+    "authors": ["Gili Lior", "Eliya Habba", "Shahar Levy", "Avi Caciularu", "Gabriel Stanovsky"],
+    "year": 2025,
+    "publishedAt": "2026-09-07",
+    "tags": ["AI評価", "LLM信頼性", "評価設計"],
+    "readingMinutes": 51,
+    "sourceUrl": "https://aclanthology.org/2025.findings-emnlp.594/",
+    "excerpt": "同じ意味のプロンプトでも評価値は揺れる。意味保存的な変形をサンプルし、平均・分散と必要試行回数を許容誤差と信頼度から設計する。",
+    "image": "assets/visual-reliable-eval.svg",
+    "imageAlt": "意味を保った複数のプロンプトカードから複数の評価値が生まれ、単一点ではなく平均とばらつきを持つ分布として描かれる線画",
+    "imageCaption": "図版：自動生成",
+    "featured": true
+  },
+  {
+    "slug": "sensemaking-analysis",
+    "title": "調査を「検索」だけで評価しない——情報探索と意味づけの二つのループ",
+    "originalTitle": "The Sensemaking Process and Leverage Points for Analyst Technology as Identified Through Cognitive Task Analysis",
+    "authors": ["Peter Pirolli", "Stuart Card"],
+    "year": 2005,
+    "publishedAt": "2026-09-07",
+    "tags": ["HCI", "情報探索", "認知科学"],
+    "readingMinutes": 52,
+    "sourceUrl": "https://www.researchgate.net/publication/215439203_The_sensemaking_process_and_leverage_points_for_analyst_technology_as_identified_through_cognitive_task_analysis",
+    "excerpt": "調査を、情報源を探して証拠へ絞るforaging loopと、証拠からschema・仮説・説明を組み立てるsensemaking loopへ分け、技術支援の介入点を特定する。",
+    "image": "assets/visual-sensemaking-loop.svg",
+    "imageAlt": "多数の情報源から証拠を絞り込む探索ループと、証拠からスキーマ・仮説・成果物を組み立てて再び探索へ戻る意味づけループを描いた線画",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
+    "slug": "information-hiding",
+    "title": "モジュールは処理の順番で切らない——変わりやすい設計判断を隠す",
+    "originalTitle": "On the Criteria to Be Used in Decomposing Systems into Modules",
+    "authors": ["David Lorge Parnas"],
+    "year": 1972,
+    "publishedAt": "2026-09-07",
+    "tags": ["ソフトウェア設計", "情報隠蔽", "仕様設計"],
+    "readingMinutes": 50,
+    "sourceUrl": "https://kilthub.cmu.edu/articles/journal_contribution/On_the_criteria_to_be_used_in_decomposing_systems_into_modules/6607958",
+    "excerpt": "処理フローをそのままモジュール境界にせず、将来変わりやすい設計判断を一か所へ隠す。変更の波及、チーム間調整、理解に必要な知識を局所化する。",
+    "image": "assets/visual-information-hiding.svg",
+    "imageAlt": "複数のモジュールが中央の設計判断を直接共有せず、狭いインターフェースを通じて結ばれている線画",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
+    "slug": "boundary-objects",
+    "title": "合意しなくても共同作業はできる——境界オブジェクトが異なる専門をつなぐ条件",
+    "originalTitle": "Institutional Ecology, ‘Translations’ and Boundary Objects: Amateurs and Professionals in Berkeley’s Museum of Vertebrate Zoology, 1907–39",
+    "authors": ["Susan Leigh Star", "James R. Griesemer"],
+    "year": 1989,
+    "publishedAt": "2026-09-07",
+    "tags": ["社会技術システム", "概念モデリング", "協働設計"],
+    "readingMinutes": 54,
+    "sourceUrl": "https://griesemer.net/wp-content/uploads/2020/12/07-star-griesemer-1989-sss19-3387-420-boundary-objects.pdf",
+    "excerpt": "異なる専門集団が意味を完全に統一しなくても、局所的には柔軟で、集団をまたいでも同じ対象と識別できる共有物を介して共同作業できる。",
+    "image": "assets/visual-boundary-objects.svg",
+    "imageAlt": "異なる三つの集団が一つの共有物を囲み、共通の同一性を保ちながらそれぞれ異なる局所的な意味づけで利用する様子を描いた線画",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
     "slug": "system-safety-constraints",
     "title": "安全は部品の信頼性だけでは決まらない——制約・制御・フィードバックで事故を見る",
     "originalTitle": "A New Accident Model for Engineering Safer Systems",
@@ -13,7 +77,7 @@
     "image": "assets/visual-system-safety-constraints.svg",
     "imageAlt": "人・ソフトウェア・機器を含む複数の構成要素へ安全制約が伝わり、フィードバックが上位の制御へ戻る線画",
     "imageCaption": "図版：自動生成",
-    "featured": true
+    "featured": false
   },
   {
     "slug": "model-written-evaluations",
