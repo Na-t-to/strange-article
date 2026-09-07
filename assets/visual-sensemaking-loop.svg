@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 533" role="img" aria-labelledby="t d">
+<title id="t">Sensemaking loop visual</title><desc id="d">A foraging loop moves from many sources to an evidence file, while a second loop moves between evidence, schemas, hypotheses, and a final product.</desc>
+<rect width="800" height="533" fill="#EFEFE8"/>
+<g fill="none" stroke="#2D4A3E" stroke-width="3">
+  <rect x="70" y="92" width="150" height="82"/><rect x="70" y="350" width="150" height="82"/><rect x="325" y="350" width="150" height="82"/><rect x="580" y="350" width="150" height="82"/><rect x="325" y="92" width="150" height="82"/><rect x="580" y="92" width="150" height="82"/>
+</g>
+<g fill="none" stroke="#9C5A3C" stroke-width="4">
+  <path d="M220 133h105"/><path d="M475 133h105"/><path d="M655 174v176"/><path d="M580 391H475"/><path d="M325 391H220"/><path d="M145 350V174"/>
+</g>
+<g fill="none" stroke="#4A7C6F" stroke-width="3" stroke-dasharray="9 8">
+  <path d="M220 391c70-85 140-120 180-120s110 35 180 120"/><path d="M580 133c-70 85-140 120-180 120s-110-35-180-120"/>
+</g>
+<g fill="#3B4A63" font-family="serif" text-anchor="middle"><text x="145" y="128" font-size="18">sources</text><text x="400" y="128" font-size="18">shoebox</text><text x="655" y="128" font-size="18">evidence</text><text x="655" y="386" font-size="18">schema</text><text x="400" y="386" font-size="18">hypotheses</text><text x="145" y="386" font-size="18">product</text><text x="400" y="260" font-size="17">foraging ↔ sensemaking</text></g>
+</svg>
