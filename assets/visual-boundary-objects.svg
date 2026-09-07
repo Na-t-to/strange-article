@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 533" role="img" aria-labelledby="t d">
+<title id="t">Boundary objects visual</title><desc id="d">Three different groups work around a shared object, each keeping a distinct local representation while a common form remains recognizable between them.</desc>
+<rect width="800" height="533" fill="#EFEFE8"/>
+<g fill="none" stroke="#2D4A3E" stroke-width="3">
+  <circle cx="400" cy="267" r="92"/><rect x="72" y="92" width="190" height="96"/><rect x="538" y="92" width="190" height="96"/><rect x="305" y="382" width="190" height="96"/>
+</g>
+<g fill="none" stroke="#9C5A3C" stroke-width="4">
+  <path d="M262 140c65 22 88 46 103 68"/><path d="M538 140c-65 22-88 46-103 68"/><path d="M400 359v23"/>
+</g>
+<g fill="none" stroke="#4A7C6F" stroke-width="3" stroke-dasharray="9 8">
+  <path d="M365 208c-45 36-45 82 0 118"/><path d="M435 208c45 36 45 82 0 118"/>
+</g>
+<g fill="#3B4A63" font-family="serif" text-anchor="middle"><text x="400" y="250" font-size="19">SHARED</text><text x="400" y="279" font-size="19">OBJECT</text><text x="167" y="145" font-size="18">social world A</text><text x="633" y="145" font-size="18">social world B</text><text x="400" y="435" font-size="18">social world C</text><text x="400" y="65" font-size="16">common identity / local meanings</text></g>
+</svg>
