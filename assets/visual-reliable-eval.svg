@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 533" role="img" aria-labelledby="t d">
+<title id="t">Reliable evaluation visual</title><desc id="d">Many semantically equivalent prompt cards produce a distribution of scores instead of a single score, with mean and variability marked beside the distribution.</desc>
+<rect width="800" height="533" fill="#EFEFE8"/>
+<g fill="none" stroke="#2D4A3E" stroke-width="3">
+  <rect x="72" y="92" width="150" height="64"/><rect x="92" y="174" width="150" height="64"/><rect x="62" y="256" width="150" height="64"/><rect x="102" y="338" width="150" height="64"/>
+  <path d="M350 412V100M350 412H730"/>
+</g>
+<g fill="none" stroke="#9C5A3C" stroke-width="4">
+  <circle cx="435" cy="335" r="8"/><circle cx="478" cy="275" r="8"/><circle cx="515" cy="300" r="8"/><circle cx="552" cy="220" r="8"/><circle cx="590" cy="250" r="8"/><circle cx="633" cy="170" r="8"/><circle cx="680" cy="205" r="8"/>
+  <path d="M556 125v260"/>
+</g>
+<g fill="none" stroke="#4A7C6F" stroke-width="3" stroke-dasharray="9 8"><path d="M222 124C290 124 300 210 350 210"/><path d="M242 206C295 206 305 230 350 230"/><path d="M212 288C285 288 305 250 350 250"/><path d="M252 370C300 370 315 270 350 270"/></g>
+<g fill="#3B4A63" font-family="serif" text-anchor="middle"><text x="147" y="130" font-size="16">same meaning</text><text x="167" y="212" font-size="16">paraphrase</text><text x="137" y="294" font-size="16">format shift</text><text x="177" y="376" font-size="16">example order</text><text x="540" y="455" font-size="18">score distribution</text><text x="556" y="112" font-size="16">mean</text></g>
+</svg>
