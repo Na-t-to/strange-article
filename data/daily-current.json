@@ -1,9 +1,9 @@
 {
-  "date": "2026-09-06",
-  "lastUpdated": "2026-09-06T14:26:00+09:00",
-  "candidateCount": 27,
+  "date": "2026-09-07",
+  "lastUpdated": "2026-09-07T14:45:00+09:00",
+  "candidateCount": 31,
   "adoptedCount": 4,
-  "collectionNote": "要求工学、システム安全、HCI、分散認知、社会技術システム、AI評価、legal AI、RAG、データ・モデル文書化、人間AI協働の一次情報を横断して探索。LegalBench本体、Human-AI Interaction Guidelines、Model Cards、Datasheets、Ackerman、Hutchinsのcockpit論文なども比較し、既収録記事との重複と実務への持ち帰りやすさを評価した。今回は、事故を制約と制御の問題として再構成するLeveson、評価ケース自体をLLMで探索するPerezら、社会的要求を技術へ抽象化するときの5つの罠を整理するSelbstら、人・道具・外部表現・履歴を一つの認知システムとして見るHollan/Hutchins/Kirshを採用した。",
+  "collectionNote": "要求工学、ソフトウェア設計、HCI、認知科学、社会技術システム、AI評価、RAG、legal AI、agent safety、システム安全の一次情報を広く探索。Parnasのモジュール分解、Pirolli/Cardのsensemaking、Star/Griesemerのboundary objects、ReliableEvalを採用した。Four Dark Cornersは既収録のWorld and the Machineとの重複、Human-AI Interaction GuidelinesはMixed-Initiative UI等との重複、ToolEmuはAgentDojo・システム安全との近さ、HELM・ARESは既存の評価/RAG記事との差分の小ささから今回は見送った。",
   "selectionTracks": [
     {
       "title": "古典発掘枠",
@@ -14,7 +14,7 @@
     },
     {
       "title": "高速更新分野枠",
-      "summary": "AI評価、RAG、情報検索、AI agent、legal AI、LLM信頼性・制御などは、公開年による制限を設けない。",
+      "summary": "AI評価、RAG、情報検索、reasoning、AI agent、legal AI、LLM信頼性・制御などは、公開年による制限を設けない。",
       "criteria": [
         "原著論文または著者・研究機関による技術報告である",
         "方法、評価条件、失敗例等が具体的に記載されている",
