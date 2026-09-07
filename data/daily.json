@@ -1,9 +1,9 @@
 {
-  "date": "2026-09-03",
-  "lastUpdated": "2026-09-03T14:09:00+09:00",
-  "candidateCount": 22,
-  "adoptedCount": 3,
-  "collectionNote": "要求工学、仕様設計、HCI、長文脈LLM、RAG、エージェント評価、法務×AI、情報検索の一次情報を広く探索。既収録と論点が重なるRAG・エージェント候補や、全文確認が難しい候補は見送り、要求を質問で育てるInquiry Cycle、ゴールから例外を導く障害分析、長文脈の位置頑健性という異なる問題を扱う3本を採用した。",
+  "date": "2026-09-07",
+  "lastUpdated": "2026-09-07T14:45:00+09:00",
+  "candidateCount": 31,
+  "adoptedCount": 4,
+  "collectionNote": "要求工学、ソフトウェア設計、HCI、認知科学、社会技術システム、AI評価、RAG、legal AI、agent safety、システム安全の一次情報を広く探索。Parnasのモジュール分解、Pirolli/Cardのsensemaking、Star/Griesemerのboundary objects、ReliableEvalを採用した。Four Dark Cornersは既収録のWorld and the Machineとの重複、Human-AI Interaction GuidelinesはMixed-Initiative UI等との重複、ToolEmuはAgentDojo・システム安全との近さ、HELM・ARESは既存の評価/RAG記事との差分の小ささから今回は見送った。",
   "selectionTracks": [
     {
       "title": "古典発掘枠",
