@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ja"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>モジュールは処理の順番で切らない——変わりやすい設計判断を隠す｜変な読み物置き場</title>
+  <meta name="description" content="Parnasの1972年論文から、処理工程ではなく変わりやすい設計判断をモジュール内部へ隠すinformation hidingと、変更容易性・理解容易性・独立開発の関係を読む。">
+  <link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/information-hiding.html">
+  <meta property="og:type" content="article"><meta property="og:title" content="モジュールは処理の順番で切らない——変わりやすい設計判断を隠す"><meta property="og:description" content="処理フローをそのままモジュール境界にせず、変わりやすい設計判断を一か所へ閉じ込める。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/information-hiding.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-information-hiding.svg">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="モジュールは処理の順番で切らない"><meta name="twitter:description" content="Parnas 1972から、information hidingを変更と理解の設計原則として読む。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-information-hiding.svg">
+  <link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260904-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="information-hiding">
+  <header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-07 14:45</p></header>
+  <main class="article-shell">
+    <p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　ソフトウェア設計</p>
+    <header class="article-header">
+      <div class="tags"><span>ソフトウェア設計</span><span>情報隠蔽</span><span>仕様設計</span></div>
+      <h1>モジュールは処理の順番で切らない——変わりやすい設計判断を隠す</h1>
+      <p class="original-title">On the Criteria to Be Used in Decomposing Systems into Modules</p>
+      <div class="article-meta-row"><p><strong>David Lorge Parnas · 1972</strong><br>公開 2026.09.07　／　推定読了 50分</p></div>
+    </header>
+    <figure class="article-visual"><img src="../assets/visual-information-hiding.svg" alt="複数のモジュールが中央の設計判断を直接共有せず、狭いインターフェースを通じて結ばれている線画" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+    <div class="article-layout">
+      <article class="article-body">
+        <p class="lead-box">プログラムを「入力する」「加工する」「並べ替える」「出力する」のように処理工程で分けると、構造は分かりやすく見える。ところが、データの持ち方や並べ替え方を変更しただけで、複数のモジュールが同時に壊れることがある。Parnasは1972年、モジュール境界を処理順序から決める代わりに、<strong>将来変わり得る設計判断を一つずつ隠す</strong>ことを提案した。information hidingは秘密主義の話ではない。変更の影響、開発者間の調整、理解に必要な知識を局所化するための分解原理である。</p>
+
+        <h2>収集条件との対応</h2>
+        <p>Communications of the ACMに1972年に掲載された、ソフトウェア設計の古典である。論文は同じKWIC（Key Word in Context）索引システムを二通りに分解し、変更容易性、独立開発、理解容易性の違いを具体的に比較する。現在のライブラリ、サービス、AIパイプラインとは技術環境が違うが、「何を一緒に置き、何を境界の向こうへ見せないか」という設計判断は残る。</p>
+        <p>既収録のParnas/Clements「A Rational Design Process」は、実際の設計探索を後から検証可能な文書へ整理する理由を扱った。本稿はもっと局所的で、<strong>一つのシステムをどう分けるか</strong>を問う。同じ機能一覧からでも、分け方によって変更コストと理解コストが変わることを、二つの具体設計で示す。</p>
+
+        <h2>「モジュール」は、サブルーチンの別名ではない</h2>
+        <p>Parnasは冒頭で、モジュール化から期待される利益を三つ挙げる。第一に、各グループが別モジュールを担当でき、コミュニケーション量を減らして開発期間を短くできること。第二に、一つのモジュールを変更しても他へ大きな変更を要求せず、製品を柔軟に変えられること。第三に、システム全体を一度に理解せず、一つずつ学べることである。</p>
+        <p>ただし、プログラムを複数ファイルへ分ければ自動的にこの利益が出るわけではない。どの責任をどこへ割り当てるかが悪ければ、ファイル数だけ増えて依存関係は残る。</p>
+        <p>論文でいうmoduleは、必ずしも一つのサブルーチンではない。設計上の責任を一つの作業単位へ割り当てる考え方で、実装上は複数のルーチンを含む場合もある。実行時の処理単位と、設計情報を隠す単位を区別するところから議論が始まる。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>レストランを「注文を受ける人」「料理する人」「配膳する人」の順番だけで分けると、料理番号の付け方を変えたとき全員の手順書を書き直すかもしれない。一方、「注文番号の規則」を一つの仕組みへ閉じ込め、他の担当者は「番号を発行する」「番号から注文を取得する」という操作だけ使うなら、番号の内部形式を変更しても影響を狭くできる。処理の流れと、変わりやすい知識の所在は別に設計できる。</p></aside>
+
+        <h2>比較対象は、KWICという小さな索引システム</h2>
+        <p>論文は抽象的な設計原則だけを述べず、KWICを二通りに設計する。入力は複数の行で、各行から単語の位置をずらしたcircular shiftを作り、それらをアルファベット順に並べて出力する。たとえば「INFORMATION HIDING」という行から、語の先頭をずらした複数の索引項目を作るような仕組みである。</p>
+        <p>最初の分解は、処理フローに沿う。入力モジュール、circular shiftモジュール、alphabetizer、出力モジュール、全体を制御するmaster controlに分ける。フローチャートを箱へ切り分けるような構造で、直観的である。</p>
+        <p>しかし各モジュールは共有されたデータ表現を知る。行がどのように格納されるか、shiftが実体として保存されるか、どの形式で参照するか、といった設計判断が複数モジュールへ漏れる。</p>
+
+        <h2>小さな変更が、なぜ複数モジュールへ波及するのか</h2>
+        <p>Parnasは「将来あり得る変更」をいくつか列挙して比較する。入力フォーマットを変える。すべての行をメモリへ置く設計をやめる。文字の格納方法を変える。circular shiftを事前に全部保存する代わりに必要時に計算する。アルファベット順を作るタイミングや方式を変える。</p>
+        <p>処理工程で分けた設計では、これらの判断を複数モジュールが知っている。たとえばshiftの表現が変われば、shiftを作るモジュールだけでなく、それを読むalphabetizerやoutputも修正が必要になる。データ形式が暗黙の契約として広く共有されているためである。</p>
+        <p>つまり「機能Aを変えたからモジュールAを直す」という関係になっていない。変更対象は設計判断で、その判断が複数のモジュールへ複製されている。モジュール境界と変更境界がずれている。</p>
+
+        <h2>第二の分解は、「何を隠すか」から始める</h2>
+        <p>Parnasが示す第二の設計では、各モジュールを<strong>他のモジュールから隠すべき設計判断</strong>で特徴づける。行の保存方法を知るモジュール、circular shiftの生成規則を知るモジュール、alphabetizationの実装を知るモジュール、入出力形式を扱うモジュール、といった具合である。</p>
+        <p>他のモジュールには、内部表現そのものではなく、必要な操作だけを公開する。「この文字列がどの配列に、何バイト単位で格納されているか」を見せる代わりに、「ある行のある文字を取得する」のような操作を提供する。内部表現を変えても、その操作の意味を保てる限り利用側は変更しなくてよい。</p>
+        <p>ここでinformation hidingという名前が少し誤解を招く。隠す対象は、機密情報ではなく<strong>変更されそうな設計上の仮定</strong>である。隠すことによって、その判断が将来変わる可能性を他の部分へ伝播させない。</p>
+
+        <h2>インターフェースは「必要な情報だけ」を渡す</h2>
+        <p>第二の設計では、モジュール間のinterfaceが単純になる。共同作業する開発者が合意しなければならないのは、データの内部配置やアルゴリズムではなく、外から使う操作の意味になる。</p>
+        <p>この差は独立開発に効く。処理工程型の分解では、複数モジュールが共有データ構造を使うため、その形式を決める会議が必要になる。誰かが形式を変更すれば、他の担当者へ通知し、同時に修正する必要がある。information hiding型では、内部判断を担当モジュールへ閉じ込め、他チームは抽象的なinterfaceだけ知ればよい。</p>
+        <p>Parnasはさらに、自分が示した第二案すら完全ではないと批判する。たとえばshiftの順序について、利用側が本当は必要としない情報までinterfaceが保証していれば、将来の実装を不必要に制約する。インターフェース設計では「便利だから全部見せる」ほど自由度を失う。</p>
+
+        <h2>理解容易性は、コード量より「知る必要のある判断」の数で変わる</h2>
+        <p>処理工程型の設計でoutputモジュールを理解しようとすると、alphabetizerがどんな表を作り、circular shiftがどう表現され、inputがどんな構造を用意したかまで追う必要がある。形式上は別モジュールでも、意味を理解するには全体知識が要る。</p>
+        <p>第二の設計では、各モジュールが公開操作の意味を守る限り、利用側は内部の決定を知らなくてよい。理解の単位が小さくなる。これは単にコード行数を減らす話ではない。<strong>一つの変更・一つの説明に必要な前提知識を減らす</strong>ことである。</p>
+        <p>この見方は、既収録のNaur「Programming as Theory Building」とも接続する。Naurはコードだけ渡しても設計者の理論は渡らないと論じた。Parnasは、その理論のうち、各部分が知る必要のある範囲を設計境界で制御しようとする。すべての開発者が同じ詳細を共有しなくてもシステムを変更できる構造を作る。</p>
+
+        <h2>「変わりやすいもの」を先に探す</h2>
+        <p>論文の結論は、フローチャートからモジュールを切り出す手順と逆向きである。まず、難しい設計判断や将来変わりそうな判断を列挙する。それぞれを他から隠す責任としてモジュールを作る。</p>
+        <p>この順序は要求工学にも似ている。現在の処理をそのまま箱へ写すだけなら、現行業務の偶然まで構造として固定しやすい。「何が変わるか」「何についてまだ判断が揺れているか」を先に見ると、安定させる境界を決めやすい。</p>
+        <p>ただし、未来の変更を完全には予測できない。information hidingは、変更をゼロコストにする保証ではなく、変化の可能性が高い知識を局所化する賭けである。何を隠すべきかの選択自体が設計判断になる。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>法務RAGを「質問受付→検索→rerank→生成→引用表示」という処理順だけで分けるとする。もし「法令の有効時点をどう判定するか」という判断が検索、rerank、生成、表示の各所に複製されれば、改正対応のたびに全部を直す。時点判定を一つの責任へ閉じ込め、他は「この資料は指定日時点で有効か」という操作だけ使うなら、ルール変更の影響を狭められる。これは原論文の事例ではないが、変更される知識を境界にするという考え方の移植例になる。</p></aside>
+
+        <h2>マイクロサービスの祖先、とだけ読むと狭すぎる</h2>
+        <p>この論文は後のモジュール設計やオブジェクト指向、API設計へ大きく影響したため、現代のサービス分割へ直接結びつけて説明されることが多い。しかしParnasの主張は「小さなサービスをたくさん作れ」ではない。</p>
+        <p>ネットワーク越しのサービスに分けても、複数サービスが同じDBスキーマや業務ルールの詳細へ依存していれば、information hidingは弱い。逆に一つのプロセス内でも、内部表現を隠す明確な抽象境界を持てる。物理的なデプロイ単位と、設計情報の隠蔽単位は一致しない。</p>
+        <p>論文自身も、モジュールとサブルーチンを同一視しない。実装形態より、どの設計判断を誰が知るかが中心である。</p>
+
+        <h2>階層構造とも別の問題である</h2>
+        <p>Parnasは、モジュール分解とhierarchical structureも区別する。あるモジュールが別のモジュールのサービスを利用する階層がきれいでも、各モジュールが何を隠すかという分解が悪ければ、変更容易性は改善しない。</p>
+        <p>逆にinformation hidingで適切に責任を分けた後、利用関係を階層化することはできる。二つの性質は補完的だが同一ではない。設計図がきれいな木構造になっていることだけでは、情報が漏れていない証拠にならない。</p>
+
+        <h2>効率とのトレードオフは消えない</h2>
+        <p>論文は第二の分解を万能と扱わない。抽象的な操作を細かく呼び出す実装では、当時の処理系でサブルーチン呼び出しのオーバーヘッドが増える可能性がある。性能要求のために、内部情報を共有したくなる場面もある。</p>
+        <p>ここで重要なのは、性能最適化を無視することではなく、依存を増やす設計判断として認識することである。境界を破って内部情報へ依存すれば、何を失うか分かった上で選べる。測定せずに「速そうだから」と共有構造を露出させるのとは違う。</p>
+
+        <h2>この論文から残る設計原則</h2>
+        <p>システムを分けるとき、現在の処理順序だけを見ない。将来変わりそうな設計判断、複数案があり得る判断、外部環境に依存する判断を探す。その判断を一か所へ閉じ込め、他の部分には必要な操作と意味だけを公開する。</p>
+        <p>良いモジュール境界は、図を見たときの整然さより、変更時に分かる。ある判断を変えたとき、修正が一つの責任へ留まるか。新しい担当者が一部分を理解するとき、他の内部詳細をどれだけ学ばずに済むか。Parnasはこの二つを、同じ「情報を隠す」という設計原理で結んだ。</p>
+
+        <div class="reading-question"><span>読後に考える</span><p>いま扱っているシステムで、複数の処理工程が同じルール・データ形式・外部サービスの癖を知っている箇所はどこだろう。その知識を一つの責任へ閉じ込めるなら、他の部分へ本当に必要な情報は何だけだろうか。</p></div>
+        <section class="related"><h2>関連して読む</h2><div class="related-grid"><a href="rational-design-process.html">設計は実際には迷走する——それでも「合理的に見える文書」を作る意味</a><a href="world-and-machine.html">要求は「機械の中」ではなく「世界の側」にある</a><a href="programming-as-theory-building.html">コードを渡しても、設計は渡らない</a><a href="cognitive-dimensions.html">考えにくさは頭のせいではない</a></div></section>
+      </article>
+      <aside class="article-rail"><section class="rail-card"><span>収集条件との対応</span><p>1972年の古典発掘枠。同じKWICシステムを二通りに分解し、処理工程ではなく変わりやすい設計判断を隠すことで、変更・独立開発・理解のコストがどう変わるかを比較する。</p><div class="article-actions"><button type="button" data-read="information-hiding" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="information-hiding" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://kilthub.cmu.edu/articles/journal_contribution/On_the_criteria_to_be_used_in_decomposing_systems_into_modules/6607958" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>David Lorge Parnas. “On the Criteria to Be Used in Decomposing Systems into Modules.” Communications of the ACM, Vol. 15, No. 12, 1972, pp. 1053–1058. DOI: 10.1145/361598.361623.</p></section></aside>
+    </div>
+  </main>
+  <footer class="site-footer"><p><strong>変な読み物置き場</strong><span>／ 自動収集される技術・思想・学術の索引。</span></p><a href="../index.html">アーカイブへ戻る ←</a></footer>
+</body></html>
