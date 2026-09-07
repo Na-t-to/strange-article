@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ja"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>調査を「検索」だけで評価しない——情報探索と意味づけの二つのループ｜変な読み物置き場</title>
+  <meta name="description" content="Pirolli & Cardのsensemaking modelから、調査を情報収集のforaging loopと、証拠からschema・仮説・説明を組み立てるsensemaking loopへ分け、技術支援の介入点を読む。">
+  <link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/sensemaking-analysis.html">
+  <meta property="og:type" content="article"><meta property="og:title" content="調査を「検索」だけで評価しない——情報探索と意味づけの二つのループ"><meta property="og:description" content="検索、読解、証拠抽出、仮説形成、反証探索、説明作成を一つの調査過程として分解する。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/sensemaking-analysis.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-sensemaking-loop.svg">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="調査を「検索」だけで評価しない"><meta name="twitter:description" content="Pirolli & Cardから、foragingとsensemakingの二つのループを読む。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-sensemaking-loop.svg">
+  <link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260904-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="sensemaking-analysis">
+  <header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-07 14:45</p></header>
+  <main class="article-shell">
+    <p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　HCI</p>
+    <header class="article-header">
+      <div class="tags"><span>HCI</span><span>情報探索</span><span>認知科学</span></div>
+      <h1>調査を「検索」だけで評価しない——情報探索と意味づけの二つのループ</h1>
+      <p class="original-title">The Sensemaking Process and Leverage Points for Analyst Technology as Identified Through Cognitive Task Analysis</p>
+      <div class="article-meta-row"><p><strong>Peter Pirolli / Stuart Card · 2005</strong><br>公開 2026.09.07　／　推定読了 52分</p></div>
+    </header>
+    <figure class="article-visual"><img src="../assets/visual-sensemaking-loop.svg" alt="多数の情報源から証拠を絞り込む探索ループと、証拠からスキーマ・仮説・成果物を組み立てて再び探索へ戻る意味づけループを描いた線画" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+    <div class="article-layout">
+      <article class="article-body">
+        <p class="lead-box">調査支援ツールを評価するとき、「必要な文書を何件見つけたか」だけを見ると、調査の後半が消える。人は資料を見つけた後、読む箇所を選び、証拠を抜き、関係を作り、仮説を立て、反証を探し、最終的な説明へまとめる。PirolliとCardは情報分析官の認知タスク分析から、調査を<strong>情報を探して絞るforaging loop</strong>と、<strong>証拠から意味のある構造を組み立てるsensemaking loop</strong>としてモデル化した。技術が速くした工程と、依然として人間側に残った工程を分けて考えられる。</p>
+
+        <h2>収集条件との対応</h2>
+        <p>2005年のInternational Conference on Intelligence Analysisで発表された短い論文で、情報分析官への認知タスク分析とthink-aloud protocolをもとに、分析作業のnotional modelを提示する。著者自身が、対象業務には幅があり、モデルの一般化には慎重さが必要だと断っている。その一方で、検索、抽出、外部表現、仮説形成、反証探索、成果物作成を同じ工程図へ置いたことで、現在の検索AIやRAGを「検索性能」だけで見ないための語彙が得られる。</p>
+        <p>既収録のRAGCheckerは、RAGの出力を主張単位へ分け、retrievalとgenerationの失敗を診断する。LegalBench-RAGは、必要な法的テキストのspanを正確に回収できたかを見る。本稿はもっと人間側へ広い。<strong>正しい証拠を取れた後、その証拠が調査者の理解・仮説・最終説明へどう変換されるか</strong>まで分析対象へ入れる。</p>
+
+        <h2>専門家は、情報をたくさん覚えているだけではない</h2>
+        <p>論文は専門性に関する認知研究から出発する。熟練者は単純に一般記憶力が高いのではなく、その領域で意味のあるパターンを認識し、情報をdomain-specificなschemaへ組織する。</p>
+        <p>情報分析官も、人物、組織、活動、時間、場所などをばらばらの事実として保持しない。クーデターの兆候、生物兵器ネットワーク、麻薬組織、人・電話番号・住所のつながりのように、仕事上意味のある構造へ情報をまとめる。</p>
+        <p>ここでschemaは、固定されたデータベース項目だけを指さない。何を同じ出来事の一部と見るか、どの関係が説明に必要か、次に何を探すべきかを決める表現である。新しい証拠が入ればschemaが変わり、schemaが変われば検索も変わる。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>旅行の宿を探すとき、最初は「駅から近い・安い」で検索していたとする。レビューを読むうちに「早朝出発なのでフロント対応時間が重要」と気づけば、同じ候補一覧でも見る場所が変わる。さらに空港バスの停留所を知れば、「駅近」という最初の条件自体を捨てるかもしれない。検索条件は最初から完成しておらず、読んで理解する過程で作り替わる。</p></aside>
+
+        <h2>Sensemakingは、情報を使える表現へ変換する過程である</h2>
+        <p>著者らはsensemakingを、情報から仕事に使えるschemaやinsight、最終成果物を作る過程として捉える。途中で情報は何度もre-representationされる。頭の中の理解、紙のメモ、表、グラフ、コンピュータ上の構造など、表現媒体は問わない。</p>
+        <p>引用されるRussellらのlearning loopでは、人はまず適切な表現を探し、データをその表現へ符号化する。うまく収まらないresidueが増えると、表現そのものを変える。問題に合う表現が見つかるまで、この循環を繰り返す。</p>
+        <p>したがって、調査支援で「資料を全部一画面に集めた」ことと、「考えやすくなった」ことは同じではない。証拠を比較しやすい形へ変換できるか、関係を外部化できるか、収まらない証拠が見えるかが別の設計問題になる。</p>
+
+        <h2>下から上へ、情報は「shoebox」から成果物へ変わる</h2>
+        <p>PirolliとCardのnotional modelでは、分析作業の中間状態が段階的に描かれる。最下部には外部の大量な情報源がある。そこから関連しそうなものを集めた集合が<strong>shoebox</strong>である。まだ整理されていないが、調査対象として手元へ持ってきた箱に近い。</p>
+        <p>次に、文書の中から有用な断片を抜き出した<strong>evidence file</strong>ができる。資料全体を抱えるのではなく、後で比較・引用・結合する証拠へ切り出す。</p>
+        <p>さらに証拠をschemaへ組織し、複数の仮説や支持関係を作り、最終的にpresentationやwork productへ変換する。生の検索結果と最終報告書の間には、複数の認知的な成果物がある。</p>
+        <p>この中間物を無視すると、ツール評価が極端になる。「検索できたか」と「最終回答が正しいか」だけを測り、どの変換で情報が失われたか分からなくなる。</p>
+
+        <h2>Foraging loop——広く探し、絞り、深く読む</h2>
+        <p>モデルの下側がforaging loopである。人は情報源を探索し、フィルタし、関連しそうなものを読み、必要な部分を抽出する。著者らはこの過程を、explore、enrich、exploitという情報探索上のトレードオフと結びつける。</p>
+        <p><strong>explore</strong>では広く情報源を見渡す。見落としを減らすためrecallを重視しやすい。<strong>enrich</strong>ではフィルタや検索条件を使い、対象集合を濃くする。<strong>exploit</strong>では選んだ文書を深く読み、具体的な証拠を抜く。</p>
+        <p>一つの検索欄だけで三つを同時に最適化するのは難しい。探索段階では多少ノイズがあっても新しい方向を見つけたい。証拠抽出段階では、少ない候補を精密に読みたい。工程によって望ましいprecision/recallの関係が変わる。</p>
+
+        <h2>熟練者は「ノイズが少ない検索」を常に望むわけではない</h2>
+        <p>論文で興味深い観察の一つが、熟練分析官は初心者より低いfiltering thresholdを受け入れられる場合があることだ。領域知識や暗黙知が豊富なため、無関係なメッセージを素早く捨てられ、広い候補集合から弱い手掛かりを拾える。</p>
+        <p>これは検索評価を単純なprecision最大化にしにくい理由になる。利用者の知識、調査段階、見落としコストによって、望ましい候補集合の濃さが違う。高precisionが必ずしも高い実務価値を意味しない。</p>
+        <p>逆に初心者へ大量のノイズを渡せば、読むコストだけで作業が詰まる。検索性能は利用者の認知コストと組み合わせて見る必要がある。</p>
+
+        <h2>Sensemaking loop——証拠を仮説へ当て、合わなければ戻る</h2>
+        <p>モデルの上側では、証拠をschemaへまとめ、仮説を立て、支持・反証関係を作り、説明へ変換する。重要なのは一本道ではないことだ。新しい証拠が既存の説明に合わなければ、下へ戻って検索し直す。</p>
+        <p>仮説Aを支持する証拠だけが多いとき、「Aが正しい」と進むこともできる。しかし分析では、代替仮説BやCを作り、それらなら何が観測されるはずかを考え、反証や不足情報を探す必要がある。検索クエリは仮説から逆向きに生まれる。</p>
+        <p>このため、検索システムと推論システムを完全に独立した直列工程として扱うと、現実の調査行動からずれる。人は検索してから一度だけ考えるのではなく、考えた結果として次の検索を変える。</p>
+
+        <h2>ボトルネックは「注意を保ちながら関係を見る」ことにもある</h2>
+        <p>著者らの認知タスク分析では、分析官が多くの証拠と仮説の関係を同時に保つ負担が問題になる。頭の中だけで「この証拠はAを支持するがBには中立」「この証拠はCを反証する」と覚え続けるのは難しい。</p>
+        <p>そこで外部表現が重要になる。表、リンク図、メモ、証拠一覧へ関係を出せば、作業記憶から一部を外へ移せる。これは既収録のDistributed CognitionやLarkin/Simonの議論と直接つながる。</p>
+        <p>ただし可視化を増やせば解決するわけではない。何を外部化すべきかは、調査者が行う比較と次の行動に依存する。大量のノードを描いたネットワーク図が、必要な反証を見つける作業をむしろ難しくすることもある。</p>
+
+        <h2>確認バイアスを、検索行動の問題として扱う</h2>
+        <p>Sensemaking loopでは、いったん有力なschemaや仮説ができると、その説明に合う証拠を探し続ける危険がある。論文は、代替仮説の生成とdisconfirming evidenceの探索を支援する余地を挙げる。</p>
+        <p>ここで「バイアスに注意しよう」という啓発だけでは足りない。ツール側が、現在の仮説とその支持証拠を外部化し、反証が不足している場所を示せれば、次の検索行動を変えられる。認知上の弱点をUIとワークフローの設計対象へ移せる。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>法務リサーチで「この規制は適用される」と早い段階で仮説を持った後、適用肯定の解説ばかり検索するとする。証拠表に「適用肯定」「適用否定」「適用除外」「時点」の欄があり、否定側が空欄なら、次の検索として除外要件や反対裁判例を探す動機が生まれる。検索エンジンの精度を上げなくても、sensemaking側の表現を変えることで調査品質を変えられる。</p></aside>
+
+        <h2>AI調査支援を「どこへ介入する技術か」で分類できる</h2>
+        <p>以下は原論文の実験ではなく、モデルを現在のAI調査支援へ当てた場合の整理である。</p>
+        <p>ベクトル検索やrerankerは主にforagingのsearch/filterを支援する。長文要約やpassage extractionはread/extractへ寄る。クラスタリングや論点抽出はevidenceからschemaを作る工程を助ける。仮説生成エージェントはsensemaking上側へ入り、反証検索エージェントは仮説からforagingへ戻る経路を支援する。最終回答生成はpresentation/work productの生成に近い。</p>
+        <p>この分解をすると、「RAGを改善したら調査AI全体が良くなる」という曖昧な話を避けられる。改善したのは候補取得なのか、証拠抽出なのか、仮説形成なのか、最終説明なのか。各工程に別の評価が必要になる。</p>
+
+        <h2>評価指標も工程ごとに変わる</h2>
+        <p>foragingでは、必要な情報源を見逃さないか、ノイズをどの程度絞れるか、重要箇所まで辿れるかを測れる。evidence extractionでは、主張に必要な箇所を正確に切り出したかを見る。sensemakingでは、代替仮説を挙げたか、証拠と仮説の関係を正しく付けたか、反証を探したか、未解決の矛盾を残したか、といった評価が考えられる。</p>
+        <p>最終成果物では、問いへの回答性、根拠との整合、適用範囲、説明の一貫性が対象になる。同じ「正答率」へ全部を押し込めるより、どの変換が失敗したかを追いやすい。</p>
+        <p>この発想はCheckListの能力分解とも相性がよい。調査プロセスを工程へ分け、各工程について期待する振る舞いをさらに細分化する。失敗した回答を後から分類するだけでなく、テスト設計時点で故障箇所を観測可能にできる。</p>
+
+        <h2>限界——これは万能な「調査の正解図」ではない</h2>
+        <p>著者らは、このモデルを予備的なものとして提示している。対象は情報分析官で、すべての調査業務が同じ順序・同じ中間成果物を持つとは限らない。高度に定型化された検索、単純な事実確認、創造的な探索では工程の比重が変わる。</p>
+        <p>また図に段階が描かれていても、実際の作業はopportunisticである。上から下、下から上を自由に行き来し、途中の段階を飛ばすこともある。ワークフローを図どおり固定すると、モデルを理解の道具から作業拘束へ変えてしまう。</p>
+        <p>この論文の価値は、調査者が必ず六段階を踏むと主張するところではなく、検索と最終回答の間に複数の認知処理があることを具体的に見せ、技術支援の介入点と評価対象を分けたところにある。</p>
+
+        <h2>この論文から残る設計原則</h2>
+        <p>調査支援を設計するとき、情報を「見つける」「読む」「証拠にする」「関係づける」「仮説を作る」「反証を探す」「説明する」へ分ける。どの工程のコストを下げたいのか、どの工程で品質を上げたいのかを特定する。</p>
+        <p>検索結果の改善だけでなく、証拠を再利用できる外部表現、仮説と反証の関係、上側から検索へ戻る経路まで設計対象になる。調査AIの性能を一つの回答スコアへ縮めず、<strong>情報がどの中間表現を通って判断へ変わったか</strong>を見るための地図として使える。</p>
+
+        <div class="reading-question"><span>読後に考える</span><p>現在使っている調査AIで、検索結果から最終回答までの間に本当は何個の中間作業があるだろう。そのうちAIが助けている工程、人間が頭の中だけで処理している工程、評価で観測できていない工程を分けられるだろうか。</p></div>
+        <section class="related"><h2>関連して読む</h2><div class="related-grid"><a href="distributed-cognition.html">人の頭だけを見ても仕事は説明できない</a><a href="why-diagrams-work.html">同じ情報でも、表し方で考えるコストは変わる</a><a href="ragchecker.html">RAGの失敗を一つの点数に潰さない</a><a href="legalbench-rag.html">法務RAGは「正解文書を取れた」で終わらない</a></div></section>
+      </article>
+      <aside class="article-rail"><section class="rail-card"><span>収集条件との対応</span><p>2005年の古典発掘枠。情報分析官の認知タスク分析から、検索・抽出のforaging loopと、schema・仮説・成果物を作るsensemaking loopを分け、技術支援の介入点を示す。</p><div class="article-actions"><button type="button" data-read="sensemaking-analysis" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="sensemaking-analysis" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://www.researchgate.net/publication/215439203_The_sensemaking_process_and_leverage_points_for_analyst_technology_as_identified_through_cognitive_task_analysis" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>Peter Pirolli &amp; Stuart Card. “The Sensemaking Process and Leverage Points for Analyst Technology as Identified Through Cognitive Task Analysis.” Proceedings of the 2005 International Conference on Intelligence Analysis, 2005.</p></section></aside>
+    </div>
+  </main>
+  <footer class="site-footer"><p><strong>変な読み物置き場</strong><span>／ 自動収集される技術・思想・学術の索引。</span></p><a href="../index.html">アーカイブへ戻る ←</a></footer>
+</body></html>
