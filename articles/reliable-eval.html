@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ja"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>一つのプロンプトで評価を決めない——意味を保った言い換えまで含めて信頼性を測る｜変な読み物置き場</title>
+  <meta name="description" content="ReliableEvalから、意味を保ったプロンプト変形でLLM評価値が揺れる問題と、平均・分散・誤差幅・信頼度を使って必要な試行回数を設計する方法を読む。">
+  <link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/reliable-eval.html">
+  <meta property="og:type" content="article"><meta property="og:title" content="一つのプロンプトで評価を決めない——意味を保った言い換えまで含めて信頼性を測る"><meta property="og:description" content="同じ意味の質問でも評価値は揺れる。単一のプロンプトを真値のように扱わず、意味保存変形に対する性能分布を測る。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/reliable-eval.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-reliable-eval.svg">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="一つのプロンプトで評価を決めない"><meta name="twitter:description" content="ReliableEvalから、LLM評価の平均・ばらつき・必要試行回数を設計する。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-reliable-eval.svg">
+  <link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260904-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="reliable-eval">
+  <header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-07 14:45</p></header>
+  <main class="article-shell">
+    <p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　AI評価</p>
+    <header class="article-header">
+      <div class="tags"><span>AI評価</span><span>LLM信頼性</span><span>評価設計</span></div>
+      <h1>一つのプロンプトで評価を決めない——意味を保った言い換えまで含めて信頼性を測る</h1>
+      <p class="original-title">ReliableEval: A Recipe for Stochastic LLM Evaluation via Method of Moments</p>
+      <div class="article-meta-row"><p><strong>Gili Lior / Eliya Habba / Shahar Levy / Avi Caciularu / Gabriel Stanovsky · 2025</strong><br>公開 2026.09.07　／　推定読了 51分</p></div>
+    </header>
+    <figure class="article-visual"><img src="../assets/visual-reliable-eval.svg" alt="意味を保った複数のプロンプトカードから複数の評価値が生まれ、単一点ではなく平均とばらつきを持つ分布として描かれる線画" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+    <div class="article-layout">
+      <article class="article-body">
+        <p class="lead-box">LLMの評価では、同じタスクを測っているつもりでも、指示文の言い換え、区切り記号、few-shot例の順序などを変えるだけで点数が動く。ReliableEvalは、この揺れを「評価時のノイズ」として無視せず、<strong>意味を保ったプロンプト変形の集合に対する性能分布</strong>として扱う。知りたいのは、ある一つの書き方で出た点数ではなく、同じ要求を別の自然な書き方で与えたときに平均してどの程度でき、どの程度ぶれるかである。</p>
+
+        <h2>収集条件との対応</h2>
+        <p>2025年のFindings of EMNLP掲載論文で、MMLU、GPQA-Diamond、SimpleQAを使い、複数のフロンティア級モデルについて意味保存的なプロンプト変形を反復している。論文は単に「プロンプトで点数が変わる」と報告するだけでなく、許容誤差と信頼度を先に置き、必要な再サンプリング数を推定する手順を提案する。コードも公開されている。</p>
+        <p>既収録のCheckListは、総合精度を能力別・テスト形式別へ分解した。Model-Written Evaluationsは、その能力を狙うテストケースを広く生成する方法を扱った。ReliableEvalが追加するのは、<strong>一つのテストケースを一つの表現で固定したとき、その採点値自体をどこまで信用してよいか</strong>という問題である。評価基準を細かくしても、各設問の表現に偶然依存していれば、比較結果は不安定なまま残る。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>同じ法律問題を「次の事例でA社は義務を負いますか」「A社に義務が生じるか検討してください」「以下の事情を前提に法的義務の有無を答えてください」と三通りに書く。人間なら同じ論点を問う問題だと分かる。ところがAIの正答が1、0、1と揺れたなら、最初の1点だけを採って「この能力は合格」とする根拠は弱い。問題の意味ではなく、表現との相性まで点数へ混ざっているからだ。</p></aside>
+
+        <h2>単一プロンプトのスコアは、分布から一回だけ引いた標本である</h2>
+        <p>通常のベンチマークでは、データセットごとに一つの評価プロンプトを決め、そのプロンプトで各モデルを走らせる。結果は表に並び、モデルAが72.4、モデルBが71.8なら、Aの方が高いと読む。</p>
+        <p>ReliableEvalは、その72.4を固定的な性質と見なさない。意味を変えない範囲でも、instructionの表現、回答形式、few-shot例の並びなどには多数の選択肢がある。したがって「このベンチマークにおけるモデル性能」は、一つの値というより、意味保存的なプロンプト集合から一つを選んだときに得られる<strong>確率変数</strong>として表せる。</p>
+        <p>この定式化をすると、評価で知りたい量も変わる。代表的なのは平均と分散である。平均は、自然な表現差をならしたときの典型的な性能を表す。分散は、表現差に対してどれほど不安定かを表す。同じ平均点でも、ほとんどの書き方で70点前後を出すモデルと、55点から85点まで激しく揺れるモデルでは、製品としての扱いやすさが違う。</p>
+
+        <h2>「意味を保った変形」を先に定義する</h2>
+        <p>ここで何でもランダムに変えればよいわけではない。問う能力そのものを変える変形を混ぜれば、異なる問題を平均しているだけになる。ReliableEvalは、評価したい意味を保ちながら、現実に起こり得る表現差をサンプル空間として定義する。</p>
+        <p>論文で扱う代表的な変形には、instructionの言い換え、出力フォーマットの違い、few-shot例の順序などがある。これらは「何を答えるべきか」は保ちつつ、モデルが実際に受け取る表面形を変える。</p>
+        <p>評価設計へ持ち込むときは、この変形集合そのものが仕様になる。「敬体と常体を変えてよい」「企業名は置換してよい」「法的に意味のある事実は変えない」「問いの順序だけ変える」「根拠資料の順番を入れ替える」といった境界を決める必要がある。変形器が問題の意味を変えていないかは、評価対象モデルとは別に確認すべき品質項目になる。</p>
+
+        <h2>ReliableEvalは、必要な試行回数を誤差から逆算する</h2>
+        <p>すべての言い換えを試すことはできない。そこで論文は、性能分布の平均や分散を、限られたサンプルからどの程度正確に推定できるかを考える。</p>
+        <p>発想は、先に<strong>許容誤差 ε</strong>と<strong>失敗確率 δ</strong>を決めることである。「推定した平均が本来の平均から1ポイント以上ずれる確率を10%未満にしたい」のように、評価値へ要求を置く。その要求を満たすために、何個のプロンプト変形をサンプルすればよいかを推定する。</p>
+        <p>論文の例では、まず多数のプロンプト変形を参照モデルへ実行して、十分に密な性能分布を作る。その分布を擬似的な真値として、サンプル数を1、2、3……と変えながら、少数サンプルから計算した平均・分散がどの程度ずれるかを見る。所定の ε と δ を満たす最小のサンプル数 n* を選び、そのn*を本評価へ使う。</p>
+        <p>ここで参照モデルは、必ずしも最も高価なモデルである必要はない。論文では、より安価なモデルを使って必要サンプル数の上限を見積もれる場合も調べている。評価予算そのものを設計変数として扱える。</p>
+
+        <h2>「何回やれば十分か」は、ベンチマークごとに違う</h2>
+        <p>実験では、必要な再サンプリング数はデータセットやモデルによってかなり異なった。少数の変形で平均が安定する場合もあれば、同じ誤差条件を満たすのに何十回もの評価が必要な場合もある。</p>
+        <p>これは「LLM評価は最低20回やるべき」といった一律の回数規則を支持しない。安定性の高い評価なら少ない反復でよく、プロンプト感度が高い評価には多くの反復が要る。先に許容誤差と信頼度を置くので、必要回数の理由を説明できる。</p>
+        <p>予算が足りなければ、必要回数を黙って削るのではなく、誤差幅を広げる、信頼度を下げる、測る変形の種類を絞る、といったトレードオフを明示できる。評価コストと測定精度が同じ表へ乗る。</p>
+
+        <h2>モデル順位は、偶然選んだプロンプトで逆転し得る</h2>
+        <p>論文の実験では、意味を保った複数のプロンプトで得たスコア範囲がモデル間で重なる。モデルAとBの平均に差があっても、Aに不利な書き方とBに有利な書き方を一つずつ選べば、順位が逆になることがある。</p>
+        <p>この性質は、ベンチマークの「最高値」や一回の社内テストを読むときに効く。単一プロンプトで0.8ポイント差がついたとしても、その差が表現揺れの範囲より小さければ、製品選定の根拠としては弱い。逆に平均差は小さくても、一方の分散がはるかに小さいなら、入力表現が揺れる実運用では安定性を理由に選ぶ余地がある。</p>
+        <p>ReliableEvalは統計的有意差検定そのものを置き換える提案ではない。まず「評価プロンプトを一つ固定する」という隠れたランダム要因を観測対象へ出し、測定量の分布を報告できるようにする。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>90問のテストセットで、ある能力項目が10問あるとする。その10問を一回ずつ採点して8/10だったとしても、「能力80%」と断定するにはまだ荒い。各設問に意味保存的な言い換えを3種類用意したところ、同じ設問でも3/3で通るもの、1/3しか通らないものが分かれれば、「難しい問題」と「表現に弱い問題」を分けて診断できる。</p></aside>
+
+        <h2>CheckListと組み合わせると、評価の二つの粗さを分けられる</h2>
+        <p>CheckListが扱う粗さは、能力の混同である。総合点だけを見ると、否定理解、時制、固有表現、意味役割など、どの能力で失敗したか分からない。そこで能力を分け、MFT・INV・DIRのようなテスト形式を使う。</p>
+        <p>ReliableEvalが扱う粗さは、その能力テストを一つの表現で固定することから生じる。能力を細分化しても、各セルに一問しかなく、その一問の言い回しにモデルがたまたま適合していれば、能力の推定は安定しない。</p>
+        <p>したがって評価設計では、<strong>何の能力を測るか</strong>と、<strong>同じ能力を測る入力表現の揺れをどこまで含めるか</strong>を別に設計できる。前者は評価項目の分解、後者は測定の信頼性である。</p>
+
+        <h2>法務・RAG評価へ持ち込むとき、変えてよいものを明示できる</h2>
+        <p>以下は原論文の実験ではなく、論文の方法を法務リサーチやRAGへ移した場合の例である。</p>
+        <p>法務質問なら、企業名、人物名、文体、質問順序、問題文の段落分けは、法的意味が変わらない範囲で揺らせることがある。一方、契約期間、当事者属性、同意の有無、時点、管轄、条文の適用要件は、変えると正解自体が変わり得る。</p>
+        <p>RAGなら、同じ根拠資料を与えても資料の並び順、chunk境界、質問の表面形で生成結果が揺れる可能性がある。どの変形を「意味保存」とみなすかを先に書けば、検索器の不安定性、生成器の不安定性、問題そのものの難易度を混ぜにくくなる。</p>
+        <p>特に社内回帰テストでは、一つの設問を永遠に固定すると、モデルやプロンプトがその表現だけに最適化される危険がある。意味保存変形を小さなファミリーとして持てば、「この文章を覚えた」ことと「この能力を持つ」ことを分けやすい。</p>
+
+        <h2>平均だけでなく、分散を品質項目にできる</h2>
+        <p>実運用では入力を完全に正規化できない。利用者は同じ意図を異なる言い回しで書く。ならば、平均精度と同時に、表現差に対する分散そのものを品質として見る理由がある。</p>
+        <p>平均85%・標準偏差2%のモデルと、平均87%・標準偏差12%のモデルのどちらを選ぶかは用途で変わる。少し高い最高性能より、誰が書いても挙動が読みやすいことを重視する業務もある。逆に、入力テンプレートを厳密に固定できるなら、分散の重要性は下がる。</p>
+        <p>この判断を可能にするのが、単一点ではなく分布を報告する利点である。評価値を「モデルの能力」そのものと見なさず、評価条件との組合せで得られた測定値として扱える。</p>
+
+        <h2>限界——変形集合を間違えれば、精密に間違える</h2>
+        <p>ReliableEval自身にもコストがある。参照分布を作るには多数回の推論が必要で、評価対象が増えるほど高価になる。論文は安価な参照モデルを使う可能性を示すが、どのモデル・データセットでも安全に代用できるとは限らない。</p>
+        <p>さらに、意味保存変形の定義が悪ければ、推定値を何桁精密にしても測っている対象がずれる。例えば法務問題で、単なる言い換えのつもりで時制や主体を変えれば、法的評価を変えてしまうことがある。変形生成器には独立した検証が必要になる。</p>
+        <p>論文は主にプロンプト変形を扱い、デコーディング設定、温度、モデルAPI側の非決定性、データセット規模が必要試行数へ与える影響をすべて網羅してはいない。評価のランダム性には複数の発生源があり、本稿の方法はその一つを明示的に扱う。</p>
+
+        <h2>この論文から残る設計原則</h2>
+        <p>評価値へ信頼性を要求するなら、「何点だったか」の前に「その点数は、評価条件を少し変えてもどの程度再現するか」を見る。意味保存変形の範囲を定義し、平均とばらつきを測り、必要な反復回数を許容誤差と信頼度から決める。予算が足りなければ、測定精度を明示的に緩める。</p>
+        <p>この手順を入れると、評価は問題集にモデルを一度通す作業から、<strong>測定器そのものの精度を設計する作業</strong>へ近づく。能力項目の細分化とは別に、「その能力値をどれだけ信用できるか」という評価の二階部分を持てる。</p>
+
+        <div class="reading-question"><span>読後に考える</span><p>いま使っている評価セットで、質問の言い換えや根拠資料の並びを変えても同じ結論になるべき項目はどれだろう。その変形を3〜5種類作ったとき、現在の合否はどの程度安定して残るだろうか。</p></div>
+        <section class="related"><h2>関連して読む</h2><div class="related-grid"><a href="checklist.html">平均点を捨てて、AIの「振る舞い」をテストする</a><a href="model-written-evaluations.html">評価項目そのものをLLMに作らせる</a><a href="tau-bench.html">一度成功したエージェントを信用しない</a><a href="ai-agents-that-matter.html">エージェントの「最高精度」は、そのまま価値ではない</a></div></section>
+      </article>
+      <aside class="article-rail"><section class="rail-card"><span>収集条件との対応</span><p>AI評価・LLM信頼性の高速更新分野枠。意味保存的なプロンプト変形を確率変数として扱い、評価の平均・分散と必要試行回数を、誤差幅と信頼度から設計する。</p><div class="article-actions"><button type="button" data-read="reliable-eval" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="reliable-eval" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://aclanthology.org/2025.findings-emnlp.594/" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>Gili Lior, Eliya Habba, Shahar Levy, Avi Caciularu, Gabriel Stanovsky. “ReliableEval: A Recipe for Stochastic LLM Evaluation via Method of Moments.” Findings of EMNLP 2025, pp. 11146–11153.</p></section></aside>
+    </div>
+  </main>
+  <footer class="site-footer"><p><strong>変な読み物置き場</strong><span>／ 自動収集される技術・思想・学術の索引。</span></p><a href="../index.html">アーカイブへ戻る ←</a></footer>
+</body></html>
