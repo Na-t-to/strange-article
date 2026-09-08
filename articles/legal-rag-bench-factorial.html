@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ja"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>法務RAGの「どの部品が悪いか」を、総当たりで測る——Legal RAG Benchのfactorial evaluation｜変な読み物置き場</title>
+  <meta name="description" content="Legal RAG Benchから、3種のretrieverと2種のLLMを全組合せで比較し、retrieval・reasoning・hallucinationを階層的に切り分ける評価設計を読む。">
+  <link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/legal-rag-bench-factorial.html">
+  <meta property="og:type" content="article"><meta property="og:title" content="法務RAGの「どの部品が悪いか」を、総当たりで測る——Legal RAG Benchのfactorial evaluation"><meta property="og:description" content="RAG全体の点数だけでは、retrieverとLLMの寄与も相互作用も分からない。部品の全組合せと階層的な失敗分類で測る。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/legal-rag-bench-factorial.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-legal-rag-bench-factorial.svg">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="法務RAGの部品を総当たりで測る"><meta name="twitter:description" content="Legal RAG Benchから、factorial evaluationと階層的error decompositionを読む。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-legal-rag-bench-factorial.svg">
+  <link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260904-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="legal-rag-bench-factorial">
+  <header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-08 14:23</p></header>
+  <main class="article-shell">
+    <p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　法務×AI</p>
+    <header class="article-header">
+      <div class="tags"><span>法務×AI</span><span>RAG</span><span>AI評価</span></div>
+      <h1>法務RAGの「どの部品が悪いか」を、総当たりで測る——Legal RAG Benchのfactorial evaluation</h1>
+      <p class="original-title">Legal RAG Bench: an end-to-end benchmark for legal RAG</p>
+      <div class="article-meta-row"><p><strong>Abdur-Rahman Butler / Umar Butler · 2026</strong><br>公開 2026.09.08　／　推定読了 53分</p></div>
+    </header>
+    <figure class="article-visual"><img src="../assets/visual-legal-rag-bench-factorial.svg" alt="三つの検索器と二つの生成モデルが全組み合わせで接続され、各経路を検索・根拠・回答の検査点が通る線画" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+    <div class="article-layout">
+      <article class="article-body">
+        <p class="lead-box">RAGの回答精度が上がったとき、「retrieverを変えたから良くなった」「LLMを変えたから良くなった」と言うには、部品を一つずつ試すだけでは足りない。組み合わせによって効果が変わる可能性があるからだ。Legal RAG Benchは、3種類のembedding modelと2種類のLLMを<strong>全組み合わせで実行するfull factorial design</strong>を採り、さらに誤答をretrieval・reasoning・hallucinationへ階層的に分ける。法務RAGの評価を「総合点」から「どの部品と組み合わせが結果を作ったか」へ降ろす試みである。</p>
+
+        <h2>収集条件との対応</h2>
+        <p>2026年3月公開の研究で、Victorian Criminal Charge Bookから4,876 passagesを用意し、刑事法・刑事手続の専門知識を要求する100問について長文正解とsupporting passageを作る。三つのembedding modelと二つのfrontier LLMを同じRAG pipelineで全組合せ評価し、correctness、groundedness、retrieval accuracyを測った。codeとdataも公開されている。</p>
+        <p>既収録のLegalBench-RAGは「正解文書」より細かいcharacter spanをground truthにしてretrievalを評価した。Hallucination-Free?の記事は実製品の回答をcorrectnessとgroundednessへ分け、検索・適用不能な権威・reasoningなどの失敗を人手で分類した。Legal RAG Benchを今回収録する理由は、同じ失敗分類を増やすことではない。<strong>部品の寄与と部品間のinteractionを、実験計画として切り分ける</strong>ところに差分がある。</p>
+
+        <h2>まず、評価対象を「一つのRAG製品」に潰さない</h2>
+        <p>RAGは少なくともretrievalとgenerationを含む。実装ではchunking、reranking、query rewritingなども入るが、Legal RAG Benchは比較を明確にするため、同じbarebones pipelineへembedding modelとLLMだけを差し替える。embeddingはIsaacus Kanon 2、Gemini Embedding 001、OpenAI Text Embedding 3 Large、LLMはGemini 3.1 ProとGPT-5.2である。</p>
+        <p>この設計の利点は、例えばKanon 2 + GPT-5.2だけをA製品、OpenAI embedding + GeminiだけをB製品として比べず、Kanon 2を両方のLLMと、OpenAI embeddingも両方のLLMと組み合わせることだ。retrieverの違いとLLMの違いを同じ実験の中で推定できる。</p>
+        <p>一部の組み合わせだけを試すと、「A構成が強かった」ことから「Aで使ったretrieverが強い」と帰属してしまう危険がある。強さがLLM側から来ているかもしれず、特定retrieverと特定LLMの相性から来ているかもしれない。full factorial designはその混同を減らす。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>二種類のコーヒー豆と二種類の抽出器を比べたいのに、「豆A＋器具X」と「豆B＋器具Y」だけ飲んで豆Aの方がおいしいとは言えない。A+X、A+Y、B+X、B+Yを試して初めて、豆の効果、器具の効果、特定の組合せだけで起きる相性を分けられる。</p></aside>
+
+        <h2>100問は、単純なkeyword hitで解けないように作られている</h2>
+        <p>benchmarkの100問は専門家が手作業で作り、単純に質問文とsupporting passageの語彙が一致しすぎないように設計される。各問には長文回答と、回答を支えるpassageが付く。著者らの狙いは、表面的なlexical overlapでretrieval accuracyが高くなるのを避け、法的概念の対応を必要とする検索にすることだ。</p>
+        <p>ただし、このdatasetは法務一般を代表するものではない。Victorian Criminal Charge Bookという単一法域・単一資料源を基礎にし、各質問は原則として一つのsupporting passageで答えられるよう作られている。法令、判例、行政資料を横断し、複数資料を統合する一般的なlegal researchより問題構造は狭い。</p>
+        <p>この制約は重要である。実験計画として参考になることと、そこで勝ったcomponentが別の法域・日本法・契約書・複数資料型調査でも勝つことは別である。</p>
+
+        <h2>correctness・groundedness・retrieval accuracyを別々に持つ</h2>
+        <p>評価は三つの指標を持つ。<strong>correctness</strong>は最終回答が正しいか。<strong>groundedness</strong>は回答が実際にretrieved passageに支えられているか。<strong>retrieval accuracy</strong>はannotated supporting passageをretrieverが取得できたかである。</p>
+        <p>この分離により、正答しているがretrieved evidenceと対応しない回答、retrieved contextには忠実だが質問には誤った回答、support passage自体を取れていない回答を区別できる。最終correctnessだけでは、同じ0点でも改善先が違う。</p>
+        <p>評価judgeにはGPT-5.2のhigh reasoning設定を使い、著者らは内部検証で明確なbinary rubricに対するjudge accuracyを99%と報告する。ただしjudgeも評価systemの一部であり、この99%は著者らのbenchmark内検証値である。別domainで同じ精度を仮定する根拠にはならない。</p>
+
+        <h2>誤答を階層的に分類する——同じ失敗を二重計上しない</h2>
+        <p>Legal RAG Benchのerror decompositionは順序を持つ。まず回答がretrieved contextにgroundedしているかを見る。groundedしていない誤答ならhallucinationとして扱う。groundedしているが誤答なら、supporting passageがretrievedされていたかを見る。取れていなければretrieval error、取れていたのに誤ればreasoning errorとする。</p>
+        <p>この順序には意味がある。正解passageがretrievedされていないのに、LLMがそのpassageを使ったreasoningを失敗したとは言えない。upstreamで入力が欠けている場合、downstream能力は観察不能になっている。そこで先にretrieval条件を確認する。</p>
+        <p>評価基準を細分化するとき、この考え方はかなり一般化できる。すべての項目を並列採点すると、「必要資料なし」と「資料を誤読した」を同時に×にして、一つの原因で複数の失点を作ることがある。前提条件を満たしたときだけ後段を評価するhierarchyを持てば、failure attributionがきれいになる。</p>
+
+        <h2>結果では、retrieverの変更が大きく効いた</h2>
+        <p>このdatasetとpipelineではKanon 2を使った構成が高い値を示した。二つのLLMで平均すると、Kanon 2はcorrectness 94%、groundedness 96%、retrieval accuracy 86%。OpenAI embeddingは76.5%、91.5%、52%、Gemini embeddingは74%、87%、53%だった。</p>
+        <p>著者らの集計ではKanon 2へ替えることで、比較対象に対してcorrectnessで最大17.5 percentage points、groundednessで4.5 points、retrieval accuracyで34 pointsの差が見られた。一方、LLMを替えた差はこの実験ではより小さかった。</p>
+        <p>ただし、ここから「法務RAGでは常にretrieverがLLMより重要」と一般化するのは強すぎる。100問・単一corpus・単一passage型問題・特定モデル群・特定pipelineでの結果である。さらにKanon 2は著者らが関係するIsaacusの製品であり、後述する利益相反もある。持ち帰る価値が高いのは順位そのものより、component effectを測る実験方法である。</p>
+
+        <h2>main effectだけでなくinteractionを見る</h2>
+        <p>full factorial designを採る理由は、平均的なcomponent差を見るだけではない。retriever AがLLM Xとは相性がよいがLLM Yとは相性が悪いなら、「retriever Aは何点強い」という一つのmain effectでは足りない。component間のinteractionがある。</p>
+        <p>論文はquestion固定効果を含むlinear probability modelを使い、embedding model、LLM、それらのinteractionを推定する。標準誤差はquestion単位でclusterする。結果ではembeddingのmain effectは三指標で有意だった一方、LLMのmain effectはcorrectnessなどで同じ強さを示さず、groundednessではembedding×LLMのinteractionも検出された。</p>
+        <p>この結果の読み方は、「相性があるから何も比較できない」ではない。むしろ、componentの採用判断でmain effectとinteraction effectを分ける。全体に安定して強い部品なのか、特定partnerと組んだときだけ強いのかを知れる。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>二つの検索方式A/Bと二つの回答model X/Yを試し、A+Xだけ突出して高いとする。Aを全製品へ採用する前に、A+Yが弱いなら「Aが優秀」ではなく「AとXの組合せが優秀」という可能性を残す。部品表のランキングとsystem構成のランキングは同じではない。</p></aside>
+
+        <h2>「retrieval failureがhallucinationを誘発する」という観察も、順序を守って読む</h2>
+        <p>著者らはretrieval qualityが低い構成でhallucinationが増える傾向を報告し、retrievalが多くのRAG systemで性能上限を作ると論じる。正解根拠がないcontextをLLMへ渡せば、モデルが不足を補おうとしてunsupported claimを作る経路は確かに考えやすい。</p>
+        <p>しかし、このbenchmarkだけで一般的な因果法則が確定したわけではない。retrieverを変えると取得context全体が変わり、そのcontextとLLMの相互作用も変わる。強いretrievalがhallucinationを減らすという設計仮説は検証価値があるが、domain・prompt・abstention policy・generation modelが変われば効果量も変わる。</p>
+        <p>実務評価では、retrieval errorの件数とhallucinationの件数を並べるだけでなく、「正解資料がなかったとき、modelは拒否・限定回答・推測のどれを選んだか」を追加すると原因がさらに見える。</p>
+
+        <h2>法務RAGの評価表へ持ち込むなら、能力の分解と条件付き採点を組み合わせる</h2>
+        <p>CheckList的に能力を「論点把握」「資料探索」「資料選別」「根拠利用」「reasoning」「回答」へ分けるだけでも平均点より診断しやすくなる。Legal RAG Benchはそこへ、<strong>後段能力を採点できる前提が満たされたか</strong>という条件を加える。</p>
+        <p>例えば中心法令が取得されていない場合、「中心法令から正しい命題を抽出できたか」は未評価にする。中心法令は取得されたが、別条文を根拠にしたなら根拠選別の失敗。正しい条文を引用したのに射程を広げたならreasoningまたはgroundingの失敗。最終回答が×という一点から、故障位置を一段ずつ下げていける。</p>
+        <p>さらにpipelineの変更を評価するなら、一度に複数componentを替えない。retriever候補×reader候補を可能な範囲で組み合わせ、同一問題集合へ通す。予算が足りなければfull factorialを縮約してもよいが、どのeffectが交絡するかを意識する。</p>
+
+        <h2>利益相反と外的妥当性は、結果を読む上で外せない</h2>
+        <p>この論文では著者らがIsaacusのfounderであり、評価対象のKanon 2 EmbedderをIsaacusが開発し、benchmark作成も同社がsponsorしたことが開示されている。しかも実験ではKanon 2が最良結果を出している。これは論文を無効にする事実ではないが、製品優劣の主張を読むときには重要な背景である。</p>
+        <p>再現用code/dataが公開されているため、独立した再実験が可能なのは長所である。一方、100問という規模、Victorian criminal law、単一資料源、single-passage answerという問題設計、3 embedders×2 LLMs、barebones pipelineという範囲は狭い。契約書、判例調査、法改正調査、日本語、日本法、多段検索へ一般化するには別のdatasetが要る。</p>
+        <p>したがってアーカイブで残すべき部分は「Kanon 2が最強だった」というランキングではなく、full factorial design、複数指標、hierarchical error decomposition、interactionの検査という評価設計である。</p>
+
+        <h2>この論文から残る設計原則</h2>
+        <p>RAGのsystem scoreが変わったとき、componentの寄与を言いたいなら組み合わせを変えて比較する。一つの構成同士を比べて、そこに含まれる一部品へ差を帰属しない。可能ならmain effectとinteraction effectを分ける。</p>
+        <p>誤答分類ではupstreamの前提を先に見る。正解資料が取得されていなければretrieval failure、取得されて初めてreasoningを評価する、といった階層を置く。能力項目を細かくするだけでなく、<strong>その能力を観察できる条件</strong>まで評価仕様に含めると、失敗原因の二重計上を減らせる。</p>
+
+        <div class="reading-question"><span>読後に考える</span><p>いまのRAG評価で「検索」「根拠利用」「推論」を並列に採点している場合、上流失敗によって本当は観察できない後段能力まで×を付けている設問はないだろうか。また、改善前後で二つ以上のcomponentを同時に変更し、その差を一部品へ帰属していないだろうか。</p></div>
+        <section class="related"><h2>関連して読む</h2><div class="related-grid"><a href="legalbench-rag.html">法務RAGは「正解文書を取れた」で終わらない</a><a href="legal-rag-hallucinations.html">引用が実在しても、法務AIは間違える</a><a href="ragchecker.html">RAGの失敗を一つの点数に潰さない</a><a href="checklist.html">平均点を捨てて、AIの「振る舞い」をテストする</a></div></section>
+      </article>
+      <aside class="article-rail"><section class="rail-card"><span>収集条件との対応</span><p>法務×AI・RAG・AI評価の高速更新分野枠。component全組合せのfactorial designと、前提条件を踏まえたhierarchical error decompositionを扱う。</p><div class="article-actions"><button type="button" data-read="legal-rag-bench-factorial" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="legal-rag-bench-factorial" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://arxiv.org/pdf/2603.01710" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>Abdur-Rahman Butler, Umar Butler. “Legal RAG Bench: an end-to-end benchmark for legal RAG.” arXiv:2603.01710, 2026.</p></section></aside>
+    </div>
+  </main>
+  <footer class="site-footer"><p><strong>変な読み物置き場</strong><span>／ 自動収集される技術・思想・学術の索引。</span></p><a href="../index.html">アーカイブへ戻る ←</a></footer>
+</body></html>
