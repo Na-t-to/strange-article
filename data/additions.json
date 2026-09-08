@@ -1,5 +1,69 @@
 [
   {
+    "slug": "legal-rag-bench-factorial",
+    "title": "法務RAGの「どの部品が悪いか」を、総当たりで測る——Legal RAG Benchのfactorial evaluation",
+    "originalTitle": "Legal RAG Bench: an end-to-end benchmark for legal RAG",
+    "authors": ["Abdur-Rahman Butler", "Umar Butler"],
+    "year": 2026,
+    "publishedAt": "2026-09-08",
+    "tags": ["法務×AI", "RAG", "AI評価"],
+    "readingMinutes": 53,
+    "sourceUrl": "https://arxiv.org/pdf/2603.01710",
+    "excerpt": "3種の検索器と2種のLLMを全組み合わせで比較し、部品の主効果・相互作用と、retrieval・reasoning・hallucinationの失敗原因を分けて測る。",
+    "image": "assets/visual-legal-rag-bench-factorial.svg",
+    "imageAlt": "三つの検索器と二つの生成モデルが全組み合わせで接続され、各経路を検索・根拠・回答の検査点が通る線画",
+    "imageCaption": "図版：自動生成",
+    "featured": true
+  },
+  {
+    "slug": "followir",
+    "title": "検索器は「何を関連とするか」まで読めているか——FollowIRで検索条件への追従を測る",
+    "originalTitle": "FollowIR: Evaluating and Teaching Information Retrieval Models to Follow Instructions",
+    "authors": ["Orion Weller", "Benjamin Chang", "Sean MacAvaney", "Kyle Lo", "Arman Cohan", "Benjamin Van Durme", "Dawn Lawrie", "Luca Soldaini"],
+    "year": 2024,
+    "publishedAt": "2026-09-08",
+    "tags": ["RAG", "情報検索", "AI評価"],
+    "readingMinutes": 52,
+    "sourceUrl": "https://arxiv.org/html/2403.15246",
+    "excerpt": "同じ検索語でも採用条件が変われば関連文書は変わる。長い条件文をretrieverが本当に使い、順位を期待方向へ動かせるかを評価する。",
+    "image": "assets/visual-followir.svg",
+    "imageAlt": "同じ検索語から伸びる文書群の順位が、追加された採用条件によって入れ替わる様子を描いた線画",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
+    "slug": "epistemic-action",
+    "title": "行動は世界を変えるためだけにあるわけではない——手を動かして考える「epistemic action」",
+    "originalTitle": "On Distinguishing Epistemic from Pragmatic Action",
+    "authors": ["David Kirsh", "Paul Maglio"],
+    "year": 1994,
+    "publishedAt": "2026-09-08",
+    "tags": ["認知科学", "HCI", "AIエージェント"],
+    "readingMinutes": 54,
+    "sourceUrl": "https://onlinelibrary.wiley.com/doi/10.1207/s15516709cog1804_1",
+    "excerpt": "目標状態へ直接近づく操作と、記憶・計算・誤りを減らすために外部世界を操作する行動を分ける。Tetrisの実測から「考えるための操作」を捉える。",
+    "image": "assets/visual-epistemic-action.svg",
+    "imageAlt": "盤面上の同じブロックが、目標へ進む経路と、いったん回転して見え方を確かめてから戻る経路へ分かれる線画",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
+    "slug": "knowledge-level",
+    "title": "「知っている」と「どう保存している」を同じ問題にしない——NewellのKnowledge Level",
+    "originalTitle": "The Knowledge Level",
+    "authors": ["Allen Newell"],
+    "year": 1981,
+    "publishedAt": "2026-09-08",
+    "tags": ["知識表現", "AI設計", "認識論"],
+    "readingMinutes": 55,
+    "sourceUrl": "https://www.cs.ucf.edu/~lboloni/Teaching/EEL6938_2007/papers/Newell-KnowledgeLevel.pdf",
+    "excerpt": "システムが何を知り、何を目標に行動できるかという記述と、その知識をどの記号構造へ保存し、どうアクセスするかという実装を分ける。",
+    "image": "assets/visual-knowledge-level.svg",
+    "imageAlt": "上段の目標・知識・行動の関係が、下段の複数の記号構造とアクセス経路へ対応している線画",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
     "slug": "reliable-eval",
     "title": "一つのプロンプトで評価を決めない——意味を保った言い換えまで含めて信頼性を測る",
     "originalTitle": "ReliableEval: A Recipe for Stochastic LLM Evaluation via Method of Moments",
@@ -13,7 +77,7 @@
     "image": "assets/visual-reliable-eval.svg",
     "imageAlt": "意味を保った複数のプロンプトカードから複数の評価値が生まれ、単一点ではなく平均とばらつきを持つ分布として描かれる線画",
     "imageCaption": "図版：自動生成",
-    "featured": true
+    "featured": false
   },
   {
     "slug": "sensemaking-analysis",
