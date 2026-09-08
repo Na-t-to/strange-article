@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ja"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>「知っている」と「どう保存している」を同じ問題にしない——NewellのKnowledge Level｜変な読み物置き場</title>
+  <meta name="description" content="Allen NewellのThe Knowledge Levelから、知識を具体的なデータ構造と同一視せず、目標・行動・合理性からシステムを記述するレベルと、knowledge + accessとしてのrepresentationを読む。">
+  <link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/knowledge-level.html">
+  <meta property="og:type" content="article"><meta property="og:title" content="「知っている」と「どう保存している」を同じ問題にしない——NewellのKnowledge Level"><meta property="og:description" content="知識を表す構造と、その知識を使って説明できる行動を分ける。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/knowledge-level.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-knowledge-level.svg">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="NewellのKnowledge Level"><meta name="twitter:description" content="知識と表現、能力とアクセスを別の記述レベルで考える。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-knowledge-level.svg">
+  <link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260904-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="knowledge-level">
+  <header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-08 14:23</p></header>
+  <main class="article-shell">
+    <p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　知識表現</p>
+    <header class="article-header">
+      <div class="tags"><span>知識表現</span><span>AI設計</span><span>認識論</span></div>
+      <h1>「知っている」と「どう保存している」を同じ問題にしない——NewellのKnowledge Level</h1>
+      <p class="original-title">The Knowledge Level</p>
+      <div class="article-meta-row"><p><strong>Allen Newell · 1981</strong><br>公開 2026.09.08　／　推定読了 55分</p></div>
+    </header>
+    <figure class="article-visual"><img src="../assets/visual-knowledge-level.svg" alt="上段の目標・知識・行動の関係が、下段の複数の記号構造とアクセス経路へ対応している線画" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+    <div class="article-layout">
+      <article class="article-body">
+        <p class="lead-box">「このシステムはXを知っている」と言うとき、Xがどの変数、ルール、表、ネットワークに保存されているかまで同時に答えているわけではない。Allen Newellは1981年、symbol levelの一段上に<strong>knowledge level</strong>という記述レベルを置いた。そこではシステムを、何を知り、何を目標とし、どんな行動が可能かから記述する。具体的な内部表現は、その知識を実現し、必要なときに利用可能にする別の問題として扱う。</p>
+
+        <h2>収集条件との対応</h2>
+        <p>本稿はAAAI初代会長Newellのpresidential addressとしてAI Magazine 1981年夏号に掲載された。知識表現を特定のlogicやdata structureの選択問題として始めず、「そもそもAIでknowledgeと呼んでいるものは何か」をsystems levelの考え方から整理する。四十年以上経った現在も、能力、表現、検索、アクセス、実装を混ぜずに話すための概念装置として読める。</p>
+        <p>既収録のOntoCleanは、概念分類そのものにidentity・rigidityなどのメタ性質を入れてtaxonomyを検査する。Programming as Theory Buildingは、コードだけでは開発者が持つ理論を引き継げないと論じた。Knowledge Levelが扱うのはさらに抽象的で、<strong>「知識を持つシステム」として説明するときの語彙と、知識を実装する記号機構の語彙を分ける</strong>ことである。</p>
+
+        <h2>コンピュータは、同じ対象を複数のlevelで説明できる</h2>
+        <p>Newellの出発点はcomputer systemsの階層である。同じ計算機でも、電子回路として説明できるし、logic circuitとしても、register-transfer levelとしても、programming levelとしても説明できる。上位のlevelでは下位の細部を隠し、そのlevel固有のcomponent、medium、behavioral lawを使う。</p>
+        <p>たとえばプログラムを理解するのに、各トランジスタの電圧変化を追う必要はない。逆に、プログラムの意味だけでは、実行時間や故障した回路の原因を説明できない。levelは現実を別々の対象へ分けるのではなく、同じシステムを異なる粒度と法則で記述するためにある。</p>
+        <p>Newellは、AIでもsymbol levelの上にもう一つlevelが必要だと考えた。AI研究者はすでに日常的に「このprogramはopeningを知っている」「このagentはgoalを持つ」と話している。しかしその語彙が、symbol structureそのものの語彙と混ざっていた。</p>
+
+        <h2>Knowledge Levelでは、agentを目標・行動・知識で記述する</h2>
+        <p>knowledge levelのsystemはagentである。agentにはgoalがあり、実行可能なactionがあり、worldについてのknowledgeがある。そして行動を予測するためのlawとして、Newellは<strong>principle of rationality</strong>を置く。簡単に言えば、agentは自分のknowledgeに照らしてgoalを達成すると分かっているactionを選ぶ、とみなす。</p>
+        <p>この説明では、知識がarrayに入っているか、production ruleとして書かれているか、logic式で表されているかを指定しない。「店が9時に閉まることを知っていて、店へ行きたいので走っている」のように、知識と目標から行動を説明する。</p>
+        <p>Newellにとってknowledgeの定義も構造ではなく機能的である。agentへある内容を帰属させたとき、その内容とrationality principleから行動を計算できるなら、それをknowledgeとして扱う。この定義は「knowledgeは真でなければならない」といった哲学上の標準定義をそのまま採るものではない。論文自身、AIのknowledge systemは誤った内容も持ち得るため、哲学から見ればbelief systemに近いと認める。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>経路案内アプリについて「駅が工事中だと知っているので別経路を提案した」と説明できる。内部では工事情報がJSON、database row、graph edgeの属性のどれで表されていても、利用者が知りたいのはまず「どんな情報を前提に経路を選んだか」である。保存形式の説明が必要になるのは、情報が反映されなかった原因や更新方法を調べる段階だ。</p></aside>
+
+        <h2>knowledgeは、symbol structure一個と同一ではない</h2>
+        <p>この論文の強い主張の一つは、knowledgeをsymbol levelの特定構造と一対一対応させないことである。同じknowledgeは、複数の異なるrepresentationで実現できる。logic、rule、frame、program codeなど、表現形式が違ってもknowledge levelでは同じ内容を帰属できる場合がある。</p>
+        <p>逆方向にも注意が要る。あるsymbol structureが存在するからといって、agentがその内容をいつでも即座に使えるとは限らない。実際のsystemは有限時間で動き、必要な情報へアクセスし、推論し、行動を選ぶ。符号化されている内容の全組合せを一瞬で展開できない。</p>
+        <p>そこでNewellは、representationを単なるknowledgeの符号化として扱わず、<strong>knowledge + access</strong>として見る。どんな知識が表現されているかに加え、それを現在のgoalや環境へどう取り出して使うかがrepresentationの性能を決める。</p>
+
+        <h2>同じknowledgeでも、accessの仕方で性能は変わる</h2>
+        <p>二つのsystemが論理的には同じ事実集合を表現できても、問い合わせへ答える速度や、必要な推論量は違い得る。ある表現では必要情報が直接indexedされ、別の表現では長い探索や証明が必要になる。knowledge levelでは同じ能力を持つように見えても、symbol levelの実装差が実時間性能へ現れる。</p>
+        <p>この違いは、知識表現の選択を「どの形式が最も表現力豊かか」だけで決めない理由になる。表現力を増やしても、アクセスや推論が極端に高価なら、実際のagentがgoalに必要なknowledgeを間に合わせて使えない。Newellはknowledge levelをradical approximationと呼び、実際のsystemが完全なrationalityを満たさないことを前提にする。</p>
+        <p>つまり「知っているなら使えるはず」という推論には時間制約が抜けている。knowledge levelは有用な高位記述だが、失敗を説明するときにはsymbol levelへ降り、どのrepresentationとaccess processが能力を実現しているかを見る必要がある。</p>
+
+        <h2>「何を知るべきか」と「どう実装するか」を分離できる</h2>
+        <p>設計では、この二つのlevelを分けることで仕様の順番が変わる。まずagentがgoalを達成するために、何を知っている必要があるかを記述する。その後、そのknowledgeをどのsymbol structureとprocessで実現するかを設計する。</p>
+        <p>例えば在庫管理systemなら、「この注文を受け付ける時点の利用可能在庫、引当済み数量、補充予定を知っている必要がある」という仕様と、「それらを三つのtableへ保存し、このqueryでjoinする」という実装は別である。前者はsystemに必要なcompetenceを述べ、後者はcompetenceを実現するmechanismを述べる。</p>
+        <p>この分離はinformation hidingとも相性がよい。利用者側から必要なのはknowledge-levelの契約であり、内部のsymbol representationが変わっても同じcompetenceを提供できればよい。ただしperformance requirementがあるなら、access costは外部仕様へ戻ってくる。</p>
+
+        <h2>RAGへ読むと「資料がある」と「その場で使える」を分ける比喩になる</h2>
+        <p>ここから先は原文のRAG論ではなく、現在のsystem設計へ引き寄せた読みである。RAGでは、必要な資料がcorpusに存在すること、retrieverがそれを取得すること、contextへ入った資料をLLMが利用することを分けて評価する。これはNewellのknowledge/accessの区別と完全に同じ理論ではないが、混同を避けるための概念的な類似がある。</p>
+        <p>corpusに正解資料が保存されているだけでは、問い合わせ時に使えるknowledgeにならない。retrievalで漏れる、chunkがずれる、context内で見落とす、根拠から推論できない、といったaccess側の失敗がある。既収録のLegalBench-RAGやLost in the Middleが実験的に示す失敗を、「存在している情報」と「行動へ利用可能な情報」の違いとして整理できる。</p>
+        <p>ただし「LLMが文書を知っている」という表現をNewellの意味で厳密に判定できるわけではない。モデル内部の知識表現をこの論文から直接推定することもできない。使えるのは、評価項目をcompetenceとaccess mechanismへ分けるための設計語彙である。</p>
+
+        <h2>Knowledge Levelは内部構造を説明しない——だから強く、だから足りない</h2>
+        <p>knowledge levelには、symbol levelのような構成部品の配置がない。どのruleがどのmemoryへつながるかを記述しない。system全体にknowledgeとgoalを帰属し、rationality principleで行動を説明する。この構造のなさが、高位仕様としての汎用性を作る。</p>
+        <p>一方で、systemが非合理に見える場面では説明力が落ちる。知識を持っていても時間内に検索できない、誤ったheuristicを使う、memoryが足りない、attentionが偏る。そのような実装上の制約を説明するにはsymbol levelのmodelが必要になる。</p>
+        <p>Newell自身、knowledge levelはagentの完全な記述ではなくradical approximationだと繰り返す。高位の合理的説明だけで内部に「賢い小人」を置いたことにしてはならない。最終的には、knowledge-levelの能力を実現するsymbol processへ還元できる必要がある。</p>
+
+        <h2>logicはknowledge levelを分析する道具であって、唯一のrepresentationではない</h2>
+        <p>当時のknowledge representation論ではlogicの位置づけが大きな争点だった。Newellはlogicを退けない。むしろknowledge levelで、あるknowledgeから何が帰結するかを分析する強力な道具として置く。</p>
+        <p>ただし、logical formalismとtheorem proverを実装として採用するかどうかは別問題だとする。knowledge-levelで論理的に記述できることと、agent内部がそのlogicをそのままrepresentationとして使うことは同じではない。ここでも、仕様・分析の言語と実装機構を分けている。</p>
+        <p>この区別は形式仕様にも使える。仕様側で「この条件ならこの結果が導けるべき」と論理関係を明示しながら、実装はdatabase、search、LLM、rule engineを組み合わせてもよい。形式化した仕様を、そのままruntime architectureにしなければならないわけではない。</p>
+
+        <h2>限界——rationalityで説明しすぎる危険もある</h2>
+        <p>knowledge levelでは、観察者がagentのknowledgeとgoalを帰属して行動をrationalizeする。これは強力だが、後知恵でどんな行動にも「そうする理由を知っていた」と説明を付ければ、検証不能になる。knowledgeの帰属は、別の状況での行動予測にも耐える必要がある。</p>
+        <p>またprinciple of rationalityは完全な心理学モデルではない。人間もAI systemも処理時間、誤記憶、探索限界、近似heuristicを持つ。Newellはこの不一致を欠陥として隠さず、knowledge-level descriptionが成立する程度をrational systemらしさとして扱う。</p>
+        <p>現在のagent評価でも、「本当は知っていたが使えなかった」という説明を無限に許すと能力評価が曖昧になる。どの情報へアクセス可能だったか、何ステップ・何時間で使うべきか、どの条件で失敗してよいかまでoperationalizeして初めて仕様になる。</p>
+
+        <h2>この論文から残る設計原則</h2>
+        <p>systemへ要求するknowledgeと、そのknowledgeを実現するrepresentation・access mechanismを一度分けて書く。「何を知っていればこの行動を合理的に選べるか」を高位仕様として置き、その後に「どこへ保存し、どう検索し、どう推論し、何ms以内に利用可能にするか」へ降りる。</p>
+        <p>失敗時も、必要knowledgeの仕様が間違っていたのか、representationに欠けていたのか、accessできなかったのか、取得後のreasoningが壊れたのかを分ける。Newellのknowledge levelは、知識表現の答えを一つ選ぶ理論というより、<strong>能力の記述と実装機構の記述を混ぜないための境界線</strong>として長く使える。</p>
+
+        <div class="reading-question"><span>読後に考える</span><p>いま扱っているsystemの失敗について、「必要な知識がなかった」と呼んでいるもののうち、実際には知識の欠如・検索失敗・アクセス遅延・推論失敗へ分けられるものはどれだろう。</p></div>
+        <section class="related"><h2>関連して読む</h2><div class="related-grid"><a href="ontoclean.html">概念分類そのものを検査する</a><a href="programming-as-theory-building.html">コードを渡しても、設計は渡らない</a><a href="information-hiding.html">変わりやすい設計判断を隠す</a><a href="lost-in-the-middle.html">長いコンテキストに入れば読める、とは限らない</a></div></section>
+      </article>
+      <aside class="article-rail"><section class="rail-card"><span>収集条件との対応</span><p>AI・知識表現の古典発掘枠。agentをknowledge・goal・actionから記述するlevelと、その能力を実現するsymbol representation・accessを分ける。</p><div class="article-actions"><button type="button" data-read="knowledge-level" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="knowledge-level" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://www.cs.ucf.edu/~lboloni/Teaching/EEL6938_2007/papers/Newell-KnowledgeLevel.pdf" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>Allen Newell. “The Knowledge Level.” AI Magazine 2(2), Summer 1981, pp. 1–20, 33.</p></section></aside>
+    </div>
+  </main>
+  <footer class="site-footer"><p><strong>変な読み物置き場</strong><span>／ 自動収集される技術・思想・学術の索引。</span></p><a href="../index.html">アーカイブへ戻る ←</a></footer>
+</body></html>
