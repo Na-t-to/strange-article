@@ -1,9 +1,9 @@
 {
-  "date": "2026-09-07",
-  "lastUpdated": "2026-09-07T14:45:00+09:00",
-  "candidateCount": 31,
+  "date": "2026-09-08",
+  "lastUpdated": "2026-09-08T14:23:00+09:00",
+  "candidateCount": 34,
   "adoptedCount": 4,
-  "collectionNote": "要求工学、ソフトウェア設計、HCI、認知科学、社会技術システム、AI評価、RAG、legal AI、agent safety、システム安全の一次情報を広く探索。Parnasのモジュール分解、Pirolli/Cardのsensemaking、Star/Griesemerのboundary objects、ReliableEvalを採用した。Four Dark Cornersは既収録のWorld and the Machineとの重複、Human-AI Interaction GuidelinesはMixed-Initiative UI等との重複、ToolEmuはAgentDojo・システム安全との近さ、HELM・ARESは既存の評価/RAG記事との差分の小ささから今回は見送った。",
+  "collectionNote": "要求工学、RAG・情報検索、法務×AI、AI評価、agent safety、HCI、認知科学、知識表現、システム設計の一次情報を広く探索。今回は、検索条件そのものへの追従を測るFollowIR、RAG部品の主効果・相互作用と失敗原因を全組合せで分けるLegal RAG Bench、行動の認知的効用を実験で切り出すKirsh/Maglio、knowledgeとrepresentation/accessを別レベルで記述するNewellを採用した。Off-Switch GameはMixed-Initiative UI・システム安全との近さ、Four Dark Cornersは既収録World and the Machineとの重複、WildClawBenchはAgentDojo・tau-benchとの近さ、Mizzaroのrelevance論はFollowIRと同日に置く差分の小ささから今回は見送った。",
   "selectionTracks": [
     {
       "title": "古典発掘枠",
