@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ja"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>検索器は「何を関連とするか」まで読めているか——FollowIRで検索条件への追従を測る｜変な読み物置き場</title>
+  <meta name="description" content="FollowIRから、検索クエリだけでなく長い関連性条件をretrieverが理解できるかを、条件変更前後の順位変化で測る方法を読む。">
+  <link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/followir.html">
+  <meta property="og:type" content="article"><meta property="og:title" content="検索器は「何を関連とするか」まで読めているか——FollowIRで検索条件への追従を測る"><meta property="og:description" content="同じ検索語でも、採用条件が変われば関連文書は変わる。retrieverが長い条件文を本当に使って順位を変えられるかを測る。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/followir.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-followir.svg">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="検索器は「何を関連とするか」まで読めているか"><meta name="twitter:description" content="FollowIRから、検索条件への追従を順位変化で評価する。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-followir.svg">
+  <link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260904-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="followir">
+  <header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-08 14:23</p></header>
+  <main class="article-shell">
+    <p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　情報検索</p>
+    <header class="article-header">
+      <div class="tags"><span>RAG</span><span>情報検索</span><span>AI評価</span></div>
+      <h1>検索器は「何を関連とするか」まで読めているか——FollowIRで検索条件への追従を測る</h1>
+      <p class="original-title">FollowIR: Evaluating and Teaching Information Retrieval Models to Follow Instructions</p>
+      <div class="article-meta-row"><p><strong>Orion Weller / Benjamin Chang / Sean MacAvaney / Kyle Lo / Arman Cohan / Benjamin Van Durme / Dawn Lawrie / Luca Soldaini · 2024</strong><br>公開 2026.09.08　／　推定読了 52分</p></div>
+    </header>
+    <figure class="article-visual"><img src="../assets/visual-followir.svg" alt="同じ検索語から伸びる文書群の順位が、追加された採用条件によって入れ替わる様子を描いた線画" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+    <div class="article-layout">
+      <article class="article-body">
+        <p class="lead-box">検索では、短いクエリが同じでも「何を関連とみなすか」が違えば欲しい文書は変わる。FollowIRは、その条件を長い自然言語のinstructionとしてretrieverへ渡し、<strong>条件が変わったときに順位を正しい方向へ動かせるか</strong>を評価する。通常のRecall@kやnDCGが高くても、条件文をほぼ無視していれば、このテストでは通らない。</p>
+
+        <h2>収集条件との対応</h2>
+        <p>FollowIRは2024年に公開された情報検索研究で、TRECの専門評価者が使ってきた詳細なrelevance narrativeを再利用し、retrieverのinstruction followingを測るベンチマークと学習データを作った。評価用にはRobust04、Core17、News21の三つのTREC collectionを使い、学習用には別のTREC narrativeから合成文書を作っている。</p>
+        <p>既収録のLegalBench-RAGは、必要な根拠スパンをどこまで漏らさず、余計な文字を混ぜずに取れたかを測る。FollowIRが追加するのは、その一段前にある<strong>関連性の定義そのものが入力条件で変わる</strong>という問題である。質問と文書の意味が似ているかだけでは足りず、「この種類は含める」「この条件は除く」「この観点を満たすものだけを探す」といった利用者の指示まで検索器が扱えるかを分離して測る。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>「中古車　故障」という検索語で、一般的な故障事例を探す場合と、「購入後30日以内に発生し、販売時点ですでに兆候があった故障だけ」を探す場合では、同じ記事でも関連性が変わる。検索語へ条件語を足せば済むとは限らない。日数、発生時点、因果関係のような条件同士の関係を読まないと、欲しい集合を作れないからだ。</p></aside>
+
+        <h2>検索の「関連性」は、クエリ文字列だけでは決まらない</h2>
+        <p>一般的なretrieverは、queryとdocumentを入力して関連度を返す。近年のembedding modelやrerankerは強力だが、利用者が「何を数えるか」「何を除外するか」を文章で指定するための明示的な入力欄を持たないことが多い。実装側でqueryへ条件文を連結できても、その文字列をモデルが指示として解釈する保証はない。</p>
+        <p>TRECにはこの問題を試す材料が以前からあった。検索課題には短いtopicだけでなく、評価者向けのnarrativeが付くことがある。narrativeは「このtopicでは、Aを扱う文書は関連するが、Bだけを扱う文書は関連しない」のように、関連性判定の境界を文章で説明する。FollowIRはこのnarrativeを、検索器に守らせるinstructionとして読み替えた。</p>
+        <p>この読み替えが効くのは、検索の評価を「似ている文書を上へ出せるか」から「利用者が指定した関連性規則に従えるか」へ広げられるからである。RAGでは後段のLLMが高度でも、retrieverが条件を落とせば、最初から不適切な資料集合がcontextへ入る。</p>
+
+        <h2>条件を変えたら、順位も変わるべき文書を作る</h2>
+        <p>instruction followingを測るために、FollowIRは単に「instructionあり」と「なし」の検索スコアを比べない。重要なのは、指示の変更によって関連性が変わる文書を特定し、その文書の順位が期待方向へ動くかを見ることだ。</p>
+        <p>元のnarrativeには複数の条件が含まれる。著者らは条件の一部を反転・変更したinstructionを作り、その変更によって本来のrelevance labelが変わる文書を選ぶ。たとえば元の条件では非関連だった文書が、新しい条件なら関連になる。このとき検索器が指示を理解していれば、その文書を元より上へ動かすはずである。</p>
+        <p>ここでは絶対順位より、<strong>同じqueryとdocumentの組について、instruction変更前後で順位がどちらへ動いたか</strong>が診断材料になる。これはCheckListの方向性期待テストに近い考え方でもある。完全な正解順位を一つ決めなくても、条件変更に対して順位が上がるべきか下がるべきかは指定できる。</p>
+
+        <h2>p-MRRは、条件変更への「正しい反応」を測る</h2>
+        <p>FollowIRはpairwiseの評価プロトコルを使い、instruction変更の影響を受ける文書の順位変化を集計する。論文ではこの目的にp-MRRを導入する。指示変更によって関連になった文書が上がれば正、非関連になった文書が下がれば正になる。逆方向へ動けば負になる。</p>
+        <p>この設計によって、通常の検索性能とinstruction followingを別々に読める。あるretrieverが一般的な関連文書を上位へ出す能力を持っていても、追加条件を使って順位を調整できなければ、標準IR指標は高く、p-MRRは低いという組合せが起こる。</p>
+        <p>実際、評価された多くのモデルではp-MRRがゼロ付近か負になった。論文の表ではOpenAI v3 Largeが標準IR指標では強い一方、三つのFollowIR collection平均のp-MRRは負だった。Google Geckoはわずかに正、Mistral-7B-Instructや著者らのFollowIR-7Bはより明確に正となった。製品名ごとの順位は将来古くなるが、<strong>通常検索の強さと条件追従の強さが同じではなかった</strong>という観察は評価設計として残る。</p>
+
+        <h2>長いinstructionを渡しても、モデルは条件を「単語袋」にしてしまう</h2>
+        <p>なぜ条件文が効かないのか。著者らの分析では、多くのretrieverは長いinstructionの論理を十分に使わず、そこに現れる単語を検索語の追加のように扱う挙動を示した。含める条件と除外する条件が同じ語彙領域にあると、語が増えたこと自体は拾えても、どちらの文書を上げるべきかを判断できない。</p>
+        <p>長い説明を付ければ性能が自動的に上がるわけでもなかった。instructionを与えることで標準検索性能が下がるモデルもある。条件文に多くの語が入るほど、queryの中心語との表面的な類似度へノイズが混ざるからだ。</p>
+        <p>この失敗は、RAGのquery rewritingを考えるときにも注意が要る。LLMに長い検索文を作らせ、そのままembeddingへ渡せば、要件が精密になったように見える。しかしembedding側が否定、包含、除外、時点、主体の関係を扱えなければ、長文化しただけで検索規則は精密になっていない。</p>
+
+        <aside class="everyday-example"><span>原文外の補助例</span><p>「返金」「キャンセル」「購入」という語が全部入った検索文を作っても、「購入前のキャンセルは除き、購入後に事業者側の事情で解除された返金だけ」を探したいという条件は、三語の共起だけでは表せない。検索器が条件関係を読めないなら、queryを詳細に書いたことと、詳細な検索ができたことを分けて考える必要がある。</p></aside>
+
+        <h2>学習では、条件の違いが効く文書対を作る</h2>
+        <p>著者らは、instruction followingを評価するだけでなく、学習させる方法も試した。TRECのqueryとnarrativeを使い、条件に従う正例と条件に反する負例の文書をLLMで合成し、品質をフィルタリングする。こうして、短いqueryは同じでもinstructionによって文書の扱いが変わる学習例を作った。</p>
+        <p>約1,200のquery/instruction組から得た約1,800の学習instanceでMistral-7B-InstructをLoRA fine-tuningしたFollowIR-7Bは、FollowIRのinstruction followingを大きく改善した。標準検索性能も維持または改善しており、「条件を読ませると普通の検索が必ず犠牲になる」という結果ではなかった。</p>
+        <p>ここで学習例の量より重要なのは、contrastの作り方である。同じtopicについて、ある条件なら採用、別の条件なら除外される文書を並べることで、モデルは単なるtopic matchingだけでは損失を下げられない。評価セットを作る側から見ても、境界条件にまたがる対を持つ方が「条件を本当に使ったか」を診断しやすい。</p>
+
+        <h2>法務リサーチへ持ち込むなら、「中心資料を取れたか」の前に条件追従を置ける</h2>
+        <p>法務検索では、関連性の条件が多い。法域、時点、裁判所の階層、資料種別、手続段階、事案類型、明示された例外、改正前後。検索語が同じでも、これらの条件が一つ変われば採用すべき資料は変わる。</p>
+        <p>評価セットでは、同一またはほぼ同一の質問から一条件だけ変え、検索順位の期待方向を持たせられる。例えば「2025年4月1日現在」を「2027年4月1日現在」へ変えたときに改正後資料が上がるべきか。「最高裁判例に限る」を加えたときに下級審裁判例が下がるべきか。「行政処分の事例を除く」を加えたときに行政資料の順位が下がるべきか、という形である。</p>
+        <p>このテストは最終回答の正誤とは別に回せる。最終回答が偶然正しくても、条件を無視したretrievalなら将来の質問で壊れやすい。逆にretrievalが条件へ正しく反応しているのに回答が誤るなら、後段の根拠利用や推論を疑える。</p>
+
+        <h2>検索指示を、自由文だけにしない設計も見えてくる</h2>
+        <p>FollowIRは自然言語instructionを直接扱う研究だが、実務ではすべてを自由文へ押し込む必要はない。法域、日付、資料種別、裁判所、除外条件の一部をstructured filterとして持てるなら、検索器に文章の論理を全部解かせるより堅い場合がある。</p>
+        <p>その場合でも、自由文でしか表しにくい条件は残る。「事業者が実質的に選択権を持つ場合」「本人が合理的に予見できた事情」のような概念的条件である。そこで、hard filterで落とせる条件とsemantic retrievalへ委ねる条件を分け、後者だけinstruction-following testで検査する、という設計が可能になる。</p>
+        <p>つまりFollowIRから直接導かれるのは「長いinstructionをretrieverへ全部入れよう」という結論ではない。どの条件をどの部品が担うかを明示し、その部品が条件変更へ期待通り反応するかを測る、という方が実務へ持ち込みやすい。</p>
+
+        <h2>限界——TRECのnarrativeは、そのまま一般ユーザーの検索要求ではない</h2>
+        <p>評価データは専門評価者向けに書かれたTREC narrativeから作られている。現実の利用者が同じ長さ・明確さで条件を書くとは限らない。また主な評価はreranking設定で行われ、巨大コーパスの最初の候補生成からinstructionを使うend-to-end retrievalとは条件が違う。</p>
+        <p>著者らはsubsetでfull retrievalも調べ、同様の傾向を確認しているが、TREC文書の利用制約もあり、すべてを現在のWeb検索や企業内RAGへ一般化できるわけではない。instructionの変更自体にもannotation errorが入り得る。</p>
+        <p>さらにp-MRRは、条件変更で影響を受ける文書の相対的な順位変化を鋭く見るための指標である。実運用では、最終的なRecall@k、Precision@k、取得スパンの質、回答品質も必要になる。FollowIRはそれらを置き換えるというより、通常の検索評価が見落とす一種類の能力を追加する。</p>
+
+        <h2>この論文から残る設計原則</h2>
+        <p>検索器へ詳細条件を渡せるなら、評価も「関連文書が取れたか」だけで終わらせない。同じtopicを保ったまま採用条件を一つ変え、その変更によって上がるべき文書と下がるべき文書を作る。検索器が条件を読んでいるのか、条件文に含まれる語を追加キーワードとして拾っているだけなのかを切り分ける。</p>
+        <p>RAGの検索評価を、query-document similarityの測定から<strong>relevance ruleへの追従テスト</strong>まで広げると、「検索漏れ」という一語の中に隠れていた失敗をさらに分解できる。条件を落としたのか、条件は読んだが候補生成で漏れたのか、正しい文書は取ったが必要箇所を切り出せなかったのか。改善対象が変わる。</p>
+
+        <div class="reading-question"><span>読後に考える</span><p>いま使っている検索評価で、質問本文はほぼ同じまま「法域」「時点」「除外条件」「資料種別」の一つだけを変えたとき、検索順位がどう動くべきかを指定できる項目はどれだろう。</p></div>
+        <section class="related"><h2>関連して読む</h2><div class="related-grid"><a href="legalbench-rag.html">法務RAGは「正解文書を取れた」で終わらない</a><a href="ragchecker.html">RAGの失敗を一つの点数に潰さない</a><a href="checklist.html">平均点を捨てて、AIの「振る舞い」をテストする</a><a href="sensemaking-analysis.html">調査を「検索」だけで評価しない</a></div></section>
+      </article>
+      <aside class="article-rail"><section class="rail-card"><span>収集条件との対応</span><p>RAG・情報検索・AI評価の高速更新分野枠。検索条件を自然言語instructionとして与え、条件変更に対する順位の方向まで評価する。</p><div class="article-actions"><button type="button" data-read="followir" aria-pressed="false">✓ <span data-label>未読</span></button><button type="button" data-favorite="followir" aria-pressed="false">♡ <span data-label>保存</span></button></div></section><a class="source-link" href="https://arxiv.org/html/2403.15246" target="_blank" rel="noreferrer">原文を読む ↗</a><section class="rail-card"><span>書誌情報</span><p>Orion Weller et al. “FollowIR: Evaluating and Teaching Information Retrieval Models to Follow Instructions.” 2024.</p></section></aside>
+    </div>
+  </main>
+  <footer class="site-footer"><p><strong>変な読み物置き場</strong><span>／ 自動収集される技術・思想・学術の索引。</span></p><a href="../index.html">アーカイブへ戻る ←</a></footer>
+</body></html>
