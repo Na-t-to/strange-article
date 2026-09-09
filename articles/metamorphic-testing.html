@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ja"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>正解が分からなくてもテストできる——入力と出力の「関係」を検査するMetamorphic Testing｜変な読み物置き場</title>
+  <meta name="description" content="正解値を用意しにくいシステムでも、入力を変形した前後で必ず成り立つ関係を使えば不具合を探せる。Metamorphic Testingの原論文をAI評価へ接続して読む。">
+  <link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/metamorphic-testing.html">
+  <meta property="og:type" content="article"><meta property="og:title" content="正解が分からなくてもテストできる——入力と出力の「関係」を検査するMetamorphic Testing"><meta property="og:description" content="一つの正解を採点する代わりに、変形前後の出力関係をテストする。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/metamorphic-testing.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-metamorphic-testing.svg">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="正解が分からなくてもテストできる"><meta name="twitter:description" content="Metamorphic Testingから、oracleのない評価を考える。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-metamorphic-testing.svg">
+  <link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260904-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="metamorphic-testing">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-09</p></header>
+<main class="article-shell">
+<p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　AI評価</p>
+<header class="article-header"><div class="tags"><span>AI評価</span><span>テスト設計</span><span>LLM信頼性</span></div><h1>正解が分からなくてもテストできる——入力と出力の「関係」を検査するMetamorphic Testing</h1><p class="original-title">Metamorphic Testing: A New Approach for Generating Next Test Cases</p><div class="article-meta-row"><p><strong>T. Y. Chen / S. C. Cheung / S. M. Yiu · 1998</strong><br>公開 2026.09.09　／　推定読了 47分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-metamorphic-testing.svg" alt="検査工房で一つの入力から形を変えた複数の追試を作り、出力同士の関係を照合する図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">テストには普通、「この入力なら正解はこれ」という判定基準が要る。だが、最短経路、数値計算、検索、生成AIのように、個々の入力へ正解を作ること自体が高コストな処理は多い。Metamorphic Testingは、出力そのものを直接採点できなくても、<strong>入力をこう変えたなら、出力はこういう関係を保つはずだ</strong>という規則から追試を作る。</p>
+
+<h2>収集条件との対応</h2>
+<p>1998年のHKUST technical reportで提案された古典的なソフトウェアテスト手法である。論文の出発点はtest oracle、つまりテスト結果の正誤を判定する仕組みが実務では利用できないことがある、という問題だ。著者らは、すでに得た入力・出力の組から次のテストケースを構成し、通常のテスト選択法を補う方法を示した。</p>
+<p>今のLLM評価へそのまま移植できる部分がある。自由記述回答に唯一の正解文を作るのは難しくても、「会社名だけ替えたら法的結論は変わらない」「根拠を削ったら確信は上がらない」「条件を追加したら検索順位は期待方向へ動く」のような<strong>変形前後の関係</strong>は仕様として書ける。既収録のCheckListにあるINV・DIRを、より一般的なテスト問題の歴史へ戻して理解できる論文でもある。</p>
+
+<aside class="everyday-example"><span>原文外の補助例</span><p>電卓に「1234＋5678」を入れた答えを暗算で確かめられなくても、両方の数に10を掛けて再計算した結果は、元の結果の10倍になるはずだ。この二つの答えの絶対値を知らなくても、二つの答えの関係が壊れていれば少なくともどこかがおかしい。</p></aside>
+
+<h2>難しいのは「入力を作ること」だけではない</h2>
+<p>テスト設計では、どんな入力を与えるかに注意が向きやすい。しかし入力を大量に作れても、各出力が正しいか判定できなければ自動テストは止まる。著者らはこの判定役をtest oracleと呼ぶ。単純な関数なら期待値を手書きできるが、実務では期待値を計算するために本番処理と同じくらい複雑な別プログラムが必要になることがある。</p>
+<p>例えば大規模グラフの最短経路を返すプログラムを考える。ある経路が返ってきたとき、それが本当に最短かを毎回人が全候補と比較するのは現実的でない。出力の妥当性を判定するcheckerを用意しても、「明らかに誤り」は弾けても、checkerが受理したことから完全な正しさまでは言えない場合がある。</p>
+<p>この問題はAIでさらに目立つ。要約、法務回答、検索、エージェント操作では、一件ごとの完全な正解を作る作業がそのまま専門家業務になる。評価データを100件から1000件へ増やすと、モデル実行費より正解作成費の方が支配的になり得る。</p>
+
+<h2>発想を変える——「答え」ではなく「答え同士の関係」を指定する</h2>
+<p>Metamorphic Testingでは、まず一つのsource test caseを実行する。その入力を、対象プログラムについて分かっている性質に従って変形し、follow-up test caseを作る。そして二つの出力が満たすべき関係、metamorphic relationを検査する。</p>
+<div class="concept-grid"><section><h3>Source case</h3><p>出発点になる入力と、その実行結果。必ずしも結果の完全な正解値を知る必要はない。</p></section><section><h3>Follow-up case</h3><p>source caseを意味のある規則で変形して作る追試。順序変更、値の追加、スケーリングなど。</p></section><section><h3>Metamorphic relation</h3><p>変形前後で出力がどう対応すべきかを表す関係。等しい、一定量増える、順位が変わらない、など。</p></section></div>
+<p>重要なのは、metamorphic relationが「モデルなら一般にこう振る舞うはず」という曖昧な願望ではないことだ。対象となる問題の意味から導かれ、反例が出れば不具合の証拠になる程度に具体的でなければならない。</p>
+
+<h2>二分探索の例が示すのは、「一度当たった」を信用しないこと</h2>
+<p>原論文は、整列配列から値の位置を返すbinary searchを例にする。ある入力で正しい位置が返ってきたとしても、その一件だけでは内部に境界処理のバグがないとは言えない。たまたまバグを踏まない位置だった可能性がある。</p>
+<p>そこで、成功した入力・出力を手掛かりに、隣接する値や区間を使った追加ケースを構成する。元の結果が正しく見えたから終了するのではなく、もし実装に典型的な分割ミスや上書きミスがあるなら、どんな近傍入力なら露出するかを考える。論文では、疑う故障の種類に応じて次のケースを作る<strong>fault-based</strong>な側面が強い。</p>
+<p>ここには評価基準を分解するときのヒントがある。「正答したケースを合格として閉じる」より、「この成功が本物なら、どんな変形にも耐えるはずか」を続けて問う方が、潜在的な近道や偶然の成功を見つけやすい。</p>
+
+<h2>LLMでは、変形の種類を能力仕様へ結びつけられる</h2>
+<p>法務リサーチAIなら、source questionに対して一つの回答が出た後、意味保存的な変形と、結論を動かす変形を分けられる。</p>
+<p><strong>意味保存的な変形</strong>には、固有名詞の置換、質問文の語順変更、無関係な背景情報の追加、同義表現への言い換えがある。期待する関係は「中心法令、中心論点、最終結論が維持される」になる。これはCheckListのINVに近い。</p>
+<p><strong>結論を動かす変形</strong>では、法的要件に関係する事実だけを変更する。「本人同意なし」を「本人同意あり」へ変える、契約期間を閾値の前後で変える、といった操作だ。この場合は同じ答えを求めるのではなく、該当性や確信度が期待方向へ動くことを求める。CheckListのDIRに近い。</p>
+<p>さらにretrieval単体でも使える。除外条件を追加したとき、その条件に抵触する資料の順位が下がる。中心資料をcorpusから除いたとき、代替資料を出すか「十分な根拠なし」へ移る。質問の言い換えで同じauthoritative sourceを取る。個々の検索結果を全件ラベル付けしなくても、関係違反を検出できる。</p>
+
+<aside class="everyday-example"><span>法務AIへの適用例（原文外）</span><p>「購入を条件としないSNS懸賞」に関する質問を一件作る。会社名を変えても規制の扱いは変わらないはずなのでINV型の追試になる。一方、「購入者だけ応募可能」に変えれば取引付随性の評価は変わるはずなのでDIR型になる。同じ元問題から、別々の能力を狙う追試を増やせる。</p></aside>
+
+<h2>関係を増やせば自動的に良い評価になるわけではない</h2>
+<p>metamorphic relationの設計は、テストの価値そのものを左右する。常に成立する弱すぎる関係ならバグを見つけない。実際には成立しない関係を仕様として置けば、正常なシステムを誤って落とす。対象ドメインの知識、想定する故障、変形が意味を保存する条件を理解する必要がある。</p>
+<p>LLMでは特に、「同じ意味」の判定が難しい。文章を一語変えただけでも、法務では管轄、時点、主体、例外条件が動くことがある。変形器をLLMに任せるなら、生成されたfollow-up case自体が本当に意図した関係を満たすかを別途検証する必要がある。</p>
+<p>また、関係テストは絶対的な品質判定を置き換えない。二つの誤答が同じように変化してmetamorphic relationだけ満たすこともある。正解ラベル、人手レビュー、行動テスト、関係テストを組み合わせるのが妥当である。原論文も既存テスト戦略を置き換えるのではなく補強する方法として位置づける。</p>
+
+<h2>評価基準を作るときは、「項目」の次に「変形」を書く</h2>
+<p>能力を列挙しただけでは、評価項目は静的なチェックリストにとどまる。Metamorphic Testingを入れると、それぞれの能力へ「何を変えても維持すべきか」「何を変えたらどちらへ動くべきか」を追加できる。</p>
+<p>例えば「中心法令を特定できる」という能力なら、法令名を直接含む質問だけで測らない。表現を変える、事実の順番を変える、無関係情報を加える。それでも同じ中心法令へ到達するかを見る。「不十分な根拠で断定しない」なら、根拠資料を一つずつ欠落させ、確信度や留保がどう変わるかを見る。</p>
+<p>こうすると、テストセットは独立した問題の束から、<strong>能力ごとに設計された変形の族</strong>へ変わる。一件の問題が複数の追試を生み、どの変形で破れたかが失敗の説明になる。</p>
+
+<h2>持ち帰るなら</h2>
+<p>この論文の価値は、正解データを頑張って増やす以外の評価方法を与えるところにある。出力の絶対値を人手で全部決められなくても、対象業務について知っている関係を仕様にできる。評価設計では、能力を分解した後に「その能力が本物なら、入力をどう変えても何が保たれるか」を書く。そこから追加ケースを系統的に増やせる。</p>
+<p>CheckListを読んでINV・DIRが使えそうだと感じたなら、Metamorphic Testingはその発想をさらに一般化する背景として読める。評価を「正答一覧」から「守るべき関係の集合」へ広げる古典である。</p>
+
+<div class="source-box"><h2>原文</h2><p><a href="https://www.cse.ust.hk/~scc/publ/CS98-01-metamorphictesting.pdf" target="_blank" rel="noopener">Chen, Cheung &amp; Yiu, Metamorphic Testing: A New Approach for Generating Next Test Cases (HKUST-CS98-01, 1998)</a></p></div>
+<div class="related-reading"><h2>関連して読む</h2><p><a href="checklist.html">平均点を捨てて、AIの「振る舞い」をテストする</a></p><p><a href="reliable-eval.html">一つのプロンプトで評価を決めない</a></p><p><a href="followir.html">検索器は「何を関連とするか」まで読めているか</a></p></div>
+</article></div></main></body></html>
