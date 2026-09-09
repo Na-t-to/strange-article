@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>バイバイン栗饅頭シミュレーター</title>
+<style>
+:root{
+  --bg:#080b10;--panel:#151a22;--text:#f7f8fb;--muted:#9ea8b7;--line:#2c3543;
+  --accent:#ffb347;--danger:#ff5b5b;--cyan:#76d7ea;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at top,#18202d 0,#0a0d12 52%,#05070a 100%);
+color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:1280px;margin:0 auto;padding:22px}
+h1{font-size:clamp(28px,4vw,46px);margin:0 0 6px}
+.sub{color:var(--muted);margin-bottom:16px}
+.grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(320px,.8fr);gap:16px}
+.card{background:linear-gradient(180deg,rgba(26,32,43,.97),rgba(16,21,29,.98));border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 60px rgba(0,0,0,.35)}
+.visual{position:relative;min-height:650px;overflow:hidden}
+canvas{display:block;width:100%;height:100%;min-height:650px}
+.hud{position:absolute;left:18px;top:16px;background:rgba(8,11,16,.78);backdrop-filter:blur(8px);
+border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 14px;min-width:260px;z-index:5}
+.label{font-size:11px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
+.big{font-size:28px;font-weight:900;line-height:1.12;margin-top:3px}
+.tiny{font-size:12px;color:var(--muted);line-height:1.5}
+.controls{position:absolute;left:18px;right:18px;bottom:18px;display:flex;gap:8px;flex-wrap:wrap;z-index:6}
+button,select{color:var(--text);background:rgba(16,21,29,.9);border:1px solid #394456;border-radius:10px;padding:10px 13px;font-weight:750}
+button{cursor:pointer}
+button.primary{background:#744512;border-color:#b96d1d}
+.side{padding:18px}
+.stat{padding:13px 0;border-bottom:1px solid var(--line)}
+.value{font-size:21px;font-weight:850;margin-top:3px}
+.meter{height:13px;background:#0c1017;border:1px solid #2e3747;border-radius:999px;overflow:hidden;margin:8px 0 5px}
+.fill{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--accent));transition:width .15s linear}
+.milestones{margin-top:12px;max-height:250px;overflow:auto}
+.mile{display:grid;grid-template-columns:1fr auto;gap:8px;padding:8px 0;border-bottom:1px dashed #2a3340}
+.mile.done .name{color:var(--accent)}
+.legend{margin-top:14px;padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(0,0,0,.14)}
+.tag{display:inline-block;padding:4px 8px;border-radius:999px;background:#273142;color:#dfe7f1;font-size:12px;margin:0 5px 5px 0}
+
+.alert{
+  position:absolute;left:50%;top:90px;transform:translateX(-50%) scale(.95);
+  background:rgba(116,20,20,.86);border:1px solid rgba(255,140,140,.45);color:white;
+  border-radius:12px;padding:10px 16px;font-weight:900;letter-spacing:.04em;
+  opacity:0;z-index:10;pointer-events:none;white-space:nowrap;
+}
+.alert.show{animation:alertPop 1.3s ease both}
+@keyframes alertPop{
+  0%{opacity:0;transform:translateX(-50%) scale(.75)}
+  14%{opacity:1;transform:translateX(-50%) scale(1.06)}
+  35%{transform:translateX(-50%) scale(1)}
+  78%{opacity:1}
+  100%{opacity:0}
+}
+.flash{position:absolute;inset:0;background:white;opacity:0;pointer-events:none;z-index:8}
+.flash.go{animation:flash .5s ease-out}
+@keyframes flash{0%{opacity:.8}100%{opacity:0}}
+
+.compareCard{
+  position:absolute;right:18px;top:16px;width:220px;background:rgba(7,10,15,.75);
+  border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px;z-index:5;text-align:center
+}
+.compareIcon{font-size:54px;line-height:1.1}
+.compareName{font-size:18px;font-weight:900;margin-top:4px}
+.compareCaption{font-size:11px;color:var(--muted);margin-top:2px}
+
+.dangerBar{
+  position:absolute;left:50%;bottom:84px;transform:translateX(-50%);width:min(620px,76%);
+  background:rgba(10,12,16,.78);border:1px solid rgba(255,255,255,.08);border-radius:999px;
+  padding:5px;z-index:5
+}
+.dangerFill{height:11px;border-radius:999px;background:linear-gradient(90deg,#6ee7a8,#ffd166,#ff8c42,#ff4d4d);width:0}
+.dangerText{text-align:center;font-size:11px;color:#d6dce5;margin-top:5px}
+.footer{color:#8f99a8;font-size:12px;margin-top:14px;line-height:1.6}
+
+@media(max-width:900px){
+  .wrap{padding:12px}
+  .grid{grid-template-columns:1fr}
+  .visual,canvas{min-height:620px}
+  .hud{left:10px;top:10px;min-width:190px;padding:10px 11px}
+  .big{font-size:23px}
+  .compareCard{right:10px;top:10px;width:145px;padding:9px}
+  .compareIcon{font-size:38px}
+  .compareName{font-size:14px}
+  .compareCaption{font-size:10px}
+  .controls{left:10px;right:10px;bottom:10px;gap:6px}
+  button,select{padding:9px 10px;font-size:12px}
+  .dangerBar{bottom:106px;width:82%}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>バイバイン栗饅頭シミュレーター</h1>
+<div class="sub">1個の栗饅頭が5分ごとに2倍。音・分裂アニメ・比較対象つき。最初はお菓子、途中から災害。</div>
+
+<div class="grid">
+<section class="card visual" id="visualBox">
+  <canvas id="c"></canvas>
+  <div class="flash" id="flash"></div>
+  <div class="alert" id="alert"></div>
+
+  <div class="hud">
+    <div class="label">経過時間</div><div class="big" id="elapsed">0分00秒</div>
+    <div class="label" style="margin-top:8px">栗饅頭</div><div class="big" id="count">1 個</div>
+    <div class="tiny" id="doublings">倍加 0 回</div>
+    <div class="tiny" id="audioState">音声: 再生ボタンで開始</div>
+  </div>
+
+  <div class="compareCard">
+    <div class="label">比較対象</div>
+    <div class="compareIcon" id="compareIcon">🛁</div>
+    <div class="compareName" id="compareName">浴槽</div>
+    <div class="compareCaption" id="compareCaption">約200 L</div>
+  </div>
+
+  <div class="dangerBar">
+    <div class="dangerFill" id="dangerFill"></div>
+    <div class="dangerText" id="dangerText">まだ食べ物です</div>
+  </div>
+
+  <div class="controls">
+    <button class="primary" id="play">▶ 再生</button>
+    <button id="step">+5分</button>
+    <button id="reset">リセット</button>
+    <button id="jumpRoom">部屋まで</button>
+    <button id="jumpEarth">地球まで</button>
+    <button id="jumpUniverse">宇宙まで</button>
+    <select id="speed">
+      <option value="1">1秒 = 1分</option>
+      <option value="5" selected>1秒 = 5分</option>
+      <option value="30">1秒 = 30分</option>
+      <option value="360">1秒 = 6時間</option>
+      <option value="1440">1秒 = 1日</option>
+    </select>
+    <button id="mute">🔊 音ON</button>
+  </div>
+</section>
+
+<aside class="card side">
+  <div class="stat"><div class="label">総体積（概算）</div><div class="value" id="volume">0.0001 m³</div><div class="tiny">1個 ≒ 100mL として計算</div></div>
+  <div class="stat"><div class="label">いま埋めているもの</div><div class="value" id="currentScale">弁当箱にも満たない</div><div class="meter"><div class="fill" id="fill"></div></div><div class="tiny" id="progressText"></div></div>
+  <div class="stat"><div class="label">次の規模</div><div class="value" id="nextScale"></div><div class="tiny" id="nextDetail"></div></div>
+  <div class="stat"><div class="label">状況</div><div class="tiny" id="comparison">まだ平和です。</div></div>
+  <div class="milestones" id="milestones"></div>
+  <div class="legend">
+    <span class="tag">分裂アニメ</span><span class="tag">比較対象の絵</span><span class="tag">警告演出</span><span class="tag">宇宙スケール</span>
+  </div>
+</aside>
+</div>
+<div class="footer">※ 重力崩壊・圧縮・熱などは無視した「体積だけ」の概算。現実の物理では途中からこんな素直には増えません。</div>
+</div>
+
+<script>
+(() => {
+const bunVolume=1e-4, periodMin=5;
+
+const milestones=[
+{name:"浴槽",v:0.2,note:"約200 L",icon:"🛁"},
+{name:"6畳の部屋",v:24,note:"床10m² × 高さ2.4m",icon:"🏠"},
+{name:"25mプール",v:625,note:"25×10×2.5m相当",icon:"🏊"},
+{name:"東京ドーム",v:1.24e6,note:"容積 約124万m³級",icon:"🏟️"},
+{name:"富士山",v:1.4e11,note:"山体 約140km³級",icon:"🗻"},
+{name:"地球",v:1.08321e21,note:"地球の体積",icon:"🌍"},
+{name:"太陽",v:1.412e27,note:"太陽の体積",icon:"☀️"},
+{name:"地球公転軌道の球",v:1.401e34,note:"半径1AUの球",icon:"🪐"},
+{name:"海王星軌道の球",v:3.8e38,note:"半径30AU級",icon:"🌀"},
+{name:"太陽系(1光年球)",v:3.57e48,note:"半径1光年",icon:"🌌"},
+{name:"天の川銀河級空間",v:3e61,note:"直径10万光年級",icon:"🌌"},
+{name:"観測可能宇宙",v:3.57e80,note:"半径約465億光年",icon:"✨"}
+];
+
+const c=document.getElementById("c"), ctx=c.getContext("2d"), box=document.getElementById("visualBox");
+const elapsedEl=document.getElementById("elapsed"),countEl=document.getElementById("count"),
+doublingsEl=document.getElementById("doublings"),volumeEl=document.getElementById("volume"),
+currentScaleEl=document.getElementById("currentScale"),nextScaleEl=document.getElementById("nextScale"),
+nextDetailEl=document.getElementById("nextDetail"),progressTextEl=document.getElementById("progressText"),
+fillEl=document.getElementById("fill"),comparisonEl=document.getElementById("comparison"),
+milestonesEl=document.getElementById("milestones"),playBtn=document.getElementById("play"),
+stepBtn=document.getElementById("step"),resetBtn=document.getElementById("reset"),
+speedSel=document.getElementById("speed"),muteBtn=document.getElementById("mute"),
+audioState=document.getElementById("audioState"),alertEl=document.getElementById("alert"),
+flashEl=document.getElementById("flash"),compareIcon=document.getElementById("compareIcon"),
+compareName=document.getElementById("compareName"),compareCaption=document.getElementById("compareCaption"),
+dangerFill=document.getElementById("dangerFill"),dangerText=document.getElementById("dangerText");
+
+let elapsedMin=0,running=false,lastTs=performance.now(),stars=[],lastWhole=0,lastMilestone=-1;
+let splitBursts=[];
+
+const kuriSvg=encodeURIComponent(`
+<svg xmlns="http://www.w3.org/2000/svg" width="150" height="115" viewBox="0 0 150 115">
+<defs><radialGradient id="b" cx="34%" cy="28%" r="74%"><stop offset="0" stop-color="#ffe8ad"/><stop offset=".43" stop-color="#dda45b"/><stop offset=".8" stop-color="#a76230"/><stop offset="1" stop-color="#754119"/></radialGradient>
+<filter id="s" x="-20%" y="-20%" width="150%" height="150%"><feDropShadow dx="0" dy="5" stdDeviation="4" flood-opacity=".25"/></filter></defs>
+<ellipse cx="75" cy="99" rx="38" ry="7" fill="rgba(0,0,0,.18)"/>
+<g filter="url(#s)"><path d="M20 58C20 30 44 14 75 14s55 16 55 44c0 23-23 37-55 37S20 81 20 58z" fill="url(#b)"/>
+<ellipse cx="57" cy="38" rx="18" ry="9" fill="rgba(255,255,255,.20)" transform="rotate(-20 57 38)"/>
+<path d="M66 48c7-11 18-12 25-3 5 6 4 14-1 20-6 7-17 8-24 2-8-6-7-14 0-19z" fill="#6f351e"/>
+</g></svg>`);
+const bunImg=new Image();bunImg.src=`data:image/svg+xml;charset=utf-8,${kuriSvg}`;
+
+function resize(){
+ const r=box.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2);
+ c.width=Math.floor(r.width*dpr);c.height=Math.floor(r.height*dpr);c.style.width=r.width+"px";c.style.height=r.height+"px";
+ ctx.setTransform(dpr,0,0,dpr,0,0);
+ stars=Array.from({length:180},()=>({x:Math.random()*r.width,y:Math.random()*r.height,s:Math.random()*1.5+.3}));
+}
+addEventListener("resize",resize);resize();
+
+function lc(){return elapsedMin/periodMin*Math.log10(2)}
+function lv(){return lc()+Math.log10(bunVolume)}
+function sci(log,u=""){if(log<6&&log>-3){let n=10**log;return n.toLocaleString("ja-JP",{maximumFractionDigits:3})+(u?" "+u:"")}
+let e=Math.floor(log),m=10**(log-e);return `${m.toFixed(2)} × 10^${e}${u?" "+u:""}`}
+function formatTime(m){if(m<60){let a=Math.floor(m),s=Math.floor((m-a)*60);return `${a}分${String(s).padStart(2,"0")}秒`}
+if(m<1440){return `${Math.floor(m/60)}時間${Math.floor(m%60)}分`}let d=Math.floor(m/1440),h=Math.floor((m%1440)/60);return `${d}日${h}時間`}
+function mTime(v){return Math.max(0,Math.log2(v/bunVolume)*periodMin)}
+function sInfo(){let i=milestones.findIndex(m=>lv()<Math.log10(m.v)); if(i<0)return{idx:milestones.length,prev:milestones.at(-1),next:null};return{idx:i,prev:i?milestones[i-1]:null,next:milestones[i]}}
+function countText(){let n=elapsedMin/periodMin;if(n<53){let ex=2**Math.floor(n),f=n-Math.floor(n),a=ex*2**f;return (f<1e-9?Math.round(ex).toLocaleString("ja-JP"):a.toLocaleString("ja-JP",{maximumFractionDigits:1})+"相当")+" 個"}return sci(lc(),"個")}
+
+function updateUI(){
+ elapsedEl.textContent=formatTime(elapsedMin);countEl.textContent=countText();doublingsEl.textContent=`倍加 ${Math.floor(elapsedMin/5)} 回`;volumeEl.textContent=sci(lv(),"m³");
+ const s=sInfo();
+ currentScaleEl.textContent=!s.prev?"弁当箱にも満たない":(!s.next?"観測可能宇宙を超過":`${s.prev.name}は突破`);
+ if(s.next){
+   nextScaleEl.textContent=s.next.name;nextDetailEl.textContent=`到達: ${formatTime(mTime(s.next.v))}（あと ${formatTime(Math.max(0,mTime(s.next.v)-elapsedMin))}）`;
+   compareIcon.textContent=s.next.icon;compareName.textContent=s.next.name;compareCaption.textContent=s.next.note;
+   let pl=s.prev?Math.log10(s.prev.v):Math.log10(bunVolume),nl=Math.log10(s.next.v),pct=Math.max(0,Math.min(1,(lv()-pl)/(nl-pl)));
+   fillEl.style.width=(pct*100)+"%";progressTextEl.textContent=`次: ${s.next.name}まで 対数スケールで ${(pct*100).toFixed(1)}%`;
+ }else{
+   nextScaleEl.textContent="比較対象なし";nextDetailEl.textContent="宇宙の体積を突破";fillEl.style.width="100%";
+   compareIcon.textContent="💀";compareName.textContent="宇宙終了";compareCaption.textContent="比較対象がない";
+ }
+ let d=Math.max(0,Math.min(1,(lv()+4)/84));dangerFill.style.width=(d*100)+"%";
+ dangerText.textContent=d<.08?"まだ食べ物です":d<.18?"部屋が危ない":d<.35?"都市災害級":d<.58?"惑星が終わる":d<.78?"恒星系が終わる":d<.95?"銀河規模":"宇宙終了";
+ comparisonEl.textContent=lc()<2?"まだ「お菓子が増えてる」で済む。":lc()<6?"食べて処理する発想が怪しい。":lv()<6?"建物スケール。もう事故ではなく災害。":lv()<21?"地形・天体スケールへ突入。":lv()<48?"地球・太陽・惑星系の話。":lv()<80?"銀河〜宇宙論スケール。":"観測可能宇宙の体積を超えた。";
+ milestonesEl.innerHTML=milestones.map(m=>`<div class="mile ${lv()>=Math.log10(m.v)?"done":""}"><div><div class="name">${lv()>=Math.log10(m.v)?"✓ ":""}${m.icon} ${m.name}</div><div class="tiny">${m.note}</div></div><div>${formatTime(mTime(m.v))}</div></div>`).join("");
+}
+
+function drawBun(x,y,w,h,rot=0,a=1){
+ ctx.save();ctx.translate(x,y);ctx.rotate(rot);ctx.globalAlpha=a;
+ if(bunImg.complete)ctx.drawImage(bunImg,-w/2,-h/2,w,h);else{ctx.fillStyle="#c98a49";ctx.beginPath();ctx.ellipse(0,0,w*.45,h*.33,0,0,Math.PI*2);ctx.fill()}
+ ctx.restore();
+}
+function visibleCount(){let n=elapsedMin/5,whole=Math.floor(n),f=n-whole,base=2**Math.min(whole,12);return Math.max(1,Math.min(420,Math.floor(base*(1+f))))}
+
+function spawnSplitBurst(level){
+ const w=c.clientWidth,h=c.clientHeight;
+ const amount=Math.min(36,4+level*2);
+ for(let i=0;i<amount;i++){
+   splitBursts.push({x:w/2+(Math.random()-.5)*120,y:h*.5+(Math.random()-.5)*70,
+   vx:(Math.random()-.5)*(80+level*4),vy:-40-Math.random()*90,life:1,rot:Math.random()*6});
+ }
+}
+function updateBursts(dt){
+ splitBursts.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=120*dt;p.life-=dt*.9;p.rot+=dt*3});
+ splitBursts=splitBursts.filter(p=>p.life>0);
+}
+function drawBursts(){splitBursts.forEach(p=>drawBun(p.x,p.y,36,28,p.rot,Math.max(0,p.life)))}
+
+function draw(){
+ let w=c.clientWidth,h=c.clientHeight,L=lv();ctx.clearRect(0,0,w,h);
+ if(L<6){
+   let g=ctx.createLinearGradient(0,0,0,h);g.addColorStop(0,"#202a38");g.addColorStop(1,"#0f141c");ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+   ctx.fillStyle="#2d251f";ctx.fillRect(0,h*.73,w,h*.27);
+   let v=visibleCount(),bw=lc()<2?60:lc()<3?43:27,bh=bw*.78,baseY=h*.76;
+   for(let i=0;i<v;i++){let cols=Math.max(1,Math.floor(w/(bw*1.05))),row=Math.floor(i/cols),col=i%cols;
+     let x=(col+.5)*w/cols+Math.sin(i*1.7)*bw*.08,y=baseY-row*bh*.85-((i*47)%5);if(y<100)y=100+(i%18)*4;
+     drawBun(x,y,bw,bh,(i%9-4)*.045,.98)}
+   if(lc()>=3){ctx.fillStyle="rgba(7,9,12,.68)";ctx.fillRect(w*.2,h*.13,w*.6,76);ctx.fillStyle="#fff";ctx.textAlign="center";ctx.font="800 27px system-ui";ctx.fillText(countText(),w/2,h*.13+34);ctx.font="13px system-ui";ctx.fillStyle="#b7c1d0";ctx.fillText("個体表示上限突破",w/2,h*.13+57)}
+ }else{
+   ctx.fillStyle="#05070c";ctx.fillRect(0,0,w,h);stars.forEach(s=>{ctx.fillStyle="rgba(255,255,255,.75)";ctx.fillRect(s.x,s.y,s.s,s.s)});
+   let cx=w/2,cy=h/2+25,stage=Math.max(0,Math.min(1,(L-6)/74)),r=50+stage*Math.min(w,h)*.43;
+   let g=ctx.createRadialGradient(cx-r*.2,cy-r*.2,5,cx,cy,r);g.addColorStop(0,"#ffd38c");g.addColorStop(.35,"#e39743");g.addColorStop(.75,"#8b4f22");g.addColorStop(1,"rgba(111,53,26,.05)");
+   ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill();
+   let specks=Math.min(270,40+Math.floor(stage*230));for(let i=0;i<specks;i++){let a=i*2.39996,rr=r*Math.sqrt((i+1)/specks)*.92,x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr;drawBun(x,y,Math.max(5,Math.min(12,r*.03)),Math.max(4,Math.min(9,r*.023)),a,.62)}
+   ctx.textAlign="center";ctx.fillStyle="#fff";ctx.font=`900 ${Math.min(38,w*.055)}px system-ui`;ctx.fillText(countText(),cx,Math.max(72,cy-r-30));
+ }
+ drawBursts();
+}
+
+let audioCtx=null,master=null,ambient=null,ambOsc=null,muted=false;
+function ensureAudio(){
+ if(audioCtx)return;let C=window.AudioContext||window.webkitAudioContext;if(!C)return;
+ audioCtx=new C();master=audioCtx.createGain();master.gain.value=.15;master.connect(audioCtx.destination);
+ ambient=audioCtx.createGain();ambient.gain.value=0;ambient.connect(master);ambOsc=audioCtx.createOscillator();ambOsc.type="sawtooth";ambOsc.frequency.value=44;ambOsc.connect(ambient);ambOsc.start();audioState.textContent="音声: ON";
+}
+async function resumeAudio(){ensureAudio();if(audioCtx&&audioCtx.state==="suspended")try{await audioCtx.resume()}catch{}}
+function pop(level=1){if(!audioCtx||muted)return;let t=audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type="triangle";o.frequency.setValueAtTime(360+level*15,t);o.frequency.exponentialRampToValueAtTime(170,t+.11);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.08,t+.015);g.gain.exponentialRampToValueAtTime(.0001,t+.13);o.connect(g);g.connect(master);o.start(t);o.stop(t+.14)}
+function boom(){if(!audioCtx||muted)return;let t=audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type="sine";o.frequency.setValueAtTime(95,t);o.frequency.exponentialRampToValueAtTime(38,t+.45);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.16,t+.03);g.gain.exponentialRampToValueAtTime(.0001,t+.5);o.connect(g);g.connect(master);o.start(t);o.stop(t+.52)}
+function updateAmbient(){if(!audioCtx||muted)return;let t=audioCtx.currentTime,target=Math.max(0,Math.min(.05,(lv()-7)*.002));ambient.gain.setTargetAtTime(target,t,.2);ambOsc.frequency.setTargetAtTime(42+Math.max(0,Math.min(60,(lv()-6))),t,.3)}
+
+function showAlert(txt,major=false){
+ alertEl.textContent=txt;alertEl.classList.remove("show");void alertEl.offsetWidth;alertEl.classList.add("show");
+ if(major){flashEl.classList.remove("go");void flashEl.offsetWidth;flashEl.classList.add("go");boom()}
+}
+function handleEvents(prev,next){
+ let pw=Math.floor(prev/5),nw=Math.floor(next/5);
+ if(nw>pw){for(let d=pw+1;d<=nw;d++){spawnSplitBurst(d);pop(d);if(d<=6)showAlert(`5分経過：${2**d}個`,false)}}
+ let idx=sInfo().idx-1;
+ if(idx>lastMilestone){for(let i=lastMilestone+1;i<=idx;i++) if(i>=0) showAlert(`${milestones[i].name} 突破`,true);lastMilestone=idx}
+ updateAmbient();lastWhole=nw;
+}
+
+function setElapsed(x){let p=elapsedMin;elapsedMin=Math.max(0,x);handleEvents(p,elapsedMin);updateUI();draw()}
+function tick(ts){let dt=(ts-lastTs)/1000;lastTs=ts;if(running){let p=elapsedMin;elapsedMin+=dt*Number(speedSel.value);handleEvents(p,elapsedMin)}updateBursts(dt);updateUI();draw();requestAnimationFrame(tick)}
+playBtn.onclick=async()=>{await resumeAudio();running=!running;playBtn.textContent=running?"⏸ 一時停止":"▶ 再生"};
+stepBtn.onclick=async()=>{await resumeAudio();setElapsed(elapsedMin+5)};
+resetBtn.onclick=()=>{elapsedMin=0;lastMilestone=-1;splitBursts=[];running=false;playBtn.textContent="▶ 再生";updateUI();draw()};
+document.getElementById("jumpRoom").onclick=async()=>{await resumeAudio();setElapsed(mTime(24))};
+document.getElementById("jumpEarth").onclick=async()=>{await resumeAudio();setElapsed(mTime(1.08321e21))};
+document.getElementById("jumpUniverse").onclick=async()=>{await resumeAudio();setElapsed(mTime(3.57e80))};
+muteBtn.onclick=async()=>{await resumeAudio();muted=!muted;if(master)master.gain.value=muted?0:.15;muteBtn.textContent=muted?"🔇 音OFF":"🔊 音ON";audioState.textContent=muted?"音声: OFF":"音声: ON"};
+bunImg.onload=draw;updateUI();draw();requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
