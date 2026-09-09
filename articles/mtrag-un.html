@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>会話RAGは、毎回「検索できる質問」を受け取るわけではない——答えられない・曖昧・省略された問いを評価する｜変な読み物置き場</title>
+<meta name="description" content="MTRAG-UNは、答えられない質問、情報不足の質問、過去ターンなしでは意味が通らない質問、モデル回答への clarification を分けて会話RAGを評価する。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/mtrag-un.html">
+<meta property="og:type" content="article"><meta property="og:title" content="会話RAGは、毎回「検索できる質問」を受け取るわけではない"><meta property="og:description" content="答えられない・曖昧・省略された問いを、検索と生成の両方で評価する。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/mtrag-un.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-mtrag-un.svg">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="会話RAGは毎回きれいな質問を受け取らない"><meta name="twitter:description" content="MTRAG-UNから会話RAGの4つの難所を読む。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-mtrag-un.svg">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260904-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="mtrag-un">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-09</p></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　RAG</p>
+<header class="article-header"><div class="tags"><span>RAG</span><span>AI評価</span><span>HCI</span></div><h1>会話RAGは、毎回「検索できる質問」を受け取るわけではない——答えられない・曖昧・省略された問いを評価する</h1><p class="original-title">MTRAG-UN: A Benchmark for Open Challenges in Multi-Turn RAG Conversations</p><div class="article-meta-row"><p><strong>Sara Rosenthal / Yannis Katsis / Vraj Shah / Lihong He / Lucian Popa / Marina Danilevsky · 2026</strong><br>公開 2026.09.09　／　推定読了 46分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-mtrag-un.svg" alt="会話型検索の相談窓口で、答えられない質問、情報不足の質問、省略された質問、説明を求める再質問を別の応対へ振り分ける図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">RAG benchmarkの質問は、検索queryとして使える完成形になっていることが多い。実際の会話では「それはいくら？」「米国の大きいところは？」「いや、そうじゃなくて前の話」といった入力が来る。検索する前に、<strong>答えられる質問なのか、何が不足しているのか、どの過去ターンを参照するのか</strong>を判断しなければならない。</p>
+
+<h2>収集条件との対応</h2>
+<p>MTRAG-UNは2026年2月公開のmulti-turn RAG benchmarkで、666 tasks、2,800を超えるconversation turns、6 domainと対応corpusを公開する。対象はUNanswerable、UNderspecified、NONstandalone questions、UNclear responsesの四種類。検索器と生成modelを分けて評価し、会話の途中で起きる「queryになる前の問題」をbenchmarkへ入れた。</p>
+<p>既収録のFollowIRは、検索条件をretrieverが読んで順位へ反映できるかを見る。Lost in the Middleは、正解資料がcontext内にあっても位置によって利用性能が変わることを測る。MTRAG-UNはさらに手前へ戻り、<strong>ユーザー発話そのものが検索可能な問いとして完成していない</strong>状況を扱う。RAGのfailureをretriever精度だけで説明しないための材料になる。</p>
+
+<h2>四つのUNは、同じ「答えにくい質問」ではない</h2>
+<div class="concept-grid"><section><h3>UNanswerable</h3><p>corpus内に回答を支えるpassageがない。正しい挙動は、もっともらしい答えを作ることではなく、情報不足を認識すること。</p></section><section><h3>UNderspecified</h3><p>意図を一つに決める情報が足りない、広すぎる、曖昧な質問。追加情報を求めるか、複数の解釈を提示する必要がある。</p></section><section><h3>NONstandalone</h3><p>「それ」「さっきのプラン」のように、過去turnがないと意味を復元できない質問。retrieval前のcontextualizationが必要。</p></section></div>
+<p>四つ目の<strong>UNclear Response</strong>はユーザー側の質問の欠陥ではない。モデルの直前回答が理解されなかった、またはユーザーが反論・訂正し、説明を求めているturnである。モデルは新しいtopicへ移ったとみなさず、前回答との関係を理解してclarificationへ応じる必要がある。</p>
+<p>同じ「検索で失敗した」ように見えても処方箋が異なる。unanswerableなら検索を打ち続けるより不足を明示する。underspecifiedならquery rewriteの前に確認質問が要る。nonstandaloneならhistoryから省略を補う。unclear responseなら、過去のmodel answerも会話状態として扱う。</p>
+
+<h2>UNderspecifiedは「知らない」と返せばよいわけではない</h2>
+<p>論文ではunderspecified questionについて、単純な“I don’t know”ではなく、何が不明なのかを示し、追加情報を求める、あり得る解釈を提示する、underlying passagesから選択肢を示す、といった応答を期待する。</p>
+<p>例えば「米国の大きいファストフードチェーンについて教えて」のような質問では、売上なのか店舗数なのか、どのchainなのか、何を知りたいのかが定まらない。corpus内に複数の関連passageがあると、生成modelはそのうち一つを勝手に選び、自然な回答を作れてしまう。文章として流暢なため、通常のfaithfulness評価だけでは問題が見えにくい。</p>
+<p>MTRAG-UNの実験でも、underspecified questionは一貫して難しく、modelはユーザー意図をもっともらしく仮定して回答しがちだった。ここで必要なのはknowledge量ではなく、<strong>意図を確定するのに情報が足りないと判定する能力</strong>である。</p>
+
+<aside class="everyday-example"><span>原文外の補助例</span><p>社内規程RAGに「出張のホテルはいくらまで？」と聞いたとする。国内か海外か、役職区分、地域区分、例外承認の有無で上限が違うなら、一つの金額を即答するのは危ない。規程を正しく検索できても、質問が不足していることを検知できなければ誤答になる。</p></aside>
+
+<h2>NONstandaloneでは、last turn検索がそもそも情報を失っている</h2>
+<p>会話後半の質問は「その料金は？」「もっと安い方」「それを解約したい」のように、先行turnを参照する。last turnだけをretrieverへ渡すと、検索対象を特定する語が消えている。MTRAG-UNではnon-standalone questionの比率を増やし、query rewriteで過去contextを組み込む方式とlast-turn-onlyを比べる。</p>
+<p>retrieval実験では、BM25、dense model、sparse modelのいずれでもquery rewriteがlast turnを上回った。最良のretrieverとして報告されたElserではR@5が、non-standaloneでlast turn 0.39からrewrite 0.52へ改善している。standaloneでもrewriteは0.40から0.46へ上がった。</p>
+<p>ただしrewriteは万能ではない。会話historyから何を補うかを誤れば、ユーザーがtopicを切り替えたのに古いsubjectを持ち込むこともある。評価するなら「rewriteした文字列が自然か」より、<strong>元の会話意図に必要なreferentを回収し、不要な過去情報を混ぜなかったか</strong>を見る必要がある。</p>
+
+<h2>retrievalとgenerationの間に、「会話解釈」の失敗がある</h2>
+<p>single-turn RAGを分解すると、query → retrieval → generationと描きやすい。multi-turnでは、その前にconversation stateから現在turnの意味を再構成する処理が入る。質問が曖昧なら再構成自体を止め、確認を返す必要がある。</p>
+<p>このため評価項目も増える。「正しい資料を取ったか」だけでは、資料を取るべきでないturnを評価できない。underspecified questionで勝手に一解釈を選び、その解釈に合う資料を完璧にretrieveした場合、retriever単体では成功でも会話systemとしては失敗になる。</p>
+<p>評価対象の前提条件を明示するなら、①answerability/clarity判定、②standalone化またはclarification、③retrieval、④evidence selection、⑤generationという順に分けられる。上流で「検索してよい問い」へ変換できていない場合、下流の検索品質だけを責めるのは適切でない。</p>
+
+<h2>「正解資料を直接渡す」設定とRAG設定を分けている</h2>
+<p>generation実験では、reference settingとして最大10件のrelevant passagesを直接modelへ与える条件と、実際にretriever上位5件を渡すRAG settingを分ける。ほぼすべてのmodelでreference settingの方が高く、retrieval noiseがgenerationをさらに難しくしていることが分かる。</p>
+<p>これは評価分解として単純だが重要である。回答が悪いとき、正解evidenceを与えても悪いならgeneration側の問題が残る。正解evidenceなら答えられるがRAGでは崩れるならretrieval/context constructionへ原因を寄せられる。会話型RAGでも、end-to-end scoreだけを見ずにoracle evidence条件を置くと故障箇所を切り分けやすい。</p>
+
+<h2>unanswerableは改善したが、曖昧さへの対応はまだ弱い</h2>
+<p>著者らは複数のopen modelを評価し、以前のMTRAGよりunanswerableへのIDK応答が改善したmodelがあると報告する。一方、underspecified questionは多くのmodelで低性能だった。clarification questionも通常のfollow-upより難しく、会話を続ける能力より<strong>意図を修正し、過去回答を再解釈する能力</strong>の方が弱い可能性を示す。</p>
+<p>この差は実務の評価セットに反映できる。「答えがcorpusにない」ケースだけ大量に入れても、「答えは複数あるが質問が不足」「前turnを読めば一意」「モデルの前回答をユーザーが否定」という別能力は測れない。拒否・留保系のテストも失敗型を分ける必要がある。</p>
+
+<h2>企業内RAGでは、似たページが大量にあること自体が難しさになる</h2>
+<p>MTRAG-UNは従来domainにBankingとTelcoを追加する。この二つではR@5が他domainより低かった。著者らは、長いdocument、密なhyperlink構造、複数企業に似た構造のpageが多数あることを難しさの一因として挙げる。</p>
+<p>これは社内規程、製品マニュアル、契約雛形でも起こる。同じ見出し、似た文型、年度違い、部門違いのdocumentが並ぶcorpusでは、語彙的には全部関連して見える。conversation contextから対象組織・製品・時点を正しく復元できなければ、retrieverのembedding性能が高くても誤った兄弟文書へ流れる。</p>
+
+<h2>このbenchmarkにも人工的な部分はある</h2>
+<p>666 taskは英語の6 closed domainsに限定され、会話を作ったannotatorの人数も多くない。著者らは、使ったretrieverやinitial response generatorに由来するbiasの可能性をlimitとして挙げる。underspecified questionの一部は、既存conversationの末尾へhuman-written questionをstitchして作っている。</p>
+<p>また「雑談」「ありがとう」のようなconversational turnは適切なevaluation metricが未整備として対象外である。現実のchat UIにはこうしたturnも混ざる。benchmarkがmulti-turnだからといって、会話全体を網羅したわけではない。</p>
+
+<h2>評価設計へ持ち帰るなら、質問の状態を先に分類する</h2>
+<p>RAG test setを作るとき、すべての質問へ正解answerと正解sourceを付けるだけでは足りない。質問側にもstateを持たせるとよい。少なくとも、answerable / unanswerable、sufficient / underspecified、standalone / context-dependent、normal follow-up / clarificationを分ける。</p>
+<p>そして期待するsystem behaviorをstateごとに変える。underspecifiedなら「検索結果から推測して答える」を加点せず、必要なclarificationを返すことを評価する。nonstandaloneならquery rewriteまたはhistory利用を評価する。unanswerableならcitationを捏造せず止まる。これで「正しい答えを出す能力」以外に、<strong>いつ答えるべきでないかを判定する能力</strong>がテストセットへ入る。</p>
+
+<div class="source-box"><h2>原文</h2><p><a href="https://arxiv.org/html/2602.23184v1" target="_blank" rel="noopener">Rosenthal et al., MTRAG-UN: A Benchmark for Open Challenges in Multi-Turn RAG Conversations (2026)</a></p><p><a href="https://github.com/IBM/mt-rag-benchmark" target="_blank" rel="noopener">公開benchmark / code</a></p></div>
+<div class="related-reading"><h2>関連して読む</h2><p><a href="followir.html">検索器は「何を関連とするか」まで読めているか</a></p><p><a href="lost-in-the-middle.html">長いコンテキストに入れば読める、とは限らない</a></p><p><a href="ragchecker.html">RAGの失敗を一つの点数に潰さない</a></p><p><a href="context-interaction.html">コンテキストは相互作用の途中で作られる</a></p></div>
+</article></div></main></body></html>
