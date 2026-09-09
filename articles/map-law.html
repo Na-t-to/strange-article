@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>法務RAGは「何件取ったか」で止めない——未解決の法的要件を見ながら検索を続ける｜変な読み物置き場</title>
+<meta name="description" content="MAP-Lawは、事実、法的要件、証拠の充足状態を明示し、未解決の要件へ検索を向け、coverageと追加利得から検索を止める。法務RAGの検索制御として読む。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/map-law.html">
+<meta property="og:type" content="article"><meta property="og:title" content="法務RAGは「何件取ったか」で止めない——未解決の法的要件を見ながら検索を続ける"><meta property="og:description" content="検索回数ではなく、法的要件の充足状態を検索制御へ使う。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/map-law.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-map-law.svg">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="未解決の法的要件を見ながら検索を続ける"><meta name="twitter:description" content="MAP-Lawから、法務RAGのcoverage-driven retrievalを読む。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-map-law.svg">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260904-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="map-law">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-09</p></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　法務×AI</p>
+<header class="article-header"><div class="tags"><span>法務×AI</span><span>RAG</span><span>AIエージェント</span></div><h1>法務RAGは「何件取ったか」で止めない——未解決の法的要件を見ながら検索を続ける</h1><p class="original-title">MAP-Law: Coverage-Driven Retrieval Control for Multi-Turn Legal Consultation</p><div class="article-meta-row"><p><strong>Qinchuan Cheng / Jiaqi Liu / Ruixuan Xie / Xiaoya Yuan / Yuxin Liu · 2026</strong><br>公開 2026.09.09　／　推定読了 51分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-map-law.svg" alt="法律調査室で事実、法的要件、法令・裁判例の証拠カードを事件マップへ結び、未充足の要件だけを次の検索対象にする図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">検索を3回やったから回答する、上位10件を取ったから十分、と決めると、簡単な案件では取りすぎ、難しい案件では取り足りない。MAP-Lawは、案件を法的要件へ分解し、<strong>どの要件が未解決で、どの要件にどんな証拠が付いているか</strong>を状態として持つ。その状態から次の検索先と停止時点を決める。</p>
+
+<h2>収集条件との対応</h2>
+<p>2026年5月の研究で、multi-turn legal consultationを「法的要件のcoverageを埋める反復的な証拠収集」としてモデル化する。相談中の事実、legal element、検索目標、取得したevidenceをgraphで持ち、element coverage、evidence validity coverage、直近検索のmarginal gainを見ながら、法令検索、裁判例検索、確認質問、query reformulation、結論生成を切り替える。</p>
+<p>対象実験は50件のsynthetic Chinese labor-law consultationで、legal elementはあらかじめ固定されている。したがって「法律相談AIが完成した」という研究ではない。むしろ、<strong>必要論点が既に分かっているとき、証拠収集をどう制御するか</strong>だけを切り出した小さな実験である。その限定が明示されているため、法務RAGの設計部品として読みやすい。</p>
+
+<h2>法務の検索は、検索語を一回作って終わる仕事ではない</h2>
+<p>論文は法律相談の流れを、論点を特定し、必要なlegal elementへ分解し、不足事実を聞き、必要な法令・裁判例を調べ、それから回答する反復過程として捉える。最初の質問だけでは、必要な検索条件も十分性の基準も確定しない。</p>
+<p>通常のRAG pipelineでは、questionからqueryを作り、top-kを取得し、generatorへ渡す。k=5や検索3roundのような固定budgetなら、案件の難しさと関係なく同じ深さまで調べる。これでは決定的な要件が一つだけ抜けた状態でも「3回やったから終了」になり得る。反対に、1回目で必要資料が揃っても残りroundを消費する。</p>
+<p>MAP-Lawが提案するのは、検索深度を時間や件数ではなく、<strong>案件の未充足状態</strong>へ結びつけることだ。</p>
+
+<aside class="everyday-example"><span>原文外の補助例</span><p>労働契約の解雇相談で、①雇用関係、②解雇事由、③手続、④補償という確認項目があるとする。法令を10件取っていても、②を支える資料だけゼロなら調査は終わっていない。一方、4項目すべてについて必要な根拠が揃ったなら、20件目を取りに行く理由は弱い。</p></aside>
+
+<h2>相談状態を、事実・要件・証拠のmapとして持つ</h2>
+<p>論文では時点tの状態を、ユーザーから得たfacts、case typeに必要なlegal elements、取得済みevidence、それらをelementへ結ぶlinkで表す。elementには<strong>unsupported / partially supported / fully supported</strong>という状態と、「何が足りないか」の短い記述を持たせる。</p>
+<p>ここが単なる説明用graphと違う。graphは回答後の可視化ではなく、次の行動を決めるcontrol stateである。unsupportedなelementがあれば、そのelementをtargetにして法令を調べるか、caseを調べるか、ユーザーへ確認する。queryも全会話を丸ごと要約するだけでなく、現在未解決のelementとmissing evidenceから作る。</p>
+<p>つまり「検索queryの良さ」を単独で考えず、queryが<strong>どの不足を埋めるために発行されたか</strong>まで保存する。後から、どのelementが未解決だったからどのqueryを出し、何を取得し、なぜ終了したかを再構成できる。</p>
+
+<h2>Element Coverage——論点の数を、検索制御に使う</h2>
+<p>Element Coverage（EC）は、用意されたlegal elementのうちcoveredになった割合を測る。4要件のうち3要件が十分にsupportされれば0.75という考え方である。Evidence Validity Coverage（EVC）は、選択したevidenceが少なくとも一つのlegal elementへ対応付けられる割合を見る。</p>
+<p>この二つは役割が違う。ECだけを追うと、要件を埋めるために大量の周辺資料を積んでも高得点になり得る。EVCを併用すると、取った資料が実際に案件のelementへ紐づいているかを見る。さらに各roundで、未解決elementに対して新しいevidenceがどの程度追加価値を持ったかをmarginal gainとして測る。</p>
+<p>検索評価として面白いのは、「関連文書を何件取れたか」の外に<strong>coverage stateそのもの</strong>を置くことだ。retrieval recallは文書集合に対する指標だが、ECは案件の法律上必要な確認事項に対する指標になる。</p>
+
+<h2>止め方は「十分性」と「これ以上増えない」の二経路</h2>
+<p>報告された設定では、ECが0.85以上かつEVCが0.70以上になった場合、または直近2roundのmarginal gainが0.05未満になった場合に停止する。最大round budgetも安全弁として残す。</p>
+<p>この停止条件は二種類の終了を認めている。一つは「必要要件がおおむね埋まり、証拠も要件へ対応している」という<strong>十分性による停止</strong>。もう一つは「検索を続けても新しいcoverageが増えない」という<strong>飽和による停止</strong>である。</p>
+<p>後者は重要である。資料が見つからない案件で「coverageが閾値に達するまで検索」を続ければ無限に掘ることになる。十分に調べたが根拠不足、という状態も終了条件として表現しなければならない。</p>
+
+<h2>実験の結果は「深く検索するほど良い」ではなかった</h2>
+<p>50件のsynthetic pilotで、DeepSeek V4-Proをaction selectorに使う構成は、研究内のEC/EVCで1.0を達成し、平均3.36round、7.08 evidenceだった。固定7roundのbaselineは18 evidenceを取得する。著者らの主張は、より深く検索したからcoverageが上がったのではなく、未解決elementへ次のactionを向けたことが効いたというものだ。</p>
+<p>特に11件のhard-case診断では、deterministic rule policyはbudgetを1から7へ増やしてもECが0のままだった。一方Qwen-Plus selectorはbudget 1で0.545、budget 2で1.0になり、それ以上増やしてもcoverageは変わらなかった。強制的に検索を続ける構成ではtokenとlatencyだけが大きく増えた。</p>
+<p>ここから読み取れるのは、search depthとsearch intelligenceを分ける必要である。queryやtarget elementを間違えたままround数を増やしても、同じ穴の周りを掘り続ける。必要なのは、未充足要件を識別し、そこへ探索先を切り替える制御である。</p>
+
+<h2>ただし、表のEC=0をそのままbaselineの検索失敗と読んではいけない</h2>
+<p>この論文で注意が必要な箇所がある。graphを持たないfixed-retrieval baselineは、実装上element-level support stateを更新しない。そのため表ではEC=0になる。これは「関連資料を一件も取れなかった」という意味ではなく、<strong>明示的なcoverage stateを利用可能にしていない</strong>ことを測っている。</p>
+<p>著者ら自身、将来はgraph-free baselineにもpost-hoc legal-element alignmentを行い、retrieval recallとcontroller-state availabilityを分けるべきだと書く。比較表だけを見るとMAP-Lawが圧勝しているように見えるが、ECの定義がarchitectureに有利な部分を持つ。</p>
+<p>これは評価設計上むしろ面白い教訓になる。自分が提案した内部状態をそのまま評価指標にすると、比較対象がその状態を持たないだけで0点になることがある。測りたいのが「必要証拠を取得できたか」なら、architectureに依存しないoracle側のalignmentも必要になる。</p>
+
+<h2>法務リサーチAIへ持ち込むなら、legal elementをどう作るかが最大の前段になる</h2>
+<p>MAP-Lawの実験ではlegal elementsを固定している。実運用では、ここが簡単ではない。質問から適用法令と法的構成を見つけ、構成要件・考慮要素・例外・手続要件を適切な粒度で洗い出す必要がある。elementを誤れば、coverageが100%でも間違った問題を完全に調べたことになる。</p>
+<p>したがって実システムなら、少なくとも<strong>論点・要件の発見</strong>と<strong>要件ごとの証拠収集</strong>を別の評価対象にした方がよい。前段ではelement recallや不要論点の混入を見る。後段では、正しいelement setを固定入力として与え、検索・選別・停止だけを検査する。MAP-Lawの実験設計は、後段を隔離して測る例として読める。</p>
+
+<h2>「資料がある」と「その資料で要件を支えられる」も分ける</h2>
+<p>法務RAGでは、中心法令を取得しただけで終わらない。どの条項・段落が、どの法的命題を、どの射程で支えるかを結びつける必要がある。MAP-Lawのevidence-to-element linkは、この対応をstateへ持ち込む。</p>
+<p>実務向けに強化するなら、elementごとに「必要資料種別」「authority level」「時点」「肯定・否定どちらを支持するか」「直接根拠か補助根拠か」まで持たせられる。単にcovered=trueでは粗い場合、support statusを段階化する理由がここにある。</p>
+<p>すると検索停止も、件数ではなくEvidence Setの完成条件に近づく。「中心法令がある」「例外規定を確認した」「主要裁判例の対立があるなら双方を取った」「適用時点を確認した」といった必要条件を満たしたかで制御できる。</p>
+
+<aside class="everyday-example"><span>原文外の設計例</span><p>景品規制の質問なら、要素を「取引付随性」「景品類該当性」「懸賞類型」「上限」「例外」と置く。取引付随性が否定される資料が十分なら、一般懸賞の上限資料を何十件追加しても回答品質は上がらない。どの要素が結論を支配するかをstateに置けば、検索budgetを別の論点へ使える。</p></aside>
+
+<h2>この論文の射程</h2>
+<p>benchmarkは50件と小さく、syntheticで、中国労働法の固定schemaに限定される。最終legal adviceの正しさを測っておらず、retrieval-control behaviorのpilotである。evidence alignmentもlightweightなlexical/semantic matchingを使う。現実の裁判例射程、法改正、法令階層、矛盾するauthoritiesまで扱った検証ではない。</p>
+<p>それでも、法務RAGを「検索器＋生成器」だけで見るより、<strong>未解決論点を持つcontroller</strong>として設計する見方は残る。検索の深さを固定値にせず、調査対象のcoverageと追加価値に応じて変える。さらに、そのcontrol state自体を監査可能にする。法務リサーチのプロセスをシステムへ落とすとき、かなり具体的な部品になる。</p>
+
+<div class="source-box"><h2>原文</h2><p><a href="https://arxiv.org/html/2605.01486v2" target="_blank" rel="noopener">Cheng et al., MAP-Law: Coverage-Driven Retrieval Control for Multi-Turn Legal Consultation (2026)</a></p></div>
+<div class="related-reading"><h2>関連して読む</h2><p><a href="legal-rag-bench-factorial.html">法務RAGの「どの部品が悪いか」を、総当たりで測る</a></p><p><a href="legal-rag-hallucinations.html">引用が実在しても、法務AIは間違える</a></p><p><a href="followir.html">検索器は「何を関連とするか」まで読めているか</a></p><p><a href="sensemaking-analysis.html">調査を「検索」だけで評価しない</a></p></div>
+</article></div></main></body></html>
