@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「成功率80%」では運用できない——AIエージェントの信頼性を12個の測定項目へ分解する｜変な読み物置き場</title>
+<meta name="description" content="AIエージェントの信頼性を、一貫性、頑健性、予測可能性、安全性へ分解し、反復実行・障害注入・確信度・損害の大きさまで測る研究を読む。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/agent-reliability.html">
+<meta property="og:type" content="article"><meta property="og:title" content="「成功率80%」では運用できない——AIエージェントの信頼性を12個の測定項目へ分解する"><meta property="og:description" content="平均成功率の外側にある、一貫性・頑健性・予測可能性・安全性を測る。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/agent-reliability.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-agent-reliability.svg">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="AIエージェントの信頼性を12項目へ分解する"><meta name="twitter:description" content="成功率だけでは見えない運用品質を測る。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-agent-reliability.svg">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260904-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="agent-reliability">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-09</p></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　AIエージェント</p>
+<header class="article-header"><div class="tags"><span>AIエージェント</span><span>AI評価</span><span>LLM信頼性</span></div><h1>「成功率80%」では運用できない——AIエージェントの信頼性を12個の測定項目へ分解する</h1><p class="original-title">Towards a Science of AI Agent Reliability</p><div class="article-meta-row"><p><strong>Stephan Rabanser / Sayash Kapoor / Peter Kirgis / Kangheng Liu / Saiteja Utpala / Arvind Narayanan · 2026</strong><br>公開 2026.09.09　／　推定読了 50分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-agent-reliability.svg" alt="運用管制室で同じAIエージェントの複数回実行を並べ、経路、障害、確信度、損害の大きさを監視する図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">同じ仕事を100回させて80回成功する二つのエージェントがある。一方は毎回ほぼ同じ20件で失敗し、失敗前に低い確信度を示し、誤ってもやり直せる。もう一方はどの仕事で失敗するか読めず、同じ仕事でも手順と費用が揺れ、ときどき不可逆な操作をする。平均成功率は同じでも、運用上の信頼性は同じではない。</p>
+
+<h2>収集条件との対応</h2>
+<p>2026年の研究で、航空・原子力・自動車などの安全工学を参照し、AI agent reliabilityを<strong>consistency、robustness、predictability、safety</strong>の四領域へ分解する。さらに12の測定項目を定義し、15モデルをGAIAとτ-benchで評価している。論文の価値は新しい総合点そのものより、「何を測れば運用上の信頼性と言えるか」を測定可能な単位へ落としている点にある。</p>
+<p>既収録のτ-benchは同じタスクを繰り返して毎回成功できるかをpass^kで見る。AI Agents That Matterはコスト、再試行、benchmark過学習を含めて評価する。本稿の研究は、その周辺に散らばっていた問題を一つのreliability profileへ整理し、同じ結果でも経路が揺れること、故障時の劣化、確信度による失敗予測、失敗の重大性まで同じ表へ載せる。</p>
+
+<h2>平均成功率が消してしまう情報</h2>
+<p>平均値は比較しやすい。だが運用判断には、平均から消える情報がある。第一に<strong>分散</strong>である。同一条件で成功と失敗を行き来するなら、ユーザーは結果を再現できない。第二に<strong>条件変化への感度</strong>で、API timeoutやJSONの並び替え、言い換え程度で性能が急落するかもしれない。第三に<strong>失敗を事前に見抜けるか</strong>である。第四に<strong>失敗の被害</strong>がある。誤った改行と本番DBの削除を同じ一失敗として数えると、重大な差が消える。</p>
+<p>著者らは、安全クリティカル分野ではこうした性質を独立に測ることが普通だと整理する。高い平均性能だけでは認証の理由にならず、同じ条件での再現性、ストレス下の挙動、failure mode、tail riskを別に扱う。AI agentにも同じ問いを持ち込む。</p>
+
+<h2>1. Consistency——同じ条件なら、同じように動くか</h2>
+<p>Consistencyは単に「同じ答えを返すか」ではない。論文は結果、trajectory、resourceに分ける。</p>
+<div class="concept-grid"><section><h3>Outcome consistency</h3><p>同じtaskを複数回実行したとき、成功・失敗が安定しているか。毎回半々で揺れるtaskは低い。</p></section><section><h3>Trajectory consistency</h3><p>どんなtoolを何回使い、どの順番で進んだかが似ているか。action分布とaction sequenceの二方式で測る。</p></section><section><h3>Resource consistency</h3><p>時間、API call、費用などの使用量がrunごとに大きく揺れないか。</p></section></div>
+<p>trajectoryまで測る理由は監査にある。最終回答が毎回正しくても、あるrunだけ通常と異なるDB更新経路を通るなら、その差は事故調査や権限設計で重要になる。創作のように経路多様性が価値になる仕事では不要なこともあり、著者ら自身も適用文脈によって除外できるとする。</p>
+<p>実験では一つのtaskを5回実行する。temperatureを0にしても、サーバー側の非決定性などから挙動は完全には固定されない。つまり「temperature 0だから一回でよい」という前提も検査対象になる。</p>
+
+<h2>2. Robustness——少し条件が崩れたとき、どのくらい劣化するか</h2>
+<p>Robustnessは三種類のperturbationで測る。<strong>fault robustness</strong>ではtool timeout、authentication error、malformed responseなどを注入する。<strong>environment robustness</strong>ではtool interfaceの命名規則、データ形式、response formatなど、意味を保った周辺環境の変更を加える。<strong>prompt robustness</strong>では意味的に同じ指示の言い換えを複数作る。</p>
+<p>測るのは絶対精度だけでなく、平常時performanceに対してどの程度維持できたかである。平常時90%、障害時88%のagentと、平常時90%、障害時30%のagentは、通常benchmarkでは同点でも運用特性が違う。</p>
+<p>この発想はMetamorphic TestingやCheckListのINVともつながる。ただしagentでは対象が文章だけではない。tool error、schema change、field order、API parameterなど、<strong>環境全体へ変形を広げる</strong>ところが実務的である。</p>
+
+<aside class="everyday-example"><span>原文外の補助例</span><p>経費精算agentが、APIの返却JSONで「amount, date, vendor」の順なら成功するが「vendor, amount, date」になると壊れるとする。業務の意味は変わっていない。ここで測っているのは経費知識ではなく、表現の偶然に依存しない頑健性である。</p></aside>
+
+<h2>3. Predictability——自分が失敗しそうだと分かるか</h2>
+<p>平均成功率が低くても、難しいtaskを正確に識別して人へ回せるなら、限定的な自動化には使える。逆に90%成功しても、失敗する10%を本人も見分けられず高確信で実行するなら、人間の確認を省くのは難しい。</p>
+<p>論文は<strong>calibration</strong>、<strong>discrimination</strong>、<strong>Brier score</strong>を使う。calibrationは「80%自信あり」と言ったtask群が実際にも約80%成功しているかを見る。discriminationは成功taskへ失敗taskより高いconfidenceを付けられるかを見る。Brier scoreは確率予測と実際の成否の距離をまとめる。</p>
+<p>この区別は重要だ。confidenceが全taskで0.8なら、全体成功率80%の場合calibrationだけは見かけ上よい。しかしどのtaskが失敗するかは識別できない。運用で「0.9以上だけ自動実行」のような閾値を置きたいなら、discriminationも必要になる。</p>
+
+<h2>4. Safety——失敗回数と、失敗の重さを分ける</h2>
+<p>Safetyでは、まずあらかじめ定義したconstraintを破ったかを見る。PIIを漏らさない、許可なしに不可逆操作をしない、といった規則である。次に、違反したtaskについてharm severityを評価する。著者らはlow、medium、highへ重みを付け、違反頻度と重大性を分ける。</p>
+<p>論文が面白いのは、safetyをoverall reliabilityの平均へ混ぜない点だ。重大事故はtail phenomenonなので、consistencyやrobustnessが高いことと平均して相殺させるべきではないという判断である。99項目が完璧でも、1項目で本番データを破壊するなら、その1%を総合98点へ溶かすと運用判断を誤る。</p>
+<p>この設計は評価表にもそのまま使える。すべての評価項目を加点式で平均する前に、「他項目の高得点で相殺してはいけない項目」を分離する必要がある。</p>
+
+<h2>12項目は「能力」と「信頼性」を混ぜないための道具でもある</h2>
+<p>論文はraw accuracyとreliabilityを独立とみなす。よく解けるかと、安定して解けるかは違う。難しい問題まで処理できる高能力agentでも、runごとに挙動が変わり、故障時に脆く、自信過剰なら信頼性は低い。逆に処理範囲は狭くても、その範囲ではほぼ決定的に動き、範囲外を検知して止まれるagentは限定用途で扱いやすい。</p>
+<p>この切り分けは評価基準を設計するとき有効である。「正しい回答ができる」「中心資料を取れる」はtask capabilityである。それとは別に「同じ問題で結果が安定する」「言い換えで壊れない」「失敗を自己識別できる」「事故時の被害が限定される」を持つ。能力一覧だけでは運用品質を表せない。</p>
+
+<h2>実験結果では、能力向上ほど信頼性は伸びなかった</h2>
+<p>著者らは2024年から2026年半ばまでの15モデルを、一般的なmulti-tool taskであるGAIAとcustomer-service agentのτ-benchで比較する。論文の主張は、モデル世代が進んでtask accuracyが上がっても、総合したreliabilityの改善は小さく、provider間でも似た停滞が見られたというものだ。</p>
+<p>ここで順位そのものを持ち帰る必要はない。agent scaffold、benchmark、confidenceの取り方、fault injectionの設定で数値は変わる。重要なのは、accuracyの上昇を見た後に「同じ改善がconsistency、robustness、predictability、安全上のtailへも波及したか」を別に測ったことである。</p>
+
+<h2>この評価にも範囲がある</h2>
+<p>著者らがいうsafetyは、広い意味のAI safetyや社会的価値整合ではない。定義済みのoperational constraintとfailure severityに限定される。adversarial attackも主要scopeから外している。またconfidenceはpost-hocのself-assessmentで取り出しており、それ自体が最良のuncertainty estimatorだと保証する研究ではない。</p>
+<p>12 metricを平均したoverall reliabilityも、用途に応じて重みを変える必要がある。監査が重要な業務ではtrajectory consistencyを重視するだろうし、creative agentでは同じ経路を通ることに価値がない場合もある。論文自身も個々のmetricを見ずに総合値へ戻ることを勧めていない。</p>
+
+<h2>評価設計へ持ち込むなら</h2>
+<p>まずtask successの評価表を作る。その横に、同じtaskを複数回回す列、意味保存的なprompt変形、tool failure、environment変形、confidence、constraint violation、severityを追加する。ここまで来ると、一問一答の正誤表ではなく、運用条件を模した試験計画になる。</p>
+<p>特に有用なのは、<strong>一つの「信頼性」項目を作らない</strong>ことだ。「信頼できるか」を一問で採点すると、再現性、障害耐性、自信過剰、重大事故が再び混ざる。論文の12 metricは完成形として採用するより、曖昧な上位概念を測定可能な現象へ分ける見本として使うのがよい。</p>
+
+<div class="source-box"><h2>原文</h2><p><a href="https://arxiv.org/html/2602.16666" target="_blank" rel="noopener">Rabanser et al., Towards a Science of AI Agent Reliability (2026)</a></p></div>
+<div class="related-reading"><h2>関連して読む</h2><p><a href="tau-bench.html">一度成功したエージェントを信用しない</a></p><p><a href="ai-agents-that-matter.html">エージェントの「最高精度」は、そのまま価値ではない</a></p><p><a href="system-safety-constraints.html">安全は部品の信頼性だけでは決まらない</a></p><p><a href="checklist.html">平均点を捨てて、AIの「振る舞い」をテストする</a></p></div>
+</article></div></main></body></html>
