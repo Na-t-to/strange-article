@@ -1,29 +1,12 @@
 {
-  "date": "2026-09-09",
-  "lastUpdated": "2026-09-09T14:19:00+09:00",
-  "candidateCount": 36,
-  "adoptedCount": 4,
-  "collectionNote": "要求工学、AI評価、RAG・情報検索、AIエージェント、法務×AI、HCI、概念設計と周辺分野の一次情報を広く探索。今回は、正解値を直接用意できないテストを入力・出力間の関係へ変えるMetamorphic Testing、agent reliabilityを一貫性・頑健性・予測可能性・安全性へ分解する研究、法的要件のcoverageで検索先と停止を制御するMAP-Law、会話RAGのunanswerable・underspecified・nonstandalone・clarificationを分けるMTRAG-UNを採用した。Weyukerのoracle問題とML向けMetamorphic Testingは同日採用記事との重複、JacksonのProblems/Requirementsは既収録World and the Machineとの近さ、Value Sensitive Designは今回確認できた全文アクセス条件、URAG・RAGe系は既収録の評価・RAG記事との差分の小ささから見送った。",
-  "selectionTracks": [
-    {
-      "title": "古典発掘枠",
-      "summary": "初出から5年以上経過した一次資料を対象とする。",
-      "criteria": [
-        "時間を経ても参照され、現在の要求工学、設計、評価、概念形成、認知、制度等へ接続できる文章を優先する"
-      ]
-    },
-    {
-      "title": "高速更新分野枠",
-      "summary": "AI評価、RAG、情報検索、reasoning、AI agent、legal AI、LLM信頼性・制御などは、公開年による制限を設けない。",
-      "criteria": [
-        "原著論文または著者・研究機関による技術報告である",
-        "方法、評価条件、失敗例等が具体的に記載されている",
-        "比較実験、データ、コード、再現材料のいずれかがある",
-        "単なる製品発表、新機能紹介、ベンチマーク順位の紹介ではない",
-        "半年後にも利用できる概念、評価方法、設計上の論点を含む",
-        "既出記事との差分がある"
-      ]
-    }
+  "date":"2026-09-10",
+  "lastUpdated":"2026-09-10T14:45:58+09:00",
+  "candidateCount":34,
+  "adoptedCount":4,
+  "collectionNote":"要求工学、HCI、RAG・retrieval、citation grounding、agent workflow、評価設計まで一次資料を横断し、既存38本との論点重複、原文全文への到達性、方法の具体性、実務へ持ち帰れる概念を比較した。今回はanswer-centric retriever、pre-RS traceability、situated planning、citation attribution alignmentの4本を採用。",
+  "selectionTracks":[
+    {"title":"古典・基礎","summary":"5年以上残っている一次資料から、現在の設計・評価へ再利用できる概念を優先する。","criteria":["原文全文へ到達できる","後年の要約ではなく一次資料を読む","既存記事と別の道具を持ち帰れる","具体例・論証・限界まで再構成できる"]},
+    {"title":"新しいAI研究","summary":"新しさそのものではなく、方法・評価・失敗条件が具体的で半年後にも参照価値が残るものだけ採る。","criteria":["一次または技術報告である","方法や評価データが検証可能である","単なる製品紹介・ニュースではない","RAG・agent・評価設計の具体的な改善判断へ接続できる"]}
   ],
-  "adoptionRule": "「5年以上残った古典」または「更新の速い分野における、検証可能で長期利用可能な新しい論考」のいずれかを満たす。"
+  "adoptionRule":"原則3〜5本。候補数を埋めるため品質を下げず、既存記事との重複が大きいもの、原文を十分確認できないもの、結果だけで設計上の道具が残らないものは採用しない。"
 }
