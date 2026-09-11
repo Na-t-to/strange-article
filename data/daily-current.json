@@ -1,9 +1,9 @@
 {
-  "date":"2026-09-10",
-  "lastUpdated":"2026-09-10T14:45:58+09:00",
-  "candidateCount":34,
+  "date":"2026-09-11",
+  "lastUpdated":"2026-09-11T14:35:51+09:00",
+  "candidateCount":38,
   "adoptedCount":4,
-  "collectionNote":"要求工学、HCI、RAG・retrieval、citation grounding、agent workflow、評価設計まで一次資料を横断し、既存38本との論点重複、原文全文への到達性、方法の具体性、実務へ持ち帰れる概念を比較した。今回はanswer-centric retriever、pre-RS traceability、situated planning、citation attribution alignmentの4本を採用。",
+  "collectionNote":"要求工学・設計根拠、HCI、人間とAIの協働設計、LLM不確実性、RAG・retrieval、法務AIまで一次資料を横断し、既存42本との論点重複、原文全文への到達性、方法の具体性、半年後にも残る設計上の道具を比較した。今回はQOCのQuestion設計、Intelligibility/Accountability、Coactive Design、Semantic Entropyの4本を採用。",
   "selectionTracks":[
     {"title":"古典・基礎","summary":"5年以上残っている一次資料から、現在の設計・評価へ再利用できる概念を優先する。","criteria":["原文全文へ到達できる","後年の要約ではなく一次資料を読む","既存記事と別の道具を持ち帰れる","具体例・論証・限界まで再構成できる"]},
     {"title":"新しいAI研究","summary":"新しさそのものではなく、方法・評価・失敗条件が具体的で半年後にも参照価値が残るものだけ採る。","criteria":["一次または技術報告である","方法や評価データが検証可能である","単なる製品紹介・ニュースではない","RAG・agent・評価設計の具体的な改善判断へ接続できる"]}
