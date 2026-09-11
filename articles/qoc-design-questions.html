@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>設計案を増やしたいなら、まず問いを作り直す——QOCのDesign Space Analysis｜変な読み物置き場</title>
+<meta name="description" content="QOCはQuestions・Options・Criteriaを使い、設計を最終案の説明ではなく、比較可能な選択肢の空間として構造化する。特に重要なのは、選択肢を生むQuestion自体を何度も作り直すことにある。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/qoc-design-questions.html"><link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260901-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="qoc-design-questions">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　仕様設計</p>
+<header class="article-header"><div class="tags"><span>仕様設計</span><span>HCI</span><span>設計根拠</span></div><h1>設計案を増やしたいなら、まず問いを作り直す——QOCのDesign Space Analysis</h1><p class="original-title">Generating Good Design Questions</p><div class="article-meta-row"><p><strong>Victoria Bellotti / Allan MacLean / Thomas Moran · 1991</strong><br>公開 2026.09.11　／　推定読了 56分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-qoc-design-questions.svg" alt="古い銀行ホールで利用者が三種類の現金受取機を見比べ、取引時間と選択の幅という異なる評価基準のもとで設計案を比較する図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">設計会議で選択肢が少ないとき、足りないのはアイデアの量とは限らない。何を選ぶ問題なのかというQuestionの切り方が、候補として見えるOptionそのものを狭めていることがある。Bellotti、MacLean、Moranは、設計案を比較する前に「問い」を設計対象にする。</p>
+<aside class="everyday-example"><span>身近な例（原文外）</span><p>目覚まし時計を改善するとき、「スヌーズボタンを大きくするか」と聞けば、大きさの案しか出ない。「寝過ごしそうな人へ、どう気づかせるか」と聞き直せば、音量、光、振動、別端末への通知、二段階の確認など、違う種類の案が同じ検討対象に入る。問いの変更は言い換えではなく、探索する設計空間の変更である。</p></aside>
+<h2>設計理由を「採用案の説明」だけにしない</h2>
+<p>QOCはQuestions、Options、Criteriaの三種類の要素で設計根拠を表す。Questionは設計上の論点、OptionはそのQuestionに対する候補、CriterionはOptionを比較する評価基準である。一つのQuestionには複数のOptionを置き、同じCriterionに対して各Optionがどのような長所と短所を持つかを明示する。</p>
+<p>この構造の狙いは、最終案を正当化する文章を後から書くことではない。設計中に「他に何があり得たか」「なぜこの案同士を比較したのか」「どの条件を重視したか」を外部化し、設計者自身の探索を広げる。同時に、後から保守する人が、結論だけでなく周辺の選択肢と判断条件を復元できるようにする。</p>
+<p>1991年の技術報告は、QOC全体を紹介するだけでなく、Questionの質へ焦点を当てる。著者らが強調するのは、よいQuestionが最初から自然に現れるわけではないという点だ。最初の問いは、目前の要求文や既存UIの形に引っ張られやすい。設計を進めながら問いを何度も言い直し、前提を露出させ、比較可能なOptionが生まれる粒度へ直す必要がある。</p>
+<h2>QuestionがOptionの「同じ土俵」を作る</h2>
+<p>QOCでは、一つのQuestionにぶら下がるOptionは、同じ目的を満たす代替案として比較できなければならない。ここでQuestionは単なる見出しではない。Optionが何のための案なのかを決め、どのCriterionで比べるべきかを示す文脈になる。</p>
+<p>報告書のATM例では、現金額の選択方法を考える。「利用者はどう現金額を選ぶか」というQuestionなら、金額を入力する、用意された金額から選ぶ、カードに既定額を持たせる、といったOptionを並べられる。そのとき取引の速さと選択幅が共通のCriterionになる。カード側に既定額を置けば選択時間はほぼなくなるが自由度は下がる。入力式なら幅は広いが操作に時間がかかる。</p>
+<p>一方、「既定額をどこへ保存するか」と問えば、注目するCriterionは保存容量、媒体、取得速度などへ変わる。同じ「既定額」という案を扱っていても、Questionが違えば評価対象となる設計問題が違う。QOCはCriterionだけで比較基準を持つのではなく、Questionによって「何を比較しているのか」を先に固定する。</p>
+<div class="concept-grid"><section><h3>Question</h3><p>複数の設計案が答えになり得る、局所化された設計上の論点。Optionの目的と比較範囲を定める。</p></section><section><h3>Option</h3><p>Questionへの候補回答。同じQuestionのOption同士が代替関係にあり、共通Criterionで比較される。</p></section><section><h3>Criterion</h3><p>速さ、安全性、選択幅など、Optionを評価する条件。目的や制約を比較可能な形で表す。</p></section></div>
+<h2>「ライトを付けるか」は、まだ良いQuestionではない</h2>
+<p>著者らは、設計会議で自然に出る問いのいくつかを、QOCのQuestionとして不十分だとする。代表例が「ライトを付けるべきか」である。この問いは、実質的には一つのOptionを採るか捨てるかしか聞いていない。しかも、なぜライトが必要なのかが表に出ない。</p>
+<p>「機械が動作中であることを利用者へどう知らせるか」と置き直せば、ライトは一つのOptionになる。音、画面表示、機械的な動き、複数の通知を組み合わせる案も候補に入る。さらに、気づきやすさ、騒音、視認性など、比較に使うCriterionも見える。</p>
+<p>別の不十分な型は「もっと安全にするにはどうするか」である。安全性は重要だが、このQuestionは広すぎる。認証、カード返却、現金排出、周囲からの覗き見など、別の設計対象に属するOptionが一つの袋へ入ってしまう。著者らは、安全性のような目標はCriterionに置き、Questionは「利用者がカードを取り忘れないため、返却をどう扱うか」のように一つの機能的問題へ絞ることを勧める。</p>
+<h2>良いQuestionには三つの特徴がある</h2>
+<p>技術報告では、Questionを改善するための特徴がいくつか整理されている。第一に、一つのQuestionは一つの設計論点を隔離する。「メニューはどう動くべきか」ではアクセス方法、構造、表示、選択操作が混ざる。「メニューへどうアクセスするか」なら一つの論点としてOptionを比べやすい。</p>
+<p>第二に、前提と文脈が分かること。「利用者IDをどう検証するか」だけでは、銀行ATMなのか社内ネットワークなのかで意味が変わる。前提をQuestionまたは周辺の設計空間に表すと、何を固定したうえで比較しているのかが分かる。さらに、その前提自体を疑う入口になる。</p>
+<p>第三に、Optionの抽象度が揃うこと。「利用者が望む現金を得るにはどうするか」というQuestionには、「週次引出限度額を広げる」と「端末へ金額を入力する」が同居し得る。前者は制度上の制約、後者は操作方法であり、同じCriterionによる比較が難しい。「現金額をどう選択するか」まで絞れば、同程度の粒度のOptionを並べられる。</p>
+<p>この三点は、要件や仕様の分類にも効く。「何を実現するか」「どの手段を採るか」「何を優先するか」を一つのQuestionへ詰め込むと、会議では話せても、後から比較可能な記録にならない。Question、Option、Criterionへ分けることで、問いと答えと評価条件の役割が混ざっている場所を発見できる。</p>
+<h2>前提を疑うと、設計空間の外側が見える</h2>
+<p>QOCのDesign Space Analysisは、完全な設計空間を作れるとは主張しない。どんなQuestionも、さらに広い文脈と暗黙の前提に埋め込まれている。ATMなら「カードで本人を識別する」「利用者が毎回金額を選ぶ」「現金は端末から受け取る」といった前提がある。これらを固定すれば探索は効率化するが、新しい案が見えなくなる場合もある。</p>
+<p>著者らは、前提を明示し、ときにそれを反転させることをQuestionの再設計に使う。利用者が毎回金額を選ぶという前提を外せば、カードに既定額を記録し、通常は選択操作なしで引き出すOptionが現れる。既存UIの部品をいじるだけでは出にくい案である。</p>
+<p>ここで重要なのは「前提を全部消す」ことではない。設計には前提が必要で、すべてを同時に疑えば比較空間が膨張する。QOCが提供するのは、どのQuestionがどの前提の上に立つかを見て、探索が詰まったときに前提を一つ動かすという操作である。</p>
+<aside class="everyday-example"><span>身近な例（原文外）</span><p>宅配の再配達を減らすとき、「再配達時間をどう選ばせるか」だけを見ると、時間帯UIの改善へ進む。「荷物を受け取るには在宅が必要」という前提を疑えば、宅配ボックス、店舗受取、置き配、勤務先受取が同じ検討に入る。ただし今度は盗難、本人確認、保管容量など新しいCriterionが必要になる。</p></aside>
+<h2>Design Space Analysis自体も設計される</h2>
+<p>QOCの特徴は、設計過程を時系列の議事録として忠実に写すことを目標にしていない点にある。実際の設計会話は、思いつき、脱線、前提の確認、戻り、政治的交渉を含む。QOCはその流れをそのまま保存するのではなく、後から理解・比較しやすいQuestion、Option、Criterionの構造へ組み替える。</p>
+<p>そのため、Design Space Analysis自体が反復的に設計される。最初に作ったQuestionを、Optionの粒度が揃わない、Criterionが共有できない、目的が読み取れないという理由で分割・統合・言い換えする。著者らは、この再構成こそが設計者に問題を理解させる作業だと捉える。</p>
+<p>この点は、<a href="rational-design-process.html">ParnasとClementsの「合理的に見える文書を後から作る」議論</a>と近いが、目的が違う。Rational Design Processは検証・保守できる開発文書へ整理する。QOCは、設計の選択肢空間を比較可能な形へ編集し直し、別のOptionが存在した可能性まで残す。</p>
+<h2>Requirements Traceabilityとは保存するものが違う</h2>
+<p><a href="requirements-traceability.html">Requirements Traceability</a>は、要求仕様が誰の発言、交渉、判断から生まれたかというpre-RSの由来を追う。QOCは別の問いを扱う。ある設計問題について、どんな代替案があり、共通のCriterionに照らしてどう違ったかを構造化する。</p>
+<p>両方を持つと、要求の「来歴」と設計の「代替可能性」を分けて残せる。議事録だけでは、誰が何を言ったかは追えても、比較可能なOptionが整理されない。QOCだけでは、整った設計空間は見えても、組織内の誰がどの要求を持ち込んだかという社会的な履歴が薄くなる。保存対象が違うので、代替関係ではない。</p>
+<h2>AIを使った仕様発見にも、そのまま移せる</h2>
+<p>生成AIに「案を10個出して」と頼むと、Questionが固定されたままOptionだけが増える。問い自体が既存実装に寄っていれば、十案すべてが同じ局所解の変種になる。QOCの見方では、案出しの前に「このQuestionは何の目的を表しているか」「一つの論点だけか」「Optionの粒度は揃うか」「背後の前提を一つ外すとQuestionはどう変わるか」を検査する。</p>
+<p>AIを使うなら、Questionの候補生成、前提抽出、Optionの抽象度チェック、Criterion候補の発見へ役割を分ける方がよい。たとえば一つの要求文から、手段を含む語を抽出して「それはOptionではないか」と問い返す。複数Optionの比較項目が揃わなければ「Questionが広すぎないか」を再検討する。これは文章を増やす使い方より、設計空間の構造を点検する使い方に近い。</p>
+<p><a href="inquiry-based-requirements.html">Inquiry-Based Requirements Analysis</a>がシナリオと質問で要求の隠れた前提を掘り出すのに対し、QOCは見つかった設計論点を、複数Optionが比較できるQuestionへ整形する。要求発見と設計比較の間をつなぐ道具として使える。</p>
+<h2>限界：整ったQOCは、現実の議論そのものではない</h2>
+<p>QOCは半形式的な表現であり、設計のすべてを保存しない。著者ら自身、Design Space Analysisは完全になり得ないと述べる。何をQuestionとして切り出すか、どのCriterionを残すか、どの前提を外側に置くかは編集判断である。整った図だけを見て、実際の交渉や権力関係、時間制約まで復元できるわけではない。</p>
+<p>また、すべての設計判断に大規模なQOCを書くと記録コストが高い。色や余白など局所的で影響の小さい判断まで同じ厚さで分析する必要はない。著者らも、主要な設計目的を動かすkey Questionと、固定された前提の下で解くdetail Questionを区別する。使いどころは、複数案の比較が難しい、既存案への固定が疑われる、後から設計理由を説明する必要がある、といった箇所である。</p>
+<p>さらに、Criterionへ数値を置けば自動的に最適解が出るという手法ではない。QOCは意思決定アルゴリズムより、設計空間を理解可能にする表現である。異なるCriterionの優先順位や利害対立は、別途判断しなければならない。</p>
+<h2>持ち帰れる設計手順</h2>
+<ol><li>最初に出たQuestionをそのまま固定しない。</li><li>そのQuestionに、実質的に異なるOptionを最低二つ置けるか確かめる。</li><li>Optionが同じCriterionで比較できる粒度かを見る。</li><li>QuestionにOptionそのものや広すぎるCriterionが混ざっていないか分ける。</li><li>Questionが依存する前提を数個書き、探索が狭いときは一つだけ疑う。</li><li>設計が進んだら、Question自体を分割・統合・抽象化してDesign Space Analysisを作り直す。</li></ol>
+<p>設計レビューで「他に案はないか」と聞く前に、「この問い方なら、どんな種類の案しか出ないか」を見る。QOCの価値は、設計理由を保存すること以上に、比較可能な案が生まれるよう問題の切り方を修正できることにある。</p>
+<h2>原文と関連資料</h2><ul><li><a href="https://www.researchgate.net/publication/229004278_Generating_good_design_questions">Bellotti, MacLean & Moran, “Generating Good Design Questions” (1991)</a> — 著者アップロード全文。ATMのDesign Space Analysisを使い、Questionをどう改善するかを具体的に追う。</li><li><a href="requirements-traceability.html">要求の「その後」だけ追っても足りない——Requirements Traceability</a></li><li><a href="inquiry-based-requirements.html">要求は書いた瞬間には完成しない——Inquiry-Based Requirements Analysis</a></li><li><a href="cognitive-dimensions.html">考えにくさは頭のせいではない——Cognitive Dimensions</a></li></ul>
+<h2>読後に考える問い</h2><p>いま扱っている仕様の中で、OptionなのにQuestionの形で書かれているものはないか。複数案が比較できないとき、本当に案が足りないのか、それともQuestionが広すぎる・狭すぎる・異なる抽象度を混ぜているのか。QOCは、その区別を検査できる小さな文法である。</p>
+</article></div></main></body></html>
