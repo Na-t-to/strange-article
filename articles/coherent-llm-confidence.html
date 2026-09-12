@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>校正されていても、その確信度は「確率」とは限らない——C1でLLMの不確実性を検査する｜変な読み物置き場</title>
+<meta name="description" content="Rethinking Uncertainty Evaluation in Large Language Modelsを読み、calibrationだけでは見えない構造整合性・faithfulness・usefulnessをC1で分ける。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/coherent-llm-confidence.html"><link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260901-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="coherent-llm-confidence">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　AI評価</p>
+<header class="article-header"><div class="tags"><span>LLM信頼性</span><span>AI評価</span><span>不確実性</span></div><h1>校正されていても、その確信度は「確率」とは限らない——C1でLLMの不確実性を検査する</h1><p class="original-title">Rethinking Uncertainty Evaluation in Large Language Models</p><div class="article-meta-row"><p><strong>Krish Matta / Atharv Naphade / Andy Zou · 2026</strong><br>公開 2026.09.12　／　推定読了 56分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-coherent-llm-confidence.svg" alt="古い鉄道操車場で、全体平均を示す大きな計器は均衡している一方、包含関係にある短い支線と長い本線の信号確率が逆転し、同じ目的地へ向かう言い換え列車にも異なる信号が出ている図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">「確信度70%の回答は、長期的に見て70%当たる」。これは良い性質だが、それだけで70%という数字を一貫した確率として扱えるとは限らない。難しい問いの方を簡単な問いより高確率と見積もったり、同じ意味の言い換えだけで確信度が大きく変わったりしても、平均的なcalibrationは良く見えることがある。Matta、Naphade、Zouは、LLMのconfidenceを構造整合性・faithfulness・usefulnessへ分けて検査するC1を提案した。</p>
+<h2>calibrationは「平均的に数字が合うか」を見る</h2>
+<p>LLMが自分の回答へconfidenceを出す用途は増えている。低confidenceなら回答を保留する、より強いmodelへ回す、複数agentの回答を重み付けする、といった制御に使える。こうした用途では、confidenceが単なる飾りではなく、意思決定へ使える数値である必要がある。</p>
+<p>従来の代表的な評価が<strong>calibration</strong>である。confidence 0.7を出した回答群のうち、実際におよそ70%が正しければ、その帯域ではcalibratedといえる。論文はRMSCEという指標を使い、confidence帯ごとの平均値と実際の正答率の差をまとめる。</p>
+<p>calibrationは重要である。しかし著者らは、それだけではconfidenceを「確率」と解釈するために必要な条件をほとんど検査していないと指摘する。</p>
+<p>最も分かりやすい反例はconstant predictorである。あるbenchmarkでmodel全体の正答率が70%なら、すべての問題へ一律70%と答えるconfidence estimatorを考えられる。70%を付けた回答群全体の正答率も70%なので、理想的にcalibratedである。それでも、簡単な問題と難しい問題を区別できず、個別の回答を保留する判断にはほとんど役立たない。</p>
+<aside class="everyday-example"><span>身近な例（原文外）</span><p>天気予報サービスが一年中「降水確率30%」だけを出し、その地域では実際に30%の日で雨が降ったとする。年間平均だけならcalibrationは合っている。しかし台風の日も快晴の日も30%なら、傘を持つか決める情報としては弱い。LLMのconfidenceでも、平均値の正しさと個別判断への有用性は分ける必要がある。</p></aside>
+<h2>calibrationは評価データの分布にも依存する</h2>
+<p>もう一つの問題は、calibrationがconfidence estimator単体の性質ではなく、評価するデータ分布との組合せで決まることだ。あるbenchmark全体でcalibratedでも、法律問題だけ、難問だけ、特定言語だけに絞れば大きくずれる可能性がある。</p>
+<p>論文は極端な例として、評価集合からmodelが間違えた問題だけを抜き出せば、そのsubsetでは正答率が0になると説明する。元の集合で完全にcalibratedだったconfidenceも、誤答subsetでは当然calibrationを失う。</p>
+<p>運用では、全体平均より特定subsetが重要になることが多い。高リスクな相談、長いmulti-hop question、検索資料が矛盾しているケースだけでconfidenceを使いたい場合、benchmark全体のRMSCEだけでは安全な閾値を決められない。</p>
+<h2>C1は三種類の条件へ分ける</h2>
+<p>著者らはconfidence評価を<strong>structural coherence</strong>、<strong>faithfulness</strong>、<strong>usefulness</strong>の三群へ分け、まとめてC1と呼ぶ。ここで大事なのは、一つの総合点へ潰さないことだ。</p>
+<div class="concept-grid"><section><h3>Structural coherence</h3><p>confidence群が、一つの整合した確率分布から出た値として説明できるか。正規化、積の法則、論理的包含への単調性を見る。</p></section><section><h3>Faithfulness</h3><p>confidence estimatorが表面的な語句ではなく、同じ意味に同じ値を返すか。promptと生成回答のsemantic invarianceを見る。</p></section><section><h3>Usefulness</h3><p>confidenceが実際の正誤を追跡するか。calibrationに加え、正答と誤答を順位付けできるdiscriminationを見る。</p></section></div>
+<p>この分解によって、「平均的には当たっているが、論理関係を壊す」「構造は整っているが正誤を区別できない」「正誤は区別できるが言い換えに弱い」といった失敗を別々に扱える。</p>
+<h2>簡単な問いより、難しい問いの確率を高くしてはいけない</h2>
+<p>structural coherenceの中で特に直感的なのが<strong>entailment monotonicity</strong>である。ある難しい問いへ正しく答えるためには、より簡単な下位問いにも正しく答えなければならないとする。このとき、難しい問いが正しい世界の集合は、簡単な問いが正しい世界の集合に含まれる。</p>
+<p>確率の基本性質から、難しい問いの正答確率は簡単な問いの正答確率を超えられない。論文はMuSiQueの2-hop questionを使う。最終回答には二段階の推論が必要で、goldの第一段階回答を与えた第二hopだけの問いは、元のfull questionより条件が簡単になる。したがってfull questionのconfidenceは第二hop単体を上回るべきではない。</p>
+<p>ところが、意味クラスごとのsample比率を使うSliCK estimatorでは、この単調性が31.0%の問題で破られた。つまり、「二段階全部を当てる確率」を「途中の正解をすでに教えられた一段階だけを当てる確率」より高く見積もる例が珍しくない。</p>
+<p>これは単なるcalibration errorとは違う。一つの確率measureで両方を同時に説明できないという、内部構造の問題である。</p>
+<h2>二段階問題なら、積の法則とも整合する必要がある</h2>
+<p>もう一つのstructural testが<strong>conjunction consistency</strong>である。二段階の問いを正しく答えるには、「第一hopを正しく答える」と「第一hopが正しい条件のもとで第二hopを正しく答える」の両方が必要になる。</p>
+<p>確率として扱うなら、full questionの正答確率は、第一hopの正答確率と条件付き第二hopの正答確率の積に対応する。C1はこの関係からどれだけ外れるかを測る。</p>
+<p>SliCKではMuSiQue上の平均deviationが0.257だった。logit-based estimatorも0.268で近い。confidenceが「確率らしい一つの内部belief」を表すなら無視しにくいずれである。</p>
+<p>この検査は、個々のconfidence値が正解率に近いかではなく、<strong>複数のconfidence同士が論理構造に従っているか</strong>を見る。評価対象が一つの回答から、回答間の関係へ拡張される。</p>
+<h2>極端なconfidenceは、構造検査を「通ったように見せる」</h2>
+<p>著者らはverbal confidenceとlogit-based confidenceも評価する。verbalはmodelへ「この回答が正しい確率は？」と聞いて数値を出させる。logit-basedは、回答がTrueかFalseかを確認させ、そのtoken probabilityからconfidenceを作る。</p>
+<p>これらのestimatorは多くの例で0または1近辺へ飽和した。飽和は別の罠を生む。confidenceがどこでも1.0なら、積の法則の検査では1.0 ≈ 1.0 × 1.0となり、一見整合して見える。簡単な問いも難しい問いも1.0なら、entailment monotonicityも破りにくい。</p>
+<p>実際、verbal estimatorはconjunction deviation 0.060、entailment violation 4.9%と数字だけなら良く見える。しかし著者らは、これを構造理解の成功ではなく<strong>ceiling effect</strong>と解釈する。値が極端へ潰れているため、検査が差を見つけられない。</p>
+<p>一方SliCKは0から1まで広い範囲のconfidenceを出すため、構造違反も露出する。良い測定器ほど失敗を多く見つけ、表面的なscoreが悪くなることがある。</p>
+<h2>「よく校正された測定器」と「整合したmodel」は別の問題</h2>
+<p>SliCKはmain experimentでRMSCE 0.251を記録し、verbalの0.778、logit-basedの0.700よりcalibrationが良かった。正答と誤答を順位付けするAUROCも0.825で、verbal 0.559、logit-based 0.596を上回る。</p>
+<p>それでもSliCKが31%のentailment violationを出したのは、矛盾ではない。SliCKがmodelのgeneration distributionを比較的豊かに観測できたため、model側にある構造的不整合を見つけたと考えられる。</p>
+<p>著者らは、latentな「modelのbelief」を直接読めないことも明示する。sample分布をconfidenceとみなすには、生成分布がepistemic confidenceをfaithfully表すという仮定が必要である。structural violationは、underlying belief自体がincoherentか、その仮定が破れているかのどちらかを示す。どちらにせよ、downstreamで「一貫した確率」として使うには問題になる。</p>
+<h2>同じ意味の言い換えなら、同じconfidenceであるべきか</h2>
+<p>faithfulnessではsemantic invarianceを使う。第一は<strong>prompt semantic invariance</strong>で、意味が同じpromptへ言い換えたときconfidenceが変わらないかを見る。第二は<strong>generation semantic invariance</strong>で、意味が同じ回答表現へconfidenceが変わらないかを見る。</p>
+<p>SliCKは回答を意味クラスへまとめるため、generation semantic invarianceは構造上満たす。一方、独立にrolloutを取るためpromptの言い換えには敏感で、ParaRelのparaphrase pairで平均deviation 0.163を示した。</p>
+<p>verbalとlogit-basedは別の失敗をする。同じ意味と判定された回答表現にも大きく異なるscoreを付ける場合がある。つまり「東京駅丸の内南口」と「東京駅の丸の内側にある南口」のような意味同値をconfidence estimatorが別物として扱う。</p>
+<p>confidenceを回答内容の不確実性として使うなら、表面的なwordingに依存する揺れは測定noiseとして切り分けたい。C1はそこを独立したmetricにする。</p>
+<h2>Semantic Entropyとの違い</h2>
+<p>前日に収録したSemantic Entropyは、複数の生成回答を意味の同値類へまとめ、<strong>答えの意味がどれだけ分散しているか</strong>を測る。言い回しだけが違う複数回答を一つに束ねることで、confabulation検出を改善する。</p>
+<p>C1論文もsemantic classを使うが、問いが違う。ここでは、得られたconfidence値の集合が<strong>一つの整合した確率体系として解釈できるか</strong>を検査する。Semantic Entropyが「意味レベルで答えが割れているか」を見るなら、C1は「その不確実性の数字同士が論理関係と意味同値を守っているか」を見る。</p>
+<p>したがって両者は重複ではない。Semantic Entropyで意味の揺れをうまく測れても、multi-hop questionとsub-questionの確率関係が逆転する可能性は残る。逆に構造整合性だけ良くても、すべての問題へ0.7を返すconstant predictorのように個別判断へ使えないことがある。</p>
+<h2>RLHFでcalibrationが良くなっても、別の性質が悪化する</h2>
+<p>C1の利点は、trainingやinference interventionの効果を一つの数字でまとめないことにもある。著者らはLlama-3.1-70BとRLHF variantのNemotron-Llama-3.1-70Bを比較する。</p>
+<p>RLHF後、SliCKのRMSCEは0.365から0.325へ改善した。一方AUROCは0.591から0.498へ下がり、ほぼchance levelになった。さらにconjunction consistencyも15%悪化した。calibrationだけ見れば改善だが、正誤を区別する力と構造整合性は悪化している。</p>
+<p>この結果だけからRLHF一般がconfidenceを壊すとは言えない。比較は特定model pairと設定に依存する。しかし「一つのinterventionが評価次元ごとに逆方向へ効く」ことを示す例として重要である。</p>
+<h2>Chain-of-Thoughtも万能な整合化ではない</h2>
+<p>Llama-3-8B-Instructへzero-shot CoTを追加した実験では、RMSCEが0.271から0.212へ22%改善し、conjunction deviationも0.244から0.144へ41%改善した。一方、semantic invarianceは0.498から0.488でほぼ変わらなかった。</p>
+<p>つまり、explicit reasoningはmulti-hop構造のconfidenceには効く場合があるが、表現への感度まで一緒に直すとは限らない。これも「reasoningを入れれば不確実性評価も改善」という一括した結論を避ける材料になる。</p>
+<h2>sample数を増やすと、むしろ違反が見つかる</h2>
+<p>SliCKは複数rolloutのうち同じ意味クラスに入る割合をconfidenceとするため、sample数を増やせば単なるsampling noiseは小さくなる。著者らはk=4から16まで増やして変化を測った。</p>
+<p>RMSCEは0.436から0.339へ22%低下し、calibrationは改善した。一方、semantic invarianceのspreadは0.438から0.508へ16%増えた。測定を安定させたら違反が消えたのではなく、より鮮明に見えた。</p>
+<p>著者らは、少なくとも観測された違反の一部が「sampleが少なかったから偶然ぶれた」だけではなく、model distribution側の性質である証拠と解釈する。評価で試行回数を増やす意味が、平均scoreの安定化だけでなく、構造的な不整合の露出にもある。</p>
+<h2>法務・RAG・agentでconfidenceを使うなら</h2>
+<p>ここからは原文外の実務接続である。法務RAGで各回答へconfidenceを付け、「0.8未満なら追加検索」とする設計を考える。このときRMSCEだけでconfidence estimatorを選ぶと、運用上ほしい性質を取りこぼす可能性がある。</p>
+<p>たとえば「この契約は解除できる」のconfidenceが0.85で、その結論に必須の下位要件「催告が適法に到達した」のconfidenceが0.60なら、論理構造として警戒すべきである。最終結論が正しい世界は、必須要件が正しい世界を超えないからだ。C1のentailment monotonicityに近いtestをdomain-specificに設計できる。</p>
+<p>また、同じ質問を言い換えただけでconfidenceが0.9から0.55へ落ちるなら、停止条件へ使うthresholdがprompt wordingに左右される。accuracyだけでなく、semantic invarianceを別testにする意味がある。</p>
+<p>agent cascadingでも同じである。confidence 0.7未満なら強いmodelへ送る仕組みは、その0.7がinstance-levelに正誤を区別し、言い換えに頑健で、関連するsubtaskと矛盾しないことを暗黙に期待している。C1はその暗黙の要求を評価項目へ分解する。</p>
+<h2>confidenceを「測定器」として評価する</h2>
+<p>この論文の実務的な読み方は、modelの賢さ評価というより、confidence estimatorを測定器として扱うことにある。温度計なら、平均気温に合うだけでは不十分だ。同じ温度を別の言い方で尋ねたら値が変わらないこと、物理的に整合しない値を返さないこと、暑い日と寒い日を区別できることが必要になる。</p>
+<p>LLM confidenceも、平均正答率との一致だけでなく、構造・意味・ground truthとの関係を分ける。特に、運用ルールへ数値を使うほど、confidenceそのものを一つのprediction outputとして評価する必要がある。</p>
+<h2>限界——C1自体にも判定器と構造化データが要る</h2>
+<p>C1は万能な評価ではない。semantic equivalenceの判定にLLM-as-a-judgeを使うため、同値classの切り方に誤りが入る可能性がある。論文もappendixでこの点を議論する。</p>
+<p>entailment monotonicityやconjunction consistencyを測るには、問題間の論理関係が分かるdatasetが必要である。MuSiQueでは2-hop構造とgold first-hopが使えるが、自由形式の実務質問で同じ関係を自動生成するのは簡単ではない。</p>
+<p>さらに、「modelが一つのcoherent probability measureを内的に持つべきだ」というnormative framingが、すべてのLLM利用に必要とは限らない。confidenceを単なるranking scoreとして使うなら、確率公理を完全に満たすことよりAUROCが重要な場合もある。</p>
+<p>だからC1の価値は、すべてのmodelへ同じ合格基準を課すことではない。confidenceを何に使うかに応じて、必要な性質を分けて測れることにある。</p>
+<h2>実務へ持ち帰るなら</h2>
+<ol><li>confidenceを使う目的を先に決める。abstention、rerouting、ranking、aggregationでは必要な性質が違う。</li><li>calibrationに加え、正答と誤答を分離できるかをAUROC等で測る。</li><li>意味同値のprompt・answer pairを作り、confidenceの変化を測る。</li><li>必須要件と結論、full taskとsubtaskなど論理包含関係を作り、monotonicityを検査する。</li><li>multi-step taskでは、全体confidenceと各段階のconfidenceが積の法則から大きく外れないかを見る。</li><li>sample-based estimatorでは試行数を増やし、noiseが減った後にも残る違反を分ける。</li></ol>
+<p>「confidenceが0.83だった」という表示を信頼する前に、その0.83が何を意味する数値なのかを評価する。C1は、confidence自体を仕様化するための検査項目を与えている。</p>
+<h2>原文と関連資料</h2><ul><li><a href="https://arxiv.org/html/2607.19367">Krish Matta, Atharv Naphade & Andy Zou, “Rethinking Uncertainty Evaluation in Large Language Models” (2026)</a> — C1を構造整合性・faithfulness・usefulnessへ分け、複数confidence estimatorとtraining/inference interventionを比較する。</li><li><a href="semantic-entropy.html">言い回しの揺れと、答えの意味の揺れを分ける——Semantic Entropy</a></li><li><a href="reliable-eval.html">一つのプロンプトで評価を決めない——ReliableEval</a></li><li><a href="agent-reliability.html">「成功率80%」では運用できない——AIエージェントの信頼性</a></li></ul>
+<h2>読後に考える問い</h2><p>いま使っている「confidence」「score」「確度」は、単なるranking値なのか、正答確率として扱っているのか。後者なら、平均calibration以外にどの確率関係を守ることを暗黙に期待しているだろうか。</p>
+</article></div></main></body></html>
