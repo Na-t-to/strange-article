@@ -3,7 +3,7 @@
   "lastUpdated":"2026-09-12T14:43:33+09:00",
   "candidateCount":41,
   "adoptedCount":4,
-  "collectionNote":"要求工学、ソフトウェア設計、オントロジー・概念モデリング、HCI、LLM評価・不確実性、RAG・agent・法務AIまで一次資料を横断し、既存46本との論点重複、全文への到達性、方法・論証の具体性、実務へ持ち帰れる設計上の道具を比較した。今回はThe World and the Machine、Formal Ontology and Information Systems、No Silver Bullet、C1によるLLM不確実性評価の4本を採用。",
+  "collectionNote":"要求工学、ソフトウェア設計、オントロジー・概念モデリング、HCI、LLM評価・不確実性、RAG・agent・法務AIまで一次資料を横断し、既存45本との論点重複、全文への到達性、方法・論証の具体性、実務へ持ち帰れる設計上の道具を比較した。今回はThe World and the Machine、Formal Ontology and Information Systems、No Silver Bullet、C1によるLLM不確実性評価の4本を採用。",
   "selectionTracks":[
     {"title":"古典・基礎","summary":"5年以上残っている一次資料から、現在の要求・仕様・概念設計へ再利用できる道具を優先する。","criteria":["原文全文へ到達できる","後年の要約ではなく一次資料を読む","既存記事と別の道具を持ち帰れる","具体例・論証・限界まで再構成できる"]},
     {"title":"新しいAI研究","summary":"新しさそのものではなく、評価対象を分解し、運用判断まで変えられる方法が具体的なものだけ採る。","criteria":["一次または技術報告である","方法・数値・失敗条件が検証可能である","既存のSemantic Entropy等と論点を区別できる","RAG・agent・評価設計の具体的な改善判断へ接続できる"]}
