@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 533" role="img" aria-labelledby="title desc">
+<title id="title">高速化した印刷工程と絡み合う設計装置</title><desc id="desc">右側では自動機械が大量のコード用紙を高速に排出する一方、左側では複数の要件糸が複雑な設計機構へ入り、概念設計の難しさが残る工場風景。</desc>
+<defs><filter id="paper"><feTurbulence baseFrequency=".7" numOctaves="3" seed="29" result="n"/><feComponentTransfer><feFuncA type="table" tableValues="0 .07"/></feComponentTransfer></filter><pattern id="brick" width="38" height="20" patternUnits="userSpaceOnUse"><path d="M0 0h38v20H0zM19 0v10M0 10h38" fill="none" stroke="#20314d" stroke-width="1" opacity=".12"/></pattern><linearGradient id="smoke" x2="0" y2="1"><stop stop-color="#20314d" stop-opacity=".22"/><stop offset="1" stop-color="#20314d" stop-opacity="0"/></linearGradient></defs>
+<rect width="800" height="533" fill="#f1e8d2"/><rect width="800" height="533" filter="url(#paper)"/><rect width="800" height="533" fill="url(#brick)"/>
+<!-- factory roof -->
+<path d="M0 110L115 36l92 74 108-70 102 70 106-74 102 74 99-69 66 48v434H0Z" fill="#e4dac3" stroke="#20314d" stroke-width="4"/>
+<g fill="#c7c0aa" stroke="#20314d" stroke-width="3"><path d="M46 95l69-44 55 44z"/><path d="M232 96l82-52 74 52z"/><path d="M445 95l78-51 72 51z"/><path d="M651 95l72-49 57 49z"/></g>
+<!-- smokestacks -->
+<g stroke="#20314d" stroke-width="3"><rect x="88" y="27" width="31" height="98" fill="#8a4937"/><rect x="674" y="21" width="28" height="102" fill="#60704f"/></g><path d="M104 26c-31-30 13-54 1-81" stroke="url(#smoke)" stroke-width="28" fill="none"/><path d="M688 21c25-31-17-48 7-72" stroke="url(#smoke)" stroke-width="24" fill="none"/>
+<!-- LEFT: conceptual loom -->
+<g transform="translate(32 142)"><rect x="0" y="0" width="365" height="328" rx="8" fill="#d7cfba" stroke="#20314d" stroke-width="4"/>
+ <path d="M30 48h305M30 268h305" stroke="#20314d" stroke-width="5"/>
+ <g stroke-width="5" fill="none"><path d="M23 87C101 66 110 171 185 145s89-82 157-20" stroke="#8a4937"/><path d="M23 117C88 157 114 59 184 108s94 89 158 40" stroke="#60704f"/><path d="M23 151C100 123 118 228 183 190s95-92 159-20" stroke="#20314d"/><path d="M23 186C95 225 118 110 183 164s88 101 159 52" stroke="#7f9b91"/><path d="M23 220C87 181 129 250 185 222s88-39 157 22" stroke="#a57458"/></g>
+ <g fill="#e7ddc5" stroke="#20314d" stroke-width="3"><circle cx="94" cy="108" r="19"/><circle cx="145" cy="185" r="22"/><circle cx="204" cy="133" r="18"/><circle cx="246" cy="207" r="23"/><circle cx="305" cy="142" r="20"/><circle cx="186" cy="240" r="17"/></g>
+ <g fill="#20314d"><circle cx="94" cy="108" r="6"/><circle cx="145" cy="185" r="6"/><circle cx="204" cy="133" r="6"/><circle cx="246" cy="207" r="6"/><circle cx="305" cy="142" r="6"/><circle cx="186" cy="240" r="6"/></g>
+ <!-- requirement input cards -->
+ <g stroke="#20314d" stroke-width="2"><rect x="-20" y="68" width="55" height="31" fill="#f1e8d2"/><rect x="-20" y="118" width="55" height="31" fill="#f1e8d2"/><rect x="-20" y="168" width="55" height="31" fill="#f1e8d2"/><rect x="-20" y="218" width="55" height="31" fill="#f1e8d2"/></g>
+ <g stroke="#8a4937" stroke-width="3"><path d="M-10 78h34M-10 88h23M-10 128h30M-10 138h20M-10 178h35M-10 188h26M-10 228h28M-10 238h36"/></g>
+ <!-- output design plate -->
+ <path d="M315 283h40v28h-40z" fill="#60704f" stroke="#20314d" stroke-width="3"/><path d="M275 297h40" stroke="#20314d" stroke-width="4"/>
+</g>
+<!-- MIDDLE transmission, visual bottleneck -->
+<g transform="translate(410 177)" stroke="#20314d" stroke-width="4"><circle cx="48" cy="100" r="45" fill="#d7cfba"/><circle cx="48" cy="100" r="15" fill="#8a4937"/><g fill="#60704f"><circle cx="123" cy="62" r="34"/><circle cx="128" cy="146" r="29"/></g><path d="M86 81l14-7M90 119l12 11"/><path d="M48 44v-25M48 181v-31M-8 100h-25"/><path d="M20 69l-18-18M77 69l18-18M19 132L2 149M77 132l19 17"/></g>
+<!-- RIGHT: automated code printing line -->
+<g transform="translate(548 143)"><rect x="0" y="0" width="219" height="272" rx="8" fill="#c7c0aa" stroke="#20314d" stroke-width="4"/><rect x="27" y="28" width="165" height="66" fill="#20314d"/><g stroke="#f1e8d2" stroke-width="3"><path d="M43 48h54M110 48h55M43 63h29M82 63h74M43 78h83"/></g><circle cx="53" cy="122" r="17" fill="#60704f" stroke="#20314d" stroke-width="3"/><circle cx="108" cy="122" r="17" fill="#8a4937" stroke="#20314d" stroke-width="3"/><circle cx="163" cy="122" r="17" fill="#d7cfba" stroke="#20314d" stroke-width="3"/><path d="M26 167h167v68H26z" fill="#e7ddc5" stroke="#20314d" stroke-width="3"/><g stroke="#20314d" stroke-width="2"><path d="M42 182h134M42 195h112M42 208h128M42 221h90"/></g></g>
+<!-- conveyor -->
+<g transform="translate(508 428)"><path d="M0 0h286v52H0z" fill="#60704f" stroke="#20314d" stroke-width="4"/><g fill="#d7cfba" stroke="#20314d" stroke-width="3"><circle cx="28" cy="26" r="16"/><circle cx="78" cy="26" r="16"/><circle cx="128" cy="26" r="16"/><circle cx="178" cy="26" r="16"/><circle cx="228" cy="26" r="16"/><circle cx="276" cy="26" r="16"/></g></g>
+<!-- papers flying fast -->
+<g fill="#f1e8d2" stroke="#20314d" stroke-width="2"><path d="M594 383l77 6-7 93-76-7z"/><path d="M669 373l70 13-14 83-68-11z"/><path d="M735 359l53 15-18 69-51-14z"/></g><g stroke="#8a4937" stroke-width="2"><path d="M607 405l45 4M605 418l38 3M603 431l49 4M682 398l37 7M680 411l29 5M748 381l27 8M744 393l24 7"/></g>
+<!-- comparison scale between slow conceptual side and fast output -->
+<g transform="translate(410 388)" stroke="#20314d" stroke-width="3" fill="none"><path d="M0 0h82M41 0v68M11 68h60"/><path d="M7 0l-23 38h46z" fill="#8a4937" opacity=".75"/><path d="M75 0l-13 19h26z" fill="#60704f" opacity=".75"/></g>
+<!-- floor perspective -->
+<path d="M0 483h800M81 483l-36 50M206 483l-18 50M594 483l19 50M716 483l38 50" stroke="#20314d" stroke-width="2" opacity=".35"/>
+<!-- small human silhouettes around conceptual machine only -->
+<g stroke="#20314d" stroke-width="3" fill="none"><circle cx="90" cy="492" r="10" fill="#d7c7ab"/><path d="M90 502v27M90 511l-19 13M90 511l17 12"/><circle cx="365" cy="487" r="10" fill="#d7c7ab"/><path d="M365 497v31M365 507l-15 15M365 507l19 10"/></g>
+</svg>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 533" role="img" aria-labelledby="title desc">
+<title id="title">確率の整合性を検査する操車場</title><desc id="desc">古い鉄道操車場で、全体の校正計器は均衡している一方、包含関係にある短い支線と長い本線の信号確率が逆転し、言い換えを表す二つの列車にも異なる信号が出ている図版。</desc>
+<defs><filter id="paper"><feTurbulence baseFrequency=".62" numOctaves="4" seed="41" result="n"/><feComponentTransfer><feFuncA type="table" tableValues="0 .075"/></feComponentTransfer></filter><linearGradient id="dusk" x2="0" y2="1"><stop stop-color="#d8d8c9"/><stop offset="1" stop-color="#f1e8d2"/></linearGradient><pattern id="ties" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M0 16h18" stroke="#20314d" stroke-width="3" opacity=".35"/></pattern></defs>
+<rect width="800" height="533" fill="#f1e8d2"/><rect width="800" height="220" fill="url(#dusk)"/><rect width="800" height="533" filter="url(#paper)"/>
+<!-- station skyline -->
+<path d="M0 184h800v72H0z" fill="#d7cfba"/><g fill="#20314d" opacity=".18"><rect x="28" y="124" width="88" height="60"/><rect x="139" y="102" width="112" height="82"/><rect x="281" y="132" width="72" height="52"/><rect x="382" y="91" width="135" height="93"/><rect x="546" y="116" width="92" height="68"/><rect x="669" y="82" width="101" height="102"/></g>
+<!-- main calibration gauge, balanced overall -->
+<g transform="translate(319 24)" stroke="#20314d" stroke-width="4"><path d="M0 111a82 82 0 0 1 164 0" fill="#e7ddc5"/><path d="M20 105a62 62 0 0 1 124 0" fill="none" stroke="#60704f" stroke-width="10"/><path d="M82 105L121 62"/><circle cx="82" cy="105" r="9" fill="#8a4937"/><path d="M82 23v12M33 42l8 10M131 42l-8 10"/></g>
+<!-- rail yard -->
+<path d="M0 216h800v317H0z" fill="#ddd3bd"/>
+<g fill="none" stroke="#20314d" stroke-width="5"><path d="M30 510C140 430 214 381 357 338S609 259 790 231"/><path d="M47 530C156 439 228 404 370 369S617 313 792 293"/><path d="M69 533C172 466 246 444 385 424S620 394 792 393"/></g>
+<g fill="none" stroke="#60704f" stroke-width="2"><path d="M29 510C140 430 214 381 357 338S609 259 790 231"/><path d="M47 530C156 439 228 404 370 369S617 313 792 293"/><path d="M69 533C172 466 246 444 385 424S620 394 792 393"/></g>
+<!-- branching entailment tracks -->
+<g stroke="#20314d" fill="none"><path d="M223 423C280 392 309 359 335 315" stroke-width="5"/><path d="M335 315C369 282 403 258 448 246" stroke-width="5"/><path d="M335 315C393 320 433 329 489 353" stroke-width="5"/></g>
+<!-- signals: harder full route is wrongly greener/higher than easier branch -->
+<g transform="translate(442 199)" stroke="#20314d" stroke-width="4"><path d="M0 0v119"/><rect x="-20" y="5" width="40" height="76" rx="8" fill="#20314d"/><circle cy="25" r="11" fill="#8a4937"/><circle cy="61" r="11" fill="#60704f"/></g>
+<g transform="translate(492 308)" stroke="#20314d" stroke-width="4"><path d="M0 0v109"/><rect x="-20" y="5" width="40" height="70" rx="8" fill="#20314d"/><circle cy="24" r="11" fill="#60704f" opacity=".4"/><circle cy="57" r="11" fill="#8a4937"/></g>
+<!-- nested probability arches -->
+<g fill="none" stroke-width="4"><path d="M545 241a90 90 0 0 1 180 0" stroke="#60704f"/><path d="M572 241a63 63 0 0 1 126 0" stroke="#8a4937"/><path d="M598 241a37 37 0 0 1 74 0" stroke="#20314d"/></g><g fill="#20314d"><circle cx="545" cy="241" r="5"/><circle cx="725" cy="241" r="5"/></g>
+<!-- two semantically equivalent trains on parallel tracks with different signal treatment -->
+<g transform="translate(86 336) rotate(-12)"><rect width="150" height="55" rx="10" fill="#60704f" stroke="#20314d" stroke-width="4"/><rect x="17" y="12" width="31" height="19" fill="#f1e8d2"/><rect x="58" y="12" width="31" height="19" fill="#f1e8d2"/><rect x="99" y="12" width="31" height="19" fill="#f1e8d2"/><circle cx="31" cy="56" r="10" fill="#20314d"/><circle cx="119" cy="56" r="10" fill="#20314d"/></g>
+<g transform="translate(118 430) rotate(-8)"><path d="M0 8Q18 0 38 8H150v55H0z" fill="#8da6a6" stroke="#20314d" stroke-width="4"/><ellipse cx="24" cy="14" rx="16" ry="9" fill="#e7ddc5" stroke="#20314d" stroke-width="2"/><rect x="55" y="18" width="32" height="18" fill="#f1e8d2"/><rect x="98" y="18" width="32" height="18" fill="#f1e8d2"/><circle cx="31" cy="64" r="10" fill="#20314d"/><circle cx="119" cy="64" r="10" fill="#20314d"/></g>
+<!-- two equal-meaning badges, visually different -->
+<g transform="translate(253 368)"><circle r="20" fill="#f1e8d2" stroke="#20314d" stroke-width="3"/><path d="M-10 0h20M0-10v20" stroke="#8a4937" stroke-width="3"/></g><g transform="translate(286 456)"><rect x="-18" y="-18" width="36" height="36" transform="rotate(45)" fill="#f1e8d2" stroke="#20314d" stroke-width="3"/><circle r="9" fill="none" stroke="#8a4937" stroke-width="3"/></g>
+<!-- diverging confidence gauges for equivalent trains -->
+<g transform="translate(278 306)" stroke="#20314d" stroke-width="3"><path d="M0 42a35 35 0 0 1 70 0" fill="#e7ddc5"/><path d="M35 42l24-25"/><circle cx="35" cy="42" r="5" fill="#8a4937"/></g><g transform="translate(310 412)" stroke="#20314d" stroke-width="3"><path d="M0 42a35 35 0 0 1 70 0" fill="#e7ddc5"/><path d="M35 42l-15-29"/><circle cx="35" cy="42" r="5" fill="#8a4937"/></g>
+<!-- constant predictor board: all slots identical; deliberately peripheral -->
+<g transform="translate(20 226)" stroke="#20314d" stroke-width="3"><rect width="129" height="72" rx="5" fill="#e7ddc5"/><g fill="#60704f"><circle cx="24" cy="25" r="8"/><circle cx="52" cy="25" r="8"/><circle cx="80" cy="25" r="8"/><circle cx="108" cy="25" r="8"/></g><path d="M18 51h92"/></g>
+<!-- switching tower and levers -->
+<g transform="translate(652 310)" stroke="#20314d" stroke-width="3"><rect width="123" height="119" fill="#d7cfba"/><path d="M0 0l61-42L123 0" fill="#8a4937"/><rect x="17" y="19" width="89" height="42" fill="#e7ddc5"/><path d="M31 86l12-38M56 86l7-39M81 86l-3-38M102 86l-13-36"/><circle cx="43" cy="48" r="5" fill="#60704f"/><circle cx="63" cy="47" r="5" fill="#8a4937"/><circle cx="78" cy="48" r="5" fill="#60704f"/><circle cx="89" cy="50" r="5" fill="#8a4937"/></g>
+<!-- sample balls showing repeated rollouts -->
+<g transform="translate(548 455)" fill="#60704f" stroke="#20314d" stroke-width="2"><circle cx="0" cy="0" r="11"/><circle cx="30" cy="10" r="11"/><circle cx="60" cy="-4" r="11"/><circle cx="90" cy="13" r="11"/><circle cx="120" cy="-2" r="11"/><circle cx="150" cy="10" r="11"/></g><g transform="translate(548 491)" fill="#8a4937" stroke="#20314d" stroke-width="2"><circle cx="0" cy="0" r="11"/><circle cx="30" cy="10" r="11"/><circle cx="60" cy="-4" r="11"/></g>
+<!-- track ties -->
+<rect y="210" width="800" height="323" fill="url(#ties)" opacity=".22"/>
+</svg>

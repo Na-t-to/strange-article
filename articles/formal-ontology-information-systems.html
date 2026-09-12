@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>同じ言葉を使っても、同じ概念を共有しているとは限らない——Formal Ontologyの設計｜変な読み物置き場</title>
+<meta name="description" content="Nicola GuarinoのFormal Ontology and Information Systemsから、語彙・概念化・ontological commitment・ontologyを分ける。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/formal-ontology-information-systems.html"><link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260901-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="formal-ontology-information-systems">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　オントロジー</p>
+<header class="article-header"><div class="tags"><span>オントロジー</span><span>概念モデリング</span><span>知識表現</span></div><h1>同じ言葉を使っても、同じ概念を共有しているとは限らない——Formal Ontologyの設計</h1><p class="original-title">Formal Ontology and Information Systems</p><div class="article-meta-row"><p><strong>Nicola Guarino · 1998</strong><br>公開 2026.09.12　／　推定読了 56分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-formal-ontology-information-systems.svg" alt="同じ植物園を二人の地図製作者が異なる記号体系で写し取り、その背後に共通する植物・場所・関係の構造が重ねて描かれている図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">二つのシステムが同じ「顧客」「契約」「資産」という語を使っていても、同じ世界を切り分けているとは限らない。片方の「顧客」は契約当事者、もう片方では請求先を意味するかもしれない。Nicola Guarinoは、語彙を揃えることと概念を共有することの間にある層を、ontology・conceptualization・ontological commitmentとして分解した。</p>
+<h2>ontologyは「分類表」の名前ではない</h2>
+<p>1990年代後半、AI・知識工学・データベース・情報統合でontologyという語が急速に使われ始めた。Guarinoは1998年のFOIS基調論文で、そもそも同じ語が哲学と情報科学で違う意味を持っていることから整理する。</p>
+<p>哲学でいうontologyは、世界をどんなカテゴリーで捉えるかという体系を指す。そこでは、対象、出来事、性質、関係など、世界の基本的な種類をどう考えるかが問題になる。一方、AIで実際に作られるontologyは、特定の現実を記述するための語彙と、その語彙をどう解釈するかについての明示的な仮定から成る<strong>工学的な人工物</strong>である。</p>
+<p>Guarinoは混乱を避けるため、世界の捉え方そのものを<strong>conceptualization</strong>、その捉え方に沿って特定の語彙へ意味を与える関係を<strong>ontological commitment</strong>、意味を論理的制約として明示した理論を<strong>ontology</strong>と呼ぶ。</p>
+<div class="concept-grid"><section><h3>Vocabulary</h3><p>システムが使う語や記号。「契約」「利用者」「資産」のような名前。</p></section><section><h3>Conceptualization</h3><p>世界にどんな種類のものと関係があり得るかという、語彙より深い捉え方。</p></section><section><h3>Ontology</h3><p>語彙の意図された意味を、制約や公理としてできるだけ明示した論理的理論。</p></section></div>
+<h2>「同じ単語」は相互運用性を保証しない</h2>
+<p>この区別が効くのは、複数システムを統合するときである。二つのDBがどちらもcustomerというカラムを持っていれば、名前だけを見ると接続できそうに見える。しかしAでは「現在有効な契約を持つ主体」、Bでは「過去に一度でも購入した主体」をcustomerとしているかもしれない。語彙は同じでも、許される世界の切り分け方が違う。</p>
+<p>Guarinoの形式化では、ある語彙に対して、その語がどの対象・関係を指し得るかを一つの現実状態だけでなく複数の可能な世界にわたって考える。ここでconceptualizationは、単に「いまDBに入っているレコード集合」ではない。どんな状態があり得て、概念がその状態ごとにどんなextensionを取り得るかまで含む。</p>
+<p>ontologyは、そのconceptualizationを完全に写し取るものではない。公理で許されるモデルの集合を絞り、意図したモデルへ近づける。つまりontologyはconceptualizationそのものではなく、特定の語彙を通じた<strong>近似</strong>である。</p>
+<aside class="everyday-example"><span>身近な例（原文外）</span><p>二つの家計アプリがどちらも「固定費」というタグを持っているとする。片方は「毎月同額」を固定費とし、もう片方は「継続契約で発生する支出」を固定費とする。携帯料金が従量制なら、後者では固定費、前者では固定費でない場合がある。タグ名を揃えても統合できない理由は、背後のconceptualizationが異なるからである。</p></aside>
+<h2>ontologyは、意図された意味を「完全には」固定できない</h2>
+<p>Guarinoは、ontologyを「conceptualizationの明示的な仕様」と単純に同一視する定義を精密化する。論理的な公理を書いても、意図した世界だけを完全に選び出せるとは限らない。公理が弱ければ、設計者が想定していなかった解釈もモデルとして許される。</p>
+<p>たとえば「従業員は人である」「管理職は従業員である」とだけ書けば、管理職が一人も存在しない世界も、すべての従業員が管理職である世界も論理的には許される。実務側ではもっと細かい意味を暗黙に持っていても、ontologyへ書かなければ機械はその制約を知らない。</p>
+<p>したがって、ontologyの品質はクラス階層の見た目だけでは測れない。どの解釈を許し、どの解釈を排除したいのか。そのためにどの公理が必要かを見る必要がある。逆に、すべてを形式化すればよいわけでもない。</p>
+<h2>coarseとfine-grainedには交換条件がある</h2>
+<p>論文はontologyの粒度について、粗いものと細かいもののtrade-offを明示する。より豊かな関係と公理を加えれば、語彙の意図された意味へ近づける。しかし、開発コストと推論コストが上がる。</p>
+<p>すでに利用者間でconceptualizationがほぼ共有されており、必要なサービスが限られているなら、最小限の公理だけを持つcoarse ontologyで足りることがある。反対に、異なる組織やシステム間で意味を調整するreference ontologyでは、より細かい制約が必要になる。</p>
+<p>これは「厳密なontologyほど常に優れている」という話ではない。目的に必要な意味差をどこまで明示するかを決める設計問題である。Guarinoは詳細なreference ontologyと、運用時に軽く使うshareable ontologyを区別する可能性まで示す。</p>
+<h2>同じontologyを採用しても、意味共有は自動ではない</h2>
+<p>情報統合の節ではさらに厳しい指摘が出てくる。二つのシステムが同じ語彙を使うだけでは足りない。別々に作られたontology同士の論理モデルが一部重なっていても、その背後で設計者が意図しているconceptualizationが重なっているとは限らない。</p>
+<p>表面的な公理がたまたま矛盾していないことと、同じ現実理解を持つことは違う。これが、複数の局所ontologyを下から機械的にmergeするだけでは情報統合がうまくいかない理由になる。</p>
+<p>実務では、用語集を統合して終了するのではなく、「この語は、どの条件なら該当し、どの条件なら該当しないか」「時間変化で分類は変わるか」「役割なのか恒常的な種類なのか」といった判定条件まで比べる必要がある。</p>
+<h2>top-level / domain / task / applicationを分ける</h2>
+<p>Guarinoはontologyを、特定のtaskやviewpointへの依存度で分類する。<strong>top-level ontology</strong>は時間、空間、物体、出来事、行為など非常に一般的な概念を扱う。<strong>domain ontology</strong>は医療、自動車、法務など特定領域の語彙を扱う。<strong>task ontology</strong>は診断、販売、検索のような活動を扱う。</p>
+<p><strong>application ontology</strong>は、domainとtaskの組合せに依存する。論文の例では「交換可能部品」「予備部品」のように、あるdomain entityが活動の中で担う役割がここに現れる。</p>
+<p>この層分けは、クラス階層をきれいにするためだけにあるのではない。「何を再利用できるか」を分ける。医療というdomainで使う概念と、診断というtaskで使う概念を分離できれば、別の診断領域や別の医療taskへ知識を再利用しやすくなる。</p>
+<h2>役割を「物の種類」として固定しない</h2>
+<p>application ontologyの説明で出てくるroleという考え方は、概念モデリングで特に使いやすい。同じ実体が、活動によって別の役割を担う。部品そのものの種類と「予備として保持されている」という役割は同じではない。</p>
+<p>企業システムでも、「申請者」「承認者」「借手」「提供者」「管理者」は、人や法人の恒久的な種類ではなく、特定の取引やprocessにおける役割であることが多い。ここをclassの恒常的な親子関係として表すと、同じ主体が文脈によって複数役割を担う場面で歪みが出る。</p>
+<p>Guarinoの論文だけでroleのすべてを定式化しているわけではないが、domain entityとtask-dependent conceptを分ける構造は、「is-aで整理してよいもの」と「ある活動で一時的に担う役割」を分ける入口になる。</p>
+<h2>ontologyとknowledge baseも分ける</h2>
+<p>論文はapplication ontologyとknowledge baseの違いも整理する。ontologyは、ある共同体が語彙の意味に基づいて恒常的に真とみなす知識を置く。knowledge baseは、それに加えて特定時点の事実を持つ。</p>
+<p>「契約には当事者がいる」はontology側の制約になり得る。「A社とB社の契約は2026年9月12日に締結された」は個別状態のknowledgeである。この区別をしないと、偶然いま観測されている事実を概念定義へ混ぜたり、逆に恒常的な制約をデータの慣例としてしか保存しなかったりする。</p>
+<p>RAGやLLM向けのknowledge architectureでも同じ問題がある。検索で取る個別文書と、文書を解釈するための概念schemaは役割が違う。個別文書を大量に追加しても、語の意味を揃える仕組みにはならない。</p>
+<h2>情報システムの「意味」を独立した部品にする</h2>
+<p>Guarinoが最終的に提案するのは、ontology-driven information systemsという見方である。ontologyはDB schemaだけに関係するのではなく、情報資源、ユーザーインターフェース、アプリケーションプログラムの意味的な前提へ横断的に関わる。</p>
+<p>開発時には、自然言語の要求から概念を分析し、共通の概念schemaを作り、異種DBを対応づける助けになる。実行時には、エージェント間通信や情報資源の解釈で、どの意味体系にcommitしているかを明示する役割を持つ。</p>
+<p>論文が書かれた1998年時点では、再利用可能な既製ontologyはまだ非常に少ないとGuarino自身が認めている。そのため、展望の一部は当時の研究agendaである。それでも「データ構造とは別に、意味へのcommitmentを明示する」という発想は、その後のknowledge graphやsemantic webだけでなく、現代のAIシステム設計にも残っている。</p>
+<h2>LLM時代には、語彙の流暢さがかえって危ない</h2>
+<p>LLMは異なる文脈の語を滑らかに接続できる。この能力は便利だが、二つの資料が同じ語を別のconceptualizationで使っているとき、その差を消してしまうことがある。「ユーザー」「契約」「所有」「責任」「有効」のような一般語ほど危険である。</p>
+<p>ここでGuarinoの区別を持つと、確認事項を具体化できる。用語が一致しているかではなく、該当条件が一致しているか。関係の方向が一致しているか。時間変化の扱いが一致しているか。roleとtypeを同じように扱っていないか。同じデータを入れたとき、同じ分類結果になるか。</p>
+<aside class="everyday-example"><span>実務への補助例（原文外）</span><p>「リース対象資産」という語を会計、法務、プロダクトが共有していても、会計は会計基準の判定単位、法務は契約上の目的物、プロダクトはAIが抽出可能な有形資産候補を指すかもしれない。同じラベルを一つのclassに押し込むと会話は短くなるが、判定条件の差が消える。各語がどのconceptualizationにcommitしているかを分けると、変換ルールを設計できる。</p></aside>
+<h2>conceptualizationをどう発見するか</h2>
+<p>この論文は、conceptualizationを現場から引き出す具体的なインタビュー手法までは提供しない。そこは要求工学や概念分析の別の技法が必要になる。ただし、発見した概念を検査する問いは与えてくれる。</p>
+<ol><li>この語は、どんな対象を含み、どんな対象を除くのか。</li><li>同じ対象が時間や文脈でこのclassから出入りするか。</li><li>この関係は必ず成立するのか、たまたま現在成立しているだけか。</li><li>別チームが同じ語を使ったとき、同じ世界状態を許すか。</li><li>公理を一つ外したとき、意図していない解釈が増えないか。</li></ol>
+<p>この問いを通すと、単なる用語集から「どの意味を固定したいか」へ議論を移せる。</p>
+<h2>限界——形式化の精度と運用可能性は両立しないことがある</h2>
+<p>細かいontologyほど、意図した意味へ近づけやすい。一方、すべての条件を厳密な論理へ落とすコストは高い。現実の概念には例外、曖昧さ、制度変更、組織固有の慣行があり、formalizationそのものが争点になることもある。</p>
+<p>また、共同体の合意をontologyへ書いたとしても、合意が永続するわけではない。制度やtaskが変わればconceptualizationも更新される。ontologyを「完成した辞書」として固定すると、かえって現場とのずれを隠す。</p>
+<p>したがって実務では、すべてを公理化するより、誤解したときの損失が大きい概念から意味条件を明示する方がよい。Guarino自身が示すcoarse / fine-grainedの区別は、その選択を正当化する。</p>
+<h2>実務へ持ち帰るなら</h2>
+<p>概念表を作るとき、列を「用語／定義」だけにしない。少なくとも「該当条件」「非該当条件」「時間で変わるか」「roleかtypeか」「関係する概念」「この意味を使うtask」を持たせる。同名語が複数taskで違う意味を持つなら、一つに統合する前に別概念として扱う。</p>
+<p>その上で、ontologyの細かさを目的から逆算する。チーム内の検索tagなら粗くてよい。自動判定や複数システムのデータ統合に使うなら、公理や例外まで必要になる。意味の厳密さは美しさの問題ではなく、誤解をどこまで機械に許すかの設計値である。</p>
+<h2>原文と関連資料</h2><ul><li><a href="https://www.loa.istc.cnr.it/wp-content/uploads/2020/03/FOIS98.pdf">Nicola Guarino, “Formal Ontology and Information Systems” (1998)</a> — 著者による訂正版PDF。ontology、conceptualization、ontological commitmentを分け、情報システムへの利用を整理する。</li><li><a href="knowledge-level.html">「知っている」と「どう保存している」を同じ問題にしない——Knowledge Level</a></li><li><a href="boundary-objects.html">合意しなくても共同作業はできる——Boundary Objects</a></li><li><a href="qoc-design-questions.html">設計案を増やしたいなら、まず問いを作り直す——QOC</a></li></ul>
+<h2>読後に考える問い</h2><p>いまチームで「定義済み」と思っている用語のうち、実際には名前だけが一致しているものはないか。その語を別チームへ渡したとき、どんな具体例を同じclassへ入れるかまで一致するだろうか。</p>
+</article></div></main></body></html>

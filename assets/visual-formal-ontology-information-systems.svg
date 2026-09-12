@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 533" role="img" aria-labelledby="title desc">
+<title id="title">同じ庭を異なる地図へ写す</title><desc id="desc">同じ植物園を二人の地図製作者が異なる記号体系で描き、その背後に共通する対象と関係があることを示す図版。</desc>
+<defs><filter id="paper"><feTurbulence baseFrequency=".55" numOctaves="4" seed="13" type="fractalNoise" result="n"/><feComponentTransfer><feFuncA type="table" tableValues="0 .07"/></feComponentTransfer></filter><pattern id="stipple" width="13" height="13" patternUnits="userSpaceOnUse"><circle cx="2" cy="3" r="1" fill="#20314d" opacity=".14"/><circle cx="10" cy="8" r=".8" fill="#60704f" opacity=".16"/></pattern></defs>
+<rect width="800" height="533" fill="#f1e8d2"/><rect width="800" height="533" filter="url(#paper)"/>
+<!-- botanical garden world -->
+<path d="M160 42 C260 18 540 22 646 56 C710 77 744 139 724 224 C702 314 612 383 500 402 C372 423 219 391 133 322 C64 267 54 183 91 115 C108 83 132 59 160 42Z" fill="#d9ddc3" stroke="#203a32" stroke-width="4"/>
+<path d="M159 118 C231 79 305 100 349 151 C389 198 373 261 323 294 C275 326 207 318 160 286 C115 255 107 202 126 159Z" fill="#b9c7a6" stroke="#60704f" stroke-width="3"/>
+<path d="M452 88 C520 57 626 82 664 143 C701 203 659 276 598 300 C540 322 466 301 430 251 C398 207 404 143 452 88Z" fill="#cdd6b9" stroke="#60704f" stroke-width="3"/>
+<path d="M339 116 C381 92 429 96 456 126 C484 158 474 200 438 220 C402 240 357 230 333 203 C309 175 309 135 339 116Z" fill="#9fb4aa" stroke="#20314d" stroke-width="3"/>
+<!-- paths -->
+<path d="M96 230 C205 191 239 156 335 164 C421 172 492 228 583 225 C646 223 688 197 724 173" stroke="#f1e8d2" stroke-width="17" fill="none"/><path d="M251 382 C267 309 310 263 373 222 C423 190 479 151 546 87" stroke="#f1e8d2" stroke-width="13" fill="none"/>
+<!-- trees as varied objects -->
+<g stroke="#203a32" stroke-width="2"><g fill="#60704f"><circle cx="182" cy="160" r="24"/><circle cx="229" cy="247" r="29"/><circle cx="292" cy="133" r="20"/><circle cx="530" cy="139" r="28"/><circle cx="610" cy="180" r="23"/><circle cx="566" cy="267" r="31"/><circle cx="470" cy="330" r="22"/></g><g fill="#8a4937"><circle cx="174" cy="154" r="6"/><circle cx="220" cy="239" r="7"/><circle cx="524" cy="131" r="7"/><circle cx="560" cy="258" r="8"/></g></g>
+<!-- statues / pond / greenhouse -->
+<ellipse cx="397" cy="166" rx="46" ry="31" fill="#8da6a6" stroke="#20314d" stroke-width="3"/><path d="M377 168c13-16 27 15 40-2 10-13 20 9 28-1" stroke="#f1e8d2" stroke-width="2" fill="none"/>
+<g transform="translate(270 300)" stroke="#20314d" stroke-width="3"><rect width="78" height="48" fill="#e7ddc5"/><path d="M0 0l39-30L78 0M15 0v48M39-30v78M63 0v48" fill="none"/></g>
+<g transform="translate(635 291)" stroke="#20314d" stroke-width="3"><circle cx="0" cy="-19" r="10" fill="#d3cab5"/><path d="M0-9v34M-13 25h26M-12 7l12 9 12-9" fill="none"/></g>
+<!-- map left -->
+<g transform="translate(20 334) rotate(-5 145 90)"><rect width="288" height="175" rx="6" fill="#e8dec8" stroke="#20314d" stroke-width="3"/><path d="M18 24h252M18 145h252" stroke="#20314d" opacity=".35"/><g stroke="#60704f" stroke-width="2" fill="none"><path d="M38 123C72 63 119 57 158 88s73 33 98-24"/><path d="M60 37v104M116 32v113M178 35v108M234 35v103" opacity=".35"/></g><g fill="#60704f" stroke="#20314d" stroke-width="1.5"><circle cx="74" cy="70" r="9"/><circle cx="104" cy="111" r="12"/><circle cx="142" cy="62" r="8"/><circle cx="204" cy="78" r="11"/><circle cx="227" cy="116" r="13"/></g><rect x="154" y="94" width="34" height="22" fill="#8da6a6" stroke="#20314d"/><path d="M35 158h68M118 158h43M174 158h84" stroke="#8a4937" stroke-width="4"/></g>
+<!-- map right uses different symbols -->
+<g transform="translate(503 336) rotate(4 140 88)"><rect width="276" height="171" rx="6" fill="#e8dec8" stroke="#20314d" stroke-width="3"/><path d="M20 23h238M20 142h238" stroke="#20314d" opacity=".35"/><g stroke="#20314d" stroke-width="2" fill="none"><path d="M34 122C69 64 110 56 154 85s75 35 103-20"/><path d="M65 35l12 20-24 0zM106 96l15 24-30 0zM145 47l11 18-22 0zM204 67l14 22-28 0zM228 101l16 26-32 0z" fill="#8a4937"/></g><ellipse cx="171" cy="98" rx="20" ry="13" fill="#8da6a6" stroke="#20314d"/><g stroke="#60704f" stroke-width="4"><path d="M32 155h42"/><path d="M86 155h72"/><path d="M170 155h30"/><path d="M212 155h48"/></g></g>
+<!-- map makers, very small, outdoors -->
+<g stroke="#20314d" stroke-width="3" fill="none"><circle cx="92" cy="326" r="14" fill="#d7c7ab"/><path d="M92 340v41M92 351l-27 25M92 352l24 23M92 381l-18 28M92 381l20 27"/><circle cx="702" cy="327" r="14" fill="#d7c7ab"/><path d="M702 341v41M702 352l-21 24M702 352l28 19M702 382l-18 28M702 382l20 26"/></g>
+<!-- transparent commitment links from same objects to different symbols -->
+<g stroke="#8a4937" stroke-width="2" stroke-dasharray="5 5" opacity=".7"><path d="M182 160C146 245 126 290 110 361"/><path d="M182 160C422 221 548 278 568 379"/><path d="M397 166C300 242 213 293 174 422"/><path d="M397 166C480 231 585 281 674 432"/><path d="M530 139C437 247 309 323 227 451"/><path d="M530 139C566 232 620 298 711 433"/></g>
+<!-- layered ontology arches -->
+<g fill="none" stroke="#20314d" opacity=".45"><path d="M307 57Q400 5 493 57" stroke-width="2"/><path d="M327 72Q400 31 473 72" stroke-width="2"/><path d="M350 85Q400 58 450 85" stroke-width="2"/></g><g fill="#8a4937"><circle cx="307" cy="57" r="4"/><circle cx="493" cy="57" r="4"/><circle cx="327" cy="72" r="4"/><circle cx="473" cy="72" r="4"/></g>
+<rect width="800" height="533" fill="url(#stipple)" opacity=".6"/>
+</svg>

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 533" role="img" aria-labelledby="title desc">
+<title id="title">雨の滑走路と制御装置</title><desc id="desc">滑走路に着陸した航空機、濡れた車輪、センサーのパルス、機械側の制御箱を分離して描いた図版。</desc>
+<defs>
+ <filter id="paper"><feTurbulence baseFrequency=".65" numOctaves="3" seed="7" type="fractalNoise" result="n"/><feColorMatrix in="n" type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .08"/></feComponentTransfer></filter>
+ <pattern id="rain" width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(18)"><path d="M3 0v18M17 6v16" stroke="#60704f" stroke-width="1" opacity=".35"/></pattern>
+ <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0v8" stroke="#20314d" stroke-width="1" opacity=".18"/></pattern>
+ <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#d8d5c6"/><stop offset="1" stop-color="#f1e8d2"/></linearGradient>
+</defs>
+<rect width="800" height="533" fill="#f1e8d2"/><rect width="800" height="533" filter="url(#paper)" opacity=".9"/>
+<rect width="800" height="295" fill="url(#sky)"/><rect width="800" height="295" fill="url(#rain)"/>
+<!-- storm clouds -->
+<g fill="#20314d" opacity=".16"><ellipse cx="115" cy="70" rx="115" ry="42"/><ellipse cx="265" cy="55" rx="145" ry="46"/><ellipse cx="520" cy="78" rx="170" ry="50"/><ellipse cx="735" cy="52" rx="110" ry="38"/></g>
+<!-- distant runway lights -->
+<g fill="#8a4937" opacity=".85"><circle cx="35" cy="275" r="3"/><circle cx="96" cy="267" r="3"/><circle cx="158" cy="278" r="3"/><circle cx="632" cy="270" r="3"/><circle cx="694" cy="263" r="3"/><circle cx="754" cy="275" r="3"/></g>
+<!-- runway -->
+<path d="M0 300 L800 270 L800 533 L0 533Z" fill="#d3cab5"/>
+<path d="M0 318 L800 287" stroke="#203a32" stroke-width="4"/><path d="M0 474 L800 430" stroke="#203a32" stroke-width="4"/>
+<path d="M30 397 L770 357" stroke="#f1e8d2" stroke-width="12" stroke-dasharray="72 42" opacity=".95"/>
+<path d="M0 323 C120 345 210 305 330 325S560 345 800 305" fill="none" stroke="#60704f" stroke-width="6" opacity=".35"/>
+<!-- aircraft body -->
+<g stroke="#20314d" stroke-width="3" stroke-linejoin="round">
+ <path d="M70 245 C190 224 335 211 503 216 C572 218 640 231 713 253 L725 271 C628 279 554 282 477 279 L183 275 C138 273 99 264 70 245Z" fill="#e7ddc5"/>
+ <path d="M267 230 L195 150 L233 145 L375 221Z" fill="#c9c2ad"/>
+ <path d="M525 220 L626 171 L660 177 L585 237Z" fill="#c9c2ad"/>
+ <path d="M660 243 L708 193 L727 198 L713 253Z" fill="#c9c2ad"/>
+ <path d="M114 244 C135 239 151 238 171 238" fill="none"/>
+ <g fill="#20314d"><circle cx="182" cy="243" r="5"/><circle cx="205" cy="240" r="5"/><circle cx="228" cy="237" r="5"/><circle cx="251" cy="235" r="5"/></g>
+</g>
+<!-- landing gear and hydroplaning wheel -->
+<g stroke="#20314d" stroke-width="5" fill="none"><path d="M445 272 L431 344"/><path d="M474 273 L486 343"/></g>
+<g transform="translate(458 354)"><ellipse rx="46" ry="35" fill="#20314d"/><ellipse rx="28" ry="21" fill="#d3cab5" stroke="#f1e8d2" stroke-width="4"/><circle r="8" fill="#8a4937"/></g>
+<path d="M391 377 C423 359 493 363 533 377 C500 380 470 387 428 387 C411 386 398 383 391 377Z" fill="#6f8a83" opacity=".7"/>
+<path d="M396 379 C423 370 445 370 465 376 M485 376 C506 370 522 371 541 378" stroke="#f1e8d2" stroke-width="3" fill="none"/>
+<!-- sensor -->
+<g transform="translate(512 326)" stroke="#8a4937" stroke-width="3"><rect x="-14" y="-10" width="28" height="20" rx="3" fill="#f1e8d2"/><path d="M14 0h43"/><path d="M57 0c8-18 16 18 24 0s16 18 24 0 16 18 24 0" fill="none"/></g>
+<!-- physical world frame -->
+<path d="M26 28h205 M26 28v205" stroke="#203a32" stroke-width="3" opacity=".55"/><circle cx="26" cy="28" r="6" fill="#8a4937"/>
+<!-- machine inset -->
+<g transform="translate(602 316)"><rect width="170" height="170" rx="9" fill="#e7ddc5" stroke="#20314d" stroke-width="4"/><rect x="20" y="20" width="130" height="48" rx="4" fill="#20314d"/><path d="M31 46h18l8-14 12 27 15-21 12 15 12-24 13 17h18" fill="none" stroke="#f1e8d2" stroke-width="3"/><circle cx="38" cy="96" r="11" fill="#60704f" stroke="#20314d" stroke-width="3"/><circle cx="85" cy="96" r="11" fill="#8a4937" stroke="#20314d" stroke-width="3"/><circle cx="132" cy="96" r="11" fill="#d3cab5" stroke="#20314d" stroke-width="3"/><path d="M35 128h100M35 145h76" stroke="#20314d" stroke-width="5" opacity=".65"/></g>
+<!-- shared signal link -->
+<path d="M641 333 C601 298 574 305 550 327" stroke="#8a4937" stroke-width="4" fill="none" stroke-dasharray="7 6"/><circle cx="550" cy="327" r="6" fill="#8a4937"/>
+<!-- assumption chain as small physical icons -->
+<g transform="translate(42 430)" stroke="#20314d" stroke-width="2.5"><circle cx="28" cy="28" r="24" fill="#e7ddc5"/><path d="M12 28h32M28 12v32"/><path d="M58 28h62" stroke-dasharray="5 5"/><circle cx="148" cy="28" r="24" fill="#e7ddc5"/><path d="M136 35c8-20 16-20 24 0" fill="none"/><path d="M178 28h62" stroke-dasharray="5 5"/><rect x="246" y="6" width="50" height="44" rx="5" fill="#e7ddc5"/><path d="M256 28h30"/><circle cx="58" cy="28" r="4" fill="#8a4937" stroke="none"/><circle cx="178" cy="28" r="4" fill="#8a4937" stroke="none"/></g>
+<!-- margin marks -->
+<g stroke="#60704f" stroke-width="2" opacity=".55"><path d="M752 44l18 8-13 14 17 7"/><path d="M54 112c24 8 37 8 60 0"/><path d="M570 90c24 12 41 12 66 0"/></g>
+</svg>

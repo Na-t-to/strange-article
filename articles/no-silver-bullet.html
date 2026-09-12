@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>コードを書くのが速くなっても、仕様の難しさは消えない——No Silver BulletのEssenceとAccident｜変な読み物置き場</title>
+<meta name="description" content="Fred BrooksのNo Silver Bulletを、実装の省力化と概念設計の難しさを分ける道具として読む。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/no-silver-bullet.html"><link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260901-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="no-silver-bullet">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　ソフトウェア設計</p>
+<header class="article-header"><div class="tags"><span>ソフトウェア設計</span><span>要求工学</span><span>AI設計</span></div><h1>コードを書くのが速くなっても、仕様の難しさは消えない——No Silver BulletのEssenceとAccident</h1><p class="original-title">No Silver Bullet: Essence and Accidents of Software Engineering</p><div class="article-meta-row"><p><strong>Frederick P. Brooks, Jr. · 1986/1987</strong><br>公開 2026.09.12　／　推定読了 57分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-no-silver-bullet.svg" alt="巨大な機械式印刷所でコードの清書工程だけが高速化する一方、中央の設計台では複雑に噛み合う部品の関係を人々が組み直し続けている図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">プログラムを書く手間を半分にしても、何を作るべきかを決める仕事が半分になるとは限らない。Fred Brooksは1986年、ソフトウェア開発の難しさを「本質的な仕事」と「表現・実行に伴う偶有的な仕事」へ分けた。現在の生成AIを考えるときも、この区別は驚くほど使える。</p>
+<h2>「銀の弾はない」は、改善を否定する話ではない</h2>
+<p>No Silver Bulletは、「ソフトウェア開発は永遠に改善しない」という悲観論として読まれがちである。Brooksの主張はもう少し限定されている。単一の技術や管理手法だけで、生産性・信頼性・単純さを一桁、つまり10倍改善するような魔法の突破口は期待しにくい。その理由を、ソフトウェアの仕事の構造から説明する。</p>
+<p>Brooksはソフトウェア構築の仕事を<strong>essence</strong>と<strong>accident</strong>へ分ける。essenceは、問題を解くための抽象的な概念構造を作る仕事である。どんなデータがあり、何が何と関係し、どんな状態があり、どの条件で処理が変わり、何を例外として扱うかを決める。</p>
+<p>accidentは、その概念構造を特定のプログラミング言語で表し、計算機上で動かすために付随する仕事である。低水準の命令を手で書く、遅いコンパイルを待つ、メモリ制約に合わせて技巧的な実装をする、といった作業は、問題そのものに不可避ではない。</p>
+<div class="concept-grid"><section><h3>Essence</h3><p>何を作るか、その概念構造を決める。仕様、設計、状態、関係、例外、整合性を扱う。</p></section><section><h3>Accident</h3><p>その構造を特定の言語・機械・道具へ表現するために付随する困難。</p></section><section><h3>Silver Bullet</h3><p>accidentを消す技術を、essenceまで一挙に消す万能策として期待することへの警戒。</p></section></div>
+<h2>10倍改善には、9割以上が消せる仕事でなければならない</h2>
+<p>論文の論証は単純で強い。もし全工数のうちaccidentalな仕事が9割未満なら、その仕事を完全にゼロへしても全体を10分の1にはできない。大きな生産性向上を主張する技術を見るとき、「その技術は全体のどの部分を消しているのか」を先に問うべきだということになる。</p>
+<p>過去の大きな進歩としてBrooksが挙げるのは、高級言語、time-sharing、統合された開発環境である。高級言語はレジスタや分岐命令のような機械固有の詳細から設計者を解放した。time-sharingは長い待ち時間を減らし、考えていた文脈を失うコストを下げた。開発環境はファイル形式やtool連携などの摩擦を減らした。</p>
+<p>どれも重要な改善だった。しかし、それらが大きく効いたのは、それ以前にaccidentalな作業が非常に大きかったからである。一度その層を取り除くと、同じ種類の改善をさらに続けても限界効用は小さくなる。</p>
+<h2>Brooksが「本質」と呼んだ四つの難しさ</h2>
+<p>essenceの中核としてBrooksは四つの性質を挙げる。<strong>complexity</strong>、<strong>conformity</strong>、<strong>changeability</strong>、<strong>invisibility</strong>である。</p>
+<p>complexityは、ソフトウェアが多数の異なる要素と状態の組合せを持つことから生じる。建物や機械では同じ部品の反復が多いが、ソフトウェアでは完全に同じ処理なら共通化されるため、残った部分ほど異質になりやすい。規模が増えると、単純な反復ではなく相互作用の種類が増える。</p>
+<p>conformityは、ソフトウェアが接続する外部世界の恣意的な規則へ合わせなければならないことを指す。法制度、既存システム、組織ルール、通信規約、取引慣行は、数学のように一つの原理へ美しく還元できない。理由が不統一でも、連携する以上は合わせる必要がある。</p>
+<p>changeabilityは、ソフトウェアが成功するほど変更を要求される性質である。利用者は新しい用途を発見し、周囲のハードウェア・制度・業務も変わる。しかもソフトウェアは物理構造物より変更しやすいため、「変えられるから変える」という圧力も受ける。</p>
+<p>invisibilityは、ソフトウェアの構造に自然な空間表現がないことを指す。建物なら平面図、土地なら地図、回路なら配線図がある。ソフトウェアには制御flow、data flow、dependency、時間順序、namespaceなど複数のgraphが重なり、一つの図で全体を表しにくい。</p>
+<h2>難しさを「書く量」で測ると外す</h2>
+<p>この四つを見ると、ソフトウェアの難しさはコード行数そのものではないことが分かる。業務ルールが30個あれば、生成AIが30個のif文を一瞬で書けても、どの条件が優先されるか、例外がどう交差するか、制度改正で何が変わるかという概念上の複雑さは残る。</p>
+<p>Brooksは、ソフトウェア構築で最も難しいのは、概念構造の<strong>specification、design、testing</strong>だと述べる。syntax errorよりconceptual errorの方が深刻である。正しい文法で、間違ったものを高速に作ることはできる。</p>
+<aside class="everyday-example"><span>身近な例（原文外）</span><p>旅行予約サービスで「空席があれば予約できる」という処理をAIに書かせるのは簡単でも、仮押さえ、決済失敗、同時予約、キャンセル待ち、時差、運休、料金規則をどう整合させるかは別の仕事である。実装速度が上がるほど、曖昧な仕様がすぐ動く形になり、概念上の矛盾を後で発見する可能性もある。</p></aside>
+<h2>1986年のAI論が妙に現在へ刺さる</h2>
+<p>Brooksは当時のAIとexpert systemにも触れている。もちろん現在のLLMとは技術が違う。ここで持ち帰るべきなのは個別技術の予測精度ではなく、AIが何を代替しているかを見る切り分けである。</p>
+<p>Brooksは、expert systemの価値として、推論engineそのものよりも、専門家の知識をrule baseとして切り出し、保守・再利用できる点に注目する。同時に、専門家が持つ知識を抽出してruleへする<strong>knowledge acquisition</strong>が難所として残ると書く。推論を自動化しても、何を知識として与えるべきかを見つける仕事は消えない。</p>
+<p>生成AIでも似た構造がある。自然言語からコードを作る、長文を整える、既存APIを呼ぶ、といった表現作業は大きく短縮できる。一方、「良い成果物とは何か」「この例外をどの分類へ入れるか」「どこまでAIへ裁量を渡すか」「不足情報をどう判断するか」のような仕様発見は、むしろ重要になる。</p>
+<h2>automatic programmingへの批判は「仕様を書けば全部できる」への注意</h2>
+<p>Brooksは、問題仕様から自動でプログラムを生成するautomatic programmingの夢も検討する。ある種の領域では成功する。問題を少数のparameterで特徴づけられ、解法libraryがあり、どの解法を選ぶかのruleが明示されている場合である。</p>
+<p>しかし一般のソフトウェアでは、問題の記述そのものに解法の重要部分を含めざるを得ないことが多い。「仕様を書けばプログラムが自動で出る」というとき、その仕様を書く仕事がすでに高度なprogrammingになっている可能性がある。</p>
+<p>現在なら、promptや自然言語仕様がコードへ変換される場面で同じ問いを置ける。生成側が強くなるほど、「入力仕様にどこまで判断が埋め込まれているか」を見る必要がある。最終コードの量が減っても、正しい仕様へ圧縮する知的作業が増えることがある。</p>
+<h2>形式検証も「正しい仕様」を作ってはくれない</h2>
+<p>program verificationについてBrooksは、その重要性を認めつつ万能策ではないとする。完全な検証ができたとしても証明できるのは、programがspecificationを満たすことまでである。specification自体が必要なものを完全・一貫して表しているかは別問題になる。</p>
+<p>この指摘は、AI評価にもそのまま移せる。評価rubricに対して100%通るmodelを作っても、そのrubricが利用者の目的を適切に表していなければ成功ではない。testを増やす前に、「何を正解と定義したか」の妥当性を検査する必要がある。</p>
+<h2>Brooksは本質的困難への攻撃も提案している</h2>
+<p>No Silver Bulletは、essenceは触れられないと言って終わらない。Brooksは、概念設計そのものへ効く方法としていくつかを挙げる。</p>
+<p>第一は<strong>buy versus build</strong>である。既製品で問題を解けるなら、概念構造を一から作らない。これは単なる開発費削減ではなく、すでに他者が解いた複雑性を再利用する。</p>
+<p>第二は<strong>requirements refinement and rapid prototyping</strong>である。Brooksは、ソフトウェアで最も難しい単一の仕事は「何を作るべきかを正確に決めること」だと書く。利用者は最初から完全な要求を知っているわけではない。動くprototypeへ触れ、概念構造を具体化しながら要求を反復的に発見する。</p>
+<p>第三は<strong>incremental development</strong>である。最初に全体を完成させるのではなく、常に動く小さなsystemを保ちながら機能を育てる。複雑な構造を事前に完全指定できないという前提に立つ。</p>
+<p>第四は<strong>great designers</strong>の育成である。この部分には時代的な英雄的設計者観も強いが、概念設計の品質差を単なるtool差へ還元できないという主張は明確である。</p>
+<h2>rapid prototypingは「見た目を早く作る」ことではない</h2>
+<p>Brooksがprototypeを評価する理由は、顧客の要求を早く満たすデモを作れるからではない。抽象的なconceptual structureを実際に触れる形へし、利用者と設計者が「これで本当に問題を表せているか」を検査できるからである。</p>
+<p>prototypeは例外処理や性能を省略してよい。それでも主要なinteractionと機能を体験できれば、要求の欠落や誤解を発見できる。つまりprototypeは実装短縮techniqueというより、要求発見のための測定器である。</p>
+<p>生成AIでprototypeが数時間で作れるなら、Brooksのこの提案はむしろ強くなる。大事なのは「早く完成扱いする」ことではなく、作ったものを使ってconceptual modelを修正するloopを速く回すことになる。</p>
+<h2>AIによってaccidentが減るほど、essenceの比率は上がる</h2>
+<p>ここは原文からの直接主張ではなく、現在への接続である。生成AIがboilerplate、syntax、API利用、文書整形、初稿作成を大きく短縮するなら、全作業に占めるaccidentalな仕事は減る。その結果、残った時間の中で要求・設計・評価・例外整理といったessentialな仕事の比率が上がる。</p>
+<p>これは「AIは生産性を上げない」という意味ではない。特定の工程では数倍、場合によっては一桁以上の短縮も起こり得る。ただし、その短縮率をそのままproject全体へ掛けない方がよい。実装が2日で終わっても、何を実装するかの合意に2週間かかるなら、隘路は別の場所へ移る。</p>
+<p>さらに、生成コストが下がると案の数が増える。すると新しい仕事として、候補の比較、評価基準の設計、目的への適合性の判断が増える。accidentを減らす技術が、essenceを露出させる。</p>
+<h2>「人間の判断が大事」で終わらせない</h2>
+<p>Brooksを雑に適用すると、「最後は人間が考えるしかない」という精神論になりやすい。論文から使えるのは、どの仕事がessentialなのかを具体的に特定する方法である。</p>
+<p>たとえばAIプロダクトなら、コード生成はaccidental寄りでも、対象概念の境界、利用者のgoal、tool callの許可条件、停止条件、evidenceの採用条件、error時のrecoveryはconceptual structureそのものである。そこを「人間の判断」と一括りにせず、仕様項目へ分解する。</p>
+<p>そのうえで、essentialな仕事にもAIを使える。候補を列挙する、矛盾を探す、反例を生成する、過去の失敗を検索する、prototypeを作る。ただし、それらは本質を消去する魔法ではなく、概念設計を支援する手段として評価する方が筋がよい。</p>
+<h2>限界——essential / accidentalの境界は固定ではない</h2>
+<p>Brooksの二分法は非常に強いが、何がessentialかは技術とproblem framingによって変わり得る。以前は本質だと思われていた作業が、より高い抽象化によって消えることもある。逆に、あるdomainでは複雑だった問題が、標準化や制度変更によって単純になる場合もある。</p>
+<p>また、1986年の予測を現在のAIへそのまま当てることはできない。LLMは自然言語とprogramming言語の両方を扱い、設計候補や仕様候補も生成するため、当時のtoolより概念作業へ深く入り込む。それでも、「何が改善対象なのか」を工程別に測るという論証自体は残る。</p>
+<p>一つの技術がessenceの一部を補助できることと、problemのcomplexityそのものが消えることは別である。そこを実測する必要がある。</p>
+<h2>実務へ持ち帰るなら</h2>
+<ol><li>作業を「表現・転記・実装」と「要求発見・概念整理・判断・検証」に分けて時間を測る。</li><li>AI導入で短縮した工程だけでなく、隘路がどこへ移ったかを見る。</li><li>生成量が増えたなら、候補を選ぶ評価基準と比較方法を先に設計する。</li><li>prototypeを完成品の代替ではなく、要求を発見する実験として使う。</li><li>評価の合格率だけでなく、その評価仕様が目的を表しているかを別に検査する。</li></ol>
+<p>AIによる省力化を小さく見積もる必要はない。むしろ、どの層で大きく効いているのかを正確に測る方が、次に投資すべき概念設計の仕事を見つけやすい。</p>
+<h2>原文と関連資料</h2><ul><li><a href="https://www.cs.unc.edu/techreports/86-020.pdf">Frederick P. Brooks, Jr., “No Silver Bullet: Essence and Accidents of Software Engineering” (1986)</a> — UNCのtechnical report版。1987年にIEEE Computerへ再掲された古典。</li><li><a href="rational-design-process.html">設計は実際には迷走する——A Rational Design Process</a></li><li><a href="cognitive-dimensions.html">考えにくさは頭のせいではない——Cognitive Dimensions</a></li><li><a href="qoc-design-questions.html">設計案を増やしたいなら、まず問いを作り直す——QOC</a></li></ul>
+<h2>読後に考える問い</h2><p>いま「AIで10倍速くなった」と感じている作業は、project全体のどの部分か。その工程をほぼゼロへしたあとに残る仕事は何で、その残った仕事の中で最も大きいconceptual difficultyは何か。</p>
+</article></div></main></body></html>
