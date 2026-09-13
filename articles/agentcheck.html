@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>壊れたツールを「同じ壊れ方」で再現する——AgentCheckでMCPエージェントの修正を検証する｜変な読み物置き場</title>
+<meta name="description" content="実ツールの応答を記録し、12種類のfaultを差し込み、同一条件でmitigationを再試験するAgentCheckを読む。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/agentcheck.html"><link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260901-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="agentcheck">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　AIエージェント</p>
+<header class="article-header"><div class="tags"><span>AIエージェント</span><span>MCP</span><span>ソフトウェアテスト</span></div><h1>壊れたツールを「同じ壊れ方」で再現する——AgentCheckでMCPエージェントの修正を検証する</h1><p class="original-title">AgentCheck: A Reproduce-Intervene-Mitigate Workbench for LLM Agents over MCP</p><div class="article-meta-row"><p><strong>Aritra Mazumder / Nusrat jahan Lia · 2026</strong><br>公開 2026.09.13　／　推定読了 54分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-agentcheck.svg" alt="劇場のリハーサルのように同じツール呼び出しを左右で再演し、一か所だけ壊れた応答へ差し替え、中央の記録と修正工具で結果を比較する図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">tool-using agentの評価は、toolが正しく返ることを暗黙に前提にしがちである。しかし本番では、timeout、古い値、schemaの崩れ、tool descriptionの汚染が起きる。AgentCheckはMCP serverを<strong>介入面</strong>として使い、実際のtool responseを記録した後、一か所だけ故障へ差し替えて同じrunを再生する。修正を入れたら同じfaultをもう一度流し、「本当にその修正で直ったか」まで比較する。</p>
+<h2>本番のagent failureは、再現できないこと自体が問題になる</h2>
+<p>普通のsoftware debuggingでは、入力と状態を固定し、同じbugを再現してから修正する。agentではこれが難しい。LLM出力が確率的で、toolがlive dataを返し、外部serviceの状態も変わるからである。</p>
+<p>たとえば昨日だけinvoice APIがtimeoutしたとする。そのときagentは誤ったfallbackを選んだ。しかし翌日に再実行するとAPIは正常で、failure pathへ入らない。修正したretry logicが効いたのかどうかも確認しにくい。</p>
+<p>AgentCheckが狙うのは、agentの「壊れた一回」をfixtureへ変えることだ。実toolとのclean runを記録し、faulted runでは一致するtool callをcacheからreplayする。agentが故障の影響で別経路へ分岐した後だけlive toolへ戻る。</p>
+<h2>record-replayだけではなく、一点だけ介入する</h2>
+<p>完全replayならすべてのtool responseを固定できるが、agentが違う行動へ分岐した後の世界まで再現するのは難しい。AgentCheckはそこを二段に分ける。</p>
+<p>まずclean runでtool callとresponseを記録する。次にfault injectorが対象responseへ一つの変化を入れる。それまで同じtool callが続く間はcacheを使い、faultによってagent trajectoryがclean runと違った時点からlive executionへ切り替える。</p>
+<p>この方式だと、故障以前の条件はほぼ固定しながら、故障後にagentが取るrecovery actionは実際に試せる。単なるsimulationより、修正の影響を現実のtool環境へ接続しやすい。</p>
+<h2>12種類のfaultは、transport errorだけではない</h2>
+<p>AgentCheckのfault catalogは、timeoutのような明示的errorだけでなく、より厄介な「成功に見える誤り」を含む。stale data、malformed response、semantic corruption、tool description poisoningなどである。</p>
+<p>この違いは大きい。HTTP 500ならretry policyを起動しやすい。だが一週間古い在庫数が200 OKで返れば、agentは疑わず使う可能性がある。tool descriptionへ悪意あるinstructionが混ざっていても、protocol上は正常である。</p>
+<p>著者らの実験でも、典型的failureはcrashより<strong>間違ったtool outputを自信を持って採用すること</strong>だった。agent reliabilityでは「止まったか」だけでなく、「誤ったまま進んだか」を観測する必要がある。</p>
+<aside class="everyday-example"><span>原文外の補助例</span><p>電車の発車案内が消えていれば、利用者は駅員へ確認しやすい。表示が普通に点灯していて、時刻だけ昨日のものなら、そのまま信じてしまう。agentも同じで、明示的errorよりplausibleなstale responseの方が検知しづらい。</p></aside>
+<h2>reproduce → intervene → confirmを一つのloopにする</h2>
+<p>AgentCheckのworkflowは三段階に整理できる。第一にfailureを再現する。第二にfaultを固定したままmitigationを入れる。第三に同じfaultで再実行し、failureが消えたかを確認する。</p>
+<p>ここで大事なのは、「対策を実装した」ことを成功条件にしない点である。retry、schema validation、freshness check、tool allowlistなどをtoggleして、同一のfault scenarioに対する行動差を見る。</p>
+<p>原因と修正を対応させやすくなるため、incident reviewをbenchmarkへ変換できる。本番で起きた一件を、そのままregression testへ持ち込む発想に近い。</p>
+<h2>deterministic checkとLLM judgeを分ける</h2>
+<p>scoringは二層ある。明確に機械判定できるものはdeterministic pass/fail ruleを使う。たとえば「外部domainへ送信してはいけない」「古い値を最終回答へ使ってはいけない」のような条件である。</p>
+<p>一方、「agentが適切に不確実性を表明したか」「説明が安全だったか」のようにinterpretationが必要なlabelはLLM judgeを補助的に使う。著者らはjudge labelをhuman annotationと比較してvalidationする。</p>
+<p>論文の限界節でも、deterministic checkとjudgeは独立したfallible signalであり、disagreementがあると明記する。primary verdictをdeterministic checkへ寄せ、judgeをdiagnosticとして扱う。これはagent evaluationの設計としてかなり堅実である。</p>
+<h2>5 agentで77/120から105/120まで差がつく</h2>
+<p>著者らは5種類のagentを120 scenarioで評価し、最良agentが105、最弱agentが77 scenarioをpassしたと報告する。通常taskだけでは見えにくい差が、fault conditionで広がる。</p>
+<p>重要なのは、agentの「平均能力」よりfailure classごとのprofileである。timeoutに弱いagent、stale dataに弱いagent、poisoned descriptionに弱いagentでは対策が違う。</p>
+<p>このためscoreを一つに潰すより、fault taxonomyごとにpass rateを持つ方がdeployment readinessを判断しやすい。</p>
+<h2>retryはtimeoutを直しても、stale dataは直さない</h2>
+<p>最弱agentへretry mitigationを入れると、timeout error faultでは成功率が30%程度から100%へ改善したcaseがある。これはretryがtransport-level failureへ効くことを示す。</p>
+<p>しかしstale-data faultは、同じmitigationを入れても10件中3〜4件程度の成功に留まる。古い値を何度取り直しても、source側が古いなら同じものが返るからである。</p>
+<p>この対比は実務的に重要だ。「tool failure」という大分類へ一つのfallbackを付けても、failure semanticsが違えば効かない。timeoutにはretry、stalenessにはfreshness metadataやcross-check、description poisoningにはtrust boundaryが必要になる。</p>
+<h2>MCPを「接続規格」だけでなくtest seamとして使う</h2>
+<p>MCPの価値はtool接続を標準化することだけではない。tool callとresponseがprotocol boundaryを通るため、そこへlogging、fault injection、replay、policy checkを差し込める。</p>
+<p>AgentCheckはこの境界をintervention surfaceと呼ぶ。agent本体を書き換えずにtool responseを差し替えられるため、異なるagent implementationへ同じfaultを流せる。</p>
+<p>これはsystem design上の示唆も持つ。外部依存との境界が明確なら、そこはobservabilityとtestingの境界にもできる。protocol designがevaluation infrastructureを兼ねる。</p>
+<h2>MAS-FIREとの違い——system全体のtaxonomyと、再現可能なdebug loop</h2>
+<p>同日に採用したMAS-FIREもfault injectionを扱う。両者は近いが、焦点が違う。MAS-FIREはplanning、memory、reasoning、action、coordinationへ15 faultを体系的に配置し、検知・局所修復・最終回復を測る。multi-agent architectureのreliability profileを作る研究である。</p>
+<p>AgentCheckはtool boundaryへ対象を絞り、<strong>本番failureを同じ条件で再現し、mitigationの前後を比較するdeveloper workbench</strong>に寄る。特にMCP上でrecord/replayとlive divergenceを組み合わせるところが実装上の持ち味である。</p>
+<p>片方はfailure taxonomyとsystem比較、もう片方はreproducible debugging。両方を組み合わせれば、fault classを整理しながらincident regression testを蓄積できる。</p>
+<h2>agentの回帰テストに必要なのは「同じ質問」だけではない</h2>
+<p>LLM agentの回帰テストでは同じuser promptを再投入しがちである。しかしtool worldが毎回変われば、failureの再現条件が揃わない。</p>
+<p>AgentCheckの示唆は、input promptだけでなく<strong>environmental response</strong>もtest fixtureとして管理することだ。どのtool callまで同じresponseを返し、どのpointでfaultを入れ、どこからliveへ戻すかをversioningする。</p>
+<p>これにより「model update後にstale-data耐性が落ちた」「新しいplannerはtimeout時のretryは増えたが二重実行も増えた」といったregressionを追える。</p>
+<h2>silent failureを観測するには、traceへ意味ラベルが要る</h2>
+<p>agentがcrashしないfailureでは、trace上のtool callは成功している。そこで「response freshness」「schema validity」「source trust」「side effect completion」のようなsemantic checkをtraceへ追加する必要がある。</p>
+<p>単なるHTTP status、latency、token数だけでは足りない。tool outputをどの判断に使ったか、agentが疑義を示したか、別sourceへverificationしたかも見る。</p>
+<p>AgentCheckのfaulted runとclean runのside-by-side比較は、その意味差を見つけるためのUIとして機能する。</p>
+<h2>限界——tool faultの再現は、世界全体の再現ではない</h2>
+<p>record/replayで固定できるのはMCP境界を通るresponseであり、agent内部のrandomnessや外部環境すべてを固定するわけではない。agentが早い段階でtrajectoryを変えれば、その後のlive callは前runと違う世界へ入る。</p>
+<p>また12 faultがproduction failureの全分布を代表するとは限らない。複数faultが同時発生するcase、長期memory corruption、tool間の不整合などはさらに複雑である。</p>
+<p>LLM judgeもground truthではない。著者ら自身がdeterministic ruleをprimaryに置いているように、解釈的評価は補助として扱う方が安全である。</p>
+<h2>実務へ持ち帰るなら</h2>
+<ol><li>production incidentで使われたtool responseを、再現可能なfixtureとして保存する。</li><li>timeout、stale data、schema drift、description poisoningを別fault classとして管理する。</li><li>mitigationを入れたら、同じfaultへ再度流してpass/failを比較する。</li><li>deterministicに判定できるsafety・correctness条件はLLM judgeへ任せない。</li><li>MCPやAPI gatewayの境界へlogging・replay・fault injectionを置く。</li><li>agent regression testではpromptだけでなくtool environmentもversioningする。</li></ol>
+<p>agentの信頼性を上げるには、失敗を「もう起きないように祈る」のではなく、失敗を保存し、何度でも再生できるtest caseへ変える必要がある。</p>
+<h2>原文と関連資料</h2><ul><li><a href="https://arxiv.org/abs/2607.11098">Mazumder &amp; Lia, “AgentCheck: A Reproduce-Intervene-Mitigate Workbench for LLM Agents over MCP” (2026)</a> — MCP境界を使ったrecord/replay、12 fault、mitigation verificationを提案する。</li><li><a href="mas-fire.html">壊して初めて分かるエージェントの弱点——MAS-FIRE</a></li><li><a href="agent-reliability.html">「成功率80%」では運用できない——AIエージェントの信頼性を12個の測定項目へ分解する</a></li><li><a href="metamorphic-testing.html">正解が分からなくてもテストできる——Metamorphic Testing</a></li></ul>
+<h2>読後に考える問い</h2><p>本番で一度だけ起きたtool failureを、いま同じ条件で再現できるだろうか。できないなら、修正が効いたと何を根拠に言えるだろうか。</p>
+</article></div></main></body></html>
