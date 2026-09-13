@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 533" role="img" aria-labelledby="t d"><title id="t">Budget-aware Active RAG</title><desc id="d">A coastal dispatch station decides which ships to send on costly retrieval voyages, with helpful, neutral, and harmful routes under a limited budget.</desc>
+<defs><linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#a8bac0"/><stop offset="1" stop-color="#536f78"/></linearGradient><linearGradient id="sun" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f0d29d"/><stop offset="1" stop-color="#d68a5b"/></linearGradient></defs><rect width="800" height="533" fill="#efe1c2"/><rect width="800" height="360" fill="#d9dfd5"/><circle cx="694" cy="109" r="47" fill="url(#sun)" opacity=".75"/><path d="M0 246C127 211 237 229 342 254S585 263 800 221V533H0Z" fill="url(#sea)"/>
+<path d="M0 277C132 246 232 262 340 288C478 321 620 300 800 256" fill="none" stroke="#e8dec9" stroke-width="3" opacity=".65"/>
+<path d="M0 329C156 296 255 319 366 347C494 379 615 366 800 318" fill="none" stroke="#e8dec9" stroke-width="3" opacity=".55"/>
+<g fill="#bcab8c" stroke="#414944" stroke-width="3"><path d="M68 419V135h190v284z"/><path d="M47 135h232l-40-45H86z" fill="#5e675e"/><path d="M258 419h70v-172h-70z"/><path d="M274 247l19-91 19 91z" fill="#d7c8a7"/></g>
+<g fill="#283638"><circle cx="127" cy="220" r="10"/><path d="M117 232h20l12 52h-44z"/><path d="M107 243l-20 31m49-31l22 22" stroke="#283638" stroke-width="7"/></g>
+<g fill="#d5b265" stroke="#5b4e38" stroke-width="2"><circle cx="183" cy="227" r="12"/><circle cx="210" cy="227" r="12"/><circle cx="237" cy="227" r="12"/><circle cx="264" cy="227" r="12"/></g>
+<g fill="#e7dcc0" stroke="#50483b" stroke-width="2"><rect x="90" y="305" width="142" height="75" rx="4"/><path d="M108 338h104"/><path d="M108 352h79"/><path d="M108 366h95"/></g>
+<path d="M312 179C404 137 503 115 597 131" fill="none" stroke="#4e7862" stroke-width="5" stroke-dasharray="12 8"/><path d="M312 199C435 200 530 208 668 183" fill="none" stroke="#8b805f" stroke-width="5" stroke-dasharray="12 8"/><path d="M312 219C431 262 564 302 727 346" fill="none" stroke="#b15443" stroke-width="5" stroke-dasharray="12 8"/>
+<g fill="#27383c" stroke="#182527" stroke-width="2"><path d="M437 189l58-10 36 21-58 10z"/><path d="M559 244l58-10 36 21-58 10z"/><path d="M669 357l58-10 36 21-58 10z"/></g>
+<g fill="#b98c52" stroke="#4c4336"><rect x="462" y="176" width="19" height="15"/><rect x="585" y="231" width="19" height="15"/><rect x="696" y="344" width="19" height="15"/></g>
+<g fill="#c9b894" stroke="#3e4540" stroke-width="3"><path d="M620 192l18-115 18 115z"/><rect x="632" y="77" width="12" height="151"/><rect x="607" y="210" width="62" height="17"/><path d="M602 227h72l-11 57h-49z" fill="#8a6d57"/></g>
+<g fill="#4d7861"><circle cx="499" cy="151" r="17"/><path d="M490 151l7 7 13-15" fill="none" stroke="#efe3c8" stroke-width="4"/></g>
+<g fill="#b25543"><circle cx="710" cy="327" r="17"/><path d="M701 318l18 18m0-18l-18 18" stroke="#efe3c8" stroke-width="4"/></g>
+<g fill="#8b805f"><circle cx="617" cy="224" r="17"/><path d="M606 224h22" stroke="#efe3c8" stroke-width="4"/></g>
+<g stroke="#5a4c3e" stroke-width="3" fill="none"><path d="M147 306v-38M130 284h34"/><circle cx="147" cy="306" r="39"/><path d="M147 306l20-20" stroke="#b25543" stroke-width="5"/></g>
+</svg>
