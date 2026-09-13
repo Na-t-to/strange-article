@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 533" role="img" aria-labelledby="t d"><title id="t">AgentCheck replay and mitigation</title><desc id="d">A theatre-like test stage replays the same tool interaction twice, swaps one prop for a fault, and then branches into a repaired run.</desc>
+<defs><linearGradient id="curtain" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#5e3d37"/><stop offset=".5" stop-color="#8d5748"/><stop offset="1" stop-color="#5e3d37"/></linearGradient><pattern id="grain" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M0 9L10 7M2 2L6 1" stroke="#2f3937" stroke-opacity=".05"/></pattern></defs>
+<rect width="800" height="533" fill="#efe0c0"/><rect width="800" height="533" fill="url(#grain)"/>
+<path d="M0 0h800v67H0z" fill="url(#curtain)"/><path d="M0 67c80 35 120-20 200 0s120 35 200 0 120-20 200 0 120 35 200 0V0H0z" fill="#6f493f" opacity=".8"/>
+<rect x="41" y="94" width="718" height="336" rx="8" fill="#d5c4a3" stroke="#3d4540" stroke-width="4"/>
+<path d="M400 94v336" stroke="#3d4540" stroke-width="4" stroke-dasharray="9 8"/>
+<g fill="#2f3a38"><circle cx="111" cy="175" r="10"/><path d="M101 187h20l12 49H90z"/><circle cx="496" cy="175" r="10"/><path d="M486 187h20l12 49h-43z"/></g>
+<g stroke="#2f3a38" stroke-width="6" fill="none"><path d="M92 201l-21 31m42-31l24 26M477 201l-20 31m42-31l24 26"/></g>
+<g fill="#ece1c8" stroke="#584a3d" stroke-width="2"><rect x="149" y="155" width="87" height="56" rx="5"/><rect x="264" y="155" width="87" height="56" rx="5"/><rect x="534" y="155" width="87" height="56" rx="5"/><rect x="650" y="155" width="72" height="56" rx="5"/></g>
+<g stroke="#4f7763" stroke-width="9" stroke-linecap="round"><path d="M123 180h26M236 182h28M351 181h34"/></g><g stroke="#b45643" stroke-width="9" stroke-linecap="round"><path d="M508 180h26M621 181h29M722 181h22"/></g>
+<g fill="#4f7763"><circle cx="193" cy="183" r="17"/><path d="M184 183l7 7 13-15" fill="none" stroke="#efe2c5" stroke-width="4"/></g>
+<g fill="#b45643"><circle cx="577" cy="183" r="17"/><path d="M568 174l18 18m0-18l-18 18" stroke="#efe2c5" stroke-width="4"/></g>
+<g fill="#c49a5c" stroke="#564b3d" stroke-width="2"><rect x="163" y="252" width="67" height="45"/><rect x="277" y="252" width="67" height="45"/><rect x="548" y="252" width="67" height="45"/><rect x="659" y="252" width="67" height="45"/></g>
+<g fill="#e7dbc1" stroke="#55493d" stroke-width="2"><path d="M175 265h43v18h-43zM289 265h43v18h-43zM560 265h43v18h-43zM671 265h43v18h-43z"/></g>
+<path d="M226 275C241 244 262 243 277 274" fill="none" stroke="#5b7480" stroke-width="4"/><path d="M615 275C632 242 648 245 659 272" fill="none" stroke="#b45643" stroke-width="4"/>
+<g transform="translate(321 330)"><rect width="158" height="72" rx="8" fill="#e7dbc0" stroke="#3f4842" stroke-width="3"/><circle cx="37" cy="36" r="18" fill="#6f7d69"/><path d="M28 36l7 7 13-15" fill="none" stroke="#f0e5cb" stroke-width="4"/><path d="M74 24h61M74 36h46M74 48h55" stroke="#5d5b4e" stroke-width="3"/></g>
+<path d="M428 330C490 311 533 327 560 350" fill="none" stroke="#4e7662" stroke-width="6"/><path d="M560 350l-17-3m17 3l-7-16" stroke="#4e7662" stroke-width="5"/>
+<g transform="translate(590 326)" fill="#d4b267" stroke="#51463a" stroke-width="3"><path d="M0 38l25-38 19 13-24 38z"/><circle cx="11" cy="43" r="17"/></g>
+<g fill="#d8c7a6" stroke="#4a463c" stroke-width="2"><rect x="60" y="452" width="680" height="43" rx="4"/></g><path d="M85 474h178M304 474h188M538 474h167" stroke="#676659" stroke-width="3"/><circle cx="276" cy="474" r="8" fill="#4f7763"/><circle cx="508" cy="474" r="8" fill="#b45643"/>
+</svg>
