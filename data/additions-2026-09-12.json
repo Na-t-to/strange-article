@@ -14,7 +14,7 @@
     "image": "assets/visual-world-and-machine.svg",
     "imageAlt": "雨の滑走路を走る航空機と、その車輪センサーから信号を受ける制御装置を断面で描き、現実の状態と機械が観測できる現象の間に差があることを示す図版",
     "imageCaption": "図版：自動生成",
-    "featured": true
+    "featured": false
   },
   {
     "slug": "formal-ontology-information-systems",
