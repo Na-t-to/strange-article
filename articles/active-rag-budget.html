@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>「検索するか」を精度だけで評価しない——Active RAGを予算・害・閾値転移まで測る｜変な読み物置き場</title>
+<meta name="description" content="Active RAGの検索triggerを、retrieval utility、budget calibration、harm rate、cost decompositionから評価する2026年研究を読む。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/active-rag-budget.html"><link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260901-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="active-rag-budget">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　RAG</p>
+<header class="article-header"><div class="tags"><span>RAG</span><span>AI評価</span><span>検索制御</span></div><h1>「検索するか」を精度だけで評価しない——Active RAGを予算・害・閾値転移まで測る</h1><p class="original-title">When Should Active RAG Retrieve? A Budget-Aware Evaluation of Utility, Calibration, and Cost</p><div class="article-meta-row"><p><strong>Pin Qian / Su Wang / Chong Peng / Junxian You / Lifei Liu / Haoran Yu / Yihang Chen / Xiaochong Jiang · 2026</strong><br>公開 2026.09.13　／　推定読了 55分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-active-rag-budget.svg" alt="岬の信号所で限られた出航許可の札を持つ係員が、複数の船のうちどれを調査航海へ出すか判断し、役立つ航路と危険な航路を分けている図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">検索は無料ではない。latencyとtokenを使い、余計な資料を入れれば、もともと正しかった回答を壊すこともある。Active RAGは「必要なときだけ検索する」ための仕組みだが、その評価で単に最終accuracyだけを見ると、<strong>頻繁に検索して予算を多く使ったsystemが強く見える</strong>。Qianらは検索triggerを、utilityの順位づけ、閾値のbudget calibration、retrieval harm、意思決定自体のcostへ分けて評価する。</p>
+<h2>「検索した方がよい質問」を見つける問題</h2>
+<p>通常のRAGはqueryごとに必ずretrievalを走らせる。Active RAGやadaptive retrievalは、LLMだけで答えられそうなら検索せず、不確実なときや外部知識が必要なときだけretrievalをtriggerする。</p>
+<p>これには二つの利点がある。第一に、検索・rerank・context processingのcostを減らせる。第二に、不要なretrieval noiseを避けられる。外部資料は常にhelpfulではなく、誤ったpassageや過剰なcontextが回答を悪化させることがある。</p>
+<p>そのためrouterやtriggerの仕事は「難しい質問を見つける」ことではない。<strong>検索すると回答結果が改善するqueryを見つける</strong>ことである。</p>
+<h2>retrieval utilityを、検索ありと検索なしの差として定義する</h2>
+<p>論文はquery iについて、検索あり回答のcorrectnessから検索なし回答のcorrectnessを引いた値をretrieval utilityとして置く。binary correctnessならutilityは+1、0、-1の三種類になる。</p>
+<div class="concept-grid"><section><h3>+1 helpful</h3><p>検索なしでは誤答、検索すると正答になる。</p></section><section><h3>0 neutral</h3><p>検索してもしなくてもcorrectnessが変わらない。</p></section><section><h3>-1 harmful</h3><p>検索なしでは正答だったのに、検索後に誤答へ変わる。</p></section></div>
+<p>この定義は「検索すべきか」を知識不足のproxyで測らず、最終的なmarginal effectで測る。LLMが不確実でも検索が役立たない質問はあるし、自信満々でも検索で救える質問もある。</p>
+<h2>retrieval harmを無視すると、routerの目的を間違える</h2>
+<p>検索は通常「役立つか、役立たないか」の二値で考えられがちだが、この論文はharmを明示する。2WikiMultiHopQAでは、検索によってもともと正しかった回答が誤りになるcaseが8.8%あったと報告される。</p>
+<p>害の原因は一つではない。retrieverが紛らわしい資料を出す、generatorが弱いevidenceへ引っ張られる、contextが長くなって重要情報を見失う、矛盾資料の扱いを誤る、といった経路がある。</p>
+<p>したがってrouterは「検索で改善するcase」を上位へ置くだけでなく、「検索すると壊れるcase」を下位へ置く必要がある。検索率を上げればaccuracyも上がるという単調な前提は置けない。</p>
+<aside class="everyday-example"><span>原文外の補助例</span><p>道に迷ったとき、毎回検索する方が良いとは限らない。すでに駅の改札前にいて案内表示が明確なのに、古いblogを検索して工事前の出口情報を読めば、かえって遠回りする。検索の価値は「情報が増えること」ではなく、検索しなかった場合と比べて判断が改善することにある。</p></aside>
+<h2>accuracyだけ比較すると、予算が違うsystemを同列に並べてしまう</h2>
+<p>Active RAG system Aがqueryの30%だけ検索し、system Bが70%検索するとする。Bのaccuracyが高くても、その差がrouterの賢さによるのか、単に外部evidenceへ多くアクセスしたからか分からない。</p>
+<p>論文が問題にするのが<strong>operating point</strong>である。同じ「50% budget」を掲げる方法でも、held-out dataで実際に50% retrievalになるとは限らない。thresholdをdevelopment setで調整し、本番分布が変われば、実現retrieval rateはずれる。</p>
+<p>system比較では「同じbudgetで誰が良いutilityを拾えるか」と「設定したbudgetを未知dataでも守れるか」を分けなければならない。</p>
+<h2>Exact top-k frontierは、routerの純粋な順位能力を見る</h2>
+<p>第一の評価はdiagnosticな<strong>exact top-k utility frontier</strong>である。test set全体のrouter scoreを見て、budget ρに応じて上位k件だけ強制的にretrievalする。</p>
+<p>これはdeploymentではできない。未来queryを全部並べてから上位何件かを選べないからである。しかしdiagnosisには役立つ。threshold calibrationの失敗を除き、「このscoreは本当にretrieval utilityの高いqueryを上へ並べているか」を純粋に測れる。</p>
+<p>budgetを10%、20%、50%と動かしてcurveを見ると、router Aは低budgetで強いが高budgetではBに抜かれる、といった差も見える。単一operating pointのaccuracyより情報量が多い。</p>
+<h2>Deployable frontierは、過去で決めたthresholdが未来で守れるかを見る</h2>
+<p>本番ではcalibration setでthresholdを決め、新しいqueryへ適用する。第二の<strong>deployable threshold frontier</strong>は、この現実的な手順でaccuracyと実現retrieval rateを測る。</p>
+<p>ここではrouter scoreのrankingが良くても、score distributionがshiftするとbudgetを外す。developmentで「このthresholdなら50%検索」と調整しても、held-outでは65%になるかもしれない。</p>
+<p>この差は<strong>threshold-transfer error</strong>として独立に見る価値がある。systemが精度を稼いだ理由が、良いroutingか、budget overshootかを分けられるからである。</p>
+<h2>Conservative frontierは「予算超過しない」を設計要件にする</h2>
+<p>第三のconservative budget frontierは、budget超過を避けるために安全marginを置く。calibration sampleから得たretrieval rateに不確実性がある以上、targetぴったりへthresholdを置くと本番で超える可能性がある。</p>
+<p>そこで一定のconfidenceでbudget内へ収まるよう、より厳しいthresholdを設定する。当然retrieval機会を減らすのでaccuracyを少し失うかもしれない。このtrade-offを明示する。</p>
+<p>これはcost limitがhard requirementのsystemに重要である。「平均では安い」より「上限を超えにくい」が必要なサービスでは、accuracy最大化だけではoperating pointを決められない。</p>
+<h2>trigger自身のcostを数えないと、節約systemが高くつく</h2>
+<p>Active RAGは「検索を減らすから安い」と思いやすい。しかしretrievalするか判断するために、追加LLM call、複数sample、entropy計算、full answer生成などを使う場合がある。</p>
+<p>たとえば「まず回答を一度生成し、そのuncertaintyが高ければretrievalして再生成する」方式なら、検索したcaseではgenerationを二度行う。routerが高性能でも、trigger-side computeが大きければtotal costは増える。</p>
+<p>論文はcostをretrievalだけでなく、pre-decision compute、retrieval、post-decision generationへ分解する。accuracy-vs-retrieval-rateだけでなく、token-equivalent costのfrontierを見る。</p>
+<h2>複雑なrouterが単純baselineに勝つとは限らない</h2>
+<p>実験では、learned utility router、uncertainty、retrieval scoreなど複数方式を比較する。結果はdatasetとbudgetでrankingが変わり、simple uncertaintyやretrieval-score baselineが学習型routerへ並ぶ場面もある。</p>
+<p>この結果から言えるのは、特定routerが普遍的に最善ということではない。router評価には、dataset、budget、generator、retriever、cost modelが入る。単一平均scoreでmethodを決めると、deployment条件とずれる。</p>
+<p>特に低budget運用ならtop fewのhelpful casesを正しく拾う能力が重要で、高budgetならharmful casesを避ける能力の比重が上がる。目的関数がoperating pointで変わる。</p>
+<h2>検索停止と追加検索は、同じutility問題として考えられる</h2>
+<p>論文は「検索するかしないか」というtriggerを扱うが、考え方はmulti-step RAGの停止条件にも広げられる。今のEvidence Setに対して、もう一回検索するmarginal utilityが正なら続け、0付近なら止め、negativeならむしろ害になる。</p>
+<p>重要なのは「まだ検索できるか」ではなく、「追加検索が現在の回答状態をどれだけ変える見込みがあるか」である。取得件数やround数はbudget constraintであってutilityではない。</p>
+<p>MAP-Lawのcoverage-driven retrievalと組み合わせるなら、未解決要件があることをgap signalとし、そのgapを埋める検索のexpected utilityとcostを見てcontinue/stopを決める、という構造にできる。</p>
+<h2>「不確実だから検索」は一段粗い</h2>
+<p>uncertaintyは便利なtriggerである。しかしuncertaintyが高いことと、retrievalで改善できることは同じではない。知識がなくて不確実なのか、推論が難しいのか、質問自体が曖昧なのかで対策が違う。</p>
+<p>曖昧queryなら検索よりclarificationが有効かもしれない。推論errorならより多くのdocumentを足しても改善しない。既に正しいが自信が低いcaseでは検索costだけ増える。</p>
+<p>したがってrouterのtargetを「uncertainか」から「retrieval interventionのutilityが正か」へ変えると、検索制御の目的が明確になる。</p>
+<h2>既存記事との差分</h2>
+<p>MAP-Lawは法的要件のcoverageと未解決gapから次検索を制御する。ARKはanswer-centricなretriever trainingを扱う。Evidence-aware retrieval utilityの記事は、retrieval評価signalが下流意思決定へ本当に効くかを検証する。</p>
+<p>本稿の焦点は、<strong>検索行為そのものをbudgeted interventionとして評価する</strong>ことにある。いつ検索するか、何%検索するか、thresholdが未知dataで予算を守るか、検索が害になるcaseをどれだけ避けるか、判断costまで含めて見る。</p>
+<h2>評価表に最低限入れたい六項目</h2>
+<p>Active RAGや検索停止の検証をするなら、final accuracyだけでなく次の項目を並べるとよい。</p>
+<ol><li>retrieval usage rate——実際に何%のqueryで検索したか。</li><li>utility ranking——helpful queryを上位に並べられたか。</li><li>harm rate——検索で正答から誤答へ落ちた割合。</li><li>threshold-transfer error——calibration時の想定budgetとheld-out実績の差。</li><li>total cost——router判定、検索、generationを含むtoken・latency。</li><li>frontier——一つのthresholdではなく、budgetを動かしたaccuracy/cost curve。</li></ol>
+<p>この形なら、accuracy改善が「routerが賢い」のか「検索回数を増やした」のかを分けやすい。</p>
+<h2>限界——utilityの定義がcorrectness差だけでは狭い</h2>
+<p>論文では主にcorrectnessの改善をutilityとして扱う。実サービスでは、citation quality、latency、cost、safety、coverage、answer lengthなど複数目的がある。検索で正答率が変わらなくても、根拠提示が増えるなら価値がある場合もある。</p>
+<p>また、retrieval/no-retrievalのcounterfactualをqueryごとに評価するには両方の回答を生成する必要があり、offline evaluation costが高い。utility label自体もgenerator versionに依存する。同じdocumentでもgeneratorが変わればhelpful/harmful判定が変わり得る。</p>
+<p>それでも「検索の価値は追加情報量ではなく介入差分で測る」という考え方は残る。何をutilityへ含めるかをdeployment目的に合わせて拡張すればよい。</p>
+<h2>実務へ持ち帰るなら</h2>
+<ol><li>検索あり／なしを同じqueryで比較し、retrieval utility labelを作る。</li><li>search triggerのscoreをutility rankingとして評価する。</li><li>target retrieval rateだけでなく、held-outで実現したrateを必ず報告する。</li><li>検索で悪化したcaseをharm auditとして独立レビューする。</li><li>router判定に使うLLM callやsampling costもtotal costへ入れる。</li><li>単一thresholdでmethodを決めず、複数budgetのfrontierを比較する。</li></ol>
+<p>「検索回数を減らした」は成果ではなく制約である。少ない検索で必要なcaseを拾い、不要・有害なcaseを避け、設定したbudgetを本番でも守るところまで測って、初めて検索制御の品質になる。</p>
+<h2>原文と関連資料</h2><ul><li><a href="https://arxiv.org/abs/2607.24010">Qian et al., “When Should Active RAG Retrieve? A Budget-Aware Evaluation of Utility, Calibration, and Cost” (2026)</a> — retrieval utility、budget frontier、threshold transfer、harm、costを分解する。</li><li><a href="map-law.html">法務RAGは「何件取ったか」で止めない——MAP-Law</a></li><li><a href="answer-centric-retriever-ark.html">検索器を「質問に似ている」で鍛えない——ARK</a></li><li><a href="evidence-aware-retrieval-utility.html">検索評価が正しくても、選ぶシステムまで正しいとは限らない——Evidence-Aware Retrieval</a></li></ul>
+<h2>読後に考える問い</h2><p>いまの検索停止条件は「何件取ったか」「何round回したか」を見ているのか、それとも「次の一回が結論・例外・根拠・coverageをどれだけ改善し得るか」を見ているのか。後者を測るなら、どんなcounterfactualを作ればよいだろうか。</p>
+</article></div></main></body></html>
