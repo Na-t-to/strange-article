@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>壊して初めて分かるエージェントの弱点——MAS-FIREで「失敗後の回復」を評価する｜変な読み物置き場</title>
+<meta name="description" content="LLM multi-agent systemへ15種類のfaultを意図的に注入し、検知・局所修復・最終成功を分けて測るMAS-FIREを読む。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/mas-fire.html"><link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260901-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="mas-fire">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　AIエージェント</p>
+<header class="article-header"><div class="tags"><span>AIエージェント</span><span>AI評価</span><span>信頼性</span></div><h1>壊して初めて分かるエージェントの弱点——MAS-FIREで「失敗後の回復」を評価する</h1><p class="original-title">MAS-FIRE: Fault Injection and Reliability Evaluation for LLM-Based Multi-Agent Systems</p><div class="article-meta-row"><p><strong>Jin Jia / Zhiling Deng / Zhuangbin Chen / Yingqi Wang / Zibin Zheng · 2026</strong><br>公開 2026.09.13　／　推定読了 57分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-mas-fire.svg" alt="古い電信局の断面で、複数の部署を結ぶ伝送管へ誤配、重複、循環などの障害を意図的に入れ、別経路や確認作業で復旧できるかを見る図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">AIエージェントが通常条件で80%成功したとしても、「途中のagentが間違った要約を渡した」「tool parameterが少し壊れた」「同じmessageが何度も届いた」ときにどう振る舞うかは分からない。MAS-FIREは、multi-agent systemへ故障を意図的に注入し、最終成功率だけでなく、<strong>異常を検知したか、局所的に直したか、その修復が最終成功まで届いたか</strong>を分けて測る。</p>
+<h2>LLM agentの故障は、例外を投げずに進む</h2>
+<p>従来のdistributed systemでは、service crash、timeout、network partitionのようなfailureを扱う。故障はruntime上のeventとして観測しやすく、retryやfailoverのtriggerも設計しやすい。</p>
+<p>LLM-based multi-agent systemでは別の故障が増える。plannerが存在しないtoolを計画に入れる。memory圧縮で重要constraintを落とす。agent Aのhallucinationをagent Bが正しい前提として採用する。役割定義が曖昧で、同じ仕事を二人が別解釈する。messageが重複しても、system自体は停止しない。</p>
+<p>つまり「動いているが意味が壊れている」という状態が起こる。通常のexception monitorでは拾えないため、end-to-endのtask successだけ見ても、どこで壊れたか分からない。</p>
+<p>MAS-FIREの出発点は、agentic systemのreliabilityをこの<strong>semantic fault</strong>まで含めて評価することである。</p>
+<h2>fault injectionを、AIエージェントへ持ち込む</h2>
+<p>fault injectionはreliability engineeringで古くから使われる。正常なsystemへ意図的に異常を起こし、failure detection、containment、recoveryが期待どおり働くかを見る。rare failureを本番で待つ代わりに、test環境で強制的に再現する。</p>
+<p>MAS-FIREはこの考えをLLM agentへ移植する。ただしcodeを直接改変するのではなく、agent architectureの外側からfaultを入れる。著者らは三つのinject mechanismを用意する。</p>
+<div class="concept-grid"><section><h3>Prompt modification</h3><p>role定義やuser instructionを変え、曖昧さや論理矛盾を注入する。</p></section><section><h3>Response rewriting</h3><p>agent出力を途中で捕まえ、hallucination、情報欠落、tool parameter errorなどへ書き換える。</p></section><section><h3>Message routing</h3><p>messageの重複、cycle、誤broadcastなど、communication flowそのものを変える。</p></section></div>
+<p>このnon-invasiveな設計が重要である。system本体へ専用の故障コードを書き込まず、middleware的に故障を注入するため、異なるmulti-agent frameworkを同じ観点で比較できる。</p>
+<h2>15種類のfaultを、「agent内部」と「agent間」に分ける</h2>
+<p>MAS-FIREはfaultをまずintra-agentとinter-agentへ分ける。intra-agentは一つのagent内部で起きるplanning、memory、reasoning、actionの失敗である。inter-agentはconfiguration、instruction、communicationの失敗で、agent間の依存関係やmessage flowから生じる。</p>
+<p>planning faultには、実行不能planやcritical information lossがある。memory faultにはconversation historyの喪失やcontext length violationがある。reasoning faultでは、検証済み事実をもっともらしい誤情報へ差し替えるhallucinationを注入する。action faultではtool selection、parameter filling、parameter formatを壊す。</p>
+<p>inter-agent側では、role ambiguityやblind trust、instruction logic conflict、instruction ambiguity、message cycle、message storm、broadcast amplificationなどを扱う。</p>
+<p>ここで効いているのは、単なる「難しいpromptを投げる」benchmarkではないことだ。どの機能層へどの故障を入れたかを固定し、その後のsystem responseを観察できる。</p>
+<aside class="everyday-example"><span>原文外の補助例</span><p>複数人で旅行計画を作るとする。幹事が日付を一日間違えて伝えた場合と、予約担当がホテル名を取り違えた場合と、同じ連絡が20回届いた場合では、必要な回復行動が違う。「旅行が成立したか」だけでは、チームのどこが強かったか分からない。故障を種類別に入れると、確認、再質問、重複除去、再予約などの回復能力を分けて見られる。</p></aside>
+<h2>最終成功率の前に、「気づいたか」を測る</h2>
+<p>MAS-FIREはsystem-levelのRobustness Scoreだけでなく、process-level metricを置く。ここがこの論文の使いやすい部分である。</p>
+<p><strong>Occurrence Rate</strong>は、faultに対して何らかのfault-tolerant behaviorがtriggerされた割合を見る。異常を認識せず、そのまま下流へ流した場合は低くなる。</p>
+<p><strong>Local Success Rate</strong>は、triggerした回復行動が注入faultを局所的に直せたかを見る。tool parameter errorを検知して正しいparameterへ修正できたならlocal successである。</p>
+<p><strong>Success Rate</strong>は、その局所修復のあと最終taskまで成功したかを見る。途中を直しても、既に誤情報が別agentへ伝播していればend-to-endでは失敗することがある。</p>
+<p>この三段階を分けると、「気づかない」「気づくが直せない」「直すが手遅れ」という異なるfailure modeが見える。</p>
+<h2>局所修復と全体成功の差が、cascadeを見せる</h2>
+<p>multi-agent systemでは、faultが一つのagentに閉じない。agent Aの誤ったsummaryがshared memoryへ入り、agent BとCがそれを前提に別作業を進めれば、Aを後から修正しても全体状態は戻らない。</p>
+<p>このためLocal Success Rateとfinal Success Rateのgapが重要になる。局所エラーを直せるのに最終成功へ戻れないsystemは、recovery mechanismが弱いというより、fault propagationをcontainできていない。</p>
+<p>設計上は、shared stateのversioning、再検証trigger、dependency-aware rollback、downstream notificationなどが候補になる。論文そのものがこれらすべてを実装するわけではないが、どの対策が必要かをprocess traceから切り分けられる。</p>
+<h2>「賢いmodelなら丈夫」は成立しない</h2>
+<p>著者らはMetaGPT、Table-Critic、CAMELという異なるarchitectureを、GPT-5とDeepSeek-V3系modelで評価する。結果は、foundation modelが強くなればreliabilityが一様に上がるという単純なものではない。</p>
+<p>強いmodelはsemantic reasoningが必要なfaultへ対応しやすい一方、instruction corruptionに対しては与えられた指示へ忠実すぎることで逆に脆くなる場合がある。矛盾したconstraintを明示的に拒否せず、両方満たそうとして壊れる、といった現象である。</p>
+<p>reliabilityはmodel capabilityだけでなく、architecture、validation rule、shared state、communication patternの組合せで決まる。これはagent systemを「LLMの性能を外側から呼び出すだけ」と見る設計を崩す。</p>
+<h2>closed-loop architectureは、faultを吸収しやすい</h2>
+<p>論文で大きな差が出たのがarchitecture topologyである。iterativeなcritic-refinerやclosed-loop構造は、linear workflowでcatastrophic failureになるfaultの40%以上をneutralizeしたと報告される。</p>
+<p>linear workflowでは、上流の誤りが承認されないまま次へ進む。一方、criticやjudgeが戻り経路を持つsystemは、後段で矛盾を発見して前段へ修正要求を返せる。</p>
+<p>ただし「loopを増やせばよい」わけではない。loop自身がmessage cycleや無限retryを生む可能性もある。重要なのは、どの異常で再確認し、何回まで戻し、どの状態を再検証するかを設計することになる。</p>
+<h2>blind trustは、multi-agent化の副作用である</h2>
+<p>multi-agent systemは役割分担をするため、agent同士が他者の出力をinputとして受け取る。ここで「専門agentが出したから正しい」というimplicit trustが生まれる。</p>
+<p>MAS-FIREのblind trust faultは、この前提を意図的に強め、上流errorがどこまで伝播するかを見る。これは実運用でも現実的な問題である。retrieval agentの引用、plannerのsubtask、review agentの判定を、下流が無条件に採用すれば、一つの誤りがsystem全体の確信へ変換される。</p>
+<p>対策はagentを増やすことではなく、どのhandoffでverificationが必要かを決めることになる。authorityを分けるなら、同時にverification responsibilityも分けなければならない。</p>
+<h2>要求の曖昧さも「system fault」としてテストできる</h2>
+<p>MAS-FIREはuser instruction側のlogic conflictとambiguityもfaultとして扱う。これは重要で、agent評価を「正しい仕様が与えられた前提」から外へ広げる。</p>
+<p>現実の依頼は、constraintが衝突したり、語が曖昧だったりする。そこでsystemが勝手に一方を選ぶのか、clarificationを返すのか、矛盾を明示するのかでreliabilityが変わる。</p>
+<p>つまり要求品質の問題を、入力側の不備として評価対象外にせず、agent systemの応答能力として測れる。これは要求工学とagent評価の接点になる。</p>
+<h2>既収録の「成功率では足りない」を、故障実験へ進める</h2>
+<p>既収録の「Towards a Science of AI Agent Reliability」は、consistency、robustness、predictability、safetyを12 metricへ分けた。τ-benchは同じtaskを反復してpass^kで安定性を見る。Metamorphic Testingは正解oracleが作りにくいとき、入力変換と出力関係をテストする。</p>
+<p>MAS-FIREの差分は、<strong>失敗を待たずに作る</strong>ことである。特定faultを注入し、systemの検知・修復・回復をprocess traceとして見る。reliability評価を観察から介入へ進める。</p>
+<h2>agent evaluationを「正常時」と「故障時」の二層に分ける</h2>
+<p>実務で使うなら、通常task benchmarkとfault-injection benchmarkを分けるとよい。通常taskではcapabilityとbaseline successを測る。故障時ではbaselineで成功したtaskだけを対象に、特定faultを注入してどれだけ成功を維持できるかを見る。</p>
+<p>こうすれば「元から難しくて失敗したtask」と「本来成功できるのにfaultで壊れたtask」を混同しない。さらにfault type別のprofileを作れば、tool errorには強いがinstruction ambiguityには弱い、といったsystem特性が見える。</p>
+<p>aggregate score一つに潰さず、fault taxonomyごとのheatmapを持つ方が改善へつながる。実際の対策はfaultごとに違うからである。</p>
+<h2>限界——注入したfaultが現実のfailure分布を代表するとは限らない</h2>
+<p>fault injectionには常にrepresentativenessの問題がある。15 faultはliterature review等を基に整理されているが、実際のproduction incidentの頻度や組合せを完全には表さない。</p>
+<p>また、LLMを使ってsemantic mutationを作る部分はinjector model依存である。同じ「hallucination」でも難易度が違えばsystem responseは変わる。fault intensityの校正も今後の課題になる。</p>
+<p>multi-agent architectureも三種類に限られ、task domainやtool environmentが変われば結果は変わる。したがって「closed-loopなら常に40%強い」と一般化するより、architecture topologyがreliabilityに大きく効くという方向を持ち帰る方が安全である。</p>
+<h2>実務へ持ち帰るなら</h2>
+<ol><li>agentのfailure logをplanning・memory・reasoning・action・coordinationへ分類する。</li><li>本番で起きたfaultを再現できるinjection harnessを作る。</li><li>最終successだけでなく、検知、局所修復、最終回復を別metricにする。</li><li>上流agent出力を無条件に信頼しているhandoffを洗い出す。</li><li>曖昧・矛盾したuser instructionに対するclarification behaviorをtest caseにする。</li><li>linear workflowには、どこでvalidation loopを入れるとfault propagationを止められるかを検討する。</li></ol>
+<p>AI agentを「賢い部品の連結」と見ると、失敗はmodel errorへ還元される。fault injectionを入れると、情報の流れ、役割、verification、recovery pathというsystem designの問題が見える。</p>
+<h2>原文と関連資料</h2><ul><li><a href="https://arxiv.org/abs/2602.19843">Jia et al., “MAS-FIRE: Fault Injection and Reliability Evaluation for LLM-Based Multi-Agent Systems” (2026)</a> — 15 fault、3 injection mechanism、process-level recovery metricを提案する。</li><li><a href="agent-reliability.html">「成功率80%」では運用できない——AIエージェントの信頼性を12個の測定項目へ分解する</a></li><li><a href="tau-bench.html">一度成功したエージェントを信用しない——τ-bench</a></li><li><a href="metamorphic-testing.html">正解が分からなくてもテストできる——Metamorphic Testing</a></li><li><a href="coactive-design.html">エージェントを「自律度」だけで設計しない——Coactive Design</a></li></ul>
+<h2>読後に考える問い</h2><p>いまのagent workflowで、一つの誤ったmessageを意図的に混ぜたとき、誰が最初に異常へ気づき、どこまで巻き戻し、どの情報を再検証すれば最終結果へ戻れるだろうか。</p>
+</article></div></main></body></html>
