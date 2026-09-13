@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 533" role="img" aria-labelledby="t d"><title id="t">Evidence-aware retrieval utility</title><desc id="d">A canal lock routes evidence cargo toward different downstream destinations, showing that the same retrieval signal can have different downstream utility.</desc>
+<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#d8e2dc"/><stop offset="1" stop-color="#f1e1bc"/></linearGradient><pattern id="paper" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M0 7L8 5M1 1L4 0" stroke="#3f4a3e" stroke-opacity=".05"/></pattern></defs>
+<rect width="800" height="533" fill="#efe2c5"/><rect width="800" height="240" fill="url(#sky)"/><rect width="800" height="533" fill="url(#paper)"/>
+<path d="M0 190C100 160 180 173 260 205S420 220 800 167V533H0Z" fill="#788777" opacity=".28"/>
+<path d="M0 300C135 270 206 280 310 314C420 350 522 342 800 270V533H0Z" fill="#8aa0a0"/>
+<path d="M0 321C142 291 223 302 315 337C430 382 537 368 800 296" fill="none" stroke="#334a50" stroke-width="3" opacity=".7"/>
+<g stroke="#3f463d" stroke-width="3" fill="#cfbea0"><path d="M307 245h128v113H307z"/><path d="M321 220h100v25H321z" fill="#985b43"/><path d="M335 250v104M407 250v104"/><path d="M350 243v113M392 243v113"/></g>
+<path d="M343 250v100M399 250v100" stroke="#28383b" stroke-width="8"/><path d="M352 267h39" stroke="#cbd3c5" stroke-width="3"/>
+<g fill="#343f3d" stroke="#243034" stroke-width="2"><path d="M45 332l88-14 55 31-87 14z"/><path d="M155 379l90-13 52 31-91 13z"/><path d="M465 344l91-13 53 31-91 13z"/><path d="M590 400l105-15 61 36-105 15z"/></g>
+<g fill="#c28a57" stroke="#4e4638"><rect x="75" y="314" width="25" height="19"/><rect x="104" y="310" width="31" height="22"/><rect x="179" y="359" width="26" height="21"/><rect x="210" y="355" width="29" height="24"/><rect x="494" y="324" width="28" height="21"/><rect x="526" y="320" width="32" height="23"/><rect x="630" y="379" width="35" height="24"/><rect x="668" y="374" width="32" height="27"/></g>
+<path d="M434 307C513 278 592 248 790 239" fill="none" stroke="#51756c" stroke-width="32"/><path d="M432 327C542 327 626 334 790 351" fill="none" stroke="#618293" stroke-width="28"/><path d="M422 346C514 386 590 430 785 479" fill="none" stroke="#7a6d56" stroke-width="26"/>
+<g fill="#e9ddbf" stroke="#403f37" stroke-width="3"><path d="M653 152h91v80h-91z"/><path d="M641 152l58-42 58 42" fill="#9a6046"/><circle cx="700" cy="189" r="20" fill="#d7c6a4"/><path d="M530 163h77v61h-77z"/><path d="M520 163l48-34 48 34" fill="#6a745f"/><path d="M98 155h89v75H98z"/><path d="M85 155l58-41 58 41" fill="#8c6b58"/></g>
+<g stroke="#b55443" stroke-width="4" fill="none"><path d="M371 213C459 155 516 160 568 184"/><path d="M374 205C475 111 597 95 695 145"/></g>
+<g fill="#2f3c3e"><circle cx="265" cy="285" r="9"/><path d="M257 295h16l8 36h-33z"/><circle cx="453" cy="306" r="8"/><path d="M446 315h15l7 31h-28z"/></g>
+<g fill="#e7ddc7" stroke="#604b3d" stroke-width="1.5"><rect x="33" y="423" width="182" height="82" rx="4"/><rect x="585" y="53" width="177" height="88" rx="4"/></g>
+<g fill="none" stroke="#5a665f" stroke-width="2"><path d="M52 447h126M52 462h105M52 477h139"/><path d="M606 78h124M606 93h95M606 108h132"/></g>
+<g fill="#b25943"><circle cx="194" cy="447" r="6"/><circle cx="697" cy="82" r="6"/></g>
+</svg>
