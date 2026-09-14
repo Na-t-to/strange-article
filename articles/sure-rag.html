@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>関連資料が取れても、答えを支えられるとは限らない——SURE-RAGで「証拠集合の十分性」を検査する｜変な読み物置き場</title>
+<meta name="description" content="SURE-RAGを読み、RAGの取得資料をSupported・Refuted・Insufficientへ分け、証拠集合全体のcoverage・conflict・uncertaintyから回答可否を決める方法を整理する。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/sure-rag.html"><link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260901-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="sure-rag">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　RAG</p>
+<header class="article-header"><div class="tags"><span>RAG</span><span>AI評価</span><span>根拠性</span></div><h1>関連資料が取れても、答えを支えられるとは限らない——SURE-RAGで「証拠集合の十分性」を検査する</h1><p class="original-title">SURE-RAG: Sufficiency and Uncertainty-Aware Evidence Verification for Selective Retrieval-Augmented Generation</p><div class="article-meta-row"><p><strong>Jingxi Qiu / Zeyu Han / Cheng Huang · 2026</strong><br>公開 2026.09.14　／　推定読了 58分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-sure-rag.webp" alt="山峡に架かる石橋で、左右から集めた橋材の一部が欠け、一部は形が合わず、検査者が橋全体として向こう岸まで渡れるだけの部材が揃ったか確認している図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">検索結果の上位に、質問とよく似た資料が五件並んだ。各資料を単体で見ると「関係あり」に見える。それでも、その五件を合わせて答えの全主張を支えられるとは限らない。必要な一段が欠けているかもしれないし、別の資料が結論を反証しているかもしれない。SURE-RAGは、この問題を<strong>retrievalの関連性ではなく、Evidence Set全体の十分性</strong>として扱う。</p>
+<h2>retrievalとverificationを分ける</h2>
+<p>RAGでは、retrieverが質問に近いpassageを取得し、generatorがそれをcontextとして回答する。ここには一つの飛躍がある。質問に関連する資料であることと、その回答を正当化できる資料であることは同じではない。</p>
+<p>たとえば二段階の推論が必要な質問で、一段目だけを強く支える文書が複数取れても、二段目がなければ結論まで届かない。また、一件だけ強い支持資料があっても、別の信頼できる資料が中心主張を反証していれば、その集合を「十分」と呼ぶのは危険である。</p>
+<p>Qiuらは、質問q、候補回答a、取得証拠集合Eを受け取り、Eがaを<strong>Supported / Refuted / Insufficient</strong>のどれとして扱うべきかを判定する問題を置く。回答してよいのはSupportedのときだけで、残りはabstainへ送る。</p>
+<h2>Insufficientを独立ラベルにする意味</h2>
+<p>「根拠がない」と「反証されている」を一つのunsafeへ潰すと、次に何をすべきかが分からない。Insufficientなら不足している証拠を追加検索できる。Refutedなら候補回答そのものを見直す必要がある。</p>
+<div class="concept-grid"><section><h3>Supported</h3><p>中心的な事実主張を証拠集合が支え、必要な推論段階が埋まっている。</p></section><section><h3>Refuted</h3><p>中心的主張の少なくとも一つを証拠が矛盾・反証している。</p></section><section><h3>Insufficient</h3><p>関連資料はあっても、必要なhop、関係、claim coverageが足りず、回答を正当化できない。</p></section></div>
+<p>この三分法は、検索制御にも直結する。Insufficientなら「何が足りないか」をgapとして次のqueryへ変換できる。Refutedなら検索継続より回答仮説の更新を優先できる。</p>
+<h2>なぜpassageごとのmax / meanでは足りないのか</h2>
+<p>従来の単純な方法では、各passageをsupport/refute/neutralに採点し、最大値や平均値で集合をまとめる。しかしmax poolingは、一件の強いsupportがあるだけで「十分」と判定しやすい。必要な別hopが欠けていても見落とす。</p>
+<p>mean poolingは逆の問題を持つ。多数のneutral passageの中に決定的なrefutationが一件あると、その強い反証が平均で薄まる。どちらも「集合の構造」を捨ててしまう。</p>
+<p>SURE-RAGの中心命題は、<strong>evidence sufficiencyはset-level propertyである</strong>というものだ。橋の石を一個ずつ「丈夫か」と評価しても、橋全体に欠けた区間があるかは分からない。集合として必要部分を覆っているかを見る必要がある。</p>
+<h2>まずclaim × passageを局所評価する</h2>
+<p>方式は完全なend-to-end black boxではない。まず回答をclaimへ分け、各claimと各passageの組合せを共通のDeBERTa-v3-base cross-encoderへ入れる。各pairについてsupport、refute、neutralの確率分布を得る。</p>
+<p>短答式の主実験ではclaimは一つの場合が多い。長文回答へ拡張するなら、FActScoreのようにatomic claimへ分解し、それぞれがどこまでEvidence Setで覆われたかを見る構造になる。</p>
+<p>ここで重要なのは、SURE-RAGとpooling baselineが同じpair verifierを共有している点である。性能差を「より強いencoderを使ったから」で説明しにくくし、集合の集約方法そのものを比較している。</p>
+<h2>集合を四つのfeature blockへ圧縮する</h2>
+<p>各claim × passageの分布を、そのまま平均せず、回答レベルの特徴へ変換する。論文は大きく四ブロックを使う。</p>
+<div class="concept-grid"><section><h3>Coverage</h3><p>claimのうちsupport / refute / insufficientとして扱われる割合。必要部分が埋まっているかを見る。</p></section><section><h3>Relation strength</h3><p>最大support、最大refutation、平均neutralなど、局所的に最も強い関係を保持する。</p></section><section><h3>Uncertainty</h3><p>entropy、passage間disagreement、supportとrefuteのconflictから、集合内部の不安定さを拾う。</p></section><section><h3>Retrieval</h3><p>retriever scoreなどのside information。shortcut検査では外した版も評価する。</p></section></div>
+<p>このfeature vectorを軽量なlogistic regressionへ渡し、Supported / Refuted / Insufficientの三値分布を出す。設計の狙いは、最終判定だけでなく「coverage不足なのか、conflictなのか」を監査できることにある。</p>
+<h2>回答するかどうかは、支持確率だけで決めない</h2>
+<p>selective answeringでは、Supportedの確率をsafe probabilityとして使い、そこからuncertainty penaltyを引く。判定がSupportedで、かつselective scoreが閾値を超えた場合だけ回答する。</p>
+<p>評価にはcoverageとriskを使う。coverageは全質問のうち実際に回答した割合、riskは回答した集合の中にunsafe answerがどれだけ含まれるかである。「全部答える」systemと「確実な30%だけ答える」systemを同じaccuracy一つで比較しない。</p>
+<h2>HotpotQA-RAG v3は「それっぽい不足資料」を作る</h2>
+<p>主実験はHotpotQA由来のmulti-hop benchmarkである。4,026 examples、900 question groupsをgroup-disjointに分け、同じ質問についてEvidence Setだけを変える。</p>
+<p>条件はFull、Partial、Hard-Insufficient、Irrelevant、Natural Refutationの五つ。Hard-Insufficientは特に重要で、質問中のentityや語彙に強く関連するが、必要な関係や推論段階を含まない資料を入れる。「関連しているから採用」というretriever的な成功と、「答えを立証できる」というverificationを意図的に分離する。</p>
+<p>Natural Refutationでは、元の支持証拠を保ちながらanswerのentity、数値、日付、yes/noなどを変え、Evidence Setが候補回答を反証する状態を作る。</p>
+<h2>shortcutを疑う評価設計が、この論文のもう一つの価値</h2>
+<p>論文はSciFactを使ったpilotで、evidence-only、length-only、lexical-overlap-onlyといった単純baselineが本来のsemantic modelと同等以上に振る舞う問題を発見した。つまりdataset生成過程の癖だけでlabelを当てられる可能性が高かった。</p>
+<p>そのため主実験ではshortcut baseline、counterfactual evidence swap、retrieval metadataを外したno-oracle check、GPT-4oによるauditを追加する。評価データを作ったら、まず「意味を読まなくても解けないか」を攻撃する。</p>
+<p>この姿勢はRAG以外のAI評価にもそのまま使える。ラベル精度が高いだけでは、モデルが狙った能力を測っているとは限らない。</p>
+<h2>結果——集合構造を見る効果は大きい</h2>
+<p>HotpotQA-RAG v3で、calibrated SURE-RAGはMacro-F1 0.9075、raw SURE-RAGは0.8951±0.0069。共通のpair verifierを単純mean poolingしたbaselineは0.6516、max poolingは0.5948だった。question・answer・全evidenceを連結して読む強いcross-encoderは0.8888±0.0109で、SURE-RAGは同程度以上を保ちながらfeature blockを監査可能にしている。</p>
+<p>selective answeringでは30% coverageの地点でriskが0.2588から0.1642へ下がり、mean-pooling比で37%の相対低下と報告される。すべて答える能力ではなく、答えてよいcaseを選ぶ能力として見ると差が見える。</p>
+<h2>HaluBenchで順位が逆転することが大事</h2>
+<p>この論文は、自分たちのmethodを「hallucination検出一般」へ広げない。HaluBenchのunsafe detectionへ持ち出すと、SURE-RAGのunsafe-F1は0.3343、GPT-4o judgeは0.7389となり、順位が逆転する。</p>
+<p>これは失敗結果だが、評価設計として価値が高い。SURE-RAGが得意なのは<strong>与えられたEvidence Setが候補回答を十分に立証するか</strong>という制御された問題であり、世界知識も含めて自然なhallucinationを検出する問題とは違う。測れる範囲を実験で切っている。</p>
+<h2>既存記事との接続——検索品質の後段に置く検証層</h2>
+<p>Evidence-Aware Retrievalの記事は、retrieval metricがsystem selectionや未知queryの品質予測へどこまで使えるかを問う。ARKは「答えを作れるchunk」をretriever学習のpositiveへする。MAP-Lawは未解決の法的要件へ検索を向ける。</p>
+<p>SURE-RAGはそれらより後段に位置する。retrieverが何を取ったかに対し、<strong>今ある集合だけで結論を出してよいか</strong>を検査する。retrieval、evidence-set verification、generationの三層を分けると、それぞれの失敗を混ぜずに設計できる。</p>
+<h2>法務RAGへ移すときの注意</h2>
+<p>法律ではEvidence Setの十分性は、単なるmulti-hop coverageより複雑になる。法令の適用時点、例外、裁判例の射程、上位審との関係、事実認定の前提などが入る。「一つのclaimを一つのpassageがsupportする」というpair relationだけでは表現しきれない場面が多い。</p>
+<p>それでも設計原則は使える。資料単体の関連度と、集合として結論を支える十分性を分けること。InsufficientとRefutedを分けること。conflictとcoverage deficitを別信号にすること。これらはEvidence Setの採否ロジックへ直接移せる。</p>
+<h2>限界</h2>
+<p>主実験は短答式multi-hop QAであり、長文回答のclaim coverageは将来課題として残る。refutation生成にもノイズがあり、著者らはGPT-4o auditで一部を確認している。また、pair verifierが独立に各passageを見るため、複数passageを一緒に読まなければ初めて分かる複雑な関係には限界がある。</p>
+<p>さらに、retrieval blockを使う版ではdataset construction由来の信号が混ざる可能性がある。そのためno-oracle variantも報告されているが、実運用ではretriever scoreの意味と校正を別に確認する必要がある。</p>
+<h2>持ち帰る問い</h2>
+<p>検索結果を評価するとき、「良い資料が何件あるか」だけを見るのをやめる。<strong>回答の各主張に必要な証拠が埋まったか、反証が混ざっていないか、集合内で判断が割れていないか、それでも不足なら何を次に探すか</strong>。この四つをEvidence Set単位で持つと、検索停止と回答可否が同じ状態表現へ乗る。</p>
+<div class="source-card"><p><strong>原文</strong></p><p>Jingxi Qiu, Zeyu Han, Cheng Huang, “SURE-RAG: Sufficiency and Uncertainty-Aware Evidence Verification for Selective Retrieval-Augmented Generation,” arXiv:2605.03534v2, 2026.</p><p><a href="https://arxiv.org/html/2605.03534v2" target="_blank" rel="noopener">arXiv HTMLで原文を見る</a></p></div>
+</article></div></main></body></html>
