@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>検索を続けるか、次へ移るか——Information Foragingで「探索コスト」を設計する｜変な読み物置き場</title>
+<meta name="description" content="Pirolli & Cardの1999年Information Foragingを読み、情報のpatch、scent、diet、移動コストと限界効用から、検索を続ける・止める・別の情報源へ移る判断を設計する。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/information-foraging.html">
+<meta property="og:type" content="article"><meta property="og:title" content="検索を続けるか、次へ移るか——Information Foragingで「探索コスト」を設計する"><meta property="og:description" content="検索を順位表ではなく、情報価値と探索コストの配分問題として読む。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/information-foraging.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-information-foraging.webp">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="検索を続けるか、次へ移るか——Information Foraging"><meta name="twitter:description" content="patch、scent、dietから検索の停止と移動を考える。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-information-foraging.webp">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260901-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="information-foraging">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-15</p></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　情報探索</p>
+<header class="article-header"><div class="tags"><span>情報探索</span><span>HCI</span><span>検索制御</span></div><h1>検索を続けるか、次へ移るか——Information Foragingで「探索コスト」を設計する</h1><p class="original-title">Information Foraging</p><div class="article-meta-row"><p><strong>Peter Pirolli / Stuart Card · 1999</strong><br>公開 2026.09.15　／　推定読了 30分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-information-foraging.webp" alt="島ごとに異なる生物や地形の手掛かりが見える群島を、採集者が望遠鏡と航路を使って次に調べる島を選ぶ図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">検索結果を10件見た。まだ同じ結果群を掘るべきか、別のクエリへ移るべきか。裁判例を3件読んだ。4件目を探す価値はあるか。検索設計は「最も関連する文書を上へ出す」だけでは終わらない。Peter PirolliとStuart CardのInformation Foraging Theoryは、情報探索を<strong>価値ある情報を得る量と、そのための時間・移動・処理コストの配分</strong>として捉える。</p>
+
+<h2>なぜ「foraging」なのか</h2>
+<p>Information Foraging Theoryは、生態学の採餌理論を情報探索へ持ち込む。動物が餌を探すとき、すべての場所を均等には探索しない。餌が集まっている場所を選び、そこである程度採り、採れにくくなったら次の場所へ移る。移動にも時間がかかるため、「今いる場所でもう少し探す」ことと「別の場所へ移る」ことの比較が必要になる。</p>
+<p>PirolliとCardが置く基本仮説は、人は可能な範囲で、<strong>単位コストあたりに得られる価値ある情報の率</strong>を高めるように探索戦略や情報環境を変える、というものだ。ここで「合理的」は、毎回完璧な最適解を計算するという意味ではない。利用可能な手掛かりと認知能力の中で、環境へ適応した戦略が形成されると考える。</p>
+<p>この理論は、検索ボックスへ何を入力するかだけを対象にしない。どの情報源へ行くか、一覧のどこを見るか、どの資料を読むか、いつ切り上げるか、情報をどう並べ替えて次の探索を安くするかまで同じ枠で扱う。</p>
+
+<h2>Patch——情報は均等ではなく、塊で現れる</h2>
+<p>第一の概念が<strong>information patch</strong>である。情報は空間に均等に散らばっていない。特定のWebサイト、検索結果群、論文、データベース、フォルダ、章、判例系列のように、関連情報がまとまった場所がある。</p>
+<p>一つのpatchへ入るまでにはbetween-patch costがかかる。新しいデータベースを開く、別のクエリを書く、別の法令体系へ移る、論文をダウンロードして構造を把握する、といったコストである。patchの中へ入った後も、文書を読む・候補を比較する・該当箇所を探すwithin-patch costがかかる。</p>
+<p>重要なのは、patch内の収穫が一定ではないことだ。最初の数分で重要な情報が多く取れ、その後は既知情報の重複が増えることがある。すると「まだ情報が残っているか」ではなく、<strong>ここで次の一件を探す期待利益が、別patchへ移る平均利益を上回るか</strong>が停止判断になる。</p>
+
+<h2>Marginal Value——検索停止は「十分な件数」では決まらない</h2>
+<p>論文はCharnovのmarginal value theoremを情報探索へ応用する。単純化すると、現在patchで情報を集め続ける限界利得が、環境全体で得られる平均利得まで落ちたところが、次へ移る目安になる。</p>
+<p>この考え方だと「検索を5回したら止める」「10件読んだら十分」といった固定回数は本質ではない。同じ5件でも、各件が新しい論点を埋め続けているなら探索継続の価値が高い。一方、2件目から同じ内容しか出ないなら、件数が少なくても現在patchの限界利得は低い。</p>
+<p>さらに、別patchへ移るコストが下がると、最適な滞在時間も短くなる。検索先をワンクリックで切り替えられる、query生成が自動化される、複数の法令DBを横断検索できるなら、「一つの結果群を粘って掘る」合理性は下がる。道具の改善は単に検索を速くするだけでなく、<strong>最適な探索戦略そのものを変える</strong>。</p>
+
+<aside class="everyday-example"><span>原文外の補助例</span><p>ある法務調査で、最初の検索結果から条文、行政資料、主要判例まで見つかったとする。その後の検索が同じ条文解説の重複ばかりなら、現在queryを掘る限界利得は下がっている。未解決なのが「例外の裁判例」なら、同じqueryを続けるより裁判例名・争点・例外要件を使う別patchへ移る方が合理的になる。</p></aside>
+
+<h2>Information Scent——遠くの情報価値を、近くの手掛かりから推測する</h2>
+<p>利用者はリンク先や文書全体を読む前に、その価値を完全には知らない。そこで使うのが<strong>information scent</strong>である。タイトル、見出し、検索snippet、リンク文言、著者名、引用関係、タグ、周辺語など、手元に見える手掛かりから「この先に必要な情報がありそうか」を推測する。</p>
+<p>scentが強いとは、派手な見た目という意味ではない。手掛かりが、目的の情報価値をうまく予測できることを指す。リンク名が具体的で、検索結果のsnippetが該当論点を含み、資料種別が分かるなら、ユーザーは不要な移動を減らせる。逆に「詳しくはこちら」だけでは、目的に合うか分からないためscentが弱い。</p>
+<p>RAGでもretrieverの内部scoreだけでなく、次の検索行動を決めるcontrollerが見る手掛かりがある。どの論点が未解決か、どのqueryがそのgapを埋めそうか、前回検索でどれだけ新規情報が増えたか。これらを明示すると、agentにとってのinformation scentを設計できる。</p>
+
+<h2>「検索語が似ている」と「次に行く価値がある」は違う</h2>
+<p>scentの議論から、検索設計の評価単位も変わる。query-document similarityが高くても、その文書を開けば答えに近づくとは限らない。既知情報の言い換えなら、scentは強そうに見えて実際の利得は低い。</p>
+<p>既収録のARKが「質問と似ている文書」より「回答を作れる文書」をretrieverの正例にしたのは、この問題を学習側から解いている。Evidence-Aware Retrieval Utilityはさらに、良いretrieval metricが下流のsystem selectionや未知queryの品質予測にも効くかを分けて測る。Information Foragingはそれ以前の層で、<strong>情報価値とそこへ行くコストを比較する探索主体</strong>をモデル化する。</p>
+
+<h2>Information Diet——全部読むのではなく、摂取する情報を選ぶ</h2>
+<p>論文は<strong>information diet</strong>も扱う。候補情報には価値だけでなく、処理コストがある。長い論文、短い要約、一次資料、レビュー、表、ログでは、一件を理解する時間が違う。探索者は何を取得するかだけでなく、何を実際に読む・保持するかも選ぶ。</p>
+<p>AIリサーチagentなら、全文取得、要約、該当箇所抽出、メタデータだけ確認という複数の摂取方法を分けられる。すべての候補を同じ深さで読むのではなく、scentが弱い候補は軽く確認し、結論を変えそうな資料へ処理予算を寄せる設計が可能になる。</p>
+
+<h2>Enrichment——利用者は情報環境そのものを作り替える</h2>
+<p>PirolliとCardは、人が与えられた情報空間を受動的に移動するだけとは考えない。分類、クラスタリング、ブックマーク、メモ、一覧化などによって、次の探索が安くなるよう環境を<strong>enrich</strong>する。</p>
+<p>RAGのEvidence Setや調査ログも同じ役割を持つ。検索履歴を保存するだけでなく、「この資料はどの問いを満たしたか」「何がまだ不足か」「次のquery候補は何か」を構造化すれば、情報環境を次の探索に有利な形へ変えている。</p>
+
+<h2>固定roundのRAGへ持ち込むと何が変わるか</h2>
+<p>多段検索agentでは、`for i in range(5): search()`のようにround数を固定しやすい。Information Foragingから見ると、これはpatchの利得を見ずに滞在時間を決めている。</p>
+<p>代わりに、各round後に少なくとも四つを持てる。</p>
+<div class="concept-grid"><section><h3>現在patchの新規利得</h3><p>前回までになかった根拠、例外、限定、反証がどれだけ増えたか。</p></section><section><h3>残るgap</h3><p>結論へ必要なのに、まだ証拠がない問いは何か。</p></section><section><h3>次patchのscent</h3><p>別資料種別・別query・別データベースへ移るとgapを埋められそうか。</p></section><section><h3>移動・処理コスト</h3><p>次の検索、全文取得、検証に必要な時間・token・API costはどれくらいか。</p></section></div>
+<p>するとSTOP/CONTINUEは「十分に探した気がする」ではなく、追加探索の期待価値とコストの比較になる。もちろん実システムで正確な効用関数を作るのは難しいが、何をログへ残すべきかが具体化する。</p>
+
+<h2>MAP-LawやActive RAGとの接続</h2>
+<p>MAP-Lawは、法的要件のどこが未充足かを検索controllerに持たせ、未解決要件へ次の検索を向ける。Information Foragingの言葉なら、gapが次patchの価値を決めるscentになる。検索件数ではなくcoverageの増分を見るため、現在patchの限界利得も表現しやすい。</p>
+<p>Active RAGのbudget-aware evaluationは、検索によるcorrectness改善、検索害、trigger cost、budgetを分けて測る。こちらは現代のLLMシステムで検索する/しないを評価する具体的方法であり、Information Foragingはその背後にある一般的な探索資源配分の考え方を与える。</p>
+
+<h2>Sensemakingとの違い</h2>
+<p>このアーカイブには同じPirolliとCardの2005年Sensemaking Processも収録している。そちらは、情報源から証拠を集める<strong>foraging loop</strong>と、証拠からschema・仮説・説明を組み立てる<strong>sensemaking loop</strong>を分け、分析作業全体の介入点を示す。</p>
+<p>1999年のInformation Foragingは、その前半をより細かく扱う。情報がpatchにまとまること、patch間の移動コスト、scent、diet、限界利得を理論化し、<strong>どこを探し、どこまで居続けるか</strong>へ焦点を当てる。検索と推論を分離したいときは、こちらの方が直接的な道具になる。</p>
+
+<h2>この理論の限界</h2>
+<p>Information Foraging Theoryは強い最適化仮説を使う。現実の人間は情報価値を正確に知れないし、時間コストだけでなく、不安、習慣、組織ルール、説明責任、好奇心などでも探索を続ける。価値の高い情報が後半にだけ現れる場合、直近の限界利得だけで切ると早すぎる停止も起こる。</p>
+<p>また1999年論文の実験・モデルは、当時の文書ブラウジングや情報アクセス環境を基礎にしている。生成AIがqueryを自動生成し、同時に複数検索し、取得資料を要約する現在とはbetween-patch costの構造が違う。</p>
+<p>ただし、その違いこそ理論を再利用する理由にもなる。検索コストが劇的に下がると、探索戦略はどう変わるべきか。取得コストより検証コストが支配的になったら、どこで止めるべきか。古典の変数を現在のシステムへ置き換えると、設計すべき対象が見える。</p>
+
+<h2>評価設計へ持ち込むなら</h2>
+<p>検索システムを評価するとき、Recall@kやanswer accuracyだけでなく、探索過程に次のログを追加できる。どのqueryを一つのpatchとして扱ったか。各roundで新規の有用証拠が何件増えたか。既知情報の重複率はどう変化したか。別patchへ移るまでのcostはいくらか。次queryを選ぶ手掛かりは実際にgapを埋めたか。</p>
+<p>これらを取ると、「検索回数を減らす」と「必要証拠を落とす」が同じ最適化にならない。目標は回数最小化ではなく、<strong>必要な情報価値を、許容できる探索コストで得ること</strong>になる。</p>
+
+<div class="source-box"><h2>原文</h2><p><a href="https://www.researchgate.net/publication/229101074_Information_Foraging" target="_blank" rel="noopener">Peter Pirolli & Stuart Card, “Information Foraging,” Psychological Review 106(4), 1999, pp.643–675.</a></p></div>
+<div class="related-reading"><h2>関連して読む</h2><p><a href="sensemaking-analysis.html">調査を「検索」だけで評価しない——情報探索と意味づけの二つのループ</a></p><p><a href="active-rag-budget.html">「検索するか」を精度だけで評価しない——Active RAGを予算・害・閾値転移まで測る</a></p><p><a href="map-law.html">法務RAGは「何件取ったか」で止めない——未解決の法的要件を見ながら検索を続ける</a></p><p><a href="evidence-aware-retrieval-utility.html">検索評価が正しくても、選ぶシステムまで正しいとは限らない</a></p></div>
+</article></div></main></body></html>
