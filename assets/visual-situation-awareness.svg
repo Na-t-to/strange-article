@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+<title>Forest lookout building situation awareness from smoke, wind, terrain and projected fire spread</title>
+<desc>An old forest-fire lookout tower overlooks a broad valley. Smoke, wind flags, terrain, a fire front and projected paths show perception, comprehension and projection without labels.</desc>
+<rect width="1200" height="800" fill="#f1e8d3"/>
+<g fill="none" stroke="#23352f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M0 510 C105 450 165 475 255 421 S425 418 515 362 S670 370 760 328 S927 305 1200 365"/>
+  <path d="M0 565 C126 514 220 542 332 486 S528 500 644 449 S856 420 1200 478" stroke="#506a50"/>
+  <path d="M0 627 C135 585 270 618 391 564 S637 579 764 530 S1009 520 1200 559" stroke="#506a50"/>
+  <path d="M81 521 l38 -92 38 92 M115 512 l0 -79 M176 497 l28 -71 29 71 M204 490 v-61 M927 426 l33 -86 34 86 M960 417 v-74 M1038 451 l30 -78 30 78 M1068 443 v-67"/>
+  <path d="M501 405 C487 364 507 336 499 305 C490 268 450 257 458 216 C465 180 507 162 526 125" stroke="#77857d" stroke-width="7"/>
+  <path d="M523 403 C520 366 548 341 541 306 C535 273 507 258 519 225 C532 193 567 188 586 151" stroke="#77857d" stroke-width="5"/>
+  <path d="M795 455 C805 427 829 417 842 392 C856 365 845 343 865 323 C883 304 912 303 936 281" stroke="#77857d" stroke-width="6"/>
+  <path d="M570 503 C623 486 667 478 719 491 C774 505 808 529 863 535" stroke="#a34f35" stroke-width="8"/>
+  <path d="M575 488 C636 447 717 429 797 446 C864 460 908 491 958 526" stroke="#a34f35" stroke-width="3" stroke-dasharray="13 12"/>
+  <path d="M575 488 C632 420 699 389 774 392 C850 394 927 431 1010 486" stroke="#b68545" stroke-width="3" stroke-dasharray="7 13"/>
+  <path d="M197 267 h177 l-27 166 H222 z" fill="#e7dcc1"/>
+  <path d="M225 267 v-58 h123 v58 M238 209 v-37 h97 v37" fill="#e7dcc1"/>
+  <path d="M211 433 l-67 238 M359 433 l69 238 M251 433 l-24 238 M322 433 l28 238"/>
+  <path d="M176 670 h283 M163 696 h312"/>
+  <path d="M242 224 h93 M262 181 v-28 M314 181 v-28 M270 153 h39"/>
+  <circle cx="287" cy="244" r="17" fill="#23352f"/>
+  <path d="M284 263 l-18 62 41 0 -17 -62 M273 290 l-28 28 M298 290 l28 27"/>
+  <path d="M326 254 l83 -40 M409 214 l-22 -5 M409 214 l-15 17" stroke="#34506b"/>
+  <path d="M357 342 q33 -41 66 0 l-12 69 h-44 z" fill="#e7dcc1"/>
+  <path d="M373 367 l12 11 18 -30" stroke="#a34f35"/>
+  <path d="M105 133 h112 M161 133 v57 M161 133 l-32 -21 M161 133 l35 -25" stroke="#a34f35"/>
+  <path d="M104 132 C70 123 49 109 27 88 M217 132 C258 127 292 112 323 87" stroke="#34506b" stroke-dasharray="10 9"/>
+  <path d="M690 221 c35 -19 74 -15 112 2 M701 201 c27 -13 60 -10 90 4 M716 181 c22 -10 43 -7 65 4" stroke="#34506b"/>
+  <path d="M881 180 l72 -28 -19 30 24 18 -77 -20z" fill="#a34f35" stroke="#a34f35"/>
+  <path d="M881 180 h-94" stroke="#23352f"/>
+  <circle cx="777" cy="180" r="8" fill="#23352f"/>
+  <path d="M546 604 C603 570 674 558 741 574 C804 589 860 622 912 658" stroke="#34506b" stroke-width="4" stroke-dasharray="18 11"/>
+  <circle cx="546" cy="604" r="8" fill="#34506b"/><circle cx="742" cy="574" r="8" fill="#34506b"/><circle cx="912" cy="658" r="8" fill="#34506b"/>
+</g>
+<g fill="#506a50" opacity=".85">
+  <circle cx="69" cy="586" r="25"/><circle cx="122" cy="594" r="31"/><circle cx="458" cy="547" r="29"/><circle cx="492" cy="558" r="34"/><circle cx="1116" cy="523" r="37"/>
+</g>
+<g stroke="#23352f" stroke-width="1" opacity=".22"><path d="M0 752 H1200"/><path d="M0 760 H1200"/><path d="M0 768 H1200"/></g>
+</svg>
