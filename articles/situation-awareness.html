@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>見えているだけでは状況を理解したことにならない——Situation Awarenessを知覚・理解・予測に分ける｜変な読み物置き場</title>
+<meta name="description" content="Mica Endsleyの1995年論文を読み、Situation Awarenessを知覚・理解・将来予測の三層として捉え、AIエージェントや監視UIの状態提示へ接続する。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/situation-awareness.html">
+<meta property="og:type" content="article"><meta property="og:title" content="見えているだけでは状況を理解したことにならない——Situation Awarenessを知覚・理解・予測に分ける"><meta property="og:description" content="状態表示を増やす前に、利用者が何を知覚し、どう意味づけ、何を予測できる必要があるかを分ける。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/situation-awareness.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-situation-awareness.svg">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Situation Awarenessを知覚・理解・予測に分ける"><meta name="twitter:description" content="動的システムで『何が起きているか』を三つの水準へ分解する。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-situation-awareness.svg">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260901-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="situation-awareness">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-16</p></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　HCI</p>
+<header class="article-header"><div class="tags"><span>HCI</span><span>AIエージェント</span><span>状況認識</span></div><h1>見えているだけでは状況を理解したことにならない——Situation Awarenessを知覚・理解・予測に分ける</h1><p class="original-title">Toward a Theory of Situation Awareness in Dynamic Systems</p><div class="article-meta-row"><p><strong>Mica R. Endsley · 1995</strong><br>公開 2026.09.16　／　推定読了 32分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-situation-awareness.svg" alt="森林火災の見張り塔から、煙、風、地形、現在の火線、将来の延焼方向を一つの状況として読み取る図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">ダッシュボードに必要な数値が全部出ていても、担当者が状況を理解できているとは限らない。どの数字が異常なのか、互いにどう関係するのか、このままなら何が起きるのかまで分からなければ、表示された情報は行動へつながらない。Mica EndsleyのSituation Awareness（SA）モデルは、動的な環境で必要な理解を<strong>要素の知覚、現在状況の理解、近い将来の予測</strong>へ分ける。監視画面やAIエージェントの状態表示を「情報を見せたか」から一段進めて考える道具になる。</p>
+
+<h2>Situation Awarenessは「情報量」の名前ではない</h2>
+<p>Endsleyが扱うのは、航空、航空管制、製造、運転のように、環境が時間とともに変化し、その変化へ追従して判断しなければならない仕事である。ここでは正しい意思決定の前に、まず「今どうなっているか」を十分に把握する必要がある。</p>
+<p>論文ではSAを、一定の時間と空間の中で環境要素を知覚し、その意味を理解し、近い将来の状態を予測することとして定義する。重要なのは、SAと意思決定・行動を同じものにしていない点だ。状況を正しく把握しても、知識不足や方針の誤りで悪い判断をすることはある。逆に、結果だけ合っていても状況理解が欠けていれば、環境が少し変わったときに崩れやすい。</p>
+<p>評価対象を分けると、失敗原因も変わる。「必要なデータを取れなかった」のか、「取れたデータの意味を誤った」のか、「現在は理解したが先の展開を読めなかった」のかを区別できる。</p>
+
+<h2>Level 1——必要な要素を知覚できているか</h2>
+<p>第一水準は<strong>perception</strong>である。環境に何があり、どのような状態・属性・動きを持っているかを捉える。操縦士なら他機、地形、警報、速度、位置。製造設備なら機械の状態、部品、流れ、滞留。自動車なら周囲の車両や障害物、自車の状態が該当する。</p>
+<p>ここでの問題は、情報が存在するかだけではない。人間の注意は有限であり、複雑な環境ではすべてを同時に見られない。Endsleyは、目立ちやすさ、現在の目標、長期記憶、作業記憶が、どの情報へ注意を向けるかを変えると整理する。重要な警告が画面上にあっても、別の作業に注意を奪われればLevel 1 SAは成立しない。</p>
+<p>したがってUIで「表示済み」をもって責任を果たしたとは言えない。必要な時点で必要な要素が知覚可能か、変化を検出できるか、複数の目標が競合したときにも拾えるかまで設計対象になる。</p>
+
+<h2>Level 2——ばらばらのデータを、目標に照らして意味づけられるか</h2>
+<p>第二水準は<strong>comprehension</strong>である。知覚した断片を統合し、現在の目的にとって何を意味するかを理解する。数値を読めることと、状況が分かることの差がここにある。</p>
+<p>論文が紹介する航空事故の分析では、環境上の手掛かり自体は存在していたのに、乗員が重要な目標との関連を理解できなかった事例がある。入力不足ではなく、統合と意味づけの失敗である。熟練者は、経験から形成したmental modelを使って複数の手掛かりを一つの状況として捉える。初心者や新しい状況では、そのモデルが不足したり、過去のモデルを誤って当てはめたりする。</p>
+<p>ここで怖いのは、間違ったmental modelが新しい情報の解釈まで支配することだ。最初に「これはいつものパターンだ」と分類すると、その後の手掛かりもその前提に沿って読み替えやすい。必要なのはデータ追加だけではなく、現在どの解釈を置いているか、その解釈と食い違う情報は何かを見つけられる構造である。</p>
+
+<aside class="everyday-example"><span>原文外の補助例</span><p>法務リサーチAIが「関連する裁判例を5件取得した」と表示しただけでは、利用者のLevel 2理解はあまり増えない。各裁判例がどの要件を支持・限定・否定し、今回の事案とどこが同じかまで統合されて初めて、現在の法的状況を理解しやすくなる。</p></aside>
+
+<h2>Level 3——現在の理解から、次に起きる状態を予測できるか</h2>
+<p>第三水準は<strong>projection</strong>である。現在の要素とその動きを理解したうえで、近い将来にどう変化するかを見積もる。航空管制なら現在の機体配置を見るだけでなく、数分後に経路が衝突しそうかを読む。設備監視なら、いま正常範囲でもこの変化率なら閾値へ到達するかを予測する。</p>
+<p>予測には、単なる外挿より豊かなmental modelが必要になる。何が何へ作用するか、どの変数が遅れて効くか、どの条件で状態が切り替わるかを理解していなければならない。Endsleyは、専門家が将来の展開を見越して計画を作る一方、十分なモデルがないとLevel 3 SAが欠けると論じる。</p>
+<p>AIエージェントのUIへ置き換えるなら、「現在どのステップか」だけでなく、「次に何を実行する予定か」「それによって何が変わる見込みか」「どこで不可逆な操作が発生するか」を見せる設計が対応する。Bellotti & EdwardsのIntelligibilityがfeedforwardを重視する理由とも接続する。</p>
+
+<h2>三水準は単純な直列パイプラインではない</h2>
+<p>このモデルを「まず見る、次に理解する、最後に予測する」という固定三工程として使うと粗くなる。人は目標や予測から逆向きに、次に何を見るべきかを決める。ある異音を聞いた操縦士がエンジン計器へ視線を移すように、上位の理解がLevel 1の情報探索を導く。</p>
+<p>つまり状況把握は、データを全部集めてから意味づける処理ではない。現在の仮説と目標を使って情報を選び、その情報で仮説を更新する循環である。この点は、Pirolli & CardのInformation Foragingやsensemakingの二つのループとも相性がよい。</p>
+
+<h2>エラー分類が設計に効く</h2>
+<p>EndsleyはSAの失敗を三水準に沿って分ける。Level 1では、必要情報が利用できない、見逃す、誤認する、注意配分に失敗する。Level 2では、データは取れているが意味を統合できない、誤ったmental modelを選ぶ、default assumptionを不適切に使う。Level 3では、現在状態は理解しているが将来の動きを適切に予測できない。</p>
+<p>この分類の価値は、改善策を変えられることにある。Level 1の問題へ説明文を増やしても効きにくい。Level 2の問題へセンサーを増やしても、統合の負担が増える場合がある。Level 3の問題なら、変化率、依存関係、予測シナリオ、次の分岐を可視化した方がよい。</p>
+<p>また、利用者自身がSAの誤りに気づけない場合がある。論文では、内部モデルからの期待と新しい知覚が食い違うことが誤り検出の主要な手掛かりになると整理する。システム側で「予測と実測の差」「想定した経路からの逸脱」を露出させる設計は、この自己検出を助ける。</p>
+
+<h2>自動化はSAを下げることも、上げることもある</h2>
+<p>自動化により人間がactive processorからpassive recipientへ移ると、状態理解が薄くなり、異常検知と手動復帰に時間がかかる。論文はこれをout-of-the-loop問題と結びつける。前日に収録したBainbridgeのIronies of Automationとかなり近い現象だが、こちらは「技能が落ちる」だけでなく、<strong>知覚・理解・予測のどこで状況把握が欠けたか</strong>を分解できる。</p>
+<p>一方でEndsleyは、自動化が必ずSAを悪化させるとはしていない。不要な手作業やデータ統合を機械が引き受け、必要な情報を適切に統合して示せば、workloadとSAの両方を改善しうる。問題は自動化の有無ではなく、人間が判断に必要な状況モデルを維持できる形になっているかである。</p>
+
+<h2>AIエージェントの「進捗表示」を三層で設計する</h2>
+<p>長い調査や複数ツールを使うagentでは、進捗UIが「検索中」「解析中」「回答作成中」だけになりやすい。SAの三層を使うと、必要な状態表示をもう少し具体化できる。</p>
+<p><strong>Level 1</strong>では、取得した資料、失敗したツール、残り時間、権限、現在の処理対象など観測可能な事実を示す。<strong>Level 2</strong>では、どの要件が充足済みで何が未解決か、資料同士が整合しているか、現在どの仮説で調査しているかを統合する。<strong>Level 3</strong>では、このまま進めたときに次に何をするか、何が不足すると停止・確認へ分岐するか、予定する操作の結果を示す。</p>
+<p>この整理は「もっとログを出す」という要求を避けるのに使える。ログ量ではなく、利用者が三つの問い——何があるか、何を意味するか、次にどうなるか——へ答えられるかを評価する。</p>
+
+<h2>限界——SAが高ければ正しい判断になるわけではない</h2>
+<p>Situation Awarenessは意思決定の前提を整理するモデルであり、意思決定そのものの正しさを保証しない。正しく状況を理解していても、価値判断、ルール、知識、実行能力が悪ければ結果は悪くなる。また、1995年論文は複数領域の知見を統合した理論モデルであり、三水準の境界をすべての仕事へ機械的に当てはめるべきものでもない。</p>
+<p>それでも、監視・エージェントUI・引継ぎ設計で「必要情報を表示したか」だけを評価しているときには強い。表示されたデータが意味のある現在像へ統合され、その現在像から近未来を予測できるか。この二段を追加すると、情報提示の品質をかなり細かく議論できる。</p>
+
+<h2>このアーカイブの既存記事とつなぐ</h2>
+<ul>
+<li><a href="ironies-of-automation.html">Ironies of Automation</a>——自動化後に人へ残る監視・異常対応と、SA低下の関係を見る。</li>
+<li><a href="intelligibility-accountability.html">Intelligibility and Accountability</a>——システムが何を知り、どう解釈し、何をしようとしているかを利用者へ見せる。</li>
+<li><a href="distributed-cognition.html">Distributed Cognition</a>——SAを個人の頭だけでなく、道具・表示・他者を含む認知システムへ広げて考える。</li>
+</ul>
+
+<h2>原文</h2>
+<p>Mica R. Endsley, “Toward a Theory of Situation Awareness in Dynamic Systems,” <em>Human Factors</em>, 37(1), 1995, pp.32–64.</p>
+<p><a href="https://www.researchgate.net/publication/345054061_Toward_a_Theory_of_Situation_Awareness_in_Dynamic_Systems" target="_blank" rel="noopener">全文を確認する</a>　／　<a href="https://doi.org/10.1518/001872095779049543" target="_blank" rel="noopener">DOI</a></p>
+</article></div></main>
+<footer class="site-footer"><a href="../index.html">アーカイブへ戻る</a></footer>
+</body></html>
