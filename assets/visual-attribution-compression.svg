@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+<title>A compression press shortens evidence while provenance threads break</title>
+<desc>An old mechanical bindery feeds source folios with colored provenance threads through compression rollers. Small summaries emerge, but some threads no longer connect back to original source leaves.</desc>
+<rect width="1200" height="800" fill="#f1e8d3"/>
+<g fill="none" stroke="#25362f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M0 655 H1200 M0 704 H1200"/>
+  <path d="M66 557 h333 v83 H66z" fill="#e7dcc1"/>
+  <path d="M86 527 h264 l24 30 H62z" fill="#e7dcc1"/>
+  <path d="M97 501 h236 M108 475 h215 M121 449 h190"/>
+  <path d="M112 449 l-19 108 M161 449 l-10 108 M218 449 v108 M274 449 l10 108 M318 475 l14 82" stroke="#77857d"/>
+  <circle cx="463" cy="437" r="82" fill="#e7dcc1"/>
+  <circle cx="463" cy="437" r="27"/>
+  <circle cx="625" cy="437" r="82" fill="#e7dcc1"/>
+  <circle cx="625" cy="437" r="27"/>
+  <path d="M463 355 h162 M463 519 h162"/>
+  <path d="M433 355 v-87 h222 v87 M448 268 v-59 h192 v59"/>
+  <path d="M498 209 v-51 h92 v51 M516 158 v-47 h56 v47"/>
+  <path d="M544 111 v-42 M526 69 h36"/>
+  <path d="M400 584 h294 v55 H400z" fill="#e7dcc1"/>
+  <path d="M425 583 l38 -64 M669 583 l-44 -64"/>
+  <path d="M716 541 h310 v98 H716z" fill="#e7dcc1"/>
+  <path d="M755 520 h222 M773 491 h184 M795 462 h140"/>
+  <path d="M754 555 h221 M754 578 h170 M754 601 h202" stroke="#506a50"/>
+  <path d="M144 449 C241 364 337 379 411 410" stroke="#a34f35" stroke-width="6"/>
+  <path d="M205 449 C286 399 348 410 405 431" stroke="#34506b" stroke-width="6"/>
+  <path d="M272 449 C332 423 365 437 405 454" stroke="#506a50" stroke-width="6"/>
+  <path d="M511 519 C558 551 634 555 702 536" stroke="#a34f35" stroke-width="6"/>
+  <path d="M544 519 C575 541 619 542 657 530" stroke="#34506b" stroke-width="6"/>
+  <path d="M579 519 C599 530 616 531 634 524" stroke="#506a50" stroke-width="6"/>
+  <path d="M702 536 C730 528 751 521 781 509" stroke="#a34f35" stroke-width="6"/>
+  <path d="M657 530 C690 517 713 504 743 489" stroke="#34506b" stroke-width="6"/>
+  <path d="M634 524 C657 508 678 494 697 475" stroke="#506a50" stroke-width="6" stroke-dasharray="9 9"/>
+  <path d="M697 475 l19 -18 M697 475 l8 25" stroke="#506a50"/>
+  <path d="M144 449 C127 392 111 342 109 289" stroke="#a34f35" stroke-width="4"/>
+  <path d="M205 449 C196 370 198 315 215 259" stroke="#34506b" stroke-width="4"/>
+  <path d="M272 449 C282 376 304 319 329 275" stroke="#506a50" stroke-width="4"/>
+  <rect x="70" y="229" width="82" height="60" fill="#e7dcc1"/><rect x="174" y="198" width="82" height="61" fill="#e7dcc1"/><rect x="290" y="215" width="82" height="60" fill="#e7dcc1"/>
+  <path d="M83 245 h56 M83 259 h47 M83 273 h52 M187 214 h55 M187 228 h45 M187 242 h54 M303 231 h56 M303 245 h45 M303 259 h52" stroke="#77857d"/>
+  <path d="M1028 382 h105 v257 h-105z" fill="#e7dcc1"/>
+  <path d="M1046 409 h68 M1046 430 h68 M1046 451 h50 M1046 485 h68 M1046 506 h59"/>
+  <path d="M1028 382 l28 -42 h50 l27 42"/>
+  <path d="M849 304 c44 -37 88 -37 132 0 c-44 37 -88 37 -132 0z" fill="#e7dcc1"/>
+  <circle cx="915" cy="304" r="11" fill="#a34f35"/>
+  <path d="M915 341 v75" stroke="#a34f35" stroke-dasharray="8 8"/>
+  <path d="M769 684 h317" stroke="#506a50" stroke-width="7"/>
+  <path d="M810 676 v16 M859 676 v16 M908 676 v16 M957 676 v16 M1006 676 v16 M1055 676 v16"/>
+</g>
+<g fill="#25362f"><circle cx="742" cy="649" r="16"/><path d="M725 704 l9 -39 h16 l10 39z"/><circle cx="350" cy="625" r="15"/><path d="M334 704 l9 -62 h16 l10 62z"/></g>
+</svg>
