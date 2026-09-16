@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>同じ証拠でも、モデルによって効き方が変わる——LLMのEvidence Integrationを分解する｜変な読み物置き場</title>
+<meta name="description" content="Kawada & Kellisの2026年論文を読み、外部証拠がLLMの既存の回答分布へどう作用するか、生成・検証・利用を分けて考える。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/evidence-integration-llm.html">
+<meta property="og:type" content="article"><meta property="og:title" content="同じ証拠でも、モデルによって効き方が変わる——LLMのEvidence Integrationを分解する"><meta property="og:description" content="証拠の品質だけではなく、受け手の事前分布と検証結果が実際の回答を動かすかまで見る。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/evidence-integration-llm.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-evidence-integration.svg">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="LLMのEvidence Integrationを分解する"><meta name="twitter:description" content="同じ外部証拠でも、受け手のモデルと領域によって採用され方が変わる。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-evidence-integration.svg">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260901-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="evidence-integration-llm">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-16</p></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　LLM信頼性</p>
+<header class="article-header"><div class="tags"><span>LLM信頼性</span><span>RAG</span><span>AI評価</span></div><h1>同じ証拠でも、モデルによって効き方が変わる——LLMのEvidence Integrationを分解する</h1><p class="original-title">Evidence Integration in Large Language Models</p><div class="article-meta-row"><p><strong>Sebastien Kawada / Manolis Kellis · 2026</strong><br>公開 2026.09.16　／　推定読了 38分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-evidence-integration.svg" alt="同じ赤い証拠の重りが、もともとの荷重が異なる複数の天秤へ加えられ、それぞれ違う傾き方をする図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">RAGで正しい資料を渡せば、モデルはその証拠を同じように使う——とは限らない。外部情報が入る時点で、LLMはすでに候補回答へ確率を割り当てている。KawadaとKellisは、外部証拠を「空の頭へ情報を足すもの」ではなく、<strong>受け手がすでに持つ回答分布を動かす操作</strong>として測る。同じ証拠でも、モデルが元から支持していた候補ほど採用されやすく、弱いモデルを助ける証拠が強いモデルでは害になる場合さえある。</p>
+
+<h2>証拠を渡す前から、回答候補には勾配がある</h2>
+<p>論文の出発点は単純である。モデルへツール結果、検索文書、他エージェントの回答を渡す前にも、モデルは候補回答を等確率で見ているわけではない。質問だけを与えた時点で、ある候補には高い確率を、別の候補には低い確率を置いている。</p>
+<p>研究ではこの事前の候補分布をcandidate landscapeと呼ぶ。外部メッセージは、その地形の上で特定候補の位置を持ち上げたり、既存の傾きを強めたり弱めたりする。したがって「このツールは90%正確だから90%信じる」のような単一のsource trustでは、実際の採用挙動を十分に表せない。同じsourceでも、受け手がすでに好む候補を返したときと、意外な候補を返したときで影響が変わるからだ。</p>
+<p>論文はこの変化を、証拠投入前後の候補間のlog-oddsの変化として定式化する。重要なのは式そのものより、<strong>証拠の効果はsourceだけの属性ではなく、source × candidate × receiver × domainの関係で決まる</strong>という設計上の含意である。</p>
+
+<h2>四つの量を分ける——生成・検証・正しい候補の採用・誤候補の採用</h2>
+<p>この研究の面白いところは、モデル能力を一つのaccuracyへ畳まない点にある。同じ問題について、少なくとも四つを別の試行で測る。</p>
+<p><strong>G</strong>は外部候補なしで正解を生成できる確率。<strong>C</strong>は提示された候補が正しいかを判定できる確率。<strong>U+</strong>は正しい候補を提示されたときにそれを採用する確率。<strong>U−</strong>は誤った候補を提示されたときにも採用してしまう確率である。</p>
+<p>この切り分けにより、「正解を自力では作れないが、候補を見れば正誤判定できる」「誤候補を正しく否定できるのに、最終回答ではその誤候補を使う」という状態を区別できる。後者がこの論文の重要な発見につながる。</p>
+
+<h2>「検証できる」と「検証結果が行動を支配する」は別</h2>
+<p>モデルへ候補を単独で判定させると、正しくrejectできる。それでも、その同じ候補を外部証拠として回答生成へ入れると採用してしまうことがある。論文は、検証結果が最終意思決定へどれだけ因果的に効くかを<strong>recruitment</strong>として分ける。</p>
+<p>実験では、propositional constraintsの一部条件で、モデルが候補を正しく無効と判定しながら93〜100%採用した。物理・生命科学のheld-out課題でも、条件によって誤候補の採用率が最大99.4%に達する。つまりself-checkのログに「これは誤りです」と書けることと、その判断で回答を止められることは同じ能力ではない。</p>
+<p>これはLLM-as-a-Judgeやself-critiqueを使う設計に厳しい示唆を与える。検証ステップを追加しただけでは不十分で、検証結果が後続選択を変える経路までテストしなければならない。</p>
+
+<aside class="everyday-example"><span>原文外の補助例</span><p>法務AIが裁判例を取得し、別ステップで「本件とは事案が異なる」と正しく評価したとしても、その裁判例の結論を最終回答で引用し続けるなら検証器は機能していない。評価すべきなのは「違いを言えたか」に加え、「その違いによって採否・重み・結論が実際に変わったか」である。</p></aside>
+
+<h2>元から支持している候補ほど、同じ証拠でも効きやすい</h2>
+<p>第一の主要結果はprior supportの効果である。外部から同じ形式の候補を与えても、モデル自身が事前に高く評価していた候補ほど採用されやすい。これは人間的な「確証バイアス」というラベルを貼るより、候補ごとの事前分布が証拠統合へ残ると理解した方が正確である。</p>
+<p>特に危険なのは、外部システムの誤りが受け手モデルの典型的な誤りと一致する場合だ。ランダムに外れた値より、受け手が自力でも出しがちな誤候補の方が強く採用される。研究はこれをreceiver-congruent errorの問題として扱う。</p>
+<p>fault injectionで「適当な間違い」を入れて頑健性を見るだけでは、この失敗を過小評価しうる。モデルの誤答分布を先に測り、その高確率誤答をツールやretrieverが返したときにどうなるかを試す方が厳しい評価になる。</p>
+
+<h2>同じ証拠が、弱いモデルには有益で、強いモデルには害になる</h2>
+<p>外部候補の価値は受け手の能力に依存する。自力正答率が低いモデルには、一定品質の外部候補が大きく役立つ。一方で受け手が強くなると、同じerror rateのsourceでも、その誤りを取り込む損失が大きくなり、ある地点で正味の効果がマイナスになる。</p>
+<p>論文はこれをreceiver-relative reliability frontierとして捉える。source accuracyだけを横軸にした「このツールは信頼できる」という証明ではなく、<strong>どのreceiverに接続したとき、どの誤り分布までなら価値が正になるか</strong>を考える。</p>
+<p>この発想は、RAGのモデル更新時にも効く。generatorを強いモデルへ交換したからといって、以前のretriever・reranker・外部要約器の価値がそのまま上がるとは限らない。受け手が変われば、同じ証拠チャネルの期待効用も再評価が必要になる。</p>
+
+<h2>証拠の「出所ラベル」も、書き込み可能なら証拠にならない</h2>
+<p>論文ではprovenance cueも採用率へ影響する。しかし、テキスト中に「これは計算機の出力」「これは権威あるsource」と書いてあるだけなら、そのラベル自体を攻撃者や上流モデルが再現できる。claimed provenanceとauthenticated provenanceを分ける必要がある。</p>
+<p>AIエージェントでツール結果を優先したいなら、本文中の自己申告ではなく、実行環境が保持するtool call ID、署名、権限、取得元など、モデルが自由に書き換えられないチャネルで出所を管理する方がよい。source trustをプロンプト中の文言だけへ埋め込む設計は、信頼の根拠と表示を混同する。</p>
+
+<h2>「三つのエージェントが同意した」は、三票とは限らない</h2>
+<p>複数の証拠は独立に足し算できるとは限らない。同じmodel family、同じretrieval corpus、同じ上流tool、同じ中間生成物へ依存していれば、三つの同意は共通原因を持つ可能性がある。</p>
+<p>論文の逐次証拠実験では、同じメッセージを重ねたときに単純な線形加算から外れるsub-additivityやorder effectが観測される。新しいメッセージは、最初のメッセージで変形されたcandidate landscapeへ作用するからである。</p>
+<p>multi-agentのconfidence集約で、同じ基盤モデルを三役に分けて多数決する設計は、この依存性を持ちやすい。票数より、独立な情報源を何本持つか、誤りが相関していないかを記録した方がよい。</p>
+
+<h2>10 million trialsの実験が何を支えているか</h2>
+<p>研究は12モデル・4 model family・8領域で1,000万回を超えるtrialを行う。算術、word problem、linear systems、propositional constraintsに加え、物理、分子配列、量子、遺伝学を含む。事前支持、candidate validity、source cue、verificationのしやすさを分け、同じitemでgeneration・checking・useを別々に測る。</p>
+<p>結果として、候補へのprior supportが採用を強く予測すること、モデルとdomainの組み合わせごとに証拠統合の重みが変わること、検証能力と実際の利用制御が乖離することが複数領域で確認される。機構解析では、外部candidateの影響がnetwork後半でanswer stateへ統合され、verificationを表現する方向とcandidate採用を因果的に動かす方向が分離する例も示される。</p>
+<p>この機構部分は面白いが、実務でまず使いやすいのはbehavioralな分解である。「自力で答えられるか」「証拠を判定できるか」「その判定を使えるか」を別テストにするだけでも、RAGやagentの評価はかなり変わる。</p>
+
+<h2>法務RAGへ持ち込むなら「証拠品質」だけを評価しない</h2>
+<p>既存のRAG評価では、retrieval recall、citation support、Evidence Setの十分性など、外部証拠側の品質を精密に測る方向が進んでいる。それは必要だが、この論文を入れるともう一段増える。良いEvidence Setを渡した後、receiverがその証拠をどう統合したかである。</p>
+<p>例えば、ある法的論点についてgeneratorが検索前からA説を強く支持しているとする。検索でB説を支える一次資料を取れていても、receiver側のpriorが強ければ取り込み方が弱いかもしれない。逆にA説を誤って支持する二次資料が入ると、同じ誤り方向なので過剰に採用される可能性がある。</p>
+<p>すると評価ログには、query、retrieved evidence、source qualityに加えて、検索前のcandidate answer、検索後のcandidate shift、反証資料への反応、検証結果が最終回答へ反映されたかを残す価値が出る。</p>
+
+<h2>限界——実運用のRAGで同じ大きさの失敗が起きるとまでは言えない</h2>
+<p>著者自身が強く限定している。科学領域の検証はexact oracleを持つsynthetic taskを使い、generation・checking・useをきれいに分離できるようにしている。現実の検索、実験データ、人間報告では、source自体の不確実性、provenance、依存関係、ground truthがさらに曖昧になる。</p>
+<p>mechanistic interventionもbehavioral studyより対象モデルが少なく、J-lensによるworkspace分離は二つのmodel familyでの再現に限られる。candidate adoptionについての法則は強く検証されているが、answer distribution全体の変化を完全に説明するモデルではない。</p>
+<p>したがって、93〜100%という数字を「実RAGもほぼ必ず誤証拠を採用する」と読むのは誤りである。残るのはもっと一般的な設計原則だ。<strong>証拠の正しさ、証拠を検証できること、その検証が最終行動を変えることは別々に測る</strong>。</p>
+
+<h2>このアーカイブの既存記事とつなぐ</h2>
+<ul>
+<li><a href="sure-rag.html">SURE-RAG</a>——Evidence Setが回答を支えるのに十分かを、証拠側から検査する。</li>
+<li><a href="coherent-llm-confidence.html">C1</a>——モデルが出すconfidenceそのものを、整合性・faithfulness・usefulnessに分けて検査する。</li>
+<li><a href="agent-reliability.html">Towards a Science of AI Agent Reliability</a>——平均成功率から、再現性・頑健性・予測可能性などへ評価を分解する。</li>
+</ul>
+
+<h2>原文</h2>
+<p>Sebastien Kawada and Manolis Kellis, “Evidence Integration in Large Language Models,” arXiv:2609.04290, 2026.</p>
+<p><a href="https://arxiv.org/html/2609.04290v1" target="_blank" rel="noopener">原文HTMLを読む</a>　／　<a href="https://arxiv.org/abs/2609.04290" target="_blank" rel="noopener">arXiv</a></p>
+</article></div></main>
+<footer class="site-footer"><a href="../index.html">アーカイブへ戻る</a></footer>
+</body></html>
