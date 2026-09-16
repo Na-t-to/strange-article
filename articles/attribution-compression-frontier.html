@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>要約が正しくても、原文へ戻れなければ引用には弱い——RAG圧縮のAttribution-Compression Frontier｜変な読み物置き場</title>
+<meta name="description" content="Deepanshu Modyの2026年論文を読み、RAGのcontext compressionが回答品質だけでなく、原文へ戻れるcitation provenanceをどう失わせるかを見る。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/attribution-compression-frontier.html">
+<meta property="og:type" content="article"><meta property="og:title" content="要約が正しくても、原文へ戻れなければ引用には弱い——RAG圧縮のAttribution-Compression Frontier"><meta property="og:description" content="圧縮後テキストとの整合と、一次ソースの該当箇所へ戻れることを分けて測る。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/attribution-compression-frontier.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-attribution-compression.svg">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="RAG圧縮のAttribution-Compression Frontier"><meta name="twitter:description" content="短くした文脈が、引用のprovenanceまで保持しているかを測る。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-attribution-compression.svg">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260901-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="attribution-compression-frontier">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-16</p></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　RAG</p>
+<header class="article-header"><div class="tags"><span>RAG</span><span>根拠性</span><span>AI評価</span></div><h1>要約が正しくても、原文へ戻れなければ引用には弱い——RAG圧縮のAttribution-Compression Frontier</h1><p class="original-title">The Attribution–Compression Frontier in Retrieval-Augmented Generation</p><div class="article-meta-row"><p><strong>Deepanshu Mody · 2026</strong><br>公開 2026.09.16　／　推定読了 34分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-attribution-compression.svg" alt="複数の原資料につながる色付きの出典糸が機械式圧縮器を通り、短い要約へ変わる途中で一部の糸が切れている図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">RAGのretrieved contextは長い。そこで、要約・sentence selection・token pruningで短くしてからgeneratorへ渡したくなる。回答がほぼ同じなら成功に見える。だが、引用を必要とする用途では別のものが失われる。圧縮後の文と回答が整合していても、<strong>その文が原文のどの箇所に支えられているか追跡できなければ、citationの検証可能性は落ちる</strong>。Modyはこの問題をanswer qualityとは別のattribution–compression frontierとして測る。</p>
+
+<h2>圧縮器は「短くする装置」であると同時に、出典経路を作り替える</h2>
+<p>context compressionには複数の方法がある。上位文書だけ残すreranking、必要sentenceを抜くextractive selection、複数箇所を要約へ書き換えるabstractive summarization、token単位で削るpruning。どれもgeneratorへ渡すtoken数を減らせるが、sourceとの対応関係の保ち方は違う。</p>
+<p>extractiveな方法なら、残したsentenceに元document IDやspan IDをそのまま付けやすい。一方、abstractive summaryは複数のsource spanを混ぜて新しい一文を作る。内容が正しくても、その新しい文そのものは原文に存在しない。token pruningも、元tokenとの対応を保持しなければ引用単位へ戻れない。</p>
+<p>この論文が測るのは、圧縮率と回答精度だけではない。generatorが付けたcitationが<strong>圧縮後テキストを支えるか</strong>と、<strong>原source spanへ戻したときにも支えられるか</strong>を分ける。</p>
+
+<h2>Emitted citationとGrounded citationを分ける</h2>
+<p>論文はcitation評価を二段に分ける。<strong>emitted</strong>側では、generatorが実際に見た圧縮contextと回答のclaimが整合するかを測る。<strong>grounded</strong>側では、そのcitationが元sourceの具体的spanへ追跡でき、そのspanがclaimを支持するかを測る。</p>
+<p>この差が大きいと、回答は「引用付き」に見えるのに、読者がcitationをたどって原文を確認できない。著者は、compressor-generated textとの整合性を元sourceによる支持とみなすことを<strong>attribution laundering</strong>と呼ぶ。</p>
+<p>言葉が強いので注意が必要だ。著者自身も、これは必ずしもhallucinationを意味しないと繰り返し限定する。原文中に実際の支持箇所があるのに、回収プロトコルが見つけられない場合もある。問題は「支持がない」と断定することではなく、citationとして必要な追跡経路が失われていることだ。</p>
+
+<h2>RECOMPでは、圧縮後の引用精度0.86が原文基準では0.12になった</h2>
+<p>ASQAでnominal budget 0.25、実際のachieved compression ratio 0.08となったRECOMP-style compressorでは、圧縮summaryに対するcitation precisionは0.86だった。ところが、元source spanを回収して評価するgrounded precisionは0.12だった。</p>
+<p>同じ設定で、summaryを直接検証したときのunsupported rateは0.17。source recovery後のunsupported rateは0.88だった。QASPERでも同じ方向の差が出る。second evaluatorとしてTRUE T5-XXLを使った200問のauditでも、emittedとgroundedのgapは残った。</p>
+<p>ただし数字をそのまま一般化してはいけない。後述する通り、source recoveryにもNLIにも同じ自動評価器を使う部分があり、人手で校正された「真の支持率」ではない。重要なのは絶対値より、<strong>圧縮後テキストに対するcitation scoreだけではsource attributionを過大評価しうる</strong>という測定上の差である。</p>
+
+<h2>Re-attributability——出典を落とした圧縮文から、原文へ戻せるか</h2>
+<p>abstractive summaryやprovenance mappingを保持しないtoken pruningでは、citation先の原spanが最初から宣言されていない。論文はそこでre-attributability protocolを置く。</p>
+<p>圧縮単位に対し、source snippetsをlexical similarityで順位づけし、上位10件へNLIを適用する。少なくとも一つのsnippetが圧縮単位をentailすると判定されれば、原文へ再接続できたとみなす。この方法でRECOMPのASQA re-attribution rateは各budgetでおよそ0.39〜0.42だった。</p>
+<p>ここでも「残り6割は原文に根拠がない」とは言えない。top-10の検索で見つからなかっただけかもしれないし、根拠が複数spanに分散していて単一snippetではentailできないかもしれない。著者はこの失敗をsource absenceではなく、bounded recovery protocolでの未回収として扱う。</p>
+
+<aside class="everyday-example"><span>原文外の補助例</span><p>50ページの行政資料をAIが「本人同意があれば第三者提供できる」と一文へ要約したとする。その一文が正しくても、ページ・段落・条項への対応を保存していなければ、後で法務担当者が原資料を検証するたびに再検索が必要になる。生成時のcontextは短くなったが、監査時の探索コストを別の場所へ移したことになる。</p></aside>
+
+<h2>圧縮率はnominalではなく、実際に何分の一になったかを見る</h2>
+<p>この論文のもう一つ良いところは、設定したbudgetと実際の長さを分ける点にある。abstractive compressorは「元の25%にする」と指定しても、その長さを正確には使わない。RECOMPはASQAの複数budgetで0.05〜0.08程度まで強く圧縮し、QASPERでは約0.015まで縮む。</p>
+<p>同じ「25% budget」でextractive methodとabstractive methodを比べると、実際にgeneratorへ渡している情報量が大きく違う。性能差を圧縮方式の優劣として読む前に、achieved ratioを確認しなければならない。</p>
+<p>AI評価で設定値と実測値を分けるという発想は他にも使える。検索上限5回でも実際の平均検索回数は2回かもしれない。context上限32kでも実際の使用量は4kかもしれない。実行時に起きた量をログへ残す方が比較に強い。</p>
+
+<h2>検証コストも圧縮の得失に入れる</h2>
+<p>圧縮はgenerator inputを減らす。しかしcitation-gradeな回答にするなら、出典spanを保存・回収し、claimとのsupportを検査する処理が追加される。論文はgenerator inputだけでなく、declared-span verificationに必要なinputも別に数える。</p>
+<p>ここから「最短contextが最安」とは限らないことが分かる。source mappingを捨てて100 tokenにした後、各claimについて数千tokenの元資料を再検索・再検証するなら、総costは別の形になる。圧縮器の評価に、生成時tokenだけでなくverification・recovery costを含める必要がある。</p>
+<p>法務や監査用途では特に、回答時のlatencyだけでなく「後から根拠を確認するコスト」が製品価値を左右する。出典を保持することはmetadataの飾りではなく、将来の検証処理を短絡するキャッシュにもなる。</p>
+
+<h2>Extractiveな方法は、意味を作り替えない強さがある</h2>
+<p>研究ではreranking、extractive sentence selection、RECOMP、LLMLingua-2、独自のextract-cluster-rewrite（ECR）などを比較する。extractiveとECRはsource IDsを宣言できるため、grounded citation評価の経路が明確である。</p>
+<p>ASQA/QASPERの一部設定では、強い圧縮でもextractive selectionのgrounded precisionが一定程度維持される。一方、answer qualityやevidence F1とのtrade-offもあり、「extractiveなら常に勝つ」という結論ではない。ECRの優位も一つのtested settingに限られるとして、著者は一般化を抑えている。</p>
+<p>設計上のポイントは、abstractive compressionを禁止することではない。書き換えるなら、どのsource spanを材料にしたかを構造として保持する。複数spanを一文へ融合したならcitationも複数持たせる。生成したsummaryを新しい一次資料のように扱わない。この三点が重要になる。</p>
+
+<h2>Evidence Setを作る工程に「provenance-preserving compression」を入れる</h2>
+<p>法務RAGで検索結果をEvidence Setへ整理するとき、重複除去や要約を入れたくなる。資料10件をそのままgeneratorへ渡すより、論点ごとに短く統合した方が推論は安くなる。しかしその整理工程で、原文・条文・判決文との対応が消えると、最終citationの検証が弱くなる。</p>
+<p>そこでEvidence Setの要素を単なるtextではなく、`claim`, `compressed_text`, `source_id`, `source_span`, `transformation`, `coverage`のような構造で持つ。extractなら元spanを直接保持し、要約なら材料spanを複数保持する。generatorへ渡すのはcompressed_textでも、citation生成と検証はsource_spanへ戻れる。</p>
+<p>既収録のSURE-RAGが「このEvidence Setで結論を出してよいか」を集合レベルで見るのに対し、この論文は<strong>Evidence Setを短くしたあとも一次資料へ戻れるか</strong>を問う。両者は別工程で、組み合わせる価値が高い。</p>
+
+<h2>「引用がある」と「その引用を検証できる」を分ける</h2>
+<p>回答画面にcitation markerが表示されているだけでは、根拠性の要件を満たしたとは限らない。少なくとも次を分けられる。</p>
+<p>第一に、claimと表示された引用文が整合するか。第二に、その引用文が実在するsourceの特定spanへ結びつくか。第三に、そのsource spanがclaimを本当に支持するか。第四に、generatorがその証拠へ因果的に依存して回答したか。最後の問いはこの論文の直接対象外で、著者もcitation supportとcausal faithfulnessを区別している。</p>
+<p>この四段階を混ぜないだけでも、「citation precision 90%」という数字が何を意味するのか読みやすくなる。どの層を評価した数字かが曖昧なら、品質指標として使うには危険である。</p>
+
+<h2>限界——この0.12を「真のgrounded precision」と扱わない</h2>
+<p>著者はlimitationsをかなり丁寧に書く。primary evaluatorはDeBERTa-v3-baseで、人手によるsource-level calibrationがない。同じモデルをsource recoveryとsupport scoringに使う部分があり、系統誤差を共有しうる。second evaluatorのauditはあるが、数値を真の支持率として確定するものではない。</p>
+<p>generatorもQwen2.5-7B-Instruct一種類でgreedy decodingのみ。datasetは英語のASQAとQASPERで、open-web、multilingual、さらに長いcontextへ一般化できるとは限らない。recoveryもlexical top-10・single-snippet entailmentなので、分散した根拠を取り逃がす。</p>
+<p>それでも研究設計として残る価値は大きい。圧縮品質をanswer correctnessだけで評価せず、<strong>元sourceへの追跡可能性を別の目的変数にする</strong>。この評価項目は、モデルやretrieverが変わっても再利用できる。</p>
+
+<h2>このアーカイブの既存記事とつなぐ</h2>
+<ul>
+<li><a href="sure-rag.html">SURE-RAG</a>——Evidence Set全体の十分性とconflictを検査する。</li>
+<li><a href="citeguard.html">CiteGuard</a>——citationの妥当性を追加検索し、人が認めるalternative citationまで含めて評価する。</li>
+<li><a href="legalbench-rag.html">LegalBench-RAG</a>——法務検索で必要な最小限の根拠テキストを正確に回収できるかを見る。</li>
+</ul>
+
+<h2>原文</h2>
+<p>Deepanshu Mody, “The Attribution–Compression Frontier in Retrieval-Augmented Generation,” arXiv:2609.14245, 2026. GroundLM 2026 Workshop at EMNLP accepted paper.</p>
+<p><a href="https://arxiv.org/html/2609.14245v1" target="_blank" rel="noopener">原文HTMLを読む</a>　／　<a href="https://arxiv.org/abs/2609.14245" target="_blank" rel="noopener">arXiv</a></p>
+</article></div></main>
+<footer class="site-footer"><a href="../index.html">アーカイブへ戻る</a></footer>
+</body></html>
