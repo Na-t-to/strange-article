@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+<title>Identical evidence shifts two already-loaded balances differently</title>
+<desc>In an old assay hall, the same red evidence weight is added to two brass balances that began with different loads. One moves toward a correct green marker while the other reinforces an existing ochre bias.</desc>
+<rect width="1200" height="800" fill="#f1e8d3"/>
+<g fill="none" stroke="#26362f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M0 642 H1200 M0 690 H1200"/>
+  <path d="M90 642 V208 H1110 V642" stroke="#506a50"/>
+  <path d="M90 250 H1110 M90 300 H1110" stroke="#506a50" opacity=".55"/>
+  <path d="M280 192 v405 M190 597 h180 M235 192 h90 M255 597 l-25 45 h100 l-25 -45"/>
+  <circle cx="280" cy="205" r="22" fill="#e7dcc1"/>
+  <path d="M145 330 C208 310 346 310 415 336" stroke="#34506b" stroke-width="6"/>
+  <path d="M280 205 L145 330 M280 205 L415 336"/>
+  <path d="M105 337 h80 l-14 48 h-52 z M375 343 h80 l-14 48 h-52 z" fill="#e7dcc1"/>
+  <rect x="122" y="295" width="30" height="32" rx="4" fill="#b68545"/>
+  <rect x="156" y="283" width="30" height="44" rx="4" fill="#b68545"/>
+  <rect x="393" y="310" width="30" height="28" rx="4" fill="#506a50"/>
+  <path d="M145 330 v-42 M415 336 v-39"/>
+  <path d="M561 192 v405 M471 597 h180 M516 192 h90 M536 597 l-25 45 h100 l-25 -45"/>
+  <circle cx="561" cy="205" r="22" fill="#e7dcc1"/>
+  <path d="M426 356 C492 330 628 331 696 360" stroke="#34506b" stroke-width="6"/>
+  <path d="M561 205 L426 356 M561 205 L696 360"/>
+  <path d="M386 363 h80 l-14 48 h-52 z M656 367 h80 l-14 48 h-52 z" fill="#e7dcc1"/>
+  <rect x="401" y="301" width="31" height="50" rx="4" fill="#a34f35"/>
+  <rect x="436" y="314" width="31" height="37" rx="4" fill="#a34f35"/>
+  <rect x="674" y="333" width="30" height="27" rx="4" fill="#506a50"/>
+  <path d="M426 356 v-50 M696 360 v-35"/>
+  <path d="M825 195 v402 M735 597 h180 M780 195 h90 M800 597 l-25 45 h100 l-25 -45"/>
+  <circle cx="825" cy="208" r="22" fill="#e7dcc1"/>
+  <path d="M690 322 C756 304 892 306 960 334" stroke="#34506b" stroke-width="6"/>
+  <path d="M825 208 L690 322 M825 208 L960 334"/>
+  <path d="M650 329 h80 l-14 48 h-52 z M920 341 h80 l-14 48 h-52 z" fill="#e7dcc1"/>
+  <rect x="669" y="288" width="30" height="31" rx="4" fill="#506a50"/>
+  <rect x="936" y="285" width="30" height="45" rx="4" fill="#b68545"/>
+  <rect x="970" y="298" width="30" height="32" rx="4" fill="#b68545"/>
+  <path d="M690 322 v-40 M960 334 v-44"/>
+  <path d="M100 108 C241 74 390 92 511 113 C666 140 807 100 1101 110" stroke="#77857d" stroke-dasharray="12 10"/>
+  <path d="M228 121 c26 -28 58 -28 84 0 c-26 28 -58 28 -84 0z" fill="#e7dcc1"/>
+  <circle cx="270" cy="121" r="8" fill="#a34f35"/>
+  <path d="M508 121 c26 -28 58 -28 84 0 c-26 28 -58 28 -84 0z" fill="#e7dcc1"/>
+  <circle cx="550" cy="121" r="8" fill="#a34f35"/>
+  <path d="M772 121 c26 -28 58 -28 84 0 c-26 28 -58 28 -84 0z" fill="#e7dcc1"/>
+  <circle cx="814" cy="121" r="8" fill="#a34f35"/>
+  <path d="M270 149 v65 M550 149 v67 M814 149 v68" stroke="#a34f35" stroke-dasharray="7 8"/>
+  <rect x="244" y="150" width="52" height="34" rx="5" fill="#a34f35" stroke="#a34f35"/>
+  <rect x="524" y="150" width="52" height="34" rx="5" fill="#a34f35" stroke="#a34f35"/>
+  <rect x="788" y="150" width="52" height="34" rx="5" fill="#a34f35" stroke="#a34f35"/>
+  <path d="M1005 444 h110 v150 h-110z M1027 467 h66 M1027 490 h66 M1027 513 h66"/>
+  <path d="M1060 444 v-42 M1040 402 h40"/>
+</g>
+<g fill="#26362f"><circle cx="165" cy="578" r="18"/><path d="M145 641 l12 -49 h18 l12 49z"/><circle cx="1048" cy="625" r="16"/><path d="M1031 690 l10 -49 h16 l11 49z"/></g>
+<g fill="#506a50" opacity=".35"><rect x="95" y="254" width="1010" height="40"/><rect x="95" y="613" width="1010" height="29"/></g>
+</svg>
