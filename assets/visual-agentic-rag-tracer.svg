@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 533" role="img" aria-labelledby="t d">
+<title id="t">AgenticRAGTracerの洞窟探索</title><desc id="d">必要な中間地点を順に通る正しい探索と、途中で止まる探索、余分な支洞へ迷う探索を描く。</desc>
+<defs>
+  <filter id="paper"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="11" result="n"/><feBlend in="SourceGraphic" in2="n" mode="multiply"/></filter>
+  <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M-2 8L8-2M2 10L10 2" stroke="#243c36" stroke-width=".55" opacity=".22"/></pattern>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#eee2c2"/><stop offset="1" stop-color="#d6c69f"/></linearGradient>
+  <radialGradient id="lamp"><stop stop-color="#f2c778" stop-opacity=".9"/><stop offset="1" stop-color="#f2c778" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="800" height="533" fill="url(#bg)"/>
+<path d="M0 63C90 20 159 55 223 38c67-18 127-36 193 2 63 35 111 9 178-4 82-17 136 10 206 41v456H0z" fill="#203834"/>
+<path d="M0 86c56-20 99-17 143 12 40 26 79 5 117-18 50-31 93-29 143 10 46 35 79 20 122-2 58-30 109-18 159 19 42 31 76 20 116 8v418H0z" fill="#e2d4ad"/>
+<g stroke="#243c36" stroke-width="3" fill="#334f46"><path d="M0 0h800v55c-45 11-70 31-86 58-21 36-5 69-28 91-25 25-74 2-101 24-36 30-9 72-42 94-31 21-75-1-105 20-36 25-12 72-49 94-30 18-69-4-101 12-28 14-43 44-64 85H0z" opacity=".25"/><path d="M0 533V388c40-28 78-36 115-25 37 11 54 47 88 50 41 4 58-42 95-44 47-2 62 53 104 55 42 2 62-48 106-50 47-2 66 55 110 52 39-2 59-43 92-54 34-11 64 0 90 18v143z" opacity=".42"/></g>
+<g fill="#f0e5c8" stroke="#223a34" stroke-width="4"><ellipse cx="104" cy="251" rx="80" ry="58"/><ellipse cx="285" cy="193" rx="83" ry="60"/><ellipse cx="471" cy="154" rx="79" ry="57"/><ellipse cx="649" cy="206" rx="87" ry="64"/><ellipse cx="469" cy="335" rx="86" ry="60"/><ellipse cx="644" cy="393" rx="88" ry="62"/></g>
+<g fill="none" stroke="#e9ddbd" stroke-width="40" stroke-linecap="round"><path d="M172 235C206 223 226 209 245 201"/><path d="M359 180C392 169 412 163 431 158"/><path d="M548 164C584 174 596 190 611 200"/><path d="M524 189C526 240 508 281 487 310"/><path d="M533 349C571 359 598 374 616 387"/></g>
+<g fill="none" stroke="#223a34" stroke-width="3" opacity=".75"><path d="M172 235C206 223 226 209 245 201"/><path d="M359 180C392 169 412 163 431 158"/><path d="M548 164C584 174 596 190 611 200"/><path d="M524 189C526 240 508 281 487 310"/><path d="M533 349C571 359 598 374 616 387"/></g>
+<g fill="url(#hatch)" opacity=".9"><ellipse cx="104" cy="251" rx="74" ry="52"/><ellipse cx="285" cy="193" rx="77" ry="54"/><ellipse cx="471" cy="154" rx="73" ry="51"/><ellipse cx="649" cy="206" rx="81" ry="58"/><ellipse cx="469" cy="335" rx="80" ry="54"/><ellipse cx="644" cy="393" rx="82" ry="56"/></g>
+<g stroke="#6e2d28" stroke-width="3" fill="#d9b55d"><circle cx="104" cy="251" r="12"/><circle cx="285" cy="193" r="12"/><circle cx="471" cy="154" r="12"/><circle cx="649" cy="206" r="12"/></g>
+<g fill="#6e2d28"><path d="M98 251l6 6 12-15" stroke="#f7edcf" stroke-width="3" fill="none"/><path d="M279 193l6 6 12-15" stroke="#f7edcf" stroke-width="3" fill="none"/><path d="M465 154l6 6 12-15" stroke="#f7edcf" stroke-width="3" fill="none"/><path d="M643 206l6 6 12-15" stroke="#f7edcf" stroke-width="3" fill="none"/></g>
+<path d="M44 275C82 253 121 249 155 235s82-37 118-41 124-30 182-39 128 21 181 47" fill="none" stroke="#2c6258" stroke-width="7" stroke-linecap="round" stroke-dasharray="12 8"/>
+<path d="M44 292C90 270 135 262 177 231 213 204 244 195 272 194" fill="none" stroke="#b26842" stroke-width="6" stroke-linecap="round"/><path d="M272 194l-15-9m15 9l-9 15" stroke="#b26842" stroke-width="5"/>
+<path d="M44 309C95 293 138 276 183 240 235 197 330 181 407 162 458 150 509 166 535 204 558 239 520 288 487 321 525 345 573 362 617 389" fill="none" stroke="#7d5572" stroke-width="5" stroke-dasharray="5 7"/>
+<g stroke="#1e332f" stroke-width="3" fill="#b06c42"><circle cx="58" cy="274" r="8"/><path d="M58 282v27m0-18l-14 12m14-12l13 11m-13 7l-10 18m10-18l12 17" fill="none"/><circle cx="328" cy="180" r="7"/><path d="M328 187v24m0-15l-12 10m12-10l12 8m-12 7l-9 16m9-16l10 15" fill="none"/><circle cx="575" cy="359" r="7"/><path d="M575 366v24m0-15l-12 10m12-10l12 9m-12 6l-10 17m10-17l11 16" fill="none"/></g>
+<circle cx="64" cy="270" r="45" fill="url(#lamp)"/><circle cx="334" cy="176" r="34" fill="url(#lamp)"/><circle cx="581" cy="355" r="34" fill="url(#lamp)"/>
+<g fill="#2d4740" opacity=".85"><path d="M230 125l15 42 13-44 12 48 16-53 10 56"/><path d="M579 113l12 42 15-46 13 51 14-42 11 57"/><path d="M404 405l18-51 13 47 17-55 12 52"/></g><g fill="#8b5c3e"><path d="M79 220l10-18 9 18zM113 224l12-24 13 24zM456 118l9-18 10 18zM670 169l12-22 12 22zM452 305l10-17 11 17z"/></g>
+<g transform="translate(24 24)"><rect width="173" height="86" rx="4" fill="#eadfbf" stroke="#223a34" stroke-width="2"/><path d="M18 66C39 45 55 61 72 43s35-9 52-25 24-5 33 5" fill="none" stroke="#2c6258" stroke-width="4" stroke-dasharray="9 6"/><circle cx="28" cy="62" r="5" fill="#d9b55d" stroke="#6e2d28" stroke-width="2"/><circle cx="76" cy="42" r="5" fill="#d9b55d" stroke="#6e2d28" stroke-width="2"/><circle cx="124" cy="27" r="5" fill="#d9b55d" stroke="#6e2d28" stroke-width="2"/><circle cx="157" cy="23" r="5" fill="#d9b55d" stroke="#6e2d28" stroke-width="2"/></g>
+<rect x="8" y="8" width="784" height="517" fill="none" stroke="#6a5539" stroke-width="2"/><rect width="800" height="533" fill="transparent" filter="url(#paper)" opacity=".08"/>
+</svg>

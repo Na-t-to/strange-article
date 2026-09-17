@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「伝えた」と「通じた」は別——Grounding in Communicationで相互理解の成立条件を設計する｜変な読み物置き場</title>
+<meta name="description" content="Clark & Brennanの1991年論文を読み、会話を一方的な情報送信ではなく、目的に十分な理解を共同で成立させるgroundingとして捉える。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/grounding-in-communication.html">
+<meta property="og:type" content="article"><meta property="og:title" content="「伝えた」と「通じた」は別——Grounding in Communicationで相互理解の成立条件を設計する"><meta property="og:description" content="相手が理解したという正の証拠、目的ごとに変わる十分性、媒体ごとの修復コストから対話設計を考える。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/grounding-in-communication.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-grounding-in-communication.webp">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Grounding in Communicationで相互理解を設計する"><meta name="twitter:description" content="発話を出しただけでは貢献は完了しない。相手が目的に十分な理解へ到達した証拠まで含めて会話を捉える。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-grounding-in-communication.webp">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260901-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="grounding-in-communication">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-17</p></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　HCI</p>
+<header class="article-header"><div class="tags"><span>HCI</span><span>対話設計</span><span>AIエージェント</span></div><h1>「伝えた」と「通じた」は別——Grounding in Communicationで相互理解の成立条件を設計する</h1><p class="original-title">Grounding in Communication</p><div class="article-meta-row"><p><strong>Herbert H. Clark / Susan E. Brennan · 1991</strong><br>公開 2026.09.17　／　推定読了 42分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-grounding-in-communication.webp" alt="指揮者の合図に対し、異なる楽器の奏者が次の演奏で理解を返し、全員が同じ進行を共同で成立させる古い音楽堂の図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">メッセージを送信した。相手から「了解」と返ってきた。それでも、本当に同じ意味を共有できたとは限らない。ClarkとBrennanは会話を、発話を一方向に渡す処理ではなく、<strong>「現在の目的に十分な程度まで相手が理解した」と双方が扱える状態を共同で作る仕事</strong>として捉える。この共同作業がgroundingである。対話AIへ移すと、評価対象は「返事を生成したか」から、「利用者とシステムが次の行動へ進めるだけの共通理解を成立させたか」へ変わる。</p>
+<h2>発話を出しただけでは、会話への「貢献」は完了しない</h2>
+<p>論文冒頭の例では、AlanがBarbaraへ車を持っているか質問する。Barbaraは一度聞き返し、Alanが確認し、その後ようやく答える。ClarkとBrennanが見ているのは、この途中のやり取りである。疑問文を口にした事実だけでは、質問したという共同的な行為はまだ成立していない。相手が何を聞かれたのか理解し、その理解が十分だと参加者が扱えるところまで進んで初めて、質問という貢献が完成する。</p>
+<p>論文は一つのcontributionを、<strong>presentation</strong>と<strong>acceptance</strong>へ分ける。presentationは話者が発話を提示する段階。acceptanceは相手が理解したという証拠を返し、その証拠を話者が受け取る段階である。会話を「入力→出力」とだけ見ると後半が消える。</p>
+<p>この区別はAIチャットでも使いやすい。ユーザーが要件を伝え、AIが長い回答を返しても、重要な制約を取り違えていれば共同作業は進んでいない。逆に、短い確認を挟んだ後の実行がユーザーの意図に沿うなら、文章量が少なくてもgroundingは進んでいる。</p>
+<h2>目標は完全理解ではなく、「現在の目的に十分な理解」</h2>
+<p>ClarkとBrennanのgrounding criterionは、完全な心の一致を要求しない。参加者が、相手は<strong>current purposesに十分な基準まで</strong>意味を理解したと相互に信じられることを目標にする。同じ表現でも、必要な精度は目的で変わる。</p>
+<p>雑談で「駅の近く」と言えば足りる場面と、救急搬送先の住所を伝える場面では確認水準が違う。原文は、電話番号、氏名、住所、口座番号など、逐語的な内容が重要な場面では、相手が数字や綴りを繰り返す、情報を小さな単位へ分ける、といった専用のgrounding技法が使われることを示す。何を理解すべきかが変われば、確認方法も変わる。</p>
+<p>したがって対話システムの「確認を入れるか」は、曖昧さだけでは決められない。誤解したときの影響と、今回必要な理解の粒度を見なければならない。旅行の雑談と送金先変更では、同じconfidenceでも必要なgrounding criterionが違う。</p>
+<h2>理解は「誤解が指摘されなかった」だけでは成立しない</h2>
+<p>論文で特に重要なのは、参加者がnegative evidenceの不在だけでなく、通常は<strong>positive evidence of understanding</strong>を求める点である。相手が訂正してこなかったから理解したはずだ、と済ませない。</p>
+<p>典型的な正の証拠は三種類ある。第一は「うん」「了解」のようなacknowledgment。第二は、その発話に対して適切な次の行動を始めること。質問なら適切に答える、依頼なら対応を開始する。第三は、視線や注意の継続など、相手がやり取りへ参加し続けている証拠である。</p>
+<p>ここで第二の証拠は強い。相手が「分かりました」と言えることより、次の行動が内容に適合していることの方が、理解を具体的に示す場合がある。言語による自己申告と、後続行動による証拠を分けられる。</p>
+<aside class="everyday-example"><span>原文外の補助例</span><p>法務AIへ「秘密保持条項だけを修正して。責任制限は触らない」と頼んだとする。AIが「承知しました」と返すのは弱いgrounding evidenceである。実際の差分が秘密保持条項に限定され、責任制限が保持されていることは、依頼理解を示す強い後続証拠になる。対話評価を返答文だけで終えず、後続操作まで見る理由がここにある。</p></aside>
+<h2>理解の確認は、無限に「了解」を返すことではない</h2>
+<p>正の証拠を毎回必要とするなら、「了解」にも了解が必要になり、無限に確認が続くように見える。原文はこの問題を、次の貢献そのものが前の理解を証明できることで解く。質問へ答える行為は、新しい発話であると同時に、前の質問を理解したというacceptanceにもなる。</p>
+<p>この構造はUI設計に重要である。毎stepで確認ダイアログを出すことがgroundingではない。ユーザーの次の自然な操作が理解の証拠になるなら、追加確認は不要である。反対に、後続操作から理解を読み取れない高リスク場面では、明示確認を置く価値が上がる。</p>
+<p>確認回数を増やすほど安全、という単純な関係ではない。確認そのものにもコストがあり、作業を分断し、ユーザーが機械的に「はい」を押すようになれば証拠としての質も落ちる。</p>
+<h2>最小化するのは「話者の手間」ではなく、共同作業全体の手間</h2>
+<p>論文はleast effortを、<strong>least collaborative effort</strong>へ組み替える。理想的な一文を話者が時間をかけて完成させるより、不完全な表現を出し、相手と少しやり取りして共同で確定した方が、二人の総コストが小さい場合がある。</p>
+<p>話者が負担を減らすだけなら、曖昧な一文を投げて解釈を全部相手へ押し付ければよい。しかしそれでは受け手の理解コストやrepair costが増える。逆に、誤解を絶対避けようとして毎回長大な説明を作れば、formulation costとproduction costが増える。groundingはこの総量を調整する仕事になる。</p>
+<p>AI製品で「質問を減らす」「入力を短くする」だけをUX改善とみなすと、この視点を落とす。確認を一回増やすことで後段の修正が大幅に減るなら、総共同コストは下がる。逆に安全性の低い確認を何度も挟むだけなら上がる。</p>
+<h2>媒体が変わると、同じ確認技法の値段が変わる</h2>
+<p>ClarkとBrennanは媒体を、単に「対面・電話・メール」という名称で比較しない。copresence、visibility、audibility、cotemporality、simultaneity、sequentiality、reviewability、revisabilityという制約へ分ける。媒体ごとに、相手を見る、同時に返す、後から読み返す、送信前に直す、といった能力が違う。</p>
+<p>その差はgrounding costを変える。原文ではformulation、production、reception、understanding、start-up、delay、asynchrony、speaker change、display、fault、repairなどのコストを挙げる。たとえばemailはreviewableでrevisableなので送信前に整えやすい一方、repairには時間がかかる。対面会話は誤りが出ても、その場で短く修正しやすい。</p>
+<p>現在のAIインターフェースなら、チャット、音声、フォーム、直接操作、承認画面、バックグラウンドagentで、このコスト構造が違う。音声は即時修復しやすいが長い条項を見直しにくい。チャットはreviewableだが、何十ターンも離れた条件の参照コストが上がる。agentの実行ログはreviewabilityを増やすが、読解コストも増える。</p>
+<h2>「AIが質問する」だけではなく、grounding evidenceを設計する</h2>
+<p>対話AIでよくある改善策は「曖昧なら質問する」である。Groundingの視点では、それだけでは粗い。質問は共同理解を更新する一手段で、必要なのは<strong>どの理解を、どの証拠で、どこまで確定するか</strong>の設計である。</p>
+<p>たとえばAIが「契約期間は1年という理解でよいですか」と聞き、ユーザーが「はい」と答える。この一往復は契約期間には強い証拠を与える。しかし「自動更新あり」という別条件まで共有されたことにはならない。grounding stateを会話全体で一個のtrue/falseにせず、重要な前提・参照対象・制約ごとに保持すると設計しやすい。</p>
+<p>さらに、正の証拠の種類をログとして区別できる。明示承認、ユーザーによる訂正なし、後続操作の適合、外部成果物の受理。同じ「合意済み」でも証拠強度が違う。高リスクな操作だけ強い証拠を要求する、といった制御へつながる。</p>
+<h2>確認すべきなのは「文」ではなく、次の共同行為に必要な前提</h2>
+<p>grounding criterionがcurrent purposesへ依存するなら、確認単位も文法的な一文に固定する必要はない。次の処理が必要とする前提を取り出し、その前提が十分にgroundedかを見る方がよい。</p>
+<p>検索agentなら、検索語そのものより「対象法域」「時点」「求める結論」「利用できる資料種別」が重要かもしれない。契約修正agentなら、編集対象条項、触れてはいけない条項、交渉スタンスが重要になる。こうした前提の一部が未groundedなら、そこでだけ確認を出す。</p>
+<p>この設計は「全部聞いてから動く」と「とりあえず全部推測する」の中間を作る。必要な前提だけ確認し、それ以外は低コストな仮定として進め、後続行動から理解の適否を更新できる。</p>
+<h2>既存記事との違い——Intelligibilityは「システムを読めるか」、Groundingは「共同理解が成立したか」</h2>
+<p><a href="intelligibility-accountability.html">IntelligibilityとAccountability</a>は、システムが何を知り、どう解釈し、次に何をするかを人間へ見せる設計を扱う。Groundingは、その情報提示を受けた人間とシステムの間で、次の共同作業に十分な理解が成立したかを見る。</p>
+<p><a href="mixed-initiative-ui.html">Mixed-Initiative UI</a>が「いつシステムが動き、いつ人へ聞くか」を配分するなら、Groundingはその質問・回答が本当に共有前提を作ったかを評価する。<a href="mtrag-un.html">MTRAG-UN</a>で扱った曖昧・省略発話とも接続するが、こちらは入力分類より広く、会話中に理解を維持・修復する全体過程が対象になる。</p>
+<h2>限界——common groundは直接観測できない</h2>
+<p>この理論は、人の頭の中の理解を直接読み取れるとは主張しない。実際の設計では、acknowledgment、次の行動、訂正、注意の継続といった外から観測できる証拠から、十分な理解が成立したと扱うことになる。したがってgrounding stateは真理値というより、目的に応じた運用上の推定である。</p>
+<p>また原論文は1991年の人間同士のコミュニケーションを中心にしており、生成AIの非対称性——AIが理解しているように文章を出せること、内部状態が人間と異なること——を直接扱ってはいない。AIへ適用する場合、「相互信念」を擬人化せず、観測可能な前提整合・確認・後続行動へ落とす必要がある。</p>
+<h2>設計に持ち帰るなら</h2>
+<p>対話品質の評価項目を「質問へ答えたか」だけにしない。重要前提について、何をgrounding criterionとするかを決める。明示確認が必要か、後続操作で十分かを分ける。誤解が起きたとき、修復に何ターン・何操作かかるかも測る。そして、ユーザーだけでなくAI側の確認・説明を含めた総collaborative effortを見る。</p>
+<p>会話AIの失敗には、「誤答した」以外に「互いに違う前提のまま作業を進めた」が大量にある。Groundingは、その失敗を独立した設計対象へ引き上げる。</p>
+<h2>このアーカイブの既存記事とつなぐ</h2>
+<ul><li><a href="intelligibility-accountability.html">IntelligibilityとAccountability</a>——システムの解釈・意図・行動を利用者へ見せる。</li><li><a href="mixed-initiative-ui.html">Mixed-Initiative UI</a>——質問・実行・待機をいつ人とシステムへ配分するかを扱う。</li><li><a href="mtrag-un.html">MTRAG-UN</a>——曖昧・省略・回答不能な発話を検索へ流す前に分ける。</li></ul>
+<h2>原文</h2>
+<p>Herbert H. Clark & Susan E. Brennan, “Grounding in Communication,” in <em>Perspectives on Socially Shared Cognition</em>, 1991, pp. 127–149.</p>
+<p><a href="https://web.stanford.edu/~clark/1990s/Clark%2C%20H.H.%20_%20Brennan%2C%20S.E.%20_Grounding%20in%20communication_%201991.pdf" target="_blank" rel="noopener">原文PDFを読む</a>　／　<a href="https://doi.org/10.1037/10096-006" target="_blank" rel="noopener">DOI</a></p>
+</article></div></main><footer class="site-footer"><a href="../index.html">アーカイブへ戻る</a></footer>
+</body></html>

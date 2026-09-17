@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>最終回答だけでは、どこで迷ったか分からない——AgenticRAGTracerで検索推論をhopごとに診断する｜変な読み物置き場</title>
+<meta name="description" content="ACL 2026 FindingsのAgenticRAGTracerを読み、multi-hop Agentic RAGを最終正答率だけでなく中間hop・reasoning depth・早期終了・過剰探索から診断する。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/agentic-rag-tracer.html">
+<meta property="og:type" content="article"><meta property="og:title" content="最終回答だけでは、どこで迷ったか分からない——AgenticRAGTracerで検索推論をhopごとに診断する"><meta property="og:description" content="必要な検索段数を構造として持つbenchmarkで、早すぎる終了と無駄な探索を別の失敗として測る。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/agentic-rag-tracer.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-agentic-rag-tracer.svg">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="AgenticRAGTracerで検索推論をhopごとに診断する"><meta name="twitter:description" content="2-hopは解けるが4-hopで崩れる、必要前に止まる、余計な支線へ迷う。最終正答率では混ざる失敗を分ける。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-agentic-rag-tracer.svg">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260901-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="agentic-rag-tracer">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-17</p></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　RAG</p>
+<header class="article-header"><div class="tags"><span>RAG</span><span>AIエージェント</span><span>AI評価</span></div><h1>最終回答だけでは、どこで迷ったか分からない——AgenticRAGTracerで検索推論をhopごとに診断する</h1><p class="original-title">AgenticRAGTracer: A Hop-Aware Benchmark for Diagnosing Multi-Step Retrieval Reasoning in Agentic RAG</p><div class="article-meta-row"><p><strong>Qijie You / Wenkai Yu / Hao Liang / Zhen Hao Wong / Wentao Zhang · 2026</strong><br>公開 2026.09.17　／　推定読了 39分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-agentic-rag-tracer.svg" alt="複数の支洞と中間地点を持つ洞窟で、必要な地点を順に通る経路、途中で止まる経路、余計な支洞へ迷い込む経路を比較する図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">Agentic RAGが間違えたとき、最終回答だけを見ても原因は分からない。最初の検索で必要資料を落としたのか。中間回答を誤ったのか。次の検索queryを作り損ねたのか。必要な証拠が揃う前に止まったのか。逆に、答えられる状態を越えて検索を続け、余計な情報へ迷い込んだのか。AgenticRAGTracerはmulti-hop questionへ<strong>中間hopの正解構造</strong>を付け、agentの検索推論を途中経過から診断する。評価の中心を「最後に当たったか」から「必要な段数を、必要な構造で進めたか」へ移す研究である。</p>
+<h2>従来benchmarkでは、失敗位置が潰れてしまう</h2>
+<p>multi-hop QAは、一つの資料だけでは答えられず、複数の事実を順に結びつける課題である。従来benchmarkの多くはfinal question、supporting documents、final answerを持つ。しかしagentが実際にどの中間問いを解くべきだったかを明示しない。</p>
+<p>この状態で最終answerが不正解なら、retrieval failureとreasoning failureが混ざる。さらに「3-hop問題」とラベルされていても、LLMのparametric knowledgeだけで途中を飛ばせる場合や、実際には2-stepで済む場合がある。hop数をdifficulty labelとして使っても、本当にその段数の検索が必要とは限らない。</p>
+<p>AgenticRAGTracerはここをbenchmark designの問題として扱う。最終点だけでなく途中の地図を持たせ、agentがどこで正しいrouteから外れたかを記録できるようにする。</p>
+<h2>二種類の構造——SequentialとParallelを分ける</h2>
+<p>benchmarkは2〜4 hopの問題を、主に二つのtopologyへ分ける。<strong>Inference / Sequential</strong>では、前hopの答えが次hopを解くための手掛かりになる。Aを調べ、その結果からBを特定し、さらにBについて調べるような鎖である。</p>
+<p><strong>Comparison / Parallel</strong>では、複数対象についてそれぞれ独立に情報を集め、最後に比較する。二人の人物の生年を別々に調べて早い方を答える、といった構造になる。必要hop数が同じでも、依存の形が違う。</p>
+<p>この区別はagent設計にも効く。Sequentialなら前stepの誤りが後段へ連鎖するため、早期検証の価値が高い。Parallelなら枝を並列に探索し、最後にjoinする設計ができる。評価データがtopologyを持つと、単なる「難問」からworkflow requirementへ落としやすくなる。</p>
+<h2>「本当に検索が必要な問い」を作るために、生成後のfilterを重ねる</h2>
+<p>データは主にLLMを使って自動生成されるが、そのまま採用してはいない。まずsource documentからatomic QAを作り、不自然な回答を除く。次に、sourceなしでもモデルが正解できる問題を落とし、parametric knowledgeで検索を飛ばせる課題を減らす。</p>
+<p>さらにsourceを与えたときに正解できるかを確かめ、grounding solvabilityを確認する。複数atomic QAを組み合わせた後には、構造・意味・必要性を検査し、同名entityの曖昧さなども除去する。最終的には全datasetを3人のtrained annotatorが独立評価し、不一致はdiscussionで裁定する。Fleiss' κは0.65だった。</p>
+<p>この工程そのものが示唆的である。multi-hop benchmarkを作るとき、「答えが複数資料に書かれている」だけでは不足する。途中の資料が本当に必要か、shortcutがないか、最終問いの構造とhop数が一致するかを検証しなければならない。</p>
+<h2>1,305問・13モデルで、hop数が増えると性能が大きく落ちる</h2>
+<p>完成したbenchmarkは1,305 examplesで、InferenceとComparison、2・3・4 hopを含み、11を超えるdomainへ広がる。著者らは13モデルを統一的なagentic RAG設定で比較する。</p>
+<p>難しい4-hop InferenceではGPT-5でもExact Match 22.6%だった。重要なのは「最新モデルでも難しい」という順位表だけではない。2-hopでは解けるのに3・4-hopで崩れる例を同じchainの下位問題と対応づけられるため、モデルが維持できるreasoning depthを見られる。</p>
+<p>最終accuracyだけなら、2-hopを全部解けるモデルと、4-hopを半分まで正しく進めて最後で失敗するモデルの違いが見えにくい。hop-aware evaluationは、成功範囲と破綻地点を別の情報として残す。</p>
+<h2>正解したtrajectoryは、必要hop数へ近い</h2>
+<p>論文の面白い結果の一つは、correct responseのreasoning step countがtarget hop数へ比較的近い一方、incorrect responseではばらつきが大きい点である。失敗は二方向に出る。</p>
+<p>一つは<strong>premature termination / collapse</strong>。必要な中間証拠へ到達する前に、既知情報だけで結論を出したり、探索を止めたりする。もう一つは<strong>over-extension</strong>。必要なrouteを越えて追加queryを作り、根拠のないsubgoalへ進む。長く考えればよいわけではない。</p>
+<p>著者らは、成功の条件を「多くのstepを使うこと」ではなく、task structureに整合したstep配分として読む。これはagentのtoken budgetや検索上限を考えるときに重要である。</p>
+<aside class="everyday-example"><span>原文外の補助例</span><p>法務リサーチで「この契約類型にX法の届出義務があるか」を調べるために、①取引の法的分類、②適用対象、③例外、④施行時点の順に資料確認が必要だとする。①だけ見て届出義務なしと答えればcollapse。④まで確認済みなのに関連業界の行政処分や海外制度まで広げ、結論を揺らし始めればover-extensionである。どちらも最終誤答だが、修正すべき制御は逆になる。</p></aside>
+<h2>初期分解の小さな誤りが、後続検索を丸ごと曲げる</h2>
+<p>error case studyでは、最初のtask decompositionに元質問へ根拠のない語を入れ、その語からspurious subgoalを作り、後続検索全体が誤った方向へ進む例を示す。個々のtool callが壊れているのではなく、最初の分析が次のquery生成を汚染し続ける。</p>
+<p>Agentic RAGでは、検索結果を受けて次のqueryを自分で決める。そのためearly-hop errorは単純な一件のretrieval missではなく、後続の検索空間自体を変える。error propagationを測るなら、stepごとの「検索できたか」だけでなく、次stepのsubgoalが元の論理構造に支えられているかを見る必要がある。</p>
+<p>これは<a href="evidence-integration-llm.html">Evidence Integration</a>の話とも違う。あちらは取得した証拠をreceiverがどう採用するかを測る。本稿は、その証拠へ到達するまでのreasoning-search trajectoryがどこで歪むかを診断する。</p>
+<h2>止まる能力を、検索能力と同じくらい評価する</h2>
+<p>論文は失敗agentの「flailing」を、冗長queryとover-extensionとして描く。新しい検索結果が初期仮説と矛盾しても、立ち止まってrouteを再評価せず、同じ方向へ追加探索する。必要な情報不足と、論理的に行き止まりへ入った状態を区別できない。</p>
+<p>ここから、Agentic RAGのtermination conditionを単なる最大step数にしない理由が見える。次の検索がどの未解決subgoalを埋めるのか。新しい証拠でそのsubgoalが解決したのか。route自体を見直すべき矛盾が出たのか。停止・再計画・追加検索を別actionとして評価した方がよい。</p>
+<p><a href="active-rag-budget.html">Active RAGの予算評価</a>が「検索する価値」をutilityとcostで測ったのに対し、AgenticRAGTracerは「検索stepの数と順序がtask topologyに合っているか」を測る。検索停止の設計へ別の観点を与える。</p>
+<h2>Benchmark設計として持ち帰れるもの——中間正解を作る</h2>
+<p>実務評価でmulti-step taskをfinal answerだけ採点すると、改善の手掛かりが少ない。AgenticRAGTracerの発想を小規模に取り入れるなら、各テストケースへ「必ず同じ思考文を出せ」というchain-of-thought正解を付ける必要はない。</p>
+<p>必要なのは、外から検証できる中間stateである。必要な法的要件、取得すべき一次資料、解決すべきsubquestion、途中のentity、Evidence Setのcoverageなどをgold structureとして持つ。agentがそこを通過したか、不要な枝へ出たかをログから判定する。</p>
+<p>これなら内部推論文を正解化せずに、trajectoryを診断できる。法務リサーチであれば「どの資料を読むべきか」と「どの論点を解決すべきか」は、自由文の思考過程より比較的安定した評価単位になる。</p>
+<h2>MAP-Lawとの違い——検索制御の仕組みと、診断用benchmark</h2>
+<p><a href="map-law.html">MAP-Law</a>は法的要件ごとのcoverageを見て次の検索と停止を制御する方法である。AgenticRAGTracerは制御法そのものではなく、multi-step agentが必要なhopを踏めたかを診断するbenchmarkである。</p>
+<p>両方を組み合わせると、設計と評価が分かれる。production側では未解決要件をstateとして持ち、次queryを選ぶ。evaluation側では、goldの要件・資料依存と比較し、早期終了・余計な探索・誤った分解を別failureへ分類する。</p>
+<p><a href="metamorphic-testing.html">Metamorphic Testing</a>のように正解を直接作りにくい場合でも、一部のtrajectory relationをテストできる。必要資料を一つ除いたらagentは追加検索へ戻るべき、必要資料が揃ったら無関係なbranchを増やすべきではない、といった関係である。</p>
+<h2>限界——syntheticな構造とWikipedia中心の課題</h2>
+<p>著者ら自身が、multi-hop生成の難しさとresource制約からdataset規模を大きく拡張していないこと、評価model seriesにも制約があることをlimitationsで挙げる。さらに、benchmark constructionはLLM-assistedで、人手検証を入れていても自然な業務queryの分布そのものではない。</p>
+<p>hop数が明確なchainを作れることは診断性を高める一方、実務では「何hop必要か」自体が未知である。法律調査や障害調査では、途中で新しい論点が見つかり、正しいtrajectoryが一本に定まらないこともある。したがって、4-hopを4-stepで解くことを一般的なagent理想像へ拡張してはいけない。</p>
+<p>それでも、中間依存を明示したbenchmarkを持つとfinal accuracyの内訳が見える、という方法論は広く使える。必要stepが定義できる部分だけでもgold structureを持つ価値がある。</p>
+<h2>設計に持ち帰るなら</h2>
+<p>agent評価のログへ、単なるtool call列ではなく、各stepが「どの未解決subgoalを解くためだったか」を記録する。テストケース側には、少なくとも重要なsubgoalと必須evidenceの依存関係を持たせる。失敗時は、retrieval miss、wrong intermediate answer、premature stop、spurious subgoal、over-extensionへ分ける。</p>
+<p>「最終回答が悪かったのでpromptを調整する」より、最初の分解で曲がっているのか、必要資料を取った後に止まれないのかを分けた方が、修正対象が狭くなる。AgenticRAGTracerの価値は、難しいbenchmarkを一つ増やしたことより、agentの失敗をrouteとして観察可能にしたことにある。</p>
+<h2>このアーカイブの既存記事とつなぐ</h2>
+<ul><li><a href="active-rag-budget.html">Active RAGの予算評価</a>——検索のutility・harm・costと停止閾値を測る。</li><li><a href="map-law.html">MAP-Law</a>——未解決の法的要件をstateとして検索先と停止を制御する。</li><li><a href="evidence-integration-llm.html">Evidence Integration</a>——取得後の証拠をLLMが最終回答へ採用できるかを分けて測る。</li></ul>
+<h2>原文</h2>
+<p>Qijie You, Wenkai Yu, Hao Liang, Zhen Hao Wong & Wentao Zhang, “AgenticRAGTracer: A Hop-Aware Benchmark for Diagnosing Multi-Step Retrieval Reasoning in Agentic RAG,” Findings of ACL 2026, pp. 1301–1335.</p>
+<p><a href="https://aclanthology.org/2026.findings-acl.66.pdf" target="_blank" rel="noopener">原文PDFを読む</a>　／　<a href="https://aclanthology.org/2026.findings-acl.66/" target="_blank" rel="noopener">ACL Anthology</a></p>
+</article></div></main><footer class="site-footer"><a href="../index.html">アーカイブへ戻る</a></footer>
+</body></html>

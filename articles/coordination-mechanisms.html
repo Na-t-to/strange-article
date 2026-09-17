@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>手順を自動化しても、調整仕事は消えない——Coordination Mechanismsで協働の仕組みを分解する｜変な読み物置き場</title>
+<meta name="description" content="Schmidt & Simoneの1996年論文を読み、協働の依存関係を処理するarticulation workと、protocol＋artifactから成るcoordination mechanismを設計語彙として整理する。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/coordination-mechanisms.html">
+<meta property="og:type" content="article"><meta property="og:title" content="手順を自動化しても、調整仕事は消えない——Coordination Mechanismsで協働の仕組みを分解する"><meta property="og:description" content="protocolとartifactが依存関係を事前計算し、人の調整負担を減らす。ただし例外と暗黙知は残る。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/coordination-mechanisms.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-coordination-mechanisms.webp">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Coordination Mechanismsで協働を設計する"><meta name="twitter:description" content="カード、フォーム、手順、状態表示は、協働の依存関係を処理する装置として読める。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-coordination-mechanisms.webp">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260901-2" defer></script>
+</head><body class="article-page" data-page="article" data-slug="coordination-mechanisms">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-17</p></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　HCI</p>
+<header class="article-header"><div class="tags"><span>HCI</span><span>業務設計</span><span>AIエージェント</span></div><h1>手順を自動化しても、調整仕事は消えない——Coordination Mechanismsで協働の仕組みを分解する</h1><p class="original-title">Coordination Mechanisms: Towards a Conceptual Foundation of CSCW Systems Design</p><div class="article-meta-row"><p><strong>Kjeld Schmidt / Carla Simone · 1996</strong><br>公開 2026.09.17　／　推定読了 46分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-coordination-mechanisms.webp" alt="大厨房で注文札、配膳台、ベル、皿の状態を介して多数の料理人と給仕が依存する作業を調整する図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">複数人の仕事をシステム化するとき、目につくのは担当者、task、順序、承認stepである。しかし協働には、それとは別に「誰が次に動けるかを知る」「前工程の変更を後工程へ伝える」「競合する優先順位を調整する」といった仕事がある。SchmidtとSimoneはこれを<strong>articulation work</strong>として捉え、その負担を減らす仕組みを<strong>coordination mechanism</strong>として分析する。重要なのは、workflowを固定することではない。protocolとartifactによって依存関係の一部を事前計算しつつ、現場が外れ値へ対処できる余地を残すことにある。</p>
+<h2>協働すると、本来の仕事とは別に「仕事を噛み合わせる仕事」が発生する</h2>
+<p>一人で完結する作業なら、自分の都合で順序を変えられる。複数人の活動が相互依存すると、状況が変わる。Aの完了をBが待つ。CとDが同じ設備を使いたい。前工程の変更が後工程の仕様へ影響する。誰が責任を持つかを決める必要がある。</p>
+<p>この依存関係を扱う活動がarticulation workである。論文の問題設定は、コンピュータがfield of workそのものを支援するだけでは、協働を十分に支援したことにならないという点にある。設計、製造、事務処理などの本体作業を高速化しても、それらの間を合わせる負担が残る。</p>
+<p>AIエージェントでも同じである。検索agent、検証agent、生成agentを増やせば役割分担は細かくなるが、出力の受け渡し、状態同期、やり直し条件、競合解消が増える。agent数を増やした結果、coordination overheadが主なコストになることもある。</p>
+<h2>Coordination mechanismは「ルール」だけではない</h2>
+<p>論文がcoordination mechanismと呼ぶものは、単なる手順書ではない。大きく見ると、<strong>coordinative protocol</strong>と、それを具体的な仕事の中で保持・伝達する<strong>artifact</strong>の組み合わせである。</p>
+<p>protocolは、分散した活動をどう結びつけるかという約束を持つ。artifactは、その約束と現在状態を人々の間で運ぶ。フォーム、カード、一覧表、バグ票、管理票などが典型である。artifactへ書き込みが加わると、protocolの現在状態が次の担当者へ伝わる。</p>
+<p>この組み合わせを見ると、「状態DB」と「workflow rule」を別々に設計して終わる危険が見える。人は抽象ルールだけで仕事をしていない。今どのケースがどの状態で、次に誰が何をすべきかを、具体的なartifactを通して読む。</p>
+<h2>Kanbanは、依存関係をその場で毎回計算しなくてよくする</h2>
+<p>原文の重要な事例が製造現場のkanbanである。部品が下流工程で消費されるとcardが上流へ戻り、そのcardが次の生産指示になる。通常状態では、作業者が全工場の需要、設備競合、在庫量を毎回計算して交渉しなくても、cardを受け取れば生産を始められる。</p>
+<p>論文はこの働きを、<strong>task interdependenciesのprecomputation</strong>として捉える。複雑な依存関係について、毎回ゼロから可能性を探索する代わりに、protocolが「この状況ではこの限定された行動集合が妥当」という形へ計算を前倒しする。</p>
+<p>この見方は仕様設計に使いやすい。良いworkflowは人間から判断力を奪うことではなく、毎回考えなくてよい依存関係を先に固定し、判断すべき残余へ注意を残す。どこまでprecomputeし、どこを現場判断へ残すかが設計になる。</p>
+<h2>強いprotocolでも、必ず境界の外へ出る</h2>
+<p>Kanbanの作業者は、cardを機械的に絶対遵守していたわけではない。通常はprotocolを信頼して動くが、実行すると明らかに不合理な結果になる事情があれば、cardを一時的に止めたり、仕組みを再構成したりする。その後、通常状態へ戻す。</p>
+<p>SchmidtとSimoneは、弱いprotocolでも強いprotocolでも、必ず想定範囲外の状況へ遭遇し、actorが逸脱・迂回しなければならないと整理する。これは「例外処理を十分書けば完全なworkflowになる」という発想への制約である。</p>
+<p>実務上は、exceptionをゼロにするより、exceptionが起きたときにprotocolを停止・迂回・巻き戻し・再開できることが重要になる。これを後から管理者だけがDB修正して直す設計にすると、現場の回復コストが高くなる。</p>
+<aside class="everyday-example"><span>原文外の補助例</span><p>法務AIで「質問分析→一次資料検索→Evidence Set作成→回答生成→引用確認」を固定したとする。検索先の行政サイトが落ちている、資料同士の施行時点が食い違う、利用者が途中で前提を訂正した、といった状態は必ず出る。全ケースをif文で列挙するより、検索stepの差し替え、前工程への戻り、保留、human handoffをprotocolの標準操作として持つ方が回復しやすい。</p></aside>
+<h2>コンピュータ化しても、social protocolは残る</h2>
+<p>論文はここでかなり重要な線を引く。computational coordination mechanismへprotocolを埋め込んでも、社会的な約束・慣行・技能の全部をsoftwareへ移せるわけではない。protocolは社会的文脈の中で意味を持ち、不可避にunder-specifiedである。</p>
+<p>したがって実際の仕組みでは、computational protocolと、システム外に残るresidual social protocolへ分かれる。誰へ相談するか、どの例外なら黙認されるか、緊急時にどの経路を飛ばしてよいか、入力欄の言葉を現場でどう解釈するか。こうした部分は暗黙のまま残りうる。</p>
+<p>「システム上のworkflow＝実際の業務」と思うと、ここを見落とす。業務要件を取るなら、画面上のstepだけでなく、そのstepが成立するために人が外で行っている調整も観察しなければならない。</p>
+<h2>Malleability——現場が仕組みを変えられること</h2>
+<p>論文がcomputational coordination mechanismへ要求する第一の性質が<strong>malleability</strong>である。組織条件やprocedureは変わるため、actor自身がprotocolの定義を変更できる必要がある。</p>
+<p>変更には二種類ある。長期的な定義変更と、現在の一件だけに効く局所変更である。後者について原文は、stepをsuspendする、bypassする、rewindする、別地点からrestartするといった操作を明示する。これは現代のworkflow engineやagent orchestrationでも、そのまま使える語彙である。</p>
+<p>さらに、最初から全属性を埋めなければ実行できない仕組みにしない。protocolは実行中に具体化されるため、partial specificationを許し、後で別のactorや別mechanismが不足部分を埋められるようにする。仕様未確定の状態をエラー扱いせず、正式な状態として持つ発想である。</p>
+<h2>Linkability——調整機構どうしをつなげられること</h2>
+<p>第二の性質が<strong>linkability</strong>である。現場には一つのworkflowだけが存在するわけではない。project management、CAD、calendar、文書管理、承認、在庫など複数の仕組みが同時に走る。それぞれにcoordination mechanismがあると、今度はmechanism同士の整合を人が手作業で取る必要が出る。</p>
+<p>論文は、複数のcoordination mechanismが増えるほど、それらをalignするためのoverheadが増えると指摘する。そのためmechanismは相互にlinkできる必要がある。</p>
+<p>現代のAI製品なら、チャット内workflowだけ整っていても、案件管理、権限、通知、文書バージョン、監査ログが別々なら、利用者が手で状態を同期する。統合の価値は「APIがつながる」ことより、同じcoordination stateを何度も人に再入力させないことにある。</p>
+<h2>状態を見せるartifactは、単なる表示部品ではない</h2>
+<p>紙のcoordination mechanismでは、artifactへの書き込みがprotocol stateを保持する。バグ票へ分類・担当・処理結果が追記されると、その紙自体が次のactorへ「今どこまで来たか」を運ぶ。computational mechanismでも同じ役割が必要である。</p>
+<p>ここから、進捗表示やstatus badgeを装飾と考えない方がよい。誰が見ても同じ現在状態を読み、次の行動を選べるなら、それはcoordination artifactである。逆にUIに「処理中」としか出ず、裏でどのprotocol stateにいるのか不明なら、利用者は別チャネルで確認し始める。</p>
+<p><a href="situation-awareness.html">Situation Awareness</a>が利用者側の知覚・理解・予測を分けたのに対し、Coordination Mechanismsは、共同作業の状態をどのartifactが持ち運び、誰の行動をどう制約するかまで踏み込む。</p>
+<h2>AIエージェント設計へ移すと、agentより「受け渡しの仕組み」が見えてくる</h2>
+<p>multi-agent architectureでは、各agentの能力へ目が行きやすい。検索役、planner、critic、writer。それぞれを賢くしても、協働全体が強くなるとは限らない。SchmidtとSimoneの語彙を使うなら、見るべきものはagent間のarticulation workである。</p>
+<p>どのartifactが現在stateを保持するか。どのprotocolが次のactorを決めるか。前工程の修正がどこへ伝播するか。通常経路を外れる権限を誰が持つか。複数workflowが競合したとき何を同期するか。この部分が曖昧だと、各agentの単体accuracyが高くてもシステムは崩れる。</p>
+<p>特に、自然言語メッセージだけでagent同士をつなぐ場合、protocol stateとartifact stateが会話文へ埋もれやすい。構造化された状態を別に持ち、自然言語はその状態を更新・説明する一手段とした方が、malleabilityと監査を両立しやすい。</p>
+<h2>Situated Planningとの違い——計画を変える話から、協働依存をどう媒介するかへ</h2>
+<p><a href="situated-planning.html">Situated Planning</a>は、planが現場状況に合わせて具体化・修正されることを扱う。本稿のCoordination Mechanismsはそこへ、複数actorの相互依存をどう媒介するかという層を足す。</p>
+<p>現場がplanを変えられるだけでは、変更が他actorへ届かなければ協働は壊れる。変更後のstateをartifactへ反映し、関連するprotocolへ伝播させる必要がある。その意味でmalleabilityとlinkabilityはセットになる。</p>
+<p><a href="boundary-objects.html">Boundary Objects</a>が異なる共同体のあいだで共有物がどう機能するかを見るのに対し、Coordination Mechanismsは、そのartifactが具体的な行動順序・責任・状態遷移をどう媒介するかを細かく見る。</p>
+<h2>限界——Ariadne自体は全面的な実証済み製品ではない</h2>
+<p>論文後半では、これらの要件を満たすCSCW infrastructureとしてAriadneのnotationを提案する。しかし当時の実装はconcept demonstratorの段階で、著者自身もuser interfaceのmaterial formatは別途大きな研究課題だと認める。示されたpropositionすべてが大規模導入で定量検証されたわけではない。</p>
+<p>また事例は製造、航空、ソフトウェア開発など複数のfield studyから抽象化されているが、1990年代のCSCWを背景にしている。現代のLLM agentへ適用するときは、natural languageによる柔軟性や、確率的な実行、権限・セキュリティといった追加問題がある。</p>
+<p>それでも、protocolを完全仕様と見なさない、状態をartifactで媒介する、局所逸脱を許す、複数mechanismをlinkする、という要求は現在のworkflow設計でも古びていない。</p>
+<h2>設計に持ち帰るなら</h2>
+<p>業務フローを描いたら、task boxだけでなく、その間にある調整仕事を列挙する。誰が完了を知るのか。誰が優先順位を決めるのか。変更は誰へ伝わるのか。どの状態を共有artifactが保持するのか。通常ルールを外れるとき、どんな操作が許されるか。別システムとの状態同期は誰が担っているか。</p>
+<p>この問いを入れると、「workflowを作ったのにSlackで確認が飛び交う」理由が見えやすくなる。Slackの会話が無駄なのではなく、システムが引き受けなかったarticulation workを人が回収している可能性がある。</p>
+<h2>このアーカイブの既存記事とつなぐ</h2>
+<ul><li><a href="situated-planning.html">Situated Planning</a>——planを固定scriptではなく、現場で具体化・変更される資源として扱う。</li><li><a href="boundary-objects.html">Boundary Objects</a>——異なる共同体が同じartifactを異なる意味で使いながら協働する。</li><li><a href="coactive-design.html">Coactive Design</a>——人とAIの相互依存からObservability・Predictability・Directabilityを要求へ落とす。</li></ul>
+<h2>原文</h2>
+<p>Kjeld Schmidt & Carla Simone, “Coordination Mechanisms: Towards a Conceptual Foundation of CSCW Systems Design,” <em>Computer Supported Cooperative Work</em>, 5, 155–200, 1996.</p>
+<p><a href="https://services.carstensorensen.com/media/SchmidtSimone.pdf" target="_blank" rel="noopener">原文PDFを読む</a>　／　<a href="https://doi.org/10.1007/BF00133655" target="_blank" rel="noopener">DOI</a></p>
+</article></div></main><footer class="site-footer"><a href="../index.html">アーカイブへ戻る</a></footer>
+</body></html>
