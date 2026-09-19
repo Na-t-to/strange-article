@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>自動化は「する／しない」の二択ではない——4種類×レベルで人と機械の役割を設計する｜変な読み物置き場</title>
+<meta name="description" content="Parasuraman, Sheridan, Wickensの2000年論文を読み、自動化を情報取得・分析・意思決定・実行の4種類と段階へ分解し、人間性能への影響から配置を決める。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/types-levels-automation.html">
+<meta property="og:type" content="article"><meta property="og:title" content="自動化は「する／しない」の二択ではない——4種類×レベルで人と機械の役割を設計する"><meta property="og:description" content="取得・分析・選択・実行を別々に自動化し、workload・situation awareness・complacency・skill degradationまで含めて評価する。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/types-levels-automation.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-types-levels-automation.webp">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="4種類×レベルで自動化を設計する"><meta name="twitter:description" content="AIにどこまで任せるかを一つの自律度で決めず、仕事の段階ごとに分けて評価する。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-types-levels-automation.webp">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260919-1" defer></script>
+</head><body class="article-page" data-page="article" data-slug="types-levels-automation">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-19</p></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　HCI</p>
+<header class="article-header"><div class="tags"><span>HCI</span><span>自動化</span><span>AIエージェント</span></div><h1>自動化は「する／しない」の二択ではない——4種類×レベルで人と機械の役割を設計する</h1><p class="original-title">A Model for Types and Levels of Human Interaction with Automation</p><div class="article-meta-row"><p><strong>Raja Parasuraman / Thomas B. Sheridan / Christopher D. Wickens · 2000</strong><br>公開 2026.09.19　／　推定読了 43分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-types-levels-automation.webp" alt="山岳気象観測所で、観測、情報統合、避難経路の選択、警報の実行を別々の担当と機械が担い、工程ごとに自動化の関与量が異なる図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">「AIにどこまで任せるか」を一つの自律度で表すと、異なる仕事が一つの数字へ潰れる。検索結果を集めること、情報を要約すること、候補から一つを選ぶこと、実際に操作することでは、失敗時の意味も人間に残すべき能力も違う。Parasuraman、Sheridan、Wickensは自動化を<strong>情報取得・情報分析・意思決定／行動選択・行動実行</strong>の4種類へ分け、各種類で自動化レベルを選ぶ枠組みを示した。さらに、その選択をworkload、situation awareness、complacency、skill degradation、信頼性、失敗結果のコストから反復評価する。</p>
+<h2>「自動化レベル」という一列だけでは設計できない</h2>
+<p>自動化の議論では、人間が全部操作する状態から機械が全部行う状態までを一本の連続線で置きたくなる。論文は、この見方だけでは粗いと考える。同じシステムでも、ある機能は高度に自動化し、別の機能は人間へ残せるからである。</p>
+<p>たとえば警報システムは、センサーが大量の信号を自動取得し、異常候補を自動抽出しても、最終的な避難判断は人間に残せる。反対に、情報取得は人間が行い、取得後の計算だけを完全自動化するシステムもある。「70％自動化」と言っても、この二つは同じではない。</p>
+<p>著者らは人間の情報処理段階に対応させ、自動化対象を四つへ分ける。どこを自動化するかという<strong>type</strong>と、どの程度まで自動化するかという<strong>level</strong>を別の設計変数にする。</p>
+<h2>第一段階：Information Acquisition——何を拾い、何を人へ見せるか</h2>
+<p>information acquisitionは、環境から情報を感知し、登録し、必要なものへ注意を向ける段階である。センサーによる計測、検索結果の収集、重要項目のハイライト、一覧の並べ替えなどがここに入る。</p>
+<p>この段階の自動化では、「情報量を減らす」操作にも違いがある。ハイライトは重要候補を強調しても元データを残せる。一方、filterは候補外と判断した情報を見えなくする。後者の方が負荷は下がりやすいが、機械の判断が外れたとき、人間はそもそも見落としに気づけない。</p>
+<aside class="everyday-example"><span>原文外の補助例</span><p>法務検索で、AIが「重要そうな判例」に印を付けつつ全検索結果を残す設計と、AIが重要でないと判断した判例を最初から画面へ出さない設計を比べる。どちらも検索支援だが、後者は取得段階の自動化が強く、recallの失敗が利用者から不可視になる。</p></aside>
+<h2>第二段階：Information Analysis——集めた情報から意味を作る</h2>
+<p>information analysisは、取得した情報を統合し、推定し、予測し、要約する段階である。複数センサーを一つの状況表示へまとめる、複数資料から共通点を抽出する、将来状態を予測する、といった処理が含まれる。</p>
+<p>取得の自動化と分析の自動化を分けると、RAGの議論も整理しやすい。retrieverが正しい文書を取る能力と、generatorが取れた証拠を正しく統合する能力は別である。このアーカイブの<a href="evidence-integration-llm.html">Evidence Integration</a>が扱うのは、まさに後者に近い。</p>
+<p>分析結果だけを見せるほど人間の負荷は減るが、元情報と分析の関係を追いにくくなる。自動分析を強くするなら、必要に応じて元データへ戻れることが重要になる。</p>
+<h2>第三段階：Decision and Action Selection——候補を出すのか、一つを選ぶのか</h2>
+<p>decision automationは、候補行動を作る、順位を付ける、一つを推薦する、最終選択まで行う、といった段階である。論文では、この領域の自動化レベルを細かい段階で例示する。機械が何もしない状態から、全候補を出して人間が選ぶ、機械が一候補を提案する、機械が決めるが人間にvetoの時間を与える、機械が決めて実行後だけ人へ知らせる、といった違いがある。</p>
+<p>ここで重要なのは、候補生成と決定権を同一視しないことである。AIが強い推薦を出しても、人間が別案を選べるならdecision authorityは残っている。反対に、形式上は「承認」ボタンがあっても、情報がAIの推奨案しか表示されず、時間制約で比較不能なら、実質的な自動化レベルは高い。</p>
+<h2>第四段階：Action Implementation——決めたことを実際に起こす</h2>
+<p>action implementationは、選ばれた行動を現実のシステムへ実行する段階である。機体を操縦する、バルブを開く、注文を発注する、メールを送る、契約書を書き換える、といった操作が該当する。</p>
+<p>生成AIエージェントでは、この段階の境界が重要になる。文章案を作るだけなら分析・選択支援に近い。外部システムへ送信する、ファイルを上書きする、決済するところまで行けばaction automationである。同じ言語モデルでも、tool permissionを持つだけでリスク構造が変わる。</p>
+<p>したがって「モデルがどれくらい賢いか」だけで自動化レベルを決められない。actionの可逆性、損害、監査可能性まで見る必要がある。</p>
+<h2>四種類は、同じレベルに揃える必要がない</h2>
+<p>論文の実用上の強みは、四段階を独立に調整できる点にある。情報取得は高自動化、分析も高自動化、decisionは中程度、実行は低自動化、という組合せがありうる。逆に、人間が入力を選び、機械が高速計算し、結果を自動反映する構成もある。</p>
+<p>この分解をすると、「人間をループに入れる」という曖昧な言い方を避けられる。人間がどの段階で、何を見て、何を変えられるのかを指定できる。単に承認者を置くだけでは、人間が必要な情報を取得・理解できるとは限らない。</p>
+<h2>選んだレベルは、人間性能への影響で反復評価する</h2>
+<p>著者らのframeworkは、四種類それぞれについて一度レベルを決めて終わりではない。まず候補レベルを置き、human performance consequenceというprimary criteriaで評価し、必要なら上下させる。その後、reliabilityや結果コストといったsecondary criteriaも見て調整する。</p>
+<p>human performanceでは、特にmental workload、situation awareness、complacency、skill degradationの四点が整理される。自動化で作業量が減っても、状況理解が落ちれば異常時の介入が遅れる。便利な支援を信頼しすぎればmonitoringが弱くなる。長期間使わない技能は、いざ必要なときに発揮できない。</p>
+<p><a href="ironies-of-automation.html">Ironies of Automation</a>が、自動化後に人間へ難しい例外対応だけが残る逆説を示したのに対し、本論文はその問題を設計前の選択へ持ち込む。どの機能をどの程度自動化すると、人間にどの能力が必要になるかを先に評価する。</p>
+<h2>workloadは「低いほどよい」ではない</h2>
+<p>自動化の効果として最も分かりやすいのはworkload低減である。しかし、負荷を最低にすればよいわけではない。人間がシステム状態から切り離されるほど、突然の介入で必要な状況モデルを持てなくなる。</p>
+<p>逆に、情報を全部見せればsituation awarenessが高まるとも限らない。大量のraw dataを監視し続けると、必要な変化を見落とす。情報の整理や優先順位付けは価値がある。設計課題は「見せる／隠す」の二択ではなく、どの加工を機械に任せ、どの元情報へ人が戻れるようにするかになる。</p>
+<p>この点は<a href="situation-awareness.html">Situation Awareness</a>の記事と直結する。必要なのは画面上の情報量ではなく、利用者が現在状態を知覚し、意味を理解し、近い将来を予測できることだからである。</p>
+<h2>信頼性は平均値一個では足りない</h2>
+<p>論文はautomation reliabilityをsecondary criterionに置くが、単純な成功率だけでは扱わない。たとえば「信頼性0.997」のような値は平均であり、その周囲のvarianceが重要だと指摘する。さらに、自動化の失敗はハードウェアやソフトウェアの確率的故障だけで起きない。設計者が組み込んだ前提が、現実の運用状況で成立しない場合にも起きる。</p>
+<p>これはAI機能にそのまま当てはめやすい。平均正答率が高くても、特定の契約類型、長文、曖昧な依頼で急激に崩れるなら、利用者が信頼を校正しにくい。失敗分布と適用条件を知らずに自動実行へ進めると危険になる。</p>
+<p>また、信頼性は利用者のtrustに影響する。不安定な自動化は使われなくなることもあれば、逆に高い平均性能によって過信され、稀な失敗で大きな損害を出すこともある。</p>
+<h2>「人間が最後に承認」は万能な安全策ではない</h2>
+<p>AI導入では、リスク対策として「最終承認は人間」と書かれやすい。しかし、decisionだけ人へ残しても、それ以前のacquisitionとanalysisが完全に自動化され、元情報が見えなければ、人間は独立判断できない。</p>
+<p>たとえばAIが100件の資料から3件だけを選び、要約し、一つの結論を推薦する。人間にあるのが「承認／却下」だけなら、形式的にはdecision authorityがある。一方、選外資料や根拠箇所へ戻れず、時間もなければ、承認はAI判断の追認になりやすい。</p>
+<p>人間の役割を残すなら、その役割に必要なinformation acquisitionとanalysisへのアクセスも残す必要がある。このつながりを四段階の分解で確認できる。</p>
+<h2>adaptive automation——状況でレベルを変えるという選択肢</h2>
+<p>論文は固定的なlevelだけでなくadaptive automationにも触れる。workload、task状態、system状態などに応じて、自動化レベルを動的に変える考え方である。</p>
+<p>ただし、自動化が突然権限を取り上げたり返したりすると、利用者が現在の役割を理解できなくなる。切替条件、状態表示、引継ぎ時間、練習機会まで必要になる。単に「難しい時だけ人へ戻す」とすると、Ironies of Automationの問題へ戻る。</p>
+<h2>AIエージェントへ移すなら「能力」より「権限表」にする</h2>
+<p>現在のagent設計へ持ち込むなら、まず一つの「自律度」をやめ、機能ごとの権限表を作るとよい。検索候補の収集、資料の除外、要約、法的論点の抽出、結論候補の推薦、外部送信、ファイル更新などを並べ、各行について誰が実行・確認・取消できるかを決める。</p>
+<p>次に、人間が残された役割を本当に果たせるかを見る。承認者に必要な原情報は見えるか。AIの推論が間違ったとき別案を作れるか。自動実行を止める時間があるか。長期利用で技能が失われないか。ここまで見て初めて「human-in-the-loop」が設計になる。</p>
+<h2>限界——最適な組合せを自動計算する理論ではない</h2>
+<p>著者ら自身、各human performance costをどう重み付けするかは未解決だと述べる。workload低減の利益とsituation awareness低下の損失を何対何で比較するかは、対象業務と事故コストで変わる。また、情報取得・分析については当時の実証研究が十分でなく、技術進歩によってtaxonomyの具体的段階も更新が必要になる。</p>
+<p>したがってこのframeworkは「レベル6が最適」と答える計算式ではない。設計者が、何を自動化したかを明示し、影響を種類ごとに検査するための分解表である。</p>
+<h2>設計に持ち帰るなら</h2>
+<p>自動化要件を書くとき、「AIが処理する」で止めない。取得、分析、選択、実行へ分け、それぞれで機械が何をするか、人が何を見られるか、どこで介入できるかを記述する。次にworkload、situation awareness、complacency、skill degradation、reliability、失敗時コストで一段ずつ見直す。</p>
+<p>自動化の価値は、機械へ渡した仕事量では測れない。人と機械を合わせた全体が、平常時だけでなく失敗時にも機能する配置になっているかで決まる。</p>
+<h2>このアーカイブの既存記事とつなぐ</h2>
+<ul><li><a href="ironies-of-automation.html">Ironies of Automation</a>——自動化後に人間へ残る監視・異常対応の逆説を扱う。</li><li><a href="situation-awareness.html">Situation Awareness</a>——監視者が知覚・理解・予測を維持できるかを分ける。</li><li><a href="intelligibility-accountability.html">IntelligibilityとAccountability</a>——システムが何を知り、どう解釈し、何をするかを利用者へ見せる。</li><li><a href="coactive-design.html">Coactive Design</a>——自律度ではなく相互依存から人とagentの役割を設計する。</li></ul>
+<h2>原文</h2>
+<p>Raja Parasuraman, Thomas B. Sheridan & Christopher D. Wickens, “A Model for Types and Levels of Human Interaction with Automation,” <em>IEEE Transactions on Systems, Man, and Cybernetics—Part A: Systems and Humans</em>, Vol. 30, No. 3, 2000, pp. 286–297.</p>
+<p><a href="https://www.researchgate.net/publication/11596569_A_model_for_types_and_levels_of_human_interaction_with_automation" target="_blank" rel="noopener">原文全文を読む</a>　／　<a href="https://doi.org/10.1109/3468.844354" target="_blank" rel="noopener">DOI</a></p>
+</article></div></main><footer class="site-footer"><a href="../index.html">アーカイブへ戻る</a></footer>
+</body></html>
