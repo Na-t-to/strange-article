@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>要求を固めてから設計しない——Twin Peaksで要求とアーキテクチャを同時に育てる｜変な読み物置き場</title>
+<meta name="description" content="Bashar Nuseibehの2001年論文を読み、要求とソフトウェアアーキテクチャを順番に固定するのではなく、相互制約として反復的に具体化するTwin Peaksを整理する。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/twin-peaks-requirements-architecture.html">
+<meta property="og:type" content="article"><meta property="og:title" content="要求を固めてから設計しない——Twin Peaksで要求とアーキテクチャを同時に育てる"><meta property="og:description" content="要求が設計を制約し、設計候補が要求の現実性と意味を変える。その往復を前倒しする開発モデルを読む。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/twin-peaks-requirements-architecture.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-twin-peaks.webp">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Twin Peaksで要求とアーキテクチャを同時に育てる"><meta name="twitter:description" content="要求→設計の一方向をやめ、両方を少しずつ具体化して相互制約を早く発見する。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-twin-peaks.webp">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260919-1" defer></script>
+</head><body class="article-page" data-page="article" data-slug="twin-peaks-requirements-architecture">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-19</p></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　要求工学</p>
+<header class="article-header"><div class="tags"><span>要求工学</span><span>ソフトウェア設計</span><span>仕様設計</span></div><h1>要求を固めてから設計しない——Twin Peaksで要求とアーキテクチャを同時に育てる</h1><p class="original-title">Weaving Together Requirements and Architectures</p><div class="article-meta-row"><p><strong>Bashar Nuseibeh · 2001</strong><br>公開 2026.09.19　／　推定読了 36分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-twin-peaks.webp" alt="造船所で、航路や積荷条件を検討する人々と船体構造を設計する技術者が、模型と図面を往復させながら同じ船を具体化していく図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">要求仕様を十分に固めてから、設計へ渡す。工程としては分かりやすい。しかし、どの要求が現実的かは設計候補を見ないと分からず、どのアーキテクチャが適切かは要求の優先順位を知らないと決められない。Bashar NuseibehのTwin Peaksは、この相互依存を工程上の例外として扱わない。<strong>要求とアーキテクチャを同じ時期に、粗い粒度から細かい粒度へ並行して具体化する</strong>。設計を始めることを「要求分析の終了」と見なさず、設計候補を使って要求そのものを学び直すモデルである。</p>
+<h2>問題は「どちらから始めるか」という二択にある</h2>
+<p>Nuseibehが出発点に置くのは、要求から始めるか、アーキテクチャから始めるか、という古典的な分業である。要求先行なら、分析担当が要求文書を作り、設計担当がそれを受け取る。アーキテクチャ先行なら、既存基盤や技術方針が先に決まり、利用者の要求はその枠へ押し込まれる。</p>
+<p>前者では、後工程へ渡すために要求を早い段階で「凍結」しやすい。ところが実際には、プロトタイプを見て初めて利用者が希望を言語化できることもある。性能・安全・運用コストのような非機能要求は、具体的な構成案がなければ実現可能性を評価しにくい。要求文だけを磨いても、技術上の選択肢との接触が遅ければ、後で大きく書き換わる。</p>
+<p>後者では逆の問題が起きる。既存のアーキテクチャが強すぎると、利用者が本来必要としていたことより、「今の構成で作りやすい機能」が要求として残りやすい。技術制約は重要だが、制約がいつの間にか目的へ化ける。</p>
+<h2>Twin Peaksは、二つを混ぜるモデルではない</h2>
+<p>Twin Peaksという名前は、requirementsとarchitectureという二つの「峰」を並べる図から来る。重要なのは、両方を同時に扱うからといって、問題と解決を同じ記述へ溶かすわけではない点である。論文は、problem structure / specificationとsolution structure / specificationの区別を保ちながら、両方を反復的に詳細化すると説明する。</p>
+<p>最初から完全な要求仕様や完全なアーキテクチャを作らない。まず粗い要求と粗い構成案を置く。構成案を検討すると、実現困難な要求、想定外のコスト、再利用できる既存部品、逆に新たに可能になる機能が見える。その知見を要求へ戻す。更新された要求を受けてアーキテクチャも変える。この往復を繰り返し、両者の解像度を上げる。</p>
+<p>したがってTwin Peaksの単位は「要求工程が終わった／設計工程が始まった」ではなく、<strong>要求と設計の両方について、今どの程度の確度で何が分かっているか</strong>になる。</p>
+<aside class="everyday-example"><span>原文外の補助例</span><p>写真共有サービスを考える。要求に「アップロード直後に全端末へ反映」と書いた段階では、その言葉だけを精密化できる。ところが同期方式を検討すると、オフライン端末、通信量、競合、削除伝播が問題になる。そこで「何秒以内か」「オフライン端末は復帰後でよいか」「競合時にどちらを優先するか」という要求が新たに必要になる。アーキテクチャ検討が要求の不足を見つけた例である。</p></aside>
+<h2>設計候補は、要求を検証するための観測装置になる</h2>
+<p>論文が扱う一つ目の管理課題は、Boehmが呼んだ IKIWISI、つまり「見れば分かる」である。利用者が最初から完全な要求を持っているとは限らない。モデルやプロトタイプに触れて、初めて「これは違う」「本当に欲しかったのはこっちだ」と分かる。</p>
+<p>Twin Peaksでは、解決空間の探索を後回しにしない。早い段階で設計候補やプロトタイプを出し、その反応を要求の入力へ戻す。ここでプロトタイプは、完成品の縮小版というより、<strong>要求を発見するための実験</strong>として働く。</p>
+<p>この考え方は<a href="inquiry-based-requirements.html">Inquiry-Based Requirements Analysis</a>と補完関係にある。Inquiry-Based Requirementsは質問やシナリオで隠れた前提を掘り出す。Twin Peaksは、設計候補そのものを新しい問いの発生源にする。</p>
+<h2>COTSでは「要求に合う部品を探す」だけでは終わらない</h2>
+<p>二つ目の論点はCommercial Off-The-Shelf、既製ソフトウェアや既存部品の利用である。既製品を使う開発では、要求を全部決めた後で製品を探すと、要求に完全一致するものが見つからない。現実には、製品の能力・制約・価格を見ながら、どの要求を維持し、どこを変更するかを判断する。</p>
+<p>Nuseibehは、この状況を要求とアーキテクチャの反復的なmatchingとして扱う。既製品を見た結果、要求を狭める場合もあれば、アーキテクチャ側で吸収する場合もある。逆に、重要要求を守るために既製品を捨てる判断もある。</p>
+<p>現在なら、クラウドサービス、外部API、基盤モデル、既存の検索エンジン、SaaS連携などで同じ構造が出る。たとえば「回答根拠を一次資料へ完全追跡できる」という要求が強いなら、便利な要約APIを採用できないかもしれない。反対に、採用予定の基盤が提供するtool callingやstructured outputを見て、当初想定していなかったUIを要件へ追加することもある。</p>
+<h2>既存アーキテクチャは、問題の切り方まで変える</h2>
+<p>論文にはさらに踏み込んだ指摘がある。既存アーキテクチャは、実装方法だけでなく、開発者が「問題をどう分けるか」に影響しうる。既存システムのモジュール境界やデータ構造を見ていると、その境界に沿って要求を整理したくなる。</p>
+<p>これは便利でもある。既存の安定した構造が、問題を扱いやすい単位へ分ける手掛かりになる。一方、その構造が歴史的偶然でできているなら、現実の業務概念を歪める。論文は、場合によっては既存アーキテクチャからproblem frameを逆向きに読み解く必要があると述べる。</p>
+<p><a href="information-hiding.html">Information Hiding</a>が「何が変わりやすいか」をモジュール境界へ使うなら、Twin Peaksは、その境界を要求側の問題構造と照合し続ける。技術の区切りと業務の区切りが一致しているかを確認する仕事になる。</p>
+<h2>rapid changeに対して、変更を「後工程の事故」にしない</h2>
+<p>三つ目の管理課題はrapid changeである。Twin Peaksは細かい単位で反復するため、要求変更を「一度完成した仕様への例外」として扱わない。要求とアーキテクチャの双方が更新される前提で、変更の影響を小さなサイクルで確認する。</p>
+<p>ただし、変更に強いという言葉を「何でも後から変えられる」と読んではいけない。論文が最後に残す重要な研究課題は、どのアーキテクチャが要求変動に対して安定するのか、どの要求が比較的安定するのか、どの変更が起こりやすいのか、影響をどう最小化するのか、である。</p>
+<p>つまりTwin Peaksは変更コストを消す理論ではない。早い段階から相互制約を見せ、<strong>どこを安定させ、どこを可変に残すべきかを学ぶ機会を増やす</strong>モデルである。</p>
+<h2>AI機能開発では、モデル能力を要求発見へ使える</h2>
+<p>生成AI機能では、仕様を先に完全固定しにくい。モデルがどの粒度で安定して分類できるか、どこから回答が揺れるか、どのツール呼び出しが可能かを試さないと、製品として妥当な要求水準を置きにくいからである。</p>
+<p>ここでTwin Peaksを使うなら、最初の要求を「最終回答は正確である」とだけ置いて設計へ渡さない。小さなevaluation setと仮のarchitectureを早く作り、retriever・reranker・generator・verificationの構成を試す。失敗を見て「正確さ」の中身を、資料到達、証拠十分性、引用追跡、停止判断などへ分解する。分解された要求に合わせてarchitectureを変える。</p>
+<p>逆方向もある。architecture側に検証器を追加したことで、従来は測れなかった「不十分な証拠では回答しない」を要求として明示できるようになる。設計が要求の表現能力を増やす。</p>
+<h2>ただし、実装が要求を乗っ取らないようにする</h2>
+<p>設計を早く入れると、作りやすい案へ要求が引っ張られる危険も増える。試作品が具体的であるほど、関係者はその形を前提に議論しやすい。Twin Peaksを「コードを書いてから要件を考える」と読むと、要求工学を弱める。</p>
+<p>防ぐには、各反復で少なくとも三つを分けて残すとよい。第一に、現実世界で達成したい状態。第二に、その状態を支えるために採用した設計判断。第三に、その設計判断が置いている仮定である。設計候補から要求を変える場合も、「技術的に難しいから」だけで終わらせず、何を諦め、何を守ったかを記録する。</p>
+<p>この点は<a href="requirements-traceability.html">Requirements Traceability</a>と接続する。要求と設計が頻繁に往復するほど、なぜその要求になったか、どの設計判断が変更理由だったかを追えることが重要になる。</p>
+<h2>工程表ではなく、二種類の不確実性を同時に減らすモデルとして読む</h2>
+<p>Twin Peaksの図だけを見ると、「要件定義と設計を並行でやる」という工程改善に見える。より使いやすい読み方は、二種類の不確実性を同時に下げるモデルと考えることである。</p>
+<p>要求側の不確実性は、利用者が何を必要とするか、どの品質が重要か、どの例外があるか。アーキテクチャ側の不確実性は、どの構成で実現できるか、どの制約が支配的か、どの選択が将来変更を難しくするか。片方だけを先に細かくしても、もう片方との接触時に崩れる。粗い段階で接触させ、崩れ方を小さく観測する方がよい。</p>
+<h2>限界——Twin Peaksは、反復の具体的な停止条件までは与えない</h2>
+<p>原論文は短いconceptual articleであり、要求とアーキテクチャをどの頻度で往復するか、どの成果物を必須にするか、いつ十分に安定したと判断するかを厳密な手順として規定しない。特定のプロジェクトで効果が何％上がる、といった比較実験でもない。</p>
+<p>また、要求と設計が相互依存することを認めても、意思決定権や組織構造の問題は残る。要求担当とアーキテクトが別組織で、変更コストを互いに押し付けるなら、図だけをTwin Peaksにしても往復は起きない。</p>
+<p>したがって実務では、同期する粒度、判断ログ、評価データ、変更権限まで設計する必要がある。Twin Peaksはそれらを置く理由を与えるが、完成した運用手順そのものではない。</p>
+<h2>設計に持ち帰るなら</h2>
+<p>要求文書を「設計開始の許可証」にしない。重要要求ごとに、早い段階でその要求を揺さぶる設計候補を一つ置く。設計候補から見つかった制約を、単なる技術メモではなく要求の前提・優先順位へ戻す。反対に、要求変更がarchitectureのどの判断を壊すかを追う。</p>
+<p>特に未知の多い機能では、最初の反復の目的を完成度ではなく学習量に置ける。要求とarchitectureの双方が一段具体化したなら、その試作は失敗ではない。</p>
+<h2>このアーカイブの既存記事とつなぐ</h2>
+<ul><li><a href="requirements-traceability.html">Requirements Traceability</a>——要求が仕様になる前の由来と、仕様後の設計・実装への追跡を残す。</li><li><a href="inquiry-based-requirements.html">Inquiry-Based Requirements Analysis</a>——質問とシナリオで要求の前提を掘り出す。</li><li><a href="information-hiding.html">Information Hiding</a>——変更しやすさをモジュール境界へ落とす。</li><li><a href="wicked-problems.html">Wicked Problems</a>——問題定義と解決案が相互に変わる状況を、より一般的な問題設定の側から捉える。</li></ul>
+<h2>原文</h2>
+<p>Bashar Nuseibeh, “Weaving Together Requirements and Architectures,” <em>Computer</em>, Vol. 34, No. 3, 2001, pp. 115–119.</p>
+<p><a href="https://www.researchgate.net/publication/2955399_Weaving_together_requirements_and_architectures" target="_blank" rel="noopener">原文全文を読む</a>　／　<a href="https://doi.org/10.1109/2.910904" target="_blank" rel="noopener">DOI</a></p>
+</article></div></main><footer class="site-footer"><a href="../index.html">アーカイブへ戻る</a></footer>
+</body></html>
