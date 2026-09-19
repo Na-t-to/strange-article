@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>似ている記憶より、今の目的に合う記憶を取る——STITCHでAgent Memoryを文脈化する｜変な読み物置き場</title>
+<meta name="description" content="ACL 2026 FindingsのSTITCHを読み、長期agent memoryを意味類似だけで検索せず、thematic scope・event type・key entity typeというcontextual intentで絞る設計を整理する。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/stitch-contextual-intent.html">
+<meta property="og:type" content="article"><meta property="og:title" content="似ている記憶より、今の目的に合う記憶を取る——STITCHでAgent Memoryを文脈化する"><meta property="og:description" content="同じホテル、同じ価格、同じ人名が何度も出る長期履歴で、semantic similarityだけではないretrieval cueを作る。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/stitch-contextual-intent.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-stitch-contextual-intent.webp">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="STITCHでAgent Memoryを文脈化する"><meta name="twitter:description" content="長期履歴から『似た過去』ではなく『現在の目的に適合する過去』を取る。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-stitch-contextual-intent.webp">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260919-1" defer></script>
+</head><body class="article-page" data-page="article" data-slug="stitch-contextual-intent">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-19</p></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　AIエージェント</p>
+<header class="article-header"><div class="tags"><span>AIエージェント</span><span>RAG</span><span>メモリ設計</span></div><h1>似ている記憶より、今の目的に合う記憶を取る——STITCHでAgent Memoryを文脈化する</h1><p class="original-title">Grounding Agent Memory in Contextual Intent</p><div class="article-meta-row"><p><strong>Ruozhen Yang / Yucheng Jiang / Yueqi Jiang / Priyanka Kargupta / Yunyi Zhang / Jiawei Han · 2026</strong><br>公開 2026.09.19　／　推定読了 41分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-stitch-contextual-intent.webp" alt="宿駅の荷物庫で、同じ形の鞄が多数並ぶ中、係員が旅程区間・行為・物の種類を表す複数の札を手掛かりに現在の目的へ合う荷物だけを取り出す図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">長期対話の記憶検索で厄介なのは、過去を忘れることだけではない。<strong>よく似ているが、今とは別の目的で出てきた情報を思い出してしまう</strong>ことがある。旅行計画で同じホテル名がDay 1とDay 2に現れ、価格も複数回更新されたなら、「Apollo Hotelの価格」というsemantic similarityだけでは正しい記憶を選べない。STITCHは各履歴へ、現在のテーマ、行為の種類、重要なentity typeを構造化したcontextual intentを付ける。検索時には意味の近さだけでなく、その構造が現在の目的と適合するかを先に見る。</p>
+<h2>長期memoryの問題を「保存容量」から「取り違え」へずらす</h2>
+<p>agent memoryの研究では、長い履歴をどう圧縮するか、context windowを越えた情報をどう保存するかが中心になりやすい。STITCHの出発点は少し違う。履歴を保存できても、同じentityや似た事実が別々のgoalの下で繰り返されると、retrievalが文脈違いの証拠を返す。</p>
+<p>たとえば旅行agentが三日間の旅を組む途中で、同じホテルを複数日について検討する。Day 1では245ドル、Day 2では別価格、途中で予約方針も変わる。「そのホテルはいくらだった？」という問い合わせに対し、embeddingはどの価格も高い類似度を付けうる。必要なのは単語の近さではなく、どの日の計画、どの行為、どの属性について問われているかである。</p>
+<p>著者らはこれをcontextual interferenceとして扱う。memory unitの内容自体は正しくても、現在のgoalと違う履歴が混ざれば最終回答は誤る。</p>
+<h2>STITCHが持つ三つのretrieval cue</h2>
+<p>STITCHは、trajectoryの各stepへcontextual intent tupleを付ける。構成要素は三つある。<strong>thematic scope</strong>、<strong>event type</strong>、<strong>key entity types</strong>である。</p>
+<p>thematic scopeは、そのstepが属する現在のgoal segmentを表す。論文の旅行例なら「Day-1 plan」のようなまとまりである。同じhotel bookingでも、どの旅程部分を進めているかを分ける。</p>
+<p>event typeは、そのstepで何をしているかを表す。searching、comparing、bookingのように、特定のsegmentを越えて再利用できる行為の型である。STITCHは固定taxonomyを事前に与えず、履歴から動的にlabelを作る。</p>
+<p>key entity typesは、現在のgoal達成に必要な属性の種類である。Hotel、Price、Ratingのような型が、どの細部を表面へ出すべきかを支える。固有名詞そのものだけでなく、何の属性として扱っているかを残す。</p>
+<h2>「Day 1のホテル予約で見た価格」までmemoryへ埋め込む</h2>
+<p>論文のFigure 2では、「Book it at price $245 for that day」のように、単体では参照先が曖昧なstepを扱う。STITCHは周辺履歴と構造labelを使ってcoreferenceを解き、「Day 1のApollo Hotelを245ドルで予約する」といったcanonicalなcontentへ解消する。</p>
+<p>その上でraw step、contextual intent、canonical summaryを一つのMemory Snippetとして保存する。つまりmemoryは文章断片だけでなく、<strong>その文章がどの目的のどの操作として生まれたか</strong>を一緒に持つ。</p>
+<p>これは単なるmetadata付与より一歩踏み込む。metadataがretrieval時のfilterとして実際に使われ、semantic rankingの前に検索空間を狭めるからである。</p>
+<h2>検索時は「構造が合うもの」を先にし、その後で意味類似を見る</h2>
+<p>queryを受けたSTITCHは、query側についてもtargetとなるscope・event・entity typeのfilter configurationを推定する。次にmemory snippetがいくつのlabel条件へ一致するかを使って優先順位を付ける。著者らはこれをLabel Density Rankingと呼ぶ。</p>
+<p>構造上の一致度が同じmemory同士で初めてsemantic similarityを使う。つまりembedding similarityを捨てるのではない。<strong>意味の近さへ入る前に、現在の目的と整合する候補集合を作る</strong>。</p>
+<p>この順序が重要である。「Apollo Hotel」「price」という語が完全一致しても、Day 2のbooking memoryならDay 1の質問には低く扱う。逆に、表現が少し違っていても同じscopeとeventに属すれば候補として残りやすい。</p>
+<h2>CAME-Benchは、似た事実を意図的に混ぜてmemoryを試す</h2>
+<p>著者らはCAME-Benchというbenchmarkも作る。目的は、長いgoal-oriented trajectoryの中で、繰り返しentityやinterleaved goalsがあるときに正しいcontextを取れるかを見ることにある。</p>
+<p>trajectoryは旅行計画やdebateなど複数domainを持ち、単純なturn-takingや話題ごとの完全分離に寄らない。question typeも、state update、context-aware factual recall、multi-hop reasoning、information synthesisへ分かれる。長さについてSmall、Medium、Largeを置き、contextが増えたときの劣化を見る。</p>
+<p>このbenchmark設計自体に価値がある。memory systemを「昔の事実を覚えていたか」だけで評価すると、near-duplicateな情報の選別能力が見えない。正しい記憶が保存されているのに、別goalの記憶を取る失敗を独立して測る必要がある。</p>
+<h2>長くなるほど、構造化したintentの差が出る</h2>
+<p>CAME-BenchでSTITCHはSmallのMacro-F1 0.844、Medium 0.682、Large 0.592だった。long-context modelやembedding RAG、structured-memory baselineは、履歴が長くなるとより大きく崩れる。論文全体ではCAME-BenchとLongMemEvalで強いbaselineを最大35.6%上回ったと報告する。</p>
+<p>一方、Smallではlong-context modelも競争力がある。履歴が短く、似た情報の干渉が少ないなら、複雑なmemory structureの価値は小さくなる。STITCHの利点は「どんな会話でも常に構造化が勝つ」ではなく、長期化・反復・goalの交差によってsemantic similarityだけでは区別しにくくなる場面で強く出る。</p>
+<p><a href="lost-in-the-middle.html">Lost in the Middle</a>が、必要情報がcontext内に存在しても位置によって利用性能が変わることを示したのに対し、STITCHはcontextを外部memoryへ移した後のretrieval interferenceを扱う。</p>
+<h2>ablationではthematic scopeが特に大きい</h2>
+<p>構成要素を外すablationも分かりやすい。Large subsetのMacro-F1はfull STITCHで0.592。thematic scopeを外すと0.213、event typeを外すと0.273、key entity typeを外すと0.458、coreference処理を外すと0.404へ下がる。</p>
+<p>少なくともCAME-Benchでは、「何について話しているか」というgoal segmentの境界が大きな役割を持つ。単語やentityの種類を増やすだけでは、似た話題が何度も出る履歴を分けきれない。</p>
+<p>ここは<a href="context-interaction.html">コンテキストは相互作用の途中で作られる</a>と並べると面白い。Dourishはcontextを固定属性の袋として考える危険を指摘した。STITCHは別の立場から、goalの移り変わりを履歴中で動的にsegmentし、retrieval cueとして使う。両者を同一視はできないが、「現在の意味は属性の単純一致だけでは決まらない」という問題意識は接続する。</p>
+<h2>粒度が粗すぎても、細かすぎても壊れる</h2>
+<p>STITCHの興味深い限界は、contextを構造化すれば終わりではない点にある。thematic scopeのwindowを大きくしすぎると、別episodeが同じsegmentへ入り、near-duplicate factを区別しにくくなる。反対に小さすぎるとtrajectoryが細切れになり、turnをまたぐcoreferenceやmulti-hop reasoningが壊れる。</p>
+<p>論文のstress testでは、defaultを50 turnsとし、10 turnsのover-segmentationと100 turnsのunder-segmentationを比較する。大きすぎるwindowはcontext-aware factual recallを特に傷つけ、小さすぎるwindowはmulti-hop reasoningをより傷つけた。</p>
+<p>これはmemory schemaの粒度を設計変数として扱う理由になる。「細かくタグ付けするほど良い」ではない。検索時に必要な区別を保ちつつ、推論に必要な連続性を切らない粒度が要る。</p>
+<h2>event typeも、細かすぎるとsynthesisを邪魔する</h2>
+<p>event taxonomyにも同じtrade-offがある。Check RatesとBook Hotelのような細かいevent typeは特定のlookupには効く。しかし、「この旅で検討した宿泊候補をまとめて」のようなsynthesisでは、複数eventを横断して集約する必要がある。</p>
+<p>著者らはflat taxonomyではこの両立が難しく、hierarchical structureが将来課題になると述べる。特定事実検索と広域要約を同じmemory indexで支えるなら、細粒度labelと上位概念の両方が必要になる。</p>
+<p><a href="formal-ontology-information-systems.html">Formal Ontology</a>で扱ったtype / roleや階層設計とは目的が違うが、label granularityが後続操作を左右するという点では接続できる。</p>
+<h2>query側のintent推定を間違えると、正しいmemoryを消してしまう</h2>
+<p>STITCHのfilterは強力だが、filter条件そのものを間違えると危険である。error analysisでは、questionから導けないlabelをもっともらしく選んでしまうNon-Inducible Labelが78.4%、抽象度が粗すぎる・細かすぎるGranularity Mismatchが71.8%のjudged casesで観測された。複数failureが同一caseへ付くため合計は100%を超える。</p>
+<p>強いfilterは、noiseを減らす一方でrelevant evidenceを検索前に落とせる。したがってcontextual intentは「正解ラベル」として扱うより、retrieval priorとして扱う方が安全である。著者ら自身も、hierarchical labelやquery時のrefinementを今後の方向として挙げる。</p>
+<h2>ingestion時に計算し、query時のコストを下げる</h2>
+<p>STITCHは履歴が来るたびにLLMを使ってscope・event・entity type・summaryを作るため、embeddingだけを保存する方式よりingestion costが高い。論文はこのコストを明示的なtrade-offとして扱う。</p>
+<p>一方、query時には構造filterで探索範囲を絞れるため、強いstructured-memory baselineより少ないquery tokenで済む設定がある。長期運用するagentなら、保存時に多く計算して検索時を軽くする設計が合理的な場合がある。</p>
+<p>これはRAGのindexingでも同じである。document ingestion時に法域、資料種別、時点、対象制度、条文参照などを高品質に付ければ、query時の探索を狭められる。ただしmetadata生成誤りが長期間残るので、修正可能性も必要になる。</p>
+<h2>法務・調査agentへ持ち込むなら「同じ法令名」を区別する</h2>
+<p>長期の法務調査でも、同じ法令・同じ会社名・同じ契約類型が別案件、別時点、別論点で何度も出る。semantic similarityだけでmemoryを取ると、前案件の結論や古い時点の前提が混ざりやすい。</p>
+<aside class="everyday-example"><span>原文外の補助例</span><p>あるagentが数週間にわたり「個人情報保護法」について複数案件を扱うとする。今は委託先監督を調べているのに、過去の越境移転案件のメモが「個人情報保護法」「第三者」「提供」という語の近さで上位に来るかもしれない。案件scope、調査行為、必要entity typeを分けて持てば、同じ法令名でも現在の調査へ必要なmemoryを優先しやすい。</p></aside>
+<p>ここで重要なのは、STITCHの三要素をそのまま法務へコピーすることではない。どのcontextual cueが実際に誤検索を減らすかをdomainごとに検証する必要がある。案件、法域、時点、論点、資料種別、task stageなど候補は多い。</p>
+<h2>限界——synthetic benchmarkとLLM-generated schemaの上に立つ</h2>
+<p>CAME-Benchはclosed-worldのsynthetic benchmarkで、Travel PlanningとDebateを中心に作られている。個人データを避けられ、干渉条件を制御しやすい利点がある一方、現実の企業agentが持つ権限変更、組織語彙、誤記録、削除要求、長期の制度変更まで再現しているわけではない。</p>
+<p>またSTITCHはcontextual intent構築そのものに複数のLLM callを使う。間違ったsegmentやlabelが保存される可能性があり、buffered updateは新しいevent typeの反映に遅延を生む。細粒度taxonomyはbroad synthesisを苦手にする。著者らはこれらをlimitationsとして明記する。</p>
+<p>したがって「embedding検索を構造filterへ置き換えれば解決」と読むより、memory retrievalには意味類似以外の変数が必要で、その変数にも誤り・粒度・更新コストがある、と読む方が実務的である。</p>
+<h2>設計に持ち帰るなら</h2>
+<p>長期memoryの評価datasetを作るとき、同じentity・似た事実を異なるgoalで意図的に再登場させる。正しい記憶が保存されているかだけでなく、現在のgoalと違う記憶を拾わないかを見る。retrieval logにはsemantic scoreだけでなく、scopeやtask stageなどの構造一致も残す。</p>
+<p>そしてlabel設計そのものを評価対象にする。scopeの境界は適切か。細かすぎるevent typeがsynthesisを阻害していないか。queryから推測できないlabelで先にfilterしていないか。memory品質は「何を覚えるか」と同じくらい、「何を思い出す条件にするか」で決まる。</p>
+<h2>このアーカイブの既存記事とつなぐ</h2>
+<ul><li><a href="context-interaction.html">コンテキストは相互作用の途中で作られる</a>——固定属性だけでcontextを扱う限界をHCI側から考える。</li><li><a href="lost-in-the-middle.html">Lost in the Middle</a>——長いcontext内にある情報を利用できることと、context windowへ入ることを分ける。</li><li><a href="semantic-entropy.html">Semantic Entropy</a>——表現の類似ではなく意味レベルの違いを束ね、不確実性を測る。</li><li><a href="information-foraging.html">Information Foraging</a>——どの情報源を掘り、いつ別のpatchへ移るかを探索コストから考える。</li></ul>
+<h2>原文</h2>
+<p>Ruozhen Yang, Yucheng Jiang, Yueqi Jiang, Priyanka Kargupta, Yunyi Zhang & Jiawei Han, “Grounding Agent Memory in Contextual Intent,” <em>Findings of the Association for Computational Linguistics: ACL 2026</em>, pp. 12008–12042.</p>
+<p><a href="https://aclanthology.org/2026.findings-acl.584/" target="_blank" rel="noopener">ACL Anthologyで読む</a>　／　<a href="https://aclanthology.org/2026.findings-acl.584.pdf" target="_blank" rel="noopener">PDF</a></p>
+</article></div></main><footer class="site-footer"><a href="../index.html">アーカイブへ戻る</a></footer>
+</body></html>
