@@ -1,0 +1,50 @@
+[
+  {
+    "slug": "benchmarking-legal-rag",
+    "title": "正解データの方が間違っていることもある——Legal RAGを法域横断調査で評価する",
+    "originalTitle": "Benchmarking Legal RAG: The Promise and Limits of AI Statutory Surveys",
+    "authors": ["Mohamed Afane", "Emaan Hariri", "Derek Ouyang", "Daniel E. Ho"],
+    "year": 2026,
+    "publishedAt": "2026-09-20",
+    "tags": ["法務×AI", "RAG", "AI評価"],
+    "readingMinutes": 44,
+    "sourceUrl": "https://arxiv.org/html/2603.03300",
+    "excerpt": "1,647問の州法surveyでLegal RAGを比較すると、検索・推論の失敗だけでなく、専門家が作ったgold data自体の欠落も見つかる。AIと正解が食い違った地点を再調査可能な評価対象へ変える。",
+    "image": "assets/visual-benchmarking-legal-rag.svg",
+    "imageAlt": "多数の州を表す区画を一つずつ調べる法令調査隊が、各区画の法令冊子と中央の比較台帳を照合し、台帳に載っていない有効な規定を別色で発見する図版",
+    "imageCaption": "図版：自動生成",
+    "featured": true
+  },
+  {
+    "slug": "information-hiding-parnas",
+    "title": "処理手順で分けると、変更が全体へ漏れる——ParnasのInformation Hidingで「変わる判断」を囲う",
+    "originalTitle": "On the Criteria To Be Used in Decomposing Systems into Modules",
+    "authors": ["D. L. Parnas"],
+    "year": 1972,
+    "publishedAt": "2026-09-20",
+    "tags": ["仕様設計", "ソフトウェア設計", "概念モデリング"],
+    "readingMinutes": 39,
+    "sourceUrl": "https://fermatslibrary.com/s/on-the-criteria-to-be-used-in-decomposing-systems-into-modules",
+    "excerpt": "moduleを処理工程ではなく、変更されそうな設計判断の周囲に置く。KWICを二通りに分け、同じ実行結果でも変更伝播・独立開発・理解コストが変わる理由を示す1972年の古典。",
+    "image": "assets/visual-information-hiding-parnas.svg",
+    "imageAlt": "同じ集合住宅を左右に分け、左では配管が各室を横断して変更が全体へ波及し、右では設備シャフトの内部に配管方式を閉じ込めて各室から隠している図版",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
+    "slug": "franq-faithfulness-factuality",
+    "title": "根拠に書いていないからといって、事実でないとは限らない——FRANQでFaithfulnessとFactualityを分ける",
+    "originalTitle": "Faithfulness-Aware Uncertainty Quantification for Fact-Checking the Output of Retrieval-Augmented Generation",
+    "authors": ["Ekaterina Fadeeva", "Aleksandr Rubashevskii", "Dzianis Piatrashyn", "Roman Vashurin", "Shehzaad Dhuliawala", "Artem Shelmanov", "Timothy Baldwin", "Preslav Nakov", "Mrinmaya Sachan", "Maxim Panov"],
+    "year": 2026,
+    "publishedAt": "2026-09-20",
+    "tags": ["LLM信頼性", "RAG", "AI評価"],
+    "readingMinutes": 40,
+    "sourceUrl": "https://aclanthology.org/2026.findings-acl.338/",
+    "excerpt": "retrieved contextへの忠実さと、現実についての正しさを別の変数として扱う。claimがretrievalに依存する場合と内部知識へ依存する場合で不確実性推定を切り替え、RAGの誤り原因を分解する。",
+    "image": "assets/visual-franq-faithfulness-factuality.svg",
+    "imageAlt": "博物館で、手元の図鑑に書かれた特徴と目の前の実物標本を別々に照合し、資料への一致と現実への一致を二系統で確認する図版",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  }
+]
