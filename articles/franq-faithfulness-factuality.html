@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>根拠に書いていないからといって、事実でないとは限らない——FRANQでFaithfulnessとFactualityを分ける｜変な読み物置き場</title>
+<meta name="description" content="FRANQの2026年ACL Findings論文を読み、RAG出力のFaithfulnessとFactualityを分離し、retrievalに沿った主張と沿わない主張で異なる不確実性推定を使う考え方を整理する。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/franq-faithfulness-factuality.html">
+<meta property="og:type" content="article"><meta property="og:title" content="根拠に書いていないからといって、事実でないとは限らない——FRANQでFaithfulnessとFactualityを分ける"><meta property="og:description" content="RAG出力を『retrievalに忠実か』と『現実に正しいか』へ分けて評価する。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/franq-faithfulness-factuality.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-franq-faithfulness-factuality.svg">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="FRANQでFaithfulnessとFactualityを分ける"><meta name="twitter:description" content="retrieved contextへの忠実さと、世界についての正しさは別の変数。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-franq-faithfulness-factuality.svg">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260920-1" defer></script>
+</head><body class="article-page" data-page="article" data-slug="franq-faithfulness-factuality">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-20</p></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　LLM信頼性</p>
+<header class="article-header"><div class="tags"><span>LLM信頼性</span><span>RAG</span><span>AI評価</span></div><h1>根拠に書いていないからといって、事実でないとは限らない——FRANQでFaithfulnessとFactualityを分ける</h1><p class="original-title">Faithfulness-Aware Uncertainty Quantification for Fact-Checking the Output of Retrieval-Augmented Generation</p><div class="article-meta-row"><p><strong>Ekaterina Fadeeva ほか9名 · 2026</strong><br>公開 2026.09.20　／　推定読了 40分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-franq-faithfulness-factuality.svg" alt="博物館で、手元の図鑑に書かれた特徴と目の前の実物標本を別々に照合し、資料への一致と現実への一致を二系統で確認する図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">RAGの回答を検査するとき、「retrieved contextに書いてあるか」と「その主張が現実に正しいか」は同じ質問ではない。取得資料にないが正しい知識をmodelが内部知識から補うこともあれば、取得資料そのものが誤っていて、それに忠実な回答が事実としては間違うこともある。FRANQはこの二つを<strong>FaithfulnessとFactualityという別の確率</strong>として扱い、主張がretrievalに依存している場合と、依存していない場合で異なるuncertainty estimationを使う。RAG評価で「根拠性」を一個のscoreに潰さないための、かなり使いやすい分解である。</p>
+<h2>FaithfulnessとFactualityは似ているが、失敗の意味が違う</h2>
+<p>Faithfulnessは、生成されたclaimがretrieved contextに支持されているかを見る。Factualityは、そのclaimが現実世界について正しいかを見る。通常は両方高いのが望ましいが、四象限がある。</p>
+<p>第一に、retrieved contextに支持され、内容も正しい。理想的なRAGである。第二に、contextには支持されるが、context自体が誤っているため内容は誤る。第三に、contextには書かれていないが、modelのparametric knowledgeから正しい内容を補う。第四に、contextにも支持されず、現実にも誤っている。</p>
+<p>多くのhallucination detectorは、第二と第三をうまく区別しにくい。retrievalと一致していれば安全と見なしやすく、retrievalにない情報は危険と見なしやすいからだ。FRANQは、その単純化をやめる。</p>
+<h2>FRANQは「真である確率」をFaithfulnessで条件分岐する</h2>
+<p>中核は全確率の公式をそのまま使った分解である。claimがtrueである確率を、claimがretrievalにfaithfulである場合とunfaithfulである場合に分け、それぞれ別の不確実性推定を適用する。</p>
+<p>概念的には、<strong>P(true) = P(faithful) × P(true | faithful) + P(unfaithful) × P(true | unfaithful)</strong> と考える。まずclaimとretrieved evidenceの関係を推定し、その関係に応じて「この主張をどの情報源から評価すべきか」を変える。</p>
+<p>この分解のよいところは、faithfulnessを最終判定にせず、routing signalとして使う点にある。retrievalに強く依存したclaimなら、evidenceとの整合性を重点的に見る。retrievalから離れたclaimなら、modelの内部知識側のuncertaintyをより重く見る。</p>
+<h2>retrievalに忠実な主張と、そうでない主張では、よい不確実性指標が違う</h2>
+<p>著者らはlong-form QAとshort-form QAで複数のuncertainty quantificationを比較する。long-formでは、claimがretrievalにfaithfulなときと、unfaithfulなときで有効なsignalが違う。short-formでもSemantic Entropyなどのblack-box指標を含めて比較する。</p>
+<p>重要なのは「最強のconfidence metricを一つ選ぶ」設計ではなく、<strong>claimがどこから来たかという条件を先に置く</strong>ことだ。同じtoken probabilityでも、retrieved evidenceに支えられた生成と、model内部知識だけで出た生成では意味が違う。</p>
+<p>既存の<a href="semantic-entropy.html">Semantic Entropy</a>は、複数回答の意味分布が安定しているかを測る。FRANQはその一段外側で、「その不確実性をどの条件で使うか」を決める。semantic uncertaintyだけでfactualityを一括判定しない。</p>
+<h2>long-form回答では、まずclaimへ分割する</h2>
+<p>一つの長文回答には、正しい文と誤った文、retrievalに支持された部分と支持されない部分が混ざる。回答全体へ一個のscoreを付けると、この混在が消える。そこで研究では長文回答をatomic claimへ分割し、claimごとにFaithfulnessとFactualityをannotationするdatasetを作る。</p>
+<p>76の複雑な質問を使い、生成回答をclaimへ分割し、retrieved Wikipedia contextとの関係と、外部世界での真偽を別々にlabelする。自動annotationだけに任せず、falseまたはunverifiableと判断された難しい例を人間がweb調査で再確認する。</p>
+<p>この設計自体が評価の示唆になる。RAG回答を「一件正解」「一件不正解」で数えるより、<strong>どのclaimが、どのevidenceに、どの程度依存しているか</strong>を持つ方がfailure analysisへ使える。</p>
+<h2>「根拠にない正しいこと」を誤ってhallucination扱いしない</h2>
+<p>たとえば、retrieved passageが「ある作家は1970年に小説Aを出版した」とだけ述べているとする。modelが「その作家は別の小説Bも書いた」と追加し、その情報が現実には正しい場合、faithfulnessは低いがfactualityは高い。citation-grounded回答としては出典不足だが、fact-checking上は虚偽ではない。</p>
+<p>この二つを同じfailure labelへすると、改善策を誤る。citationを必須にする製品なら「support不足」として修正すべきだが、「事実誤認」としてmodel knowledgeを矯正する必要はない。逆にretrieved passage自体が古い・誤っているなら、faithfulな生成でもfactuality failureになる。</p>
+<aside class="everyday-example"><span>原文外の補助例</span><p>社内規程RAGが「有給休暇は年20日」と古い規程を取得し、そのまま答えたとする。retrieved documentには完全に忠実なのでFaithfulnessは高い。しかし現行規程が18日へ改定されていればFactualityは低い。逆にAIが現行の18日を内部知識や別経路から正しく答えたなら、元retrievalに対してはunfaithfulでも、事実としては正しい。どちらをfailureとするかは製品目的で変わる。</p></aside>
+<h2>corrupted retrievalとirrelevant retrievalを分けて試す</h2>
+<p>FRANQは通常条件だけでなく、retrieval failureを意図的に作る。irrelevant retrievalでは、質問と無関係なcontextを渡す。corrupted retrievalでは、context側へ誤情報を入れる。二つは似て見えるが、modelの挙動は違う。</p>
+<p>irrelevant contextなら、faithfulness scoreが下がり、model内部知識のuncertaintyへ重みを移すのが合理的になる。corrupted contextでは、claimがcontextへ忠実でもcontext自体が誤っているため、Faithfulnessだけでは安全性を保証できない。</p>
+<p>このstress testは、RAGを「retrievalを付ければhallucinationが減る仕組み」と考える危険を示す。retrievalは新しい情報源を増やすと同時に、新しい誤り源も増やす。評価もその二経路を分ける必要がある。</p>
+<h2>calibrationも条件別に行う</h2>
+<p>著者らは、faithfulなclaim群とunfaithfulなclaim群を同じ分布としてcalibrateするより、条件ごとにcalibrationする構成を試す。条件付きscoreの意味が違うなら、thresholdや確率の対応も同じとは限らない。</p>
+<p>これは運用設計へ移しやすい。たとえば「retrievalに支持されたclaimの0.8」と「retrievalにないclaimの0.8」を同じreview thresholdで扱う必要はない。後者は出典追加を要求し、前者はsource freshnessを検査する、といった別routingができる。</p>
+<h2>根拠性評価の目的を先に決めないと、scoreが逆方向へ働く</h2>
+<p>「根拠に忠実であること」を絶対目標にすると、retrieved documentにない正しい補足まで罰する。一方、「事実として正しければよい」とすると、citationが必要な場面で出典のない主張を許すことになる。</p>
+<p>したがって製品要件としては、FactualityとFaithfulnessを一度分けた後、用途に応じて組み直す方がよい。学術引用、法務回答、監査報告ではFaithfulnessの要求が高い。一般的な説明補助では、正しい背景知識を補うことがutilityを上げる場合もある。</p>
+<p>FRANQの方法そのものを採用しなくても、この二変数化だけで評価表はかなり改善する。「誤り」列を一つ置く代わりに、claim truth、evidence support、source quality、citation coverageを分けられる。</p>
+<h2>SURE-RAGとの違い——十分性と真実性は別の問い</h2>
+<p><a href="sure-rag.html">SURE-RAG</a>は、candidate answerを支えるためにEvidence Setが十分かをSupported / Refuted / Insufficientで判定する。これは「この証拠集合からその結論を出してよいか」というevidence sufficiencyの問題である。</p>
+<p>FRANQは、「retrievalから出ていない主張も含め、そのclaimが事実として正しい可能性をどう見積もるか」を扱う。したがって両者は競合しない。Evidence Setの十分性を先に検査し、その後、回答中の各claimについてFaithfulnessとFactualityを分ける設計もあり得る。</p>
+<p><a href="evidence-integration-llm.html">Evidence Integration</a>の記事で扱った「同じ証拠でもreceiver modelによって効き方が変わる」という問題ともつながる。FRANQはさらに、そもそもclaimが証拠経路とparametric knowledge経路のどちらへ寄っているかを推定する。</p>
+<h2>法務RAGでは、Faithfulnessを高く要求してもFactuality検査は残る</h2>
+<p>法務回答では、一次資料へのtraceabilityが重要なのでFaithfulnessを強く要求したくなる。それでも、取得した法令が旧版、誤った法域、施行前、失効済みなら、faithfulな回答が正しいとは限らない。source validityを別に見る必要がある。</p>
+<p>また、法律解釈では一つの条文に逐語的に書かれていない結論を、定義・例外・判例・体系から導く場合がある。このとき「一文が一つのpassageへentailされるか」だけでは推論の妥当性を取り切れない。FRANQの区別は有用だが、法的推論ではEvidence Setと推論chainの検証を追加する必要がある。</p>
+<h2>限界——Factuality自体にも外部のground truthが要る</h2>
+<p>Faithfulnessはretrieved contextとの関係なので比較対象が手元にある。Factualityは「世界で本当に正しいか」を問うため、最終的には別の信頼できる情報源や人手検証が必要になる。研究datasetも難しいclaimを人間がweb検索で確認しており、完全自動の真理判定器を作ったわけではない。</p>
+<p>またclaim extractionやFaithfulness推定にもmodel errorがあり得る。複数のcomponentを重ねれば、各scoreのcalibration driftも監視が必要になる。FRANQの優位性は、すべてのRAG domainで保証されたものではない。</p>
+<p>それでも、failure taxonomyとしての価値は大きい。「retrievalへ忠実でない＝hallucination」という短絡をやめるだけで、source problem、generation problem、parametric knowledge problemを別の修正対象にできる。</p>
+<h2>設計に持ち帰るなら</h2>
+<p>RAG回答をclaimへ分け、各claimに少なくとも四つのfieldを持たせる。retrieved evidence、Faithfulness、Factualityまたは外部検証結果、source freshnessである。次にfailure routingを分ける。support不足なら再検索、sourceが古いならversion更新、claim自体が怪しいなら外部fact-check、十分な根拠があるのに生成がずれたならgenerator側を直す。</p>
+<p>評価表では「hallucination」という一語をできるだけ最後まで使わない。どの関係が壊れたのかを先に書く。そうすれば、同じ一件の誤りから全く違う改善策が導かれる事故を減らせる。</p>
+<h2>このアーカイブの既存記事とつなぐ</h2>
+<ul><li><a href="semantic-entropy.html">Semantic Entropy</a>——意味の揺れからmodel uncertaintyを測る。</li><li><a href="sure-rag.html">SURE-RAG</a>——Evidence Set全体が結論を支えるのに十分かを検査する。</li><li><a href="evidence-integration-llm.html">Evidence Integration</a>——同じ証拠を渡してもreceiverごとに回答更新が異なることを測る。</li></ul>
+<h2>原文</h2>
+<p>Ekaterina Fadeeva, Aleksandr Rubashevskii, Dzianis Piatrashyn, Roman Vashurin, Shehzaad Dhuliawala, Artem Shelmanov, Timothy Baldwin, Preslav Nakov, Mrinmaya Sachan & Maxim Panov, “Faithfulness-Aware Uncertainty Quantification for Fact-Checking the Output of Retrieval-Augmented Generation,” Findings of ACL 2026, pp. 6814–6836.</p>
+<p><a href="https://aclanthology.org/2026.findings-acl.338/" target="_blank" rel="noopener">ACL Anthologyで読む</a>　／　<a href="https://aclanthology.org/2026.findings-acl.338.pdf" target="_blank" rel="noopener">原文PDF</a>　／　<a href="https://doi.org/10.18653/v1/2026.findings-acl.338" target="_blank" rel="noopener">DOI</a></p>
+</article></div></main><footer class="site-footer"><a href="../index.html">アーカイブへ戻る</a></footer>
+</body></html>
