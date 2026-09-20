@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>正解データの方が間違っていることもある——Legal RAGを法域横断調査で評価する｜変な読み物置き場</title>
+<meta name="description" content="Afaneらの2026年論文を読み、米国50州の失業保険法を対象に、STARA・Westlaw AI・Lexis+ AIをLaborBenchで比較したLegal RAG評価から、検索失敗・推論失敗・gold data自体の誤りを分ける。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/benchmarking-legal-rag.html">
+<meta property="og:type" content="article"><meta property="og:title" content="正解データの方が間違っていることもある——Legal RAGを法域横断調査で評価する"><meta property="og:description" content="1,647問の州法調査でLegal RAGを比較。AIの誤りだけでなく、専門家が作ったbenchmarkの欠落まで検証する。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/benchmarking-legal-rag.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-benchmarking-legal-rag.svg">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Legal RAGを法域横断調査で評価する"><meta name="twitter:description" content="検索・推論・gold dataの誤りを分けるLegal RAG benchmark。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-benchmarking-legal-rag.svg">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260920-1" defer></script>
+</head><body class="article-page" data-page="article" data-slug="benchmarking-legal-rag">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-20</p></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　法務×AI</p>
+<header class="article-header"><div class="tags"><span>法務×AI</span><span>RAG</span><span>AI評価</span></div><h1>正解データの方が間違っていることもある——Legal RAGを法域横断調査で評価する</h1><p class="original-title">Benchmarking Legal RAG: The Promise and Limits of AI Statutory Surveys</p><div class="article-meta-row"><p><strong>Mohamed Afane / Emaan Hariri / Derek Ouyang / Daniel E. Ho · 2026</strong><br>公開 2026.09.20　／　推定読了 44分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-benchmarking-legal-rag.svg" alt="多数の州を表す区画を一つずつ調べる法令調査隊が、各区画の法令冊子と中央の比較台帳を照合し、台帳に載っていない有効な規定を別色で発見する図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">AIの法務調査を評価するとき、最も扱いやすいのは「人間が作った正解と一致したか」を数える方法である。ただし、調査対象が数十法域にまたがり、条文の定義・参照・例外が複雑になると、<strong>正解データ自体が完全とは限らない</strong>。Afaneらは米国50州の失業保険法を対象に、専門家が半年以上かけて作る法令surveyと複数のLegal RAGを比較した。その結果、AI側の検索・推論失敗だけでなく、米国労働省の既存集計に本当に欠落していた州法まで見つかった。Legal RAGの評価を「modelがgoldに合ったか」から、<strong>gold、retrieval、reasoning、最終分類を別々に検証する仕事</strong>へ広げる研究である。</p>
+<h2>なぜ50州surveyはLegal RAGの厳しい試験になるのか</h2>
+<p>米国では、同じ制度でも州ごとに条文構造、定義、例外、番号体系が違う。論文が扱う失業保険制度では、米国労働省が50州について100を超える比較項目を毎年整理しており、約200ページの一覧を作るために連邦政府の弁護士チームが半年以上を費やす。</p>
+<p>この仕事は「関連条文を一件見つければ終わり」ではない。ある州に制度があるかを答えるだけでも、本文、定義規定、別章のcross-reference、施行条件、例外、類似制度を区別する必要がある。法律用語と日常語の意味が一致しない場合もある。つまり、<strong>検索recallだけ高ければよいわけでも、LLMが一つの条文をうまく要約できればよいわけでもない</strong>。</p>
+<p>このため著者らは、既存のLaborBenchを使う。1,647個のbinary questionを用意し、「ある州は特定の制度・権限・計算方法を持つか」を判定させる。単純な多肢選択より、retrievalの抜けと法的分類の誤りを分けやすい。</p>
+<h2>比較対象はSTARA、Westlaw AI、Lexis+ AI</h2>
+<p>研究では三つの系統を比較する。STARAは学術研究として作られたStatutory Research Assistantで、法令の階層構造を保ちながら条文を分割し、定義、親規定、cross-referenceなどの文脈を補ってから候補規定を絞る。Westlaw AIとLexis+ AIは実務向けcommercial legal research platformの州法survey機能である。</p>
+<p>ここで「同じ質問を三つのLLMへ入れた」だけではない。interface制約も性能へ影響する。Westlaw側の入力は300文字制限があり、研究者は本来質問へ添える文脈を圧縮せざるを得なかった。Lexis+ AIはより長い文脈を渡せる。この差は、systemの評価でmodel qualityだけを取り出す難しさを示す。製品としてのLegal RAGには、retriever、corpus、prompt、UI制限、検索範囲、出力形式が全部含まれる。</p>
+<p>STARAも万能ではない。計算量を減らすため、regular expressionで対象条文を絞るoptional filterを使う。このfilterは速度を上げる一方、関連条文を初期段階で捨てる可能性がある。つまり研究者自身が、efficiencyとcompletenessのtrade-offを明示している。</p>
+<h2>最初のscoreでは、STARAが83%、商用二製品は58%と64%</h2>
+<p>LaborBenchの既存goldをそのまま使う最初の比較では、STARAのaccuracyは0.83、F1は0.81だった。Westlaw AIはaccuracy 0.58、F1 0.64、Lexis+ AIはaccuracy 0.64、F1 0.41である。全問を「Yes」と答えるmajority baselineでもF1 0.67になるため、F1だけを見るとcommercial systemの一部は単純baselineを下回る。</p>
+<p>この結果を「商用製品が弱い」「STARAが強い」で終えると研究の核心を落とす。著者らが次にしたのは、誤答を個別に条文まで戻って再検証することだった。ここで、scoreboardの意味自体が変わる。</p>
+<h2>False Positiveの一部は、AIの誤りではなく人間側の欠落だった</h2>
+<p>たとえばself-employment assistance programについて、労働省の既存集計は10州を掲載していた。STARAはそのうち9州を見つける一方、さらに5州を候補として出した。当初のbenchmark上では、追加5州はfalse positiveになる。</p>
+<p>しかし条文を精査すると、MarylandとVermontには現行programがあり、CaliforniaとWashingtonにはauthorizing statuteがあり、Minnesotaには機能的に同等のprogramが存在した。つまり、少なくともこれらは単なるAI hallucinationではなく、<strong>既存の専門家集計が拾っていなかった実在する法的根拠</strong>だった。</p>
+<p>この再検証を反映すると、STARAのaccuracyは0.92、F1は0.91まで上がる。重要なのは、AIに有利な採点変更をしたことではない。benchmarkに「専門家作成だから正しい」という仮定を置かず、AIとgoldが食い違った地点を新しい調査対象として扱ったことだ。</p>
+<h2>逆に、本当にAIの推論が間違った例も具体的に出る</h2>
+<p>論文は「goldも間違う」と言ってAIの誤りを相対化してはいない。SNAP給付のoverissuanceを失業給付から控除できる権限があるか、という質問では、Michiganの規定をSTARAが誤ってpositiveと分類した。該当条文は米国農務省との情報共有を認めるが、失業給付からSNAP債務を控除する実体的権限は付与していない。</p>
+<p>Westlaw AIでは、この種類の概念混同がより多く現れた。child supportの控除規定、失業保険同士のoverpayment recovery、州間のreciprocal arrangementなど、検索語としては近い条文を「求める法的権限がある」と誤分類する。ここではretrievalが完全に外れているわけではない。<strong>関連資料を取った後の法的関係づけが間違っている</strong>。</p>
+<p>一方Lexis+ AIはpositiveをかなり少なく返し、recallが低い。つまり「誤答率」という一つの数字の中に、取り過ぎ、取り漏れ、概念混同、例外の誤読が混ざる。改善策もそれぞれ違う。</p>
+<h2>検索失敗と推論失敗を一緒にしない</h2>
+<p>Legal RAGを改善するとき、最終回答だけを見ると原因が分からない。関連条文が候補集合に入っていないならretrieval failureである。条文は取得できているのに別概念として解釈したならreasoning failureである。正しい結論を出したが根拠条文が不足しているならcitation・evidence failureとして別に扱える。</p>
+<p>この分解は、<a href="map-law.html">MAP-Law</a>が未解決の法的要件をsearch controlへ使う考え方や、<a href="sure-rag.html">SURE-RAG</a>がEvidence Set全体の十分性を検証する考え方と相性がよい。今回の論文が加えるのは、さらに外側の<strong>benchmark referenceも検証対象にする</strong>という層である。</p>
+<aside class="everyday-example"><span>原文外の補助例</span><p>社内FAQの正解集でAIを評価したところ、AIが「誤答」と判定されたとする。AIの回答に一次資料URLと該当箇所があり、正解集だけが古い制度を参照していたなら、modelを修正する前にgoldのversion管理を直すべきである。disagreementを自動でmodel errorへ分類しないだけで、評価結果から得られる改善案は大きく変わる。</p></aside>
+<h2>法務benchmarkでは「正解作成者の権威」よりprovenanceが重要になる</h2>
+<p>専門家が作った正解は当然重要だ。ただし、法令は改正され、法域ごとに構造が違い、調査範囲の定義でも答えが変わる。したがってgold recordには、結論だけでなく、対象時点、対象法域、採用した定義、根拠条文、確認日、除外理由を残した方がよい。</p>
+<p>そうするとAIとgoldが不一致になったとき、どちらが誤っているかを検証できる。正解が「Yes」の一文字だけなら、評価者は再調査から始めなければならない。Legal RAGのbenchmarkは、単なるanswer keyではなく<strong>監査可能な法務リサーチ成果物</strong>として作る必要がある。</p>
+<h2>completenessを求める仕事では、precisionだけ高くても足りない</h2>
+<p>50州surveyでは、「見つけた条文の大半が正しい」ことと「必要な州を漏らさない」ことが別である。Lexis+ AIの結果は、positiveを慎重に出せばprecisionは上げられても、valid jurisdictionを大量に落とせばsurvey用途には使いにくいことを示す。</p>
+<p>逆にWestlaw AIのように大量のpositiveを出すとrecallは高まりやすいが、false positiveの検証負担が増える。法務支援でのutilityはprecision・recallだけでなく、<strong>人間が最終確認する件数、引用箇所の明確さ、誤りの重大性</strong>でも変わる。論文はWestlawの長い補助的引用がreview effortを増やす例にも触れている。</p>
+<p>したがって、用途が「候補を広く拾う一次screening」なのか「そのまま比較表へ載せる最終判定」なのかで、許容するerror profileを変えるべきである。</p>
+<h2>法令の「構造」をretrievalへ残すことが効いている</h2>
+<p>STARAの特徴の一つは、条文をただ一定token長へ切るのではなく、hierarchy、definitions、cross-reference、parent provisionを保ちながら文脈を付与する点にある。法律では、一文だけ読むと一般語に見える語が別条で定義されていたり、例外が別sectionへ飛んでいたりする。</p>
+<p>この結果だけで「hierarchical chunkingが勝因」と断定はできない。system全体が違うため、単一要素のablationではないからだ。それでも、研究が失敗例を法令構造へ戻して分析していることは重要である。retrieval unitを「似た文章」ではなく「法的意味を成立させる文脈単位」として設計する理由が見える。</p>
+<h2>限界——このbenchmarkはLegal AI全体の順位表ではない</h2>
+<p>対象は米国州法の失業保険、しかもbinary classificationを中心とする。契約レビュー、訴訟調査、判例の射程判断、長文意見書生成へ結果をそのまま移せない。またcommercial productには入力文字数などinterface上の制約があり、underlying model単体の性能比較でもない。</p>
+<p>gold修正もSTARAのapparent false positive / false negativeを中心に詳しく検証しており、commercial systemの全誤答を同じ密度で再監査したわけではない。補正後92%という数字は、そのvalidation processと範囲を一緒に読まなければならない。</p>
+<p>それでも、法務AI評価の設計として残る教訓は広い。<strong>system output、retrieved evidence、legal reasoning、gold referenceを分離し、食い違いを再調査可能な形で残す</strong>。この構造は法域やtaskが変わっても使える。</p>
+<h2>設計に持ち帰るなら</h2>
+<p>まずbenchmarkの一問ごとに、正解labelだけでなく根拠一次資料を紐づける。次に、model誤答をretrieval miss、irrelevant retrieval、definition confusion、exception error、classification error、gold errorへ分ける。さらに、goldとsystemが食い違った例のうち、一次資料を明示して反証できるものは人手再監査queueへ送る。</p>
+<p>最後にscore更新の履歴を残す。goldが修正されたなら、modelが急に賢くなったのではなく評価基準が変わったことが分かるようにする。評価データも一つの知識baseであり、<strong>versionとprovenanceを管理しないgoldは、やがて新しい誤り源になる</strong>。</p>
+<h2>このアーカイブの既存記事とつなぐ</h2>
+<ul><li><a href="map-law.html">MAP-Law</a>——未充足の法的要件へ検索を向け、coverageから停止を決める。</li><li><a href="sure-rag.html">SURE-RAG</a>——取得資料が回答を支えるのに十分かをEvidence Set単位で検証する。</li><li><a href="requirements-traceability.html">Requirements Traceability</a>——結論の由来を後から追える形で残す。</li></ul>
+<h2>原文</h2>
+<p>Mohamed Afane, Emaan Hariri, Derek Ouyang & Daniel E. Ho, “Benchmarking Legal RAG: The Promise and Limits of AI Statutory Surveys,” CS&Law 2026 / arXiv:2603.03300.</p>
+<p><a href="https://arxiv.org/html/2603.03300" target="_blank" rel="noopener">原文HTMLを読む</a>　／　<a href="https://arxiv.org/abs/2603.03300" target="_blank" rel="noopener">arXiv</a>　／　<a href="https://doi.org/10.1145/3788646.3789533" target="_blank" rel="noopener">DOI</a></p>
+</article></div></main><footer class="site-footer"><a href="../index.html">アーカイブへ戻る</a></footer>
+</body></html>
