@@ -122,7 +122,7 @@
       const [articleResponse, additionsResponse, latestResponse, dailyResponse] = await Promise.all([
         fetch('data/articles.json', { cache: 'no-store' }),
         fetch('data/additions.json', { cache: 'no-store' }),
-        fetch('data/additions-2026-09-12.json', { cache: 'no-store' }),
+        fetch('data/additions-2026-09-20.json', { cache: 'no-store' }),
         fetch('data/daily-current.json', { cache: 'no-store' })
       ]);
       const base = articleResponse.ok ? await articleResponse.json() : embeddedArticles();
