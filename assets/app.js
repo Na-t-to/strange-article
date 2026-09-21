@@ -119,17 +119,23 @@
 
   (async () => {
     try {
-      const [articleResponse, additionsResponse, latestResponse, dailyResponse] = await Promise.all([
+      const [articleResponse, additionsResponse, archiveResponse, sep19Response, sep20Response, latestResponse, dailyResponse] = await Promise.all([
         fetch('data/articles.json', { cache: 'no-store' }),
         fetch('data/additions.json', { cache: 'no-store' }),
+        fetch('data/additions-2026-09-12.json', { cache: 'no-store' }),
+        fetch('data/additions-2026-09-19.json', { cache: 'no-store' }),
         fetch('data/additions-2026-09-20.json', { cache: 'no-store' }),
+        fetch('data/additions-2026-09-21.json', { cache: 'no-store' }),
         fetch('data/daily-current.json', { cache: 'no-store' })
       ]);
       const base = articleResponse.ok ? await articleResponse.json() : embeddedArticles();
       const additions = additionsResponse.ok ? await additionsResponse.json() : [];
+      const archive = archiveResponse.ok ? await archiveResponse.json() : [];
+      const sep19 = sep19Response.ok ? await sep19Response.json() : [];
+      const sep20 = sep20Response.ok ? await sep20Response.json() : [];
       const latest = latestResponse.ok ? await latestResponse.json() : [];
       const seen = new Set();
-      articles = [...latest, ...additions, ...base].filter((article) => {
+      articles = [...latest, ...sep20, ...sep19, ...archive, ...additions, ...base].filter((article) => {
         if (seen.has(article.slug)) return false;
         seen.add(article.slug);
         return true;

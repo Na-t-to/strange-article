@@ -1,0 +1,50 @@
+[
+  {
+    "slug": "viewpoints-multiple-perspectives",
+    "title": "仕様を一枚にまとめる前に、誰の見方かを分ける——ViewPointsで複数の仕様を協調させる",
+    "originalTitle": "Viewpoints: A Framework for Integrating Multiple Perspectives in System Development",
+    "authors": ["A. Finkelstein", "J. Kramer", "B. Nuseibeh", "L. Finkelstein", "M. Goedicke"],
+    "year": 1992,
+    "publishedAt": "2026-09-21",
+    "tags": ["要求工学", "仕様設計", "協働設計"],
+    "readingMinutes": 52,
+    "sourceUrl": "https://finkelstein.live/papers/ijseke92.pdf",
+    "excerpt": "複数の担当・domain・notation・開発方法をViewPointとして分離し、重なる箇所だけをcheck・resolve・transferする。仕様を早く一枚へ統合せず、異なる記述の間に検証可能なrelationを置く。",
+    "image": "assets/visual-viewpoints.svg",
+    "imageAlt": "大聖堂の修復現場で、構造・音響・設備の担当者が別々の透過図面を持ち、同じ建物の重なる部分だけを照合している図版",
+    "imageCaption": "図版：自動生成",
+    "featured": true
+  },
+  {
+    "slug": "ontoclean-taxonomy",
+    "title": "ある時だけ属する分類を「型」にしない——OntoCleanでis-a階層の誤りを見抜く",
+    "originalTitle": "Evaluating ontological decisions with OntoClean",
+    "authors": ["Nicola Guarino", "Christopher Welty"],
+    "year": 2002,
+    "publishedAt": "2026-09-21",
+    "tags": ["オントロジー", "概念モデリング", "仕様設計"],
+    "readingMinutes": 48,
+    "sourceUrl": "https://www.researchgate.net/publication/297428382_Evaluating_ontological_decisions_with_ontoclean",
+    "excerpt": "rigidity・identity・unityでtaxonomyを検査し、role、part-of、constitution、polysemyをsubclass関係へ押し込む誤りを見抜く。『自然な親子』ではなくis-aが意味する必然性を問う。",
+    "image": "assets/visual-ontoclean-taxonomy.svg",
+    "imageAlt": "同じ人物が学生・労働者・役人という役割を変えながら、右側の分類棚では恒常的な型と一時的な役割の親子関係を検査しているヴェネツィアの図版",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
+    "slug": "ecological-interface-design",
+    "title": "値を並べる前に、仕事を支配する制約を見える形にする——Ecological Interface Design",
+    "originalTitle": "Ecological Interface Design: Theoretical Foundations",
+    "authors": ["Kim J. Vicente", "Jens Rasmussen"],
+    "year": 1992,
+    "publishedAt": "2026-09-21",
+    "tags": ["HCI", "認知工学", "情報表現"],
+    "readingMinutes": 55,
+    "sourceUrl": "https://orbit.dtu.dk/files/158017888/SMC.PDF",
+    "excerpt": "未知の異常に備えるため、work domainの目的・制約・機能・装置をabstraction hierarchyで外在化し、skill・rule・knowledgeの三層を同じinterfaceで支える。",
+    "image": "assets/visual-ecological-interface-design.svg",
+    "imageAlt": "山岳の水力発電所を断面で描き、貯水量・流量・圧力・発電機・送電負荷の関係を一つの制御場面として見せる図版",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  }
+]

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ある時だけ属する分類を「型」にしない——OntoCleanでis-a階層の誤りを見抜く｜変な読み物置き場</title>
+<meta name="description" content="rigidity・identity・unityでtaxonomyを検査し、role、part-of、constitution、polysemyをsubclass関係へ押し込む誤りを見抜く。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/ontoclean-taxonomy.html">
+<meta property="og:type" content="article"><meta property="og:title" content="ある時だけ属する分類を「型」にしない——OntoCleanでis-a階層の誤りを見抜く"><meta property="og:description" content="rigidity・identity・unityでtaxonomyを検査し、role、part-of、constitution、polysemyをsubclass関係へ押し込む誤りを見抜く。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/ontoclean-taxonomy.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-ontoclean-taxonomy.svg">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="ある時だけ属する分類を「型」にしない——OntoCleanでis-a階層の誤りを見抜く"><meta name="twitter:description" content="rigidity・identity・unityでtaxonomyを検査し、role、part-of、constitution、polysemyをsubclass関係へ押し込む誤りを見抜く。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-ontoclean-taxonomy.svg">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260921-1" defer></script>
+</head><body class="article-page" data-page="article" data-slug="ontoclean-taxonomy">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-21</p></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　オントロジー</p>
+<header class="article-header"><div class="tags"><span>オントロジー</span><span>概念モデリング</span><span>仕様設計</span></div><h1>ある時だけ属する分類を「型」にしない——OntoCleanでis-a階層の誤りを見抜く</h1><p class="original-title">Evaluating ontological decisions with OntoClean</p><div class="article-meta-row"><p><strong>Nicola Guarino / Christopher Welty · 2002</strong><br>公開 2026.09.21　／　推定読了 48分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-ontoclean-taxonomy.svg" alt="同じ人物が学生・労働者・役人という役割を変えながら、右側の分類棚では恒常的な型と一時的な役割の親子関係を検査しているヴェネツィアの図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">分類階層は、名前を上から下へ並べる作業に見えやすい。だが、<strong>「AはBの一種である」というis-a関係は、Aのすべての個体が必ずBでもあるという強い意味を持つ</strong>。Nicola GuarinoとChristopher WeltyのOntoCleanは、そのリンクを語感ではなく、essence・rigidity・identity・unityといった一般的な性質から検査する。分類の見た目を整える方法ではなく、概念が何を意味するかを問い直す方法である。</p>
+<h2>is-aは便利だからこそ、何でも吸い込みやすい</h2>
+<p>概念モデルでは、階層化すると検索、継承、推論、説明がしやすい。そこで「学生→人」「エンジン→自動車部品」「海→水」のような関係を一本の木へ押し込みたくなる。しかし、これらは同じ種類の関係ではない。</p>
+<p>OntoCleanが問題にするのは、自然言語では「〜は〜である」と言えても、論理的なsubsumptionとして正しいとは限らない点である。原文は、subsumptionを「subclassのすべてのinstanceが必然的にsuperclassのinstanceでもある」と置く。図で上下に並ぶことより、この必然性を満たすかが重要になる。</p>
+<p><a href="formal-ontology-information-systems.html">Formal Ontology and Information Systems</a>がvocabulary・conceptualization・ontological commitmentを分けたのに対し、OntoCleanは、作ったtaxonomyのリンクをどう批判的に点検するかへ踏み込む。</p>
+<h2>rigidity——その分類は、その個体にとって外せるか</h2>
+<p>最初の道具が<strong>rigidity</strong>である。ある性質が個体にとってessentialなら、その個体はその性質を失ったまま同一の個体として存在できない。rigid propertyは、そのすべてのinstanceにとってessentialである性質を指す。</p>
+<p>原文では「person」は典型的にrigidとされる。ある人が学生を卒業しても同じ人だが、人でなくなってなお同じ人として存続する、とは通常考えない。一方、「student」はanti-rigidである。学生である個体は、卒業や退学によって学生でなくなり得る。</p>
+<p>ここからtaxonomyへの制約が出る。<strong>anti-rigidな性質をrigidな性質の上位に置くことはできない</strong>。もしStudentがPersonをsubsumesすると、「すべてのPersonは必ずStudentである」ことになる。しかしPersonは学生でない状態でもPersonであり続けるため、意図した意味と衝突する。</p>
+<aside class="everyday-example"><span>原文外の補助例</span><p>企業データで「承認者」を「従業員」より上の恒常的な型として置くと歪みやすい。承認者は案件や期間によって変わるroleであり、同じ人が承認者でない状態へ移れる。従業員も雇用終了で変わるため厳密なrigidity判定はdomain次第だが、少なくとも「現在の役割」と「対象そのものの種類」を同じ階層へ置いてよいかを問う契機になる。</p></aside>
+<h2>rigid / anti-rigidは「変わりやすさ」の話ではない</h2>
+<p>重要なのは、rigidityが単なる時間的な長さではないことだ。あるスポンジが一生ずっと硬かったとしても、「硬い」がそのスポンジにessentialとは限らない。柔らかくても同じスポンジであり得たなら、その性質は偶有的である。</p>
+<p>この違いは、DBの更新頻度からは分からない。属性値が十年間変わらなくてもconceptとしてanti-rigidな場合があるし、逆に頻繁に状態が変わる対象でもidentityを支える型は変わらない。OntoCleanはデータ分布ではなく、概念の意図された意味を検査する。</p>
+<h2>identity——何をもって「同じ個体」と数えるか</h2>
+<p>次の道具がidentityである。原文はidentityを、世界の個体を同じもの／別のものとして識別する問題と説明する。実装上のID列があるか、という話より広い。時間をまたいでも同一とみなす条件や、同じ時点で二つの記述が同一対象を指す条件が含まれる。</p>
+<p>この観点は、classとinstance、さらにmetalevelを混ぜる誤りを見抜く。原文の例ではHumanはMammalのsubclassで、ChrisはHumanのinstanceである。しかしHumanそのものをSpeciesのsubclassにすると、Speciesを識別する基準と個々のHumanを識別する基準が混ざる。著者らはHumanをSpeciesのinstanceとして扱うべきだと説明する。</p>
+<p>つまり階層を見るとき、「上位概念のidentity criterionを下位が本当に継承してよいか」を問う。名前の包含関係だけでは判断できない。</p>
+<h2>unity——どこまでを一つのものとして数えるか</h2>
+<p><strong>unity</strong>は、あるindividualを構成するpartsが何で、どの条件で一つのwholeを形成するかに関わる。原文はwaterとoceanを対比する。waterの任意量は、それ自体で境界のあるwholeとは限らない。一方、Atlantic Oceanのようなoceanは、一つのwholeとして認識される。</p>
+<p>「すべてのoceanはwaterでできている」からOceanをWaterのsubclassへ置くと、構成関係とis-aが混ざる。自然言語の「海は水だ」は通じても、ontologyでは「oceanはwaterからconstitutedされる」と表す方が意味に合う。</p>
+<p>同じ誤りはCarとEngineでも起きる。エンジンは車のpartになり得るが、EngineはCarのsubclassではない。図としては「分解の木」も「分類の木」も似て見えるため、モデリングツール上で混同しやすい。</p>
+<h2>「自動車部品」という親クラスにも罠がある</h2>
+<p>ではEngineの上にCar Partを置けばよいか。OntoCleanはここでもrigidityを使う。あるengineは車から外され、boatへ載せ替えられるかもしれない。そのとき同じengineがcar partではなくなる。Car Partはrole的でanti-rigidだが、Engineはengineであることを失わないrigidな型として扱える。</p>
+<p>anti-rigidなCar PartがrigidなEngineをsubsumesする構造は、先ほどの制約と衝突する。著者らは、型制約やdisjunctionを表したいという実装上の都合で、is-aへ別の意味を背負わせる危険を指摘する。</p>
+<p>この論点は実務で強い。「この箱に入る候補をまとめたい」というUIやvalidation上の都合と、「世界の種類として上位概念である」という主張は別である。前者のためにtaxonomyを歪めると、後の推論や再利用で意味が崩れる。</p>
+<h2>一つの単語に複数のidentityを押し込まない</h2>
+<p>原文はbookのpolysemyも扱う。「この本は重い」のbookは物理的な冊子を指し、「この本を読んだ」のbookは著作物という抽象的対象を指し得る。冊子は時空間上の位置で区別できるが、著作物は同じ内容が複数冊へinstantiateされても同じ作品として扱える。</p>
+<p>二つを一つのclassの下へis-aで束ねると、異なるidentity criterionを持つentityを同じものとして扱ってしまう。これは単なる語義曖昧性処理ではない。契約書でも「契約」が合意という法的関係を指すのか、署名済みPDFという文書個体を指すのかで、identityと変更の扱いが変わる。</p>
+<h2>backbone taxonomy——先に安定した型を作る</h2>
+<p>OntoCleanは分析の副産物として<strong>backbone taxonomy</strong>を提案する。rigid propertyを中心にsubsumption関係を整理し、domainの比較的安定した骨格を作る。役割や状態のようなanti-rigidな概念を先に主骨格へ混ぜない。</p>
+<p>二つのontologyを統合するときも、まずrigidなpropertyを比較して共通backboneを探す。この順序には意味がある。案件、時点、taskに依存して付け替わるroleより、対象のidentityを支える型の方が統合の基準として安定するからである。</p>
+<h2>法務・業務モデルなら「当事者」「借手」「申請者」を疑う</h2>
+<p>法務や業務の概念モデルではroleが大量に出る。「当事者」「借手」「委託者」「申請者」「管理者」は、文脈によって同じ法人・人が一時的に担うことが多い。これらを恒常的なentity typeと同じis-a階層へ入れると、同じ主体が複数案件で異なるroleを担うときに矛盾や重複が生じる。</p>
+<p>OntoCleanをそのまま全業務に適用すればよい、という意味ではない。使いどころは、親子関係を決める前に、少なくとも「この分類を外しても同じものか」「同一性を何で数えるか」「wholeの境界は何か」「is-aではなくpart-of / role / constitution / instantiationではないか」を問うことにある。</p>
+<h2>限界——metapropertyを付ければ自動で正解が出るわけではない</h2>
+<p>原文自身、identityやunityは経験のあるmodelerにも難しいと認める。rigidityなどのmetapropertyを付ける作業には、domainの意味について判断が必要である。チェックツールは矛盾した組合せを検出できても、最初の意味付けが間違っていれば正しいtaxonomyは出ない。</p>
+<p>また2002年時点の論文はOntoCleanのcoreが安定してきた段階の説明であり、ontology engineering全体を覆う手順書ではない。関係のcardinality、時間、法的規範、データ品質、運用責任などは別に設計する必要がある。</p>
+<h2>設計に持ち帰るなら</h2>
+<p>taxonomy reviewで親子リンクを見たら、「名前として自然か」より先に四つを聞く。①下位の個体は上位の性質を必然的に持つか、②その分類を失っても同じ個体か、③同一個体を何で識別するか、④whole / part / constitution / roleをis-aで代用していないか。</p>
+<p>特にAIへschemaやontologyを作らせる場合、このレビューを別工程にする価値がある。LLMは言語上の「〜は〜である」を滑らかに階層へ変換できるが、自然言語の包含感とontological subsumptionは同じではない。</p>
+<h2>このアーカイブの既存記事とつなぐ</h2>
+<ul><li><a href="formal-ontology-information-systems.html">Formal Ontology and Information Systems</a>——語彙・conceptualization・ontologyの層を分ける。</li><li><a href="boundary-objects.html">Boundary Objects</a>——複数共同体が同じ人工物を使いながら異なる意味づけを保持する状況を見る。</li><li><a href="knowledge-level.html">Knowledge Level</a>——内部表現から離れて、システムが何を知っているとみなすかを記述する。</li><li><a href="rational-design-process.html">Rational Design Process</a>——設計判断の理由と制約を成果物として残す。</li></ul>
+<h2>原文</h2>
+<p>Nicola Guarino & Christopher Welty, “Evaluating ontological decisions with OntoClean,” <em>Communications of the ACM</em>, Vol. 45, No. 2, 2002, pp. 61–65.</p><p><a href="https://www.researchgate.net/publication/297428382_Evaluating_ontological_decisions_with_ontoclean" target="_blank" rel="noopener">著者公開の全文を読む</a>　／　<a href="https://doi.org/10.1145/503124.503150" target="_blank" rel="noopener">DOI</a></p>
+</article></div></main><footer class="site-footer"><a href="../index.html">アーカイブへ戻る</a></footer>
+</body></html>

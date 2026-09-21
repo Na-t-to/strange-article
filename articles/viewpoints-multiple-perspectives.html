@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>仕様を一枚にまとめる前に、誰の見方かを分ける——ViewPointsで複数の仕様を協調させる｜変な読み物置き場</title>
+<meta name="description" content="複数の担当・domain・notation・開発方法をViewPointとして分離し、重なる箇所だけをcheck・resolve・transferする要求／仕様設計の古典。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/viewpoints-multiple-perspectives.html">
+<meta property="og:type" content="article"><meta property="og:title" content="仕様を一枚にまとめる前に、誰の見方かを分ける——ViewPointsで複数の仕様を協調させる"><meta property="og:description" content="複数の担当・domain・notation・開発方法をViewPointとして分離し、重なる箇所だけをcheck・resolve・transferする要求／仕様設計の古典。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/viewpoints-multiple-perspectives.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-viewpoints.svg">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="仕様を一枚にまとめる前に、誰の見方かを分ける——ViewPointsで複数の仕様を協調させる"><meta name="twitter:description" content="複数の担当・domain・notation・開発方法をViewPointとして分離し、重なる箇所だけをcheck・resolve・transferする要求／仕様設計の古典。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-viewpoints.svg">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260921-1" defer></script>
+</head><body class="article-page" data-page="article" data-slug="viewpoints-multiple-perspectives">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-21</p></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　要求工学</p>
+<header class="article-header"><div class="tags"><span>要求工学</span><span>仕様設計</span><span>協働設計</span></div><h1>仕様を一枚にまとめる前に、誰の見方かを分ける——ViewPointsで複数の仕様を協調させる</h1><p class="original-title">Viewpoints: A Framework for Integrating Multiple Perspectives in System Development</p><div class="article-meta-row"><p><strong>A. Finkelstein / J. Kramer / B. Nuseibeh / L. Finkelstein / M. Goedicke · 1992</strong><br>公開 2026.09.21　／　推定読了 52分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-viewpoints.svg" alt="大聖堂の修復現場で、構造・音響・設備の担当者が別々の透過図面を持ち、同じ建物の重なる部分だけを照合している図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">大きなシステムを一枚の仕様へまとめると、誰の関心から見た記述なのかが消えやすい。性能担当は待ち時間を見る。機械担当はmotorを見る。利用者はbuttonとdoorを見る。同じ対象でも、使う表現、担当domain、検査したい関係が違う。FinkelsteinらのViewPointsは、この違いを最初から別々の仕様単位として持たせ、<strong>必要な場所で関係を張り、checkし、履歴を残す</strong>ためのframeworkである。</p>
+<h2>複数視点は「意見の違い」だけではない</h2>
+<p>1992年の論文が扱うmultiple perspectives problemには、人が複数いることだけでなく、representationの違い、domain knowledgeの違い、development strategyの違いが含まれる。ある担当はPetri Netを使い、別の担当はfunctional hierarchy、さらに別の担当はaction tableを使う。同じ表現へ統一すれば解決する問題ではない。</p>
+<p>複合システムでは、専門性ごとに適切な表現が違う。ViewPointsはheterogeneityを消す前に、どの記述がどのdomainを担当し、どのmethodで発展するかを明示する。</p>
+<h2>一つのViewPointは「仕様断片」より大きい</h2>
+<p>論文のViewPointには複数のslotがある。中心は、<strong>representation style、domain、specification、work plan、work record</strong>である。representation styleは何の記法で書くか、domainは何について書くか、specificationは現在の記述内容を持つ。</p>
+<p>work planは、そのspecificationをどう作り、いつどのcheckを行うかを記述する。work recordは、現在状態とそこへ至ったdevelopment historyを残す。つまりViewPointは成果物だけでなく、成果物をどう発展・検査したかまで一まとまりにする。</p>
+<p>この構造が重要なのは、「同じ図が二枚ある」状態と「別の責任・方法で作られた二つの仕様」が区別できるからである。</p>
+<h2>liftの例では、同じシステムが別の形に見える</h2>
+<p>論文はlift systemを例にする。Kenはsystem performanceをdomainとしてPetri Netを使う。Janeはlift全体をfunctional hierarchyで記述する。Bobはschedulerをobject structureやaction tableで表す。Tomはdoorsを担当する。さらに同じmotorについて別々の人が異なるversionを持つ場合もある。</p>
+<p>ここで一つの「lift specification」を早く作ると、どの表現を正とするかの決定が先に必要になる。ViewPointsは、domainごとの知識をそのまま保ったまま進め、重なりが生じる場所でrelationを作る。</p>
+<h2>内部の矛盾と、視点間の矛盾を分けてcheckする</h2>
+<p>Janeのfunctional hierarchyで、同名elementの追加によってdoorがdoorのpartになるような構造ができれば、これは一つのViewPoint内部のinconsistencyである。論文はin-viewpoint checkでこれを検出し、適切な時点で修正させる。</p>
+<p>一方、JaneとTomがdoorsを独立に記述し、一方はslides、一方はbaseという要素を持つなら、二つのViewPoint間の関係が問題になる。著者らはinter-viewpoint checkを置き、重複部分に食い違いがあることを明示する。</p>
+<p>ここで価値があるのは、仕様全体を毎回global consistencyへ戻すのではなく、<strong>どの二つの記述の、どの関係を、いつcheckするか</strong>をwork planへ持てることだ。</p>
+<h2>resolveとtransferは、同じ「整合」でも意味が違う</h2>
+<p>論文はinter-viewpoint checkの形を二つ例示する。独立して作った二つのViewPointが重なり、相違を調整する場合は<strong>resolve</strong>になる。両者に独立した知識があり、食い違いを交渉して整理する。</p>
+<p>別のケースでは、一方が上位の記述を作り、その結果をもう一方の空のViewPointへ渡し、受け手が詳細化する。これは<strong>transfer</strong>である。同じ「情報を合わせる」でも、独立記述の衝突解決と、前提の引継ぎでは操作が違う。</p>
+<p>この差を消すと、誰が決めた前提なのか、どこから変更できるのかが分からなくなる。仕様間relationには、データ依存だけでなく権限・責任の形も表れる。</p>
+<h2>表現が違っても、対応関係は作れる</h2>
+<p>ViewPointsは同じnotation同士だけを扱わない。Bobのaction tableに出てくるsource / destinationと、object structure diagramに出てくるobjectが対応しているかをcheckできる。さらにPetri Netのtransitionとaction tableのactionのように、異なるrepresentation style間でも部分的なrelationを置く。</p>
+<p>実務ではこれが効く。利用規約の条項、業務フロー、DB schema、UI項目、評価datasetは同じ記法にならない。それでも「このfieldはこの法的要件を実装している」「この評価caseはこの仕様条件を検査する」というrelationは作れる。</p>
+<aside class="everyday-example"><span>原文外の補助例</span><p>法務AI機能を設計するとき、法務担当は「根拠がなければ断定しない」というrule、検索担当はretrieval pipeline、UX担当はcitation UI、評価担当はfailure case集を持つ。それぞれを一つの巨大文書へ混ぜるより、独立したViewPointとして持ち、「どのevaluation caseがどのruleを検査するか」「どのUI状態がどのretrieval stateを表示するか」をinter-viewpoint relationにすると、変更の影響範囲を追いやすい。</p></aside>
+<h2>ViewPoint templateは「方法」と「案件」を分ける</h2>
+<p>同じstyleとwork planを複数のViewPointで再利用するため、著者らは<strong>ViewPoint template</strong>を導入する。templateはspecification、domain、work recordが空で、representation styleとwork planを持つ。案件固有の内容を入れる前の「作り方の型」である。</p>
+<p>同じnotationを使っていてもdevelopment strategyが違えば同じtemplateではない、という点も細かい。同じ形式の表を使うことと、同じmethodで設計していることは別だからである。</p>
+<h2>work recordは変更履歴以上のものになる</h2>
+<p>work recordは、現在のspecification stateと、work planに沿ってどのactionを実行したかのhistoryを持つ。論文はこれをcurrent stateのrationaleとして位置づける。</p>
+<p>Gitの差分だけでは、「なぜこのcheckをしたか」「どのViewPointとの矛盾を解いたか」「どの情報をtransferしたか」は十分残らない。ViewPointsではdevelopment actionが方法の一部として定義され、その実行履歴が残るため、変更理由を追いやすい。</p>
+<p><a href="requirements-traceability.html">Requirements Traceability</a>が要求の由来と下流への連鎖を追うなら、ViewPointsは並行する複数の記述と、その間の整合・転送操作へ焦点を当てる。</p>
+<h2>不整合は「即座に全部消す」より、場所と時点を管理する</h2>
+<p>1992年論文のframeworkは、in-viewpoint checkを終えてからinter-viewpoint actionを行うなど、局所的なconsistency ruleを持つ。したがって「矛盾を放置してよい」という主張ではない。</p>
+<p>ただし発想として重要なのは、開発中のすべての記述を常時一つのconsistent modelへ強制しないことだ。各ViewPointが独立に発展し、必要なoverlapについてcheckを定義する。後続研究では、この考えが「完全整合を常時維持する必要はない」というinconsistency managementへ発展した。</p>
+<p>要求探索中の食い違いは、誤記だけではなく未決定事項を示すことがある。先に片方へ統一すると、誰の前提が消えたか分からなくなる。</p>
+<h2>Twin Peaksとの違い——往復する対象をさらに複数化する</h2>
+<p><a href="twin-peaks-requirements-architecture.html">Twin Peaks</a>はrequirementsとarchitectureを並行に具体化する。ViewPointsは、その内部にさらに複数のowner、domain、representation、methodがあると考える。</p>
+<p>両方を合わせると、「要求担当と設計担当が往復する」だけでは足りず、どのViewPointの何が変わり、どのrelationを再checkするかまで設計できる。変更通知を全員へ飛ばすのではなく、依存するcheckを再実行する形へ近づく。</p>
+<h2>限界——分ければ自然に協調できるわけではない</h2>
+<p>ViewPointsはconflictそのものを解く政治的・組織的手続きを自動で与えない。二人の専門家が異なる要求を持つとき、どちらを優先するかはframework外の判断になる。またViewPoint、relation、work planを細かく定義するほど管理コストは増える。</p>
+<p>論文のtool prototypeやnotationは1990年代のCASE環境を前提にしている。現在の実務へ移すなら、専用toolを再現する必要はない。Git、issue、schema、test、decision logを使いながら、ViewPointの境界とcross-checkを明示する方が現実的である。</p>
+<h2>設計に持ち帰るなら</h2>
+<p>巨大な仕様書を作る前に、少なくとも「owner / domain / representation / current specification / check rule / work history」を分けてみる。次にViewPoint間で重なるconceptを列挙し、何が一致すべきか、何は独立に違ってよいか、どの変更で再checkが必要かを決める。</p>
+<p>AI開発なら、prompt、retrieval policy、evaluation set、UI、法務ruleを別ViewPointとして扱える。重要なのは一つの正規文書へ急いで統合することより、<strong>異なる記述の間に検証可能なrelationを作ること</strong>である。</p>
+<h2>このアーカイブの既存記事とつなぐ</h2>
+<ul><li><a href="twin-peaks-requirements-architecture.html">Twin Peaks</a>——要求とarchitectureを相互制約として並行に具体化する。</li><li><a href="requirements-traceability.html">Requirements Traceability</a>——要求の由来と下流成果物への関係を追う。</li><li><a href="coordination-mechanisms.html">Coordination Mechanisms</a>——複数人の依存関係をprotocolとartifactで調整する。</li><li><a href="wicked-problems.html">Wicked Problems</a>——問題設定と解決案が相互に変わる状況を扱う。</li></ul>
+<h2>原文</h2>
+<p>A. Finkelstein, J. Kramer, B. Nuseibeh, L. Finkelstein & M. Goedicke, “Viewpoints: A Framework for Integrating Multiple Perspectives in System Development,” <em>International Journal of Software Engineering and Knowledge Engineering</em>, Vol. 2, No. 1, 1992, pp. 31–57.</p><p><a href="https://finkelstein.live/papers/ijseke92.pdf" target="_blank" rel="noopener">著者公開PDFを読む</a>　／　<a href="https://doi.org/10.1142/S0218194092000038" target="_blank" rel="noopener">DOI</a></p>
+</article></div></main><footer class="site-footer"><a href="../index.html">アーカイブへ戻る</a></footer>
+</body></html>

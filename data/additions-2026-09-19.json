@@ -1,0 +1,50 @@
+[
+  {
+    "slug":"stitch-contextual-intent",
+    "title":"似ている記憶より、今の目的に合う記憶を取る——STITCHでAgent Memoryを文脈化する",
+    "originalTitle":"Grounding Agent Memory in Contextual Intent",
+    "authors":["Ruozhen Yang","Yucheng Jiang","Yueqi Jiang","Priyanka Kargupta","Yunyi Zhang","Jiawei Han"],
+    "year":2026,
+    "publishedAt":"2026-09-19",
+    "tags":["AIエージェント","RAG","メモリ設計"],
+    "readingMinutes":41,
+    "sourceUrl":"https://aclanthology.org/2026.findings-acl.584/",
+    "excerpt":"長期履歴で同じentityや似た事実が別goalの下に繰り返されるとsemantic similarityだけでは取り違える。thematic scope・event type・key entity typeをretrieval cueにして、現在の目的へ合う記憶を先に絞る。",
+    "image":"assets/visual-stitch-contextual-intent.webp",
+    "imageAlt":"宿駅の荷物庫で、同じ形の鞄が多数並ぶ中、係員が旅程区間・行為・物の種類を表す複数の札を手掛かりに現在の目的へ合う荷物だけを取り出す図版",
+    "imageCaption":"図版：自動生成",
+    "featured":false
+  },
+  {
+    "slug":"twin-peaks-requirements-architecture",
+    "title":"要求を固めてから設計しない——Twin Peaksで要求とアーキテクチャを同時に育てる",
+    "originalTitle":"Weaving Together Requirements and Architectures",
+    "authors":["Bashar Nuseibeh"],
+    "year":2001,
+    "publishedAt":"2026-09-19",
+    "tags":["要求工学","ソフトウェア設計","仕様設計"],
+    "readingMinutes":36,
+    "sourceUrl":"https://www.researchgate.net/publication/2955399_Weaving_together_requirements_and_architectures",
+    "excerpt":"要求とarchitectureを順番に固定せず、粗い粒度から同時に具体化する。設計候補で要求の現実性を学び、要求変更でarchitectureの判断を揺さぶる往復を開発モデルにする。",
+    "image":"assets/visual-twin-peaks.webp",
+    "imageAlt":"造船所で、航路や積荷条件を検討する人々と船体構造を設計する技術者が、模型と図面を往復させながら同じ船を具体化していく図版",
+    "imageCaption":"図版：自動生成",
+    "featured":false
+  },
+  {
+    "slug":"types-levels-automation",
+    "title":"自動化は「する／しない」の二択ではない——4種類×レベルで人と機械の役割を設計する",
+    "originalTitle":"A Model for Types and Levels of Human Interaction with Automation",
+    "authors":["Raja Parasuraman","Thomas B. Sheridan","Christopher D. Wickens"],
+    "year":2000,
+    "publishedAt":"2026-09-19",
+    "tags":["HCI","自動化","AIエージェント"],
+    "readingMinutes":43,
+    "sourceUrl":"https://www.researchgate.net/publication/11596569_A_model_for_types_and_levels_of_human_interaction_with_automation",
+    "excerpt":"自動化を情報取得・情報分析・意思決定／行動選択・行動実行の4種類へ分け、それぞれでlevelを選ぶ。workload、situation awareness、complacency、skill degradation、失敗コストから配置を見直す。",
+    "image":"assets/visual-types-levels-automation.webp",
+    "imageAlt":"山岳気象観測所で、観測、情報統合、避難経路の選択、警報の実行を別々の担当と機械が担い、工程ごとに自動化の関与量が異なる図版",
+    "imageCaption":"図版：自動生成",
+    "featured":false
+  }
+]

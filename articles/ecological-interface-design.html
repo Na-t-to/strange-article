@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>値を並べる前に、仕事を支配する制約を見える形にする——Ecological Interface Design｜変な読み物置き場</title>
+<meta name="description" content="未知の異常に備えるため、work domainの目的・制約・機能・装置をabstraction hierarchyで外在化し、skill・rule・knowledgeの三層を同時に支える。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/ecological-interface-design.html">
+<meta property="og:type" content="article"><meta property="og:title" content="値を並べる前に、仕事を支配する制約を見える形にする——Ecological Interface Design"><meta property="og:description" content="未知の異常に備えるため、work domainの目的・制約・機能・装置をabstraction hierarchyで外在化し、skill・rule・knowledgeの三層を同時に支える。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/ecological-interface-design.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-ecological-interface-design.svg">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="値を並べる前に、仕事を支配する制約を見える形にする——Ecological Interface Design"><meta name="twitter:description" content="未知の異常に備えるため、work domainの目的・制約・機能・装置をabstraction hierarchyで外在化し、skill・rule・knowledgeの三層を同時に支える。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-ecological-interface-design.svg">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260921-1" defer></script>
+</head><body class="article-page" data-page="article" data-slug="ecological-interface-design">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-21</p></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　HCI</p>
+<header class="article-header"><div class="tags"><span>HCI</span><span>認知工学</span><span>情報表現</span></div><h1>値を並べる前に、仕事を支配する制約を見える形にする——Ecological Interface Design</h1><p class="original-title">Ecological Interface Design: Theoretical Foundations</p><div class="article-meta-row"><p><strong>Kim J. Vicente / Jens Rasmussen · 1992</strong><br>公開 2026.09.21　／　推定読了 55分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-ecological-interface-design.svg" alt="山岳の水力発電所を断面で描き、貯水量・流量・圧力・発電機・送電負荷の関係を一つの制御場面として見せる図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">異常時の画面に必要なのは、値をたくさん表示することではない。未知の故障では、設計者が「この故障ならこの警告」と事前列挙できないからだ。VicenteとRasmussenのEcological Interface Design（EID）は、<strong>work domainを支配する制約そのものを、利用者が知覚・推論できる形で外在化する</strong>。現在値、目的、物理法則、機能、装置をmeans-endでつなぎ、平常時の技能から未知事象の問題解決まで同じinterfaceで支える。</p>
+<h2>未知の事象は、event listだけでは覆えない</h2>
+<p>論文はcomplex human-machine systemのeventを、familiar、unfamiliar but anticipated、unfamiliar and unanticipatedへ分ける。頻繁な事象は訓練で扱える。稀でも設計者が予想した事象にはprocedureやcontrollerを用意できる。難しいのは、operatorにもdesignerにも想定外だった事象である。</p>
+<p>著者らは、重大事故につながるこのclassをなくすことはできないと置く。設計時のscenario listは、起こり得る全状態の列挙ではない。したがって「異常Aなら画面Xを出す」というevent-specificな情報設計だけでは原理的に漏れが出る。</p>
+<p>ここでEIDは、個別故障の答えを先に埋め込むのではなく、故障しても残るwork domainの構造をinterfaceへ持ってくる。</p>
+<h2>interface designを「何を見せるか」と「どう見せるか」に分ける</h2>
+<p>論文が最初に行うのは、interface design problemの分解である。第一は、work domainのcomplexityをどの表現で記述し、interfaceの<strong>information content</strong>を決めるか。第二は、その情報を人間の認知・知覚特性に合う<strong>visual form</strong>でどう伝えるかである。</p>
+<p>「グラフにするか表にするか」の前に、そもそも何の関係を表示しなければ、operatorがsystemをcontrolできないかを決める。EIDは前者にabstraction hierarchy、後者にskills-rules-knowledge（SRK）taxonomyを使う。</p>
+<h2>systemのcomplexityは消せない。誰かが扱う</h2>
+<p>論文はcontrol theoryを出発点にし、complex systemには相応のcomplex controllerが必要だと論じる。processのcomplexityは、UIを単純に見せれば消えるわけではない。designer、machine、operatorのどこかが処理する。</p>
+<p>さらにphysical systemはpurpose、natural law、organizational / legal policy、built-in function、equipment、spatial topologyなどのconstraintで記述できる。良いcontrollerは、明示的か暗黙的かを問わず、制御対象のmodelを持つ必要がある。</p>
+<p>このためinterfaceにも、work domainのconstraintを反映させる必要がある。単なるtelemetry dashboardから一歩進み、「どの関係が正常なら成立するか」を見せる。</p>
+<h2>abstraction hierarchyは、同じsystemを五つの高さで見る</h2>
+<p>process controlで著者らが紹介するabstraction hierarchyには、代表的に五つのlevelがある。<strong>Functional Purpose</strong>は何のためのsystemか。<strong>Abstract Function</strong>はmass・energy・information・valueのflowやbalance。<strong>Generalized Function</strong>はsystemが果たす基本機能。<strong>Physical Function</strong>はcomponentの能力とconnection。<strong>Physical Form</strong>は装置の見た目と場所である。</p>
+<p>これはpartの階層ではない。各levelは同じsystemを別の記述で見る。上へ行くほど「なぜ」が見え、下へ行くほど「どう実現しているか」が見える。level間はmeans-end relationで結ばれる。</p>
+<p>たとえばpumpの回転数はphysical側の情報で、それだけでは「何のためにこの回転が必要か」が分からない。flow balanceやsystem目的までつながれば、通常と違うconfigurationでも、どのconstraintを維持すべきか考えられる。</p>
+<h2>未知の故障では「正常を成り立たせるconstraint」が診断材料になる</h2>
+<p>正常時のsystemは、複数variable間のconstraintを満たす。faultが起きると、その一部が破れる。著者らはfault detectionを、constraint violationの検出として捉える。</p>
+<p>しかしどのconstraintが壊れるか事前には分からない。そこで、goal-relevantなconstraintの集合をinterfaceへ表現しておけば、想定外のeventでも「どの関係が崩れたか」からreasoningできる。abstraction hierarchyは、このconstraint群をpurposeからphysical formまで統合する枠になる。</p>
+<p>これは「全変数を全部表示する」とは違う。必要なのは、変数同士の意味ある関係が読み取れることだ。</p>
+<h2>SRK——人はいつも分析的に考えているわけではない</h2>
+<p>RasmussenのSRK taxonomyでは、informationはsignal、sign、symbolとして解釈され、それぞれskill-based behavior（SBB）、rule-based behavior（RBB）、knowledge-based behavior（KBB）を支える。</p>
+<p>SBBは自動化された知覚運動pattern、RBBはfamiliarなcueとactionの対応、KBBはsymbolic representation上での問題解決である。KBBは柔軟だが、effortfulでerror-proneでもある。EIDは何でもKBBへ押し上げず、taskが許すなら低いcontrol levelを使えるようにする。</p>
+<p>つまり「重要情報なので文章で詳しく説明する」が常に正解ではない。systemのconstraintを知覚可能な形へ写せるなら、利用者は毎回頭の中で計算し直さずに済む。</p>
+<h2>原則1——操作と表示の構造を対応させる</h2>
+<p>SBBを支える第一原則では、operatorがdisplay上で直接actionでき、表示情報のpart-whole構造とmovementのpart-whole構造をisomorphicにする。熟練者が個々の動作を一つずつ考えず、まとまりとして操作できるようにする。</p>
+<p>これはdirect manipulationに近いが、単にdragできるという意味ではない。visual chunkとaction chunkが対応し、熟練度や状況に応じて利用者が適切な粒度へattentionを移せることが重要になる。</p>
+<h2>原則2——heuristic cueではなくdomain constraintへ結びつける</h2>
+<p>RBB向けの第二原則は、work domain constraintとinterface上のcueを一対一に近く対応させることだ。論文はThree Mile Islandの例を挙げる。operatorはpressurizer levelをprimary inventoryのcueとして使っていたが、saturation conditionではそのheuristicが崩れた。</p>
+<p>普段よく当たるindicatorでも、成立条件を外れるとprocedural trapになる。EIDは、特定scenarioで経験的に効く代理指標より、processを支配するfundamental constraintへ知覚cueを結びつけようとする。</p>
+<p>この発想はAI productにも移せる。たとえば「緑色だから安全」ではなく、何件のrequired evidenceが満たされ、どのconflictが残り、どのsourceが未取得かを状態の構造として見せる方が、未知のfailureへ強い。</p>
+<h2>原則3——abstraction hierarchyをexternalized mental modelにする</h2>
+<p>KBBを支える第三原則は、work domainをabstraction hierarchyの形で表し、problem solvingのための<strong>externalized mental model</strong>にすることだ。operatorがcomplex causal networkをすべてworking memoryへ保持しなくても、目的から装置までの関係をinterface上で辿れる。</p>
+<p>未知の事象では既存ruleがないため、KBBが必要になる。そのときUIがcurrent sensor valueだけを並べると、「何が何へ影響するか」「どの目的を守るべきか」を頭の中で再構成しなければならない。EIDはその再構成コストをinterface側へ移す。</p>
+<h2>DURESS実験では、functional informationが診断を助けた</h2>
+<p>論文はthermal-hydraulic process simulationのDURESSで初期評価を行う。Physical（P）interfaceはcomponent settingとgoal variableを表示し、Physical/Functional（P+F）interfaceはそこへabstraction hierarchyのhigher-order functional variableを加えた。</p>
+<p>参加者はnormal、single fault、physical lawに従わないrandom trialを短時間観察し、状態をrecallしてdiagnoseした。P+FはPよりdiagnosis performanceが高く、特にtheoretical expertで差が出た。diagnosisはfunctional variableのmemoryと有意に関連し、physical variableのmemoryとは同じ関係が出なかった。</p>
+<p>著者ら自身、これはframework全体を決着させる証拠ではなく、principle 3へのinitial supportとして提示する。実験は一つのsimulationで、長期訓練後のoperatorや他domainへそのまま一般化できない。</p>
+<h2>「全部見える」ことと「constraintが見える」ことは違う</h2>
+<p><a href="situation-awareness.html">Situation Awareness</a>は、要素の知覚・意味の理解・将来の予測を分ける。EIDはそれより一段手前で、理解と予測を可能にするdomain relationをinterfaceへどう置くかを扱う。</p>
+<p>alarm、log、sensorを増やしても、利用者がsystem modelを再構成できなければKBBは支えられない。逆に、意味あるconstraintをvisual invariantとして表せれば、異常を「数値が閾値を越えた」だけでなく「成立すべき関係が崩れた」と見られる。</p>
+<aside class="everyday-example"><span>原文外の補助例</span><p>法務RAGの監視画面で、取得文書数・token数・model confidenceを横に並べるだけでは、回答可能性を判断しにくい。質問→必要論点→各論点を支えるsource→support/conflict→未解決論点というmeans-end関係を見せれば、「資料は多いが重要論点の根拠が欠けている」状態を知覚しやすい。これはEIDの直接適用ではないが、domain constraintをUIへ外在化する発想の移植例になる。</p></aside>
+<h2>限界——work domainを正しく知らなければ作れない</h2>
+<p>原文が最初に挙げる制約は、designerがdomain constraintを知らなければabstraction hierarchyを作れないことだ。EIDはunknown domain knowledgeを自動発見する手法ではない。誤ったsystem modelを美しく可視化すれば、誤解を強化する。</p>
+<p>sensor noiseやmodel uncertaintyも残る。constraintは現実のsystemを完全には表せず、expected behaviorとのずれが常にfaultとは限らない。またEIDはinterface designの全問題を扱わず、dialogueやcontext sensitivityなど他の論点との統合が必要だと著者らは述べる。</p>
+<h2>設計に持ち帰るなら</h2>
+<p>dashboardを作る前に、対象業務について「目的」「目的を成り立たせる保存則・制約・policy」「必要機能」「実装component」「観測可能な状態」を階層化する。次に、それぞれがmeans-endでどうつながるかを書く。</p>
+<p>その上で、①熟練操作を直接支える表示か、②普段のcueがdomain constraintと対応しているか、③未知事象で問題空間を外在化できるかを点検する。画面の情報量を増やすより先に、何を知覚可能にすべきかを決める。</p>
+<h2>このアーカイブの既存記事とつなぐ</h2>
+<ul><li><a href="situation-awareness.html">Situation Awareness</a>——知覚・理解・予測の三段階から監視を考える。</li><li><a href="why-diagrams-work.html">Why a Diagram Is (Sometimes) Worth Ten Thousand Words</a>——外部表現が推論コストをどう変えるかを見る。</li><li><a href="ironies-of-automation.html">Ironies of Automation</a>——自動化後に人間へ残る異常対応の難しさを扱う。</li><li><a href="types-levels-automation.html">Types and Levels of Automation</a>——取得・分析・選択・実行を分けて自動化を設計する。</li></ul>
+<h2>原文</h2>
+<p>Kim J. Vicente & Jens Rasmussen, “Ecological Interface Design: Theoretical Foundations,” <em>IEEE Transactions on Systems, Man, and Cybernetics</em>, Vol. 22, No. 4, 1992, pp. 589–606.</p><p><a href="https://orbit.dtu.dk/files/158017888/SMC.PDF" target="_blank" rel="noopener">著者公開accepted manuscriptを読む</a>　／　<a href="https://doi.org/10.1109/21.156574" target="_blank" rel="noopener">DOI</a></p>
+</article></div></main><footer class="site-footer"><a href="../index.html">アーカイブへ戻る</a></footer>
+</body></html>
