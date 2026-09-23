@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>要求を書く対象は「機械」ではなく環境である——Four Dark CornersでR・K・Sを分ける｜変な読み物置き場</title>
+<meta name="description" content="ZaveとJacksonのFour Dark Corners of Requirements Engineeringを読み、requirements・domain knowledge・specificationを環境記述として分け、K,S⊢Rで完了条件まで整理する。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/four-dark-corners-requirements.html">
+<meta property="og:type" content="article"><meta property="og:title" content="要求を書く対象は「機械」ではなく環境である——Four Dark CornersでR・K・Sを分ける"><meta property="og:description" content="要求・domain knowledge・specificationを環境についての異なる記述として分け、実装可能な仕様が要求を満たす条件を整理する。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/four-dark-corners-requirements.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-four-dark-corners.webp">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="要求を書く対象は「機械」ではなく環境である"><meta name="twitter:description" content="Four Dark Cornersでrequirements・domain knowledge・specificationの関係を組み直す。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-four-dark-corners.webp">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260921-1" defer></script>
+</head><body class="article-page" data-page="article" data-slug="four-dark-corners-requirements">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-23</p></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　要求工学</p>
+<header class="article-header"><div class="tags"><span>要求工学</span><span>仕様設計</span><span>ドメインモデリング</span></div><h1>要求を書く対象は「機械」ではなく環境である——Four Dark CornersでR・K・Sを分ける</h1><p class="original-title">Four Dark Corners of Requirements Engineering</p><div class="article-meta-row"><p><strong>Pamela Zave / Michael Jackson · 1997</strong><br>公開 2026.09.23　／　推定読了 55分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-four-dark-corners.webp" alt="山あいの棚田と水路を見下ろし、農夫と技師が水門・地形・水の流れ・収穫結果を別々の情報として確かめる古い学術書風の図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">要求仕様を書くとき、つい「システムは入力を受け取り、内部で判定し、結果を返す」と機械の側から説明したくなる。Pamela ZaveとMichael Jacksonは1997年の論文で、その出発点を反転させる。<strong>要求工学で記述する対象は、最初から最後まで環境である</strong>。要求は環境を「こうしたい」という記述、domain knowledgeは環境が「こうである」という記述、specificationは機械と環境が共有できる現象にまで要求を落とした記述になる。この整理から、何を仕様に書くべきかだけでなく、要求工学がいつ完了したと言えるかまで導ける。</p>
+<h2>四つの「暗い角」は、用語の定義不足ではなく土台の問題だった</h2>
+<p>論文が扱う四つの論点は、①formal representationを現実へgroundすること、②requirementsとspecificationをどこへ置くか、③environmentとmachineのどちらがactionをcontrolするか、④domain knowledgeがrequirements refinementで何をするか、である。</p>
+<p>著者らの狙いは新しいnotationを売り込むことではない。既存の方法を評価できる最低条件を作ることにある。何の現象を表す語なのか、誰がそのactionを起こせるのか、記述が「現実についての事実」なのか「実現したい性質」なのかが曖昧なら、形式化しても土台が揺れる。</p>
+<p>なお射程はformal aspectsである。顧客との合意形成、組織政治、対立解消といったrequirements engineeringの社会的側面は、この論文自身が対象外としている。そこを含めた万能理論として読むと広げすぎになる。</p>
+<h2>formal termは、現実世界の何を指すか決めて初めて意味を持つ</h2>
+<p>論文の最初の例は大学の情報システムである。<code>student</code>、<code>course</code>、<code>enrolled</code>のようなpredicateを使って式を書けても、<code>student</code>が「在籍資格を持つ人」なのか「現在どこかのcourseにenrollしている人」なのかで式の意味は変わる。</p>
+<p>後者なら「enrolledしている者はstudentである」はほとんど定義の言い換えになる。前者なら「在籍資格のない者はcourseへenrollできない」という実質的な制約になる。記号の形だけ見ても、この差は分からない。</p>
+<p>ZaveとJacksonは、primitive termごとに<strong>designation</strong>、つまり現実世界で何を指す語かを置く必要を強調する。formalizationは曖昧さを自動で消す装置ではない。曖昧な概念に記号を与えると、曖昧さが読みづらい形へ移るだけである。</p>
+<p>これは<a href="ontoclean-taxonomy.html">OntoClean</a>の問題意識とも接続する。OntoCleanはis-a階層の意味的な誤りをrigidityやidentityで検査する。Four Dark Cornersはその一段手前で、そもそもformal termが現実の何をdesignationしているかを問う。</p>
+<h2>requirementsは「機械が何をするか」ではなく、環境をどうしたいかを書く</h2>
+<p>著者らは、requirements engineeringの記述を二つのmoodへ分ける。<strong>indicative</strong>は、機械がなくても、あるいは機械の動作にかかわらず環境で成り立つ事実を表す。domain assumptionやdomain knowledgeがこれに当たる。<strong>optative</strong>は、機械を環境へ接続した結果として実現したい環境の性質を表す。requirementsはここに置かれる。</p>
+<p>この整理のポイントは、machineの内部状態をrequirementsの中心にしなくてよいことだ。著者らにとってmachineのinputやoutputでさえ、machineとenvironmentを接続する<strong>environmental phenomenon</strong>である。environment側から観測できなければ、そもそも両者を結ぶinterfaceにならない。</p>
+<p>たとえば倉庫管理システムが「在庫数=42」と内部に保持していても、倉庫に実際に42個あるとは限らない。盗難、破損、入力遅延、誤記で差が出る。内部modelと現実のenvironment stateを同一視すると、「DB上では正しい」と「現物が正しい」が混ざる。</p>
+<aside class="everyday-example"><span>原文外の補助例</span><p>予約システムなら、「予約レコードに空席と書かれている」はmachine stateに近い。一方「利用者が指定時刻に座席を利用できる」はenvironmentについてのoptativeな性質である。座席の二重販売、現地閉鎖、同期遅延を考えると、二つは同じではない。要求を後者に置くと、内部DBをどう設計するかと、利用者に何を保証するかを分けやすい。</p></aside>
+<h2>R・K・Sを分けると「なぜこの仕様で要求を満たせるか」が書ける</h2>
+<p>論文の整理を記号で短く書くと、requirementsを<strong>R</strong>、domain knowledgeを<strong>K</strong>、specificationを<strong>S</strong>とする。Rは望む環境、Kは環境について既に成立する性質、Sはmachineが実装可能な形までrequirementsをrefineした記述である。</p>
+<p>ここでSだけからRを導く必要はない。machineが直接controlできない環境の現象は多い。Sでmachine側のshared actionを定め、Kにある物理・制度・業務上の関係を使うことで、結果としてRが成立する。中心式は<strong>KとSを合わせればRが導ける</strong>、すなわち <code>K, S ⊢ R</code> である。</p>
+<p>水門を閉めれば水位が一定範囲へ下がる、注文を確定すれば倉庫担当が出荷する、通知を出せば規程上の担当者が確認する、といった関係はmachine内部のロジックではなくenvironment側のKである。Kを暗黙にすると、同じSでも前提が崩れたときにRが成立しなくなる理由を追えない。</p>
+<p><a href="goal-obstacles.html">Goal-Oriented Requirements Engineeringのobstacle分析</a>が「どの現実条件がgoalを壊すか」を探すなら、Four Dark Cornersは「その現実条件をKとしてどこに置き、SとRの関係をどう証明するか」という骨組みを与える。</p>
+<h2>specificationはrequirementsより「machineに近い」のではなく、interfaceで実装可能である</h2>
+<p>specificationを「requirementsを詳しく書いたもの」とだけ理解すると、detailの量が違うだけに見える。ZaveとJacksonは、Sへ入れられる現象に制約を置く。</p>
+<p>machineが観測できないenvironment-privateなactionをSが前提にしても実装できない。将来の出来事を直接参照して現在のactionを決めることもできない。Sは、machineが参加・観測できるshared phenomenaを使い、実装へ渡せる記述でなければならない。</p>
+<p>この考えはAI agentのtool設計にもそのまま効く。promptに「必要なら契約締結前の相手方の本当の意図を確認する」と書いても、agentに観測手段がなければspecificationではない。取得できるメール、tool result、入力field、承認signalのようなshared phenomenaへ落とす必要がある。</p>
+<h2>誰がactionをcontrolするかを分類しないと、要求と仕様を取り違える</h2>
+<p>論文はactionを二つの観点で分類する。一つは<strong>environment-controlled / machine-controlled</strong>。もう一つはmachineとenvironmentの双方が観測・参加できる<strong>shared</strong>か、environmentだけに属する<strong>unshared</strong>かである。</p>
+<p>組み合わせると、environment-controlled/unshared、environment-controlled/shared、machine-controlled/sharedの三種類が残る。machine-controlled/unsharedは意味を持たない。machineがcontrolするならmachineから届かない現象ではあり得ないからだ。</p>
+<p>ここで見落としやすいのは、requirementsがmachine-controlled actionだけを制約するとは限らないことだ。真の要求にはenvironment-controlled actionについてのoptativeな性質もある。machineはそれを直接起こせず、shared actionとdomain knowledgeを介して間接的に実現する。</p>
+<p>「利用者が期限までに必要情報を確認できる」は要求になりうるが、「利用者が必ず読む」をmachineは直接controlできない。通知、表示、reminder、閲覧記録といったshared phenomenaをSへ置き、どこまでを製品責任とするかを切る必要がある。</p>
+<h2>environment controlを無視すると、ソフトウェアへ不可能な責任を割り当てる</h2>
+<p>requirements documentには、ときどき「システムは○○を保証する」という文章が並ぶ。しかし保証対象のactionがenvironment-controlledなら、machineはそれを直接実行できない。できるのは、環境が望む方向へ動く条件を作ることだけである。</p>
+<p>この切り分けは責任範囲を狭めるためではない。逆に、間接制御のchainを明示するために使える。どのmachine actionが、どのdomain relationを経由して、どのenvironment propertyへ効くのか。chainが切れた場所は、追加仕様、運用ルール、human procedure、monitoringの候補になる。</p>
+<p><a href="viewpoints-multiple-perspectives.html">ViewPoints</a>で法務・UX・検索・評価の仕様を分ける場合も、このR/K/S分類を各ViewPoint間のrelationへ入れられる。「これは要求なのか、domain factなのか、実装可能なinterface constraintなのか」が分かれば、異なる専門記述を照合しやすい。</p>
+<h2>requirements refinementは、文章を細かくする作業ではない</h2>
+<p>著者らはdomain knowledgeのprimary roleをrequirements refinementに置く。Rを小さな文へ分解するだけでは、implementable specificationにならない。環境で成立するKを使い、machineがcontrol/observeできる現象まで変形する。</p>
+<p>たとえば「危険な状態ではgateが閉じている」というRに対し、machineは危険そのものを直接controlできない。sensor signal、gate motor、mechanical timingの関係をKとして使い、観測できるsignalと実行できるmotor actionへSを落とす。refinementが成立するかは、Kが本当に環境で成り立つかに依存する。</p>
+<p>この意味でdomain researchは、実装前の背景調査ではない。SがRを満たせるかどうかを支える証拠である。Kが変われば、同じSの妥当性も変わる。</p>
+<h2>要求工学の「完了」を五つの条件へ落とす</h2>
+<p>論文後半の強い点は、requirements engineeringのcompletionを雰囲気で終わらせないことにある。最も強い意味で完了したと言うため、著者らは五条件を置く。</p>
+<p>第一に、Rの各requirementが顧客に受け入れられ、R全体が顧客のdesiresを表していること。第二に、Kの各domain statementがenvironmentについて真であるとvalidationされていること。第三に、Sがenvironmentをcontrolする記述やunshared phenomena、future referenceへ依存せず、実装可能であること。第四に <code>S, K ⊢ R</code> を示せること。第五にSとKがconsistentであることだ。</p>
+<p>つまり「要求レビュー済み」「仕様レビュー済み」を別々に通すだけでは足りない。要求・環境知識・仕様の間に、satisfaction relationが必要になる。</p>
+<h2>AI機能なら、回答品質だけでなくKのvalidationが独立した仕事になる</h2>
+<p>法務RAGを例にすると、Rを「利用者へ根拠付きで法的な参考情報を返す」、Sを「このretrieval条件、このcitation生成、このabstain条件で回答する」と置ける。だがKには、source hierarchy、法令の施行日、jurisdiction、社内運用、document freshness、toolの取得可能範囲などが入る。</p>
+<p>Sのpromptやpipelineだけを改善しても、Kが古ければRは保証できない。逆にKが十分でも、SがKを観測できるshared phenomenaへ落ちていなければ使えない。評価設計では、R違反、K誤り、Sの実装不備を別のfailure typeとして持てる。</p>
+<p><a href="ragchecker.html">RAGChecker</a>がretrievalとgenerationのfailureをclaim単位へ分けるのと同じように、R/K/Sの分解はrequirements側のfailure attributionを細かくする。</p>
+<h2>限界——formal relationが正しくても、何を望むかは決まらない</h2>
+<p>この論文は、Rそのものをどう合意するかまでは扱わない。誰のdesireを要求へ入れるか、stakeholder間のconflictをどう解くか、価値判断をどう扱うかは別問題である。著者ら自身もsociological aspectsをscope外としている。</p>
+<p>またenvironment / machineという二分法は、multi-agent systemや組織横断workflowでは単純化が必要になる。ある開発対象にとって外部systemはenvironmentだが、その外部system自身には内部machineがある。boundaryをどこに置くかは案件ごとに決める必要がある。</p>
+<p>それでもR/K/Sの区別は残る。開発対象をどこに切っても、「何を望むか」「外部世界について何が真か」「その境界から実装できることは何か」は別の問いだからだ。</p>
+<h2>読後に残る問い</h2>
+<p>今ある仕様書の各文にR・K・Sのラベルを振ったとき、分類不能な文はどれくらい残るだろうか。Sが前提にしているKは、どこでvalidationされているだろうか。machineが観測できない現象を、実装可能な仕様として書いていないだろうか。最終的にRを満たすと説明するとき、KとSからRへ至るchainを第三者が辿れるだろうか。</p>
+<p>Four Dark Cornersは「良い要求文の書き方」を教える論文ではない。requirements engineeringで扱う記述の種類と、その間に必要な論理関係を固定する。仕様が膨らんで何が前提で何が約束か分からなくなったときに、かなり強い整理道具になる。</p>
+<p class="source-link"><a href="https://www.pamelazave.com/4dc.pdf" rel="noopener">原文PDFを読む ↗</a></p>
+</article></div></main>
+<footer class="site-footer"><p>変な読み物置き場</p><a href="../index.html">アーカイブへ戻る</a></footer>
+</body></html>
