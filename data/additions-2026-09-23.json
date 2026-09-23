@@ -1,0 +1,50 @@
+[
+  {
+    "slug": "four-dark-corners-requirements",
+    "title": "要求を書く対象は「機械」ではなく環境である——Four Dark CornersでR・K・Sを分ける",
+    "originalTitle": "Four Dark Corners of Requirements Engineering",
+    "authors": ["Pamela Zave", "Michael Jackson"],
+    "year": 1997,
+    "publishedAt": "2026-09-23",
+    "tags": ["要求工学", "仕様設計", "ドメインモデリング"],
+    "readingMinutes": 55,
+    "sourceUrl": "https://www.pamelazave.com/4dc.pdf",
+    "excerpt": "requirements・domain knowledge・specificationを、望む環境R・現実についての知識K・実装可能な仕様Sへ分ける。KとSからRを満たせるかまで、要求工学の完了条件を論理関係として固定する。",
+    "image": "assets/visual-four-dark-corners.webp",
+    "imageAlt": "山あいの棚田と水路を見下ろし、農夫と技師が水門・地形・水の流れ・収穫結果を別々の情報として確かめる古い学術書風の図版",
+    "imageCaption": "図版：自動生成",
+    "featured": true
+  },
+  {
+    "slug": "trust-appropriate-reliance",
+    "title": "AIを「信頼させる」ことを目標にしない——Trust in Automationで適切な依存を設計する",
+    "originalTitle": "Trust in Automation: Designing for Appropriate Reliance",
+    "authors": ["John D. Lee", "Katrina A. See"],
+    "year": 2004,
+    "publishedAt": "2026-09-23",
+    "tags": ["HCI", "AIエージェント", "認知工学"],
+    "readingMinutes": 52,
+    "sourceUrl": "https://journals.sagepub.com/doi/10.1518/hfes.46.1.50_30392",
+    "excerpt": "trustの高さではなくautomation capabilityに合うrelianceを目標にする。calibration・resolution・specificityとperformance/process/purposeを分け、任せる・疑う・介入する条件を設計する。",
+    "image": "assets/visual-trust-appropriate-reliance.webp",
+    "imageAlt": "祭りの日の時計塔内部で、時計職人が自動鐘の歯車・過去の作動・手動レバーを見比べ、任せるか介入するかを判断している古い学術書風の図版",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
+    "slug": "llm-judge-reliability-validity",
+    "title": "毎回同じ判定でも、正しい評価者とは限らない——LLM-as-a-JudgeのReliabilityとValidityを分ける",
+    "originalTitle": "Reliability without Validity: A Systematic, Large-Scale Evaluation of LLM-as-a-Judge Models Across Agreement, Consistency, and Bias",
+    "authors": ["Justin D. Norman", "Michael U. Rivera", "D. Alex Hughes"],
+    "year": 2026,
+    "publishedAt": "2026-09-23",
+    "tags": ["AI評価", "LLM信頼性", "ベンチマーク"],
+    "readingMinutes": 49,
+    "sourceUrl": "https://arxiv.org/html/2606.19544",
+    "excerpt": "21 judge・3 benchmark・約54.1万judgmentで、raw agreement、chance-corrected agreement、test-retest、position biasを分離する。安定したjudgeでも同じ偏りを再現し続けることがある。",
+    "image": "assets/visual-llm-judge-reliability-validity.webp",
+    "imageAlt": "温室の品評会で、審査員が左右を入れ替えた蘭や別部門の果実を繰り返し採点し、同じ審査員の安定性と位置偏りを確かめる古い学術書風の図版",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  }
+]
