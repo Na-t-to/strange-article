@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>毎回同じ判定でも、正しい評価者とは限らない——LLM-as-a-JudgeのReliabilityとValidityを分ける｜変な読み物置き場</title>
+<meta name="description" content="21 judge・3 benchmark・約54.1万judgmentを使った2026年研究から、exact match、chance-corrected agreement、test-retest、position bias、benchmark transferを分けてLLM judgeを検証する。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/llm-judge-reliability-validity.html">
+<meta property="og:type" content="article"><meta property="og:title" content="毎回同じ判定でも、正しい評価者とは限らない——LLM-as-a-JudgeのReliabilityとValidityを分ける"><meta property="og:description" content="judgeが人間と一致する、繰り返し同じ判定をする、位置を入れ替えても結論が変わらない——別々の性質として測る。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/llm-judge-reliability-validity.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-llm-judge-reliability-validity.webp">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="毎回同じ判定でも、正しい評価者とは限らない"><meta name="twitter:description" content="LLM-as-a-Judgeのagreement・consistency・biasを分けて検証する。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-llm-judge-reliability-validity.webp">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260921-1" defer></script>
+</head><body class="article-page" data-page="article" data-slug="llm-judge-reliability-validity">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-23</p></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　AI評価</p>
+<header class="article-header"><div class="tags"><span>AI評価</span><span>LLM信頼性</span><span>ベンチマーク</span></div><h1>毎回同じ判定でも、正しい評価者とは限らない——LLM-as-a-JudgeのReliabilityとValidityを分ける</h1><p class="original-title">Reliability without Validity: A Systematic, Large-Scale Evaluation of LLM-as-a-Judge Models Across Agreement, Consistency, and Bias</p><div class="article-meta-row"><p><strong>Justin D. Norman / Michael U. Rivera / D. Alex Hughes · 2026</strong><br>公開 2026.09.23　／　推定読了 49分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-llm-judge-reliability-validity.webp" alt="温室の品評会で、審査員が左右を入れ替えた蘭や別部門の果実を繰り返し採点し、同じ審査員の安定性と位置偏りを確かめる古い学術書風の図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">LLM-as-a-Judgeを評価するとき、「人間の判定と85%一致した」「同じ入力なら毎回ほぼ同じ判定を返した」は、どちらも安心材料に見える。だが一つ目はchance agreementを含み、二つ目は<strong>同じbiasを毎回再現しているだけ</strong>かもしれない。Norman、Rivera、Hughesの2026年研究は、21のjudge model、3 benchmark、118 run、約54.1万judgmentを使い、agreement・consistency・biasを分けて測った。評価者をAIへ任せるなら、まず評価者自身を複数の性質に分解して検証する必要がある。</p>
+<h2>LLM judgeの「正しさ」を一つのscoreへ潰さない</h2>
+<p>この研究が問題にするのは、LLM judgeのvalidationでraw exact matchがheadline metricになりやすいことだ。exact matchは、人間labelと同じ判定をした割合なので直感的ではある。しかしlabel distributionによって、偶然でも一致しやすさが変わる。</p>
+<p>さらにjudgeには別のfailureがある。同じitemを再評価すると判定が揺れる。response A/Bの順番を入れ替えると勝者が変わる。benchmarkを変えると順位が大きく変わる。長い回答を好む。これらを全部「judge accuracy」の一語へ入れると、改善すべき原因が分からない。</p>
+<p>著者らはagreement protocol、consistency protocol、bias-audit protocolを分け、同じjudge populationを異なる方向から測る。</p>
+<h2>21 judge、9 provider、3 benchmarkを同じprotocolで比べる</h2>
+<p>対象は9 providerから21 model。2024〜2026年のwidely deployed model、cost-conscious model、2026年4月時点のfrontier/open modelを含む。parameter scaleも8B級から100B超まで広い。</p>
+<p>benchmarkは三つ。<strong>MT-Bench</strong>は2,391のpairwise expert judgmentを持つ一般的なpreference-style benchmark。<strong>JudgeBench</strong>は350 itemで、数学・coding・creative writing・analysisをobjective correctness寄りに評価する。<strong>RewardBench</strong>は2,981のchosen/rejected pairを使い、この研究では各itemのpositionをrandomizeしている。</p>
+<p>同じjudgeを違うlabel structureへ当てることで、「このmodelはjudgeとして強い」という主張がtaskを越えて移るかを確かめる。</p>
+<h2>exact match 85%でも、chance-corrected agreementは約0.5になる</h2>
+<p>primary agreement metricに使うのがCohen's <strong>κ</strong>である。観測された一致率から、二者のlabel distributionを考えた偶然一致を差し引く。研究ではMT-Benchで、21 modelすべてに大きな<strong>kappa deflation</strong>が出た。</p>
+<p>exact matchとκの差は33.8〜41.3 percentage point、cohort meanで38.6 point。最もκが高かったGemini 3.1 Proでもexact match 0.849に対しκ 0.511だった。著者らの表現では、MT-Benchで「85% agreement」と報告されるjudgeがκではおよそ0.48になる。</p>
+<p>これは「κの方が常に正しいscore」という話ではない。大事なのは、raw agreementがlabel distributionへ依存し、chance agreementを含むという測定上の意味である。評価設計ではmetricが何を補正し、何を残すかを明示する必要がある。</p>
+<aside class="everyday-example"><span>原文外の補助例</span><p>100件中90件が「問題なし」のdatasetで、何も考えず全部「問題なし」と返す評価者は90%一致する。高いexact matchだけ見れば優秀に見える。しかし少数の「問題あり」を識別できないなら、評価者として欲しい能力は持っていない。実際のbenchmarkはもっと複雑だが、chance correctionが必要になる理由はこの方向にある。</p></aside>
+<h2>consistency——同じjudgeが同じitemへ同じ判定を返すか</h2>
+<p>consistency protocolでは、同じitemを3〜5回独立に評価する。temperatureは0、response cacheを無効化し、ABとBAの両方を使う。test–retest reliability、self-consistency、position flip rateを測る。</p>
+<p>ここでtest–retestはjudge自身の再現性を見る。評価pipelineのregression testとしては重要で、同じ入力へ毎回違う判定を返すjudgeは使いづらい。ただし、再現性が高いことと正しいことは同じではない。</p>
+<p>難しいJudgeBenchへ移ると、16 judgeの平均test–retestはMT-Benchの0.943から0.911へ下がった。position flip rateも複数modelで悪化し、Llama 3.3 70Bでは0.077から0.253へ増えた。judgeのstability自体がtask difficultyに依存する。</p>
+<h2>Consistency–Bias Paradox——安定して間違う評価者が作れる</h2>
+<p>論文で最も実務へ持ち帰りやすい概念が<strong>consistency–bias paradox</strong>である。Qwen 3 8Bはtest–retest 0.992と非常に安定していた一方、position biasは0.192、JudgeBenchのκは0.289だった。Gemini 2.5 Flashもtest–retest 0.988とposition bias 0.125を同時に示した。</p>
+<p>理由は単純で、judgeが毎回position Aを好むなら、再実行しても同じ結果を返す。reproducibilityだけ見れば完璧に近い。しかしA/Bを入れ替えれば結論が変わるので、評価者としてのinvarianceを満たしていない。</p>
+<p>この区別はAI評価全般に広げられる。rubricの適用が毎回同じでも、そのrubric自体が目的変数とずれていることはある。<a href="ai-agents-that-matter.html">AI Agents That Matter</a>がbenchmark scoreとreal-world valueを分けるのと同様、judgeのreliabilityとvalidityは別に検査する必要がある。</p>
+<h2>positionを入れ替えるだけで、見えなかったbiasが測れる</h2>
+<p>bias-audit protocolでは同じpairをAB/BAで提示し、position biasを <code>|P(A wins)-0.5|</code> として測る。最小はGemini 2.5 Proの0.002、最大はQwen 3 8Bの0.192で、model間差は大きい。</p>
+<p>同一familyでも差があり、Gemini 2.5 Pro 0.002に対してGemini 2.5 Flash 0.125だった。provider名やmodel familyだけではbias profileを推定できない。</p>
+<p>実務ではこのtestが安い。二つの回答を比較judgeへ渡すなら、candidateの表示順をswapするだけでよい。それでも結果が変わるなら、rubric改善やprompt調整、aggregate方法の見直しが必要になる。</p>
+<h2>benchmarkを変えると、judge順位は大きく動く</h2>
+<p>21 modelのうち11 modelがbenchmark間で4順位以上動き、本文で最大の移動はLlama 3.3 70Bの15順位だった。MT-Benchでは5位だったものがJudgeBenchでは20位になる。</p>
+<p>原因は二つある。第一にbenchmarkの<strong>discriminative power</strong>が違う。MT-Benchで21 judgeのκ spreadは13.5 pointだが、JudgeBenchでは60.4 point、4.5倍広い。差が圧縮されたbenchmarkでは小さなscore差が大きな順位変動に見える。</p>
+<p>第二に測っているlatent constructが違う。MT-Benchはpreference alignment、JudgeBenchはobjective correctness、RewardBenchはchosen/rejected discriminationを強く含む。一つのbenchmarkで強いjudgeが、別の判断様式でも強いとは限らない。</p>
+<p>「最強judgeを一つ選ぶ」より、実運用rubricに近い複数benchmarkでvalidationする方が意味がある。</p>
+<h2>RewardBenchではloader設定そのものがmetric validityを壊しうる</h2>
+<p>appendixには評価pipeline設計の教訓もある。RewardBenchのstandard generative loaderはchosen responseを常にA、rejected responseを常にBへ置く。そのままCohen's κを計算するとhuman labelが常にAとなり、chance agreementの計算がdegenerateしてκが0になる。</p>
+<p>著者らはitemごとにpositionをrandomizeし、balanced orderingを復元してからκを計算した。するとjudgeのκは0.616〜0.898の範囲になった。</p>
+<p>metric formulaが正しくても、dataset loaderのorderingが前提を壊せばscoreは意味を失う。評価系のvalidationではmodelだけでなく、sampling、loader、label encoding、aggregationまで検査対象になる。</p>
+<h2>verbosity biasが小さいという結果は、条件付きで読む</h2>
+<p>この研究では21 judgeすべてのverbosity biasが0.011未満だった。2023年前後に報告されたlength/style effectよりかなり小さい。著者らは、近年modelでは標準的pairwise rubric下のverbosity sensitivityが小さくなった可能性を示す。</p>
+<p>ただし論文自身が一般化を止めている。測定は一種類のpairwise rubricと固定したlength-differential operationalizationに限られる。reference groundingやreasoning instructionを変えればbias profileも変わりうる。「長文biasは解決済み」と読んではいけない。</p>
+<p>この書き方自体が評価記事の参考になる。大きな数字を出すより、「どのprotocolの下で見えなかったか」を残す方が再利用しやすい。</p>
+<h2>Minimum Viable Validation Protocolは5項目に落ちる</h2>
+<p>著者らは実験結果を、LLM judge導入前のMinimum Viable Validation Protocol（MVVP）へまとめる。</p>
+<p>第一に、exact matchだけでなくCohen's κまたはKrippendorff's αのようなchance-corrected metricをheadlineで報告する。第二にAB/BAをswapしposition biasを測る。第三にtemperature 0・cache無効で3回以上repeatしtest–retestを見る。第四にpreference-styleとcorrectness-styleをまたぐ2 benchmark以上でcross-validateする。第五にtest–retestが0.95を超えた場合でもposition biasが0.10未満か確認し、「安定している」だけでreliableと呼ばない。</p>
+<p>重要なのは、この5項目が別々のfailureを狙っていることだ。一つのmetricで置き換えられない。</p>
+<h2>法務AI評価なら「judge agreement」より先にrubricの構造を疑う</h2>
+<p>法務回答をLLM judgeで採点する場合、correct / risky / acceptableのlabel distributionが偏ることがある。exact matchだけでは多数classへ寄せるjudgeが高く見える可能性がある。さらに回答A/Bのposition、文章量、citationの有無、jurisdictionごとの難度がjudge behaviorへ影響しうる。</p>
+<p><a href="benchmarking-legal-rag.html">Benchmarking Legal RAG</a>ではgold data自体に欠落が見つかり、AIと正解が食い違った地点を再調査する必要が示された。そこへ本論文を重ねると、評価pipelineには少なくとも<strong>ground truthのvalidity</strong>と<strong>judgeのvalidity</strong>という二段階の監査が必要になる。</p>
+<p><a href="ragchecker.html">RAGChecker</a>のように回答をclaim単位へ分ける場合も、claim evaluatorがどのclassへ偏るか、同じclaimを再実行して安定するか、orderを変えても同じかを測れる。</p>
+<h2>「一致率を上げる」より、評価用途ごとに必要な性質を決める</h2>
+<p>screening用途ではfalse negativeを避けたい。ranking用途ではpairwise invarianceが重要になる。regression testならtest–retest stabilityが強く必要で、人手代替ならhuman agreementとbias auditの両方が要る。用途が違えば、優先すべきjudge propertyも違う。</p>
+<p>したがってjudge選定を一つのleaderboardへ外注しない方がよい。評価対象、label structure、decision rule、error costを先に決め、その用途に必要なagreement・consistency・bias profileを測る。</p>
+<p><a href="evidence-aware-retrieval-utility.html">Evidence-Aware Retrievalの評価</a>が「metricが正しいか」から「そのmetricを使って何を決めてよいか」へ進んだのと同じく、judge validationもdownstream decisionまで含めて考える必要がある。</p>
+<h2>限界——英語text-only、五週間、single rubricのsnapshotである</h2>
+<p>論文のscopeは明確である。benchmarkは英語text-onlyの三つ。multilingualやmultimodal judgingは未検証。実験は2026年3〜4月の五週間に行われ、hosted endpointの長期driftは測っていない。</p>
+<p>rubricはsingle pairwise templateで、calibrationもproviderがlogprobを公開しないため扱っていない。thinking modelではreasoning channelを抑制して比較しており、thinking-on設定のbehaviorを保証しない。costも当時のlist priceで、契約価格やbatch discountは入らない。</p>
+<p>つまりMVVPは完成形のstandardではなく、最低限の穴を塞ぐprotocolとして読むのがよい。実運用ではdomain-specific rubric、human adjudication、temporal re-test、multilingual caseなどを追加する必要がある。</p>
+<h2>読後に残る問い</h2>
+<p>今使っているLLM judgeは、exact match以外に何を測っているだろうか。A/Bを入れ替えても結論は同じだろうか。同じinputを三回流したとき安定するだろうか。安定している場合、その安定はbiasの再現ではないだろうか。benchmarkを一つ変えたら順位は保たれるだろうか。そもそもjudgeが高scoreを付ける性質は、最終的な製品判断で欲しい性質と一致しているだろうか。</p>
+<p>評価を自動化すると、評価者のvalidationという仕事が消えるわけではない。むしろ「評価するAIを、何で評価するか」という一段上の設計が必要になる。</p>
+<p class="source-link"><a href="https://arxiv.org/html/2606.19544" rel="noopener">原文を読む ↗</a></p>
+</article></div></main>
+<footer class="site-footer"><p>変な読み物置き場</p><a href="../index.html">アーカイブへ戻る</a></footer>
+</body></html>
