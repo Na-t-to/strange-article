@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIを「信頼させる」ことを目標にしない——Trust in Automationで適切な依存を設計する｜変な読み物置き場</title>
+<meta name="description" content="LeeとSeeのTrust in Automationを読み、trustとrelianceを分け、calibration・resolution・specificity、performance/process/purposeから適切な依存を設計する。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/trust-appropriate-reliance.html">
+<meta property="og:type" content="article"><meta property="og:title" content="AIを「信頼させる」ことを目標にしない——Trust in Automationで適切な依存を設計する"><meta property="og:description" content="高いtrustではなく、system capabilityに合ったrelianceを作る。performance・process・purposeとtrust calibrationを設計変数へする。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/trust-appropriate-reliance.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-trust-appropriate-reliance.webp">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="AIを「信頼させる」ことを目標にしない"><meta name="twitter:description" content="Trust in Automationで適切なrelianceを設計する。"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-trust-appropriate-reliance.webp">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260921-1" defer></script>
+</head><body class="article-page" data-page="article" data-slug="trust-appropriate-reliance">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-23</p></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　HCI</p>
+<header class="article-header"><div class="tags"><span>HCI</span><span>AIエージェント</span><span>認知工学</span></div><h1>AIを「信頼させる」ことを目標にしない——Trust in Automationで適切な依存を設計する</h1><p class="original-title">Trust in Automation: Designing for Appropriate Reliance</p><div class="article-meta-row"><p><strong>John D. Lee / Katrina A. See · 2004</strong><br>公開 2026.09.23　／　推定読了 52分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-trust-appropriate-reliance.webp" alt="祭りの日の時計塔内部で、時計職人が自動鐘の歯車・過去の作動・手動レバーを見比べ、任せるか介入するかを判断している古い学術書風の図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">AI製品で「もっと信頼してもらう」は、危険なKPIになりうる。systemが正しい場面では使い、弱い場面では疑い、必要なら人が介入できることの方が重要だからだ。John D. LeeとKatrina A. Seeの2004年レビューは、trustを高める設計ではなく、<strong>automationの能力と人間の依存行動が合うappropriate reliance</strong>を設計目標に置いた。二十年以上前の論文だが、AI agentの透明性、handoff、説明、信頼表示を考える語彙としてまだ強い。</p>
+<h2>trustとrelianceは同じものではない</h2>
+<p>LeeとSeeはtrustを、uncertaintyとvulnerabilityがある状況で「相手が自分のgoal達成を助けるだろう」というattitudeとして扱う。重要なのは、これは心的なattitudeであり、実際にautomationへ任せる<strong>reliance behavior</strong>とは区別されることだ。</p>
+<p>trustが高くても、事故時の責任や規程上の制約によって人は使わないことがある。逆にtrustが低くても、代替手段がなく仕方なく使う場合もある。したがって利用率だけを「信頼度」と呼ぶと、心理と行動と環境制約が混ざる。</p>
+<p>AI機能でも、accept率、提案採用率、手動修正率はrelianceの結果であってtrustそのものではない。両者を分けると、「信頼されていないから使われない」のか、「信頼しているがpolicyで最終確認が必要」なのかを区別できる。</p>
+<h2>設計目標はmaximum trustではなくappropriate trustである</h2>
+<p>automationへのtrustがcapabilityを上回れば、誤った場面でも任せるmisuseが起きる。下回れば、有用なautomationを避けるdisuseが起きる。最適なのは、systemの実力に応じてtrustとrelianceが変わることだ。</p>
+<p>この発想は「信頼を獲得するUI」の方向を変える。ロゴ、権威表示、流暢な文章、人格的な受け答えで安心感を増やしても、capabilityの境界が伝わらなければappropriate relianceにはつながらない。</p>
+<p>論文終盤のdesign guidanceも明確で、著者らはgreater trustではなくappropriate trustを目標に置く。過去performance、processやintermediate result、purposeとdesign basis、想定されるapplication rangeを利用者のgoalへ結びつけて示すことを勧める。</p>
+<h2>calibration——平均的に合っているか</h2>
+<p><strong>calibration</strong>は、trustの程度がautomation capabilityとどれだけ対応しているかを表す。90%程度正しいsystemを「ほぼ絶対正しい」と扱えばovertrustで、十分使えるsystemを常に無視すればundertrustになる。</p>
+<p>ただし平均精度だけ見せても十分ではない。systemのcapabilityがtaskやcontextで変わるなら、利用者のtrustも変わる必要がある。契約種別Aでは強いがBでは弱い、英語documentでは安定するが画像PDFでは落ちる、といった条件差を一つの「精度92%」へ潰すとcalibrationを助けにくい。</p>
+<p>この問題は<a href="types-levels-automation.html">Types and Levels of Automation</a>にもつながる。どの工程を自動化するかが違えば、必要なtrustも違う。情報取得は任せられるが最終判断は任せない、という機能別のrelianceがありうる。</p>
+<h2>resolution——能力差に応じてtrustを動かせるか</h2>
+<p><strong>resolution</strong>は、automation capabilityの違いにtrustが敏感に反応できるかという問題である。system AとBに実力差があるのに利用者が同じように信頼するなら、resolutionが低い。</p>
+<p>AIではmodel名だけを表示しても、実際のtask別能力差を利用者は把握しにくい。むしろfailure pattern、根拠の有無、tool success、入力品質など、利用者が「今回は通常条件と違う」と判断できるsignalが必要になる。</p>
+<p>resolutionは説明可能性を「詳しく説明すればよい」から救う。説明の役目は、利用者が能力差を識別できることにある。毎回同じ長いreasoningを出しても、弱いcaseと強いcaseを見分けられなければresolutionは上がらない。</p>
+<h2>specificity——system全体ではなく、機能と時間へtrustを分ける</h2>
+<p>論文が扱うもう一つの重要な性質が<strong>specificity</strong>である。trustはsystem全体へ一個だけ付くとは限らない。検索は信頼できるが要約は怪しい、住所抽出は強いが法的評価は弱い、といったfunctional specificityがある。</p>
+<p>さらにtemporal specificityもある。automationの状態やenvironmentが変わったとき、trustが時間的に追随できるかという問題だ。直前まで安定していたagentでも、tool outage、source freshnessの悪化、context overflowが起きれば依存の仕方を変える必要がある。</p>
+<p><a href="situation-awareness.html">Situation Awareness</a>が現在状態のperception・comprehension・projectionを分けるなら、trust specificityは「その状態のどの能力へ、いまどれだけ依存してよいか」を更新する側の設計になる。</p>
+<h2>performance・process・purpose——信頼性を一個の数字にしない</h2>
+<p>LeeとSeeはautomation trustworthinessの手掛かりを、attributional abstractionの異なる三つへ整理する。<strong>performance</strong>は、systemが実際に何を達成したか。reliability、predictability、abilityのような結果側の情報である。</p>
+<p><strong>process</strong>は、systemがどう動くか。algorithmやruleが状況に対して妥当か、intermediate resultが理解可能か、といったmechanism側の情報になる。<strong>purpose</strong>は、何のために作られ、どのrangeで使う想定かというdesign intentに近い。</p>
+<p>AIプロダクトで「accuracy 95%」だけを示すのはperformanceの一部しか出していない。retrievalがどの資料群を対象にするか、どの段階でhuman approvalが入るか、何を保証対象外にするかはprocess/purposeに関わる。</p>
+<aside class="everyday-example"><span>原文外の補助例</span><p>天気アプリが昨日まで十日連続で当たっていたとしても、台風接近時に同じtrustでよいとは限らない。過去performanceは高くても、今回の観測data欠損やmodel適用範囲外というprocess/purpose情報があれば、傘を持つ判断は変わる。AIでも「過去によく当たった」と「今回の条件で任せてよい」は別である。</p></aside>
+<h2>trustはanalyticだけでなく、analogical・affectiveにも作られる</h2>
+<p>論文は、人がautomationを評価するとき、performanceやmechanismを分析してtrustを作るだけではないと整理する。似たtechnologyや過去経験からのanalogy、見た目やinteractionが生むaffective responseも効く。</p>
+<p>これはAI UIで特に重要である。流暢な文章、即時応答、自然なvoice、人格的な表現は、capabilityとは独立に「分かっていそう」「誠実そう」というsignalを作る。LeeとSeeは、speechのようなanthropomorphizingがfalse expectationを生み、inappropriate trustへつながる可能性を明示している。</p>
+<p><a href="technology-affordances.html">Technology Affordances</a>で「できそうに見える」と「実際にできる」を分けたのと同じく、trust interfaceでも「頼れそうに感じるcue」と「頼ってよいcapability」を分けて評価した方がよい。</p>
+<h2>「説明」はprocessを見せるが、説明量が価値ではない</h2>
+<p>著者らはprocessとalgorithmを、operatorが理解できる形でintermediate resultとして見せることを勧める。一方、algorithm自体をsimplifyして理解可能性を上げることもdesign optionに挙げる。</p>
+<p>ここから分かるのは、explainabilityを後付けの文章生成と同一視しない方がよいことだ。複雑なsystemへ長い説明を追加するより、判断過程を確認可能なstepへ分ける、intermediate stateを保持する、failure conditionを明示する方がprocess trustのcalibrationに効く場合がある。</p>
+<p><a href="ecological-interface-design.html">Ecological Interface Design</a>がwork domainのconstraintを見せるように、trustableなinterfaceでも「何が成立しているから今の出力を使えるか」を外在化すると、単なるconfidence badgeより情報量が増える。</p>
+<h2>過去performanceは平均値より履歴として見せる</h2>
+<p>論文のdesign guidanceには、automationのpast performanceを示すことが含まれる。ここで実務上大事なのは、平均score一個より、どの条件で成功・失敗したかを辿れることだ。</p>
+<p>AI agentなら、tool別成功率、source type別citation support、task category別error、直近のoutage、再試行回数などを分けられる。利用者が今回caseと類似するhistoryを見つけられれば、functional specificityとtemporal specificityの両方を支えられる。</p>
+<p>ただしperformance historyを見せれば自動的に正しくcalibrateされるわけではない。人はrare failureを軽視したり、直近の印象へ引っ張られたりする。表示の仕方自体がtrust形成へ介入するからだ。</p>
+<h2>Ironies of Automationと合わせると、handoffの設計条件が増える</h2>
+<p><a href="ironies-of-automation.html">Ironies of Automation</a>は、平常運転を自動化すると、人間には監視と難しい異常対応が残り、技能やsituational modelが弱くなると論じる。LeeとSeeを重ねると、handoffには「人が操作できる」だけでなく、automationのcapabilityを適切に評価できる情報が必要だと分かる。</p>
+<p>人間がagentへ任せるか引き取るかを判断するには、performance、process、purpose、今回のcontextを知る必要がある。handoff buttonがあるだけではappropriate relianceを作れない。</p>
+<h2>「trust score」をKPIにすると逆向きの最適化が起きる</h2>
+<p>利用者アンケートで「このAIを信頼できる」が上がれば、一見成功に見える。だがsystem capabilityが変わらないままtrustだけ上がれば、calibrationは悪化することがある。</p>
+<p>評価したいのは、正しいcaseで依存し、誤りや適用外caseでは依存を下げられるかである。たとえばconfidence表示を導入したなら、平均trustの上昇ではなく、correct/incorrect、in-domain/out-of-domain、evidence-complete/incompleteでrelianceが適切に分かれるかを見る。</p>
+<p>これは<a href="ai-agents-that-matter.html">AI Agents That Matter</a>がheadline accuracyだけでなくcostや再現性まで評価する姿勢と似ている。評価指標を製品目的へ戻すと、「高いほど良い」指標を置く危険が見えやすい。</p>
+<h2>限界——2004年の「automation」と現在のagentは同じではない</h2>
+<p>この論文は多数の先行研究を統合したconceptual reviewで、単一の大規模experimentでframework全体を検証したものではない。航空、process control、decision aidなど当時のautomation研究を強く背景にしている。</p>
+<p>現在のLLM agentは、natural languageでgoalを交渉し、toolを選び、ときに利用者へ質問し返す。固定機能のautomationよりinteractionが社会的で、相互適応も大きい。Lee自身も後年、trust calibrationだけでなくresponsivityやcooperationへ射程を広げている。</p>
+<p>それでも「trustを上げることを目的にしない」「attitudeとrelianceを分ける」「performance/process/purposeを分ける」という骨格は古びにくい。agentが人間らしくなるほど、capabilityと社会的cueを分離して考える必要はむしろ増える。</p>
+<h2>読後に残る問い</h2>
+<p>そのAI機能は、利用者がどのtaskで強く、どのtaskで弱いかを識別できるだろうか。performanceだけでなくprocessとpurposeを知れるだろうか。system状態が変わったときtrustを更新できるだろうか。voiceや流暢さが、capability以上の期待を作っていないだろうか。評価KPIはtrustの高さを測っているのか、appropriate relianceを測っているのか。</p>
+<p>「信用してください」というproduct messageより、「ここまでは任せられ、ここからは疑うべき」が分かるsystemの方が、長く使える。Trust in Automationの中心は、信頼の獲得ではなく、依存の適合である。</p>
+<p class="source-link"><a href="https://journals.sagepub.com/doi/10.1518/hfes.46.1.50_30392" rel="noopener">原論文のDOIページを読む ↗</a></p>
+</article></div></main>
+<footer class="site-footer"><p>変な読み物置き場</p><a href="../index.html">アーカイブへ戻る</a></footer>
+</body></html>
