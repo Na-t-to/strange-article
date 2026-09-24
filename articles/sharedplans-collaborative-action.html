@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>全員が完成手順を知らなくても、共同計画は成立する——SharedPlansで協働を形式化する｜変な読み物置き場</title>
+<meta name="description" content="Grosz & KrausのSharedPlansを読み、共同作業を同じ計画の複製ではなく、部分的な知識、役割分担、互いの成功へのcommitment、subplanの整合として捉える。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/sharedplans-collaborative-action.html">
+<meta property="og:type" content="article"><meta property="og:title" content="全員が完成手順を知らなくても、共同計画は成立する——SharedPlansで協働を形式化する"><meta property="og:description" content="複数agentの協働を、共同目標だけでなく部分計画・mutual belief・intending-that・subplanのmeshingまで分解する。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/sharedplans-collaborative-action.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-sharedplans-collaborative-action.svg">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-sharedplans-collaborative-action.svg">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260924-1" defer></script>
+</head><body class="article-page" data-page="article" data-slug="sharedplans-collaborative-action">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　AIエージェント</p>
+<header class="article-header"><div class="tags"><span>AIエージェント</span><span>協働設計</span><span>計画</span></div><h1>全員が完成手順を知らなくても、共同計画は成立する——SharedPlansで協働を形式化する</h1><p class="original-title">Collaborative Plans for Complex Group Action</p><div class="article-meta-row"><p><strong>Barbara J. Grosz / Sarit Kraus · 1996</strong><br>公開 2026.09.24　／　推定読了 54分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-sharedplans-collaborative-action.svg" alt="氷河を横断する登山隊が一本のロープでつながり、地図を読む者、足場を作る者、仲間を引き上げる者、先の経路を確認する案内人に分かれて協働する古い学術書風の図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">複数のAIエージェントに同じgoalを渡せば、teamになるわけではない。誰がどのsubtaskを担当するか、他者の成功をどこまで支えるか、計画の一部しか分からない状態で何を共有すべきか、個別のsubplan同士が衝突しないかが残る。GroszとKrausのSharedPlansは、共同作業を<strong>全員が一枚の完成計画を共有する状態</strong>として置かず、部分知識のままでも協働を成立させるmental attitudeと関係を形式化した。</p>
+
+<h2>共同作業では「同じ目標を持つ」だけでは足りない</h2>
+<p>論文は、人とcomputerを含むteamのcooperative problem solvingにはcollaborationとcommunicationが必要だという地点から始める。collaborationは単に複数人が同時に動くことではなく、互いの活動が共同の目的へ結びつき、各participantが他者の活動を無関係な外部事象として扱わない状態である。</p>
+<p>たとえば二人で夕食を作るとする。片方が前菜、もう片方が主菜を担当していても、両者が同じ時間に完成させたい、同じオーブンを使う、食材が一部共通するなら、個別計画は独立ではない。自分のtaskを完遂するだけでは、team全体として失敗しうる。</p>
+<p>SharedPlansが扱うのは、こうした<strong>部分計画の相互依存</strong>である。</p>
+
+<h2>初期SharedPlansの不足は「複雑な仕事」と「部分知識」だった</h2>
+<p>GroszとSidnerによる初期のSharedPlansは、他者の行為そのものへ特殊なjoint intentionを仮定しなくても協調を説明しようとした。ただし、複雑なactionが単純なsingle-agent actionへ直接分解できる場合を中心にしており、三つの問題が残っていた。</p>
+<ul><li>group activityがさらに複雑なmulti-agent subactionを含む場合を十分扱えない。</li><li>参加者がjoint activityへどのようにcommitするかが弱い。</li><li>actionをどう実行するかについて、agentがpartial knowledgeしか持たない状態を十分扱えない。</li></ul>
+<p>1996年版はここを拡張する。重要なのは三点目である。現実の共同作業では、最初から全手順を知っていることの方が珍しい。まず目的と一部のrecipeだけを持ち、途中で詳細を調べ、役割を決め、外部へ依頼しながら計画を具体化する。</p>
+
+<aside class="everyday-example"><span>原文外の補助例</span><p>法務調査を「法令担当」「裁判例担当」「海外資料担当」の3 agentへ分ける場合、最初から各agentの検索queryや読む資料をすべて決められるとは限らない。法令担当が例外規定を見つけた結果、裁判例担当へ新しい論点が生まれることもある。team planは、完成したworkflowを配布するより、未確定箇所を持ったまま具体化される。</p></aside>
+
+<h2>Partial Individual Plan——一人の計画にも「まだ決まっていない」を入れる</h2>
+<p>SharedPlansを理解する前に、論文はindividual plan自体を作り直す。従来のplan定義では、agentがrecipeを知り、各subactionを実行でき、実行するintentionを持つことが強く要求される。これでは計画形成の途中を表しにくい。</p>
+<p>そこでPartial Individual Plan（PIP）を導入する。agentは、actionを実現するrecipeの一部だけを知っていてよい。既知のsubactionについても、自分で行うか、他者へcontractするか、まだ担当を決めていないかがありうる。未知部分については、recipeをさらにelaborateするintentionを持つ。</p>
+<p>計画を「確定済みstepの列」ではなく、<strong>決定済み部分と未決定部分を含む構造</strong>として扱っている。</p>
+
+<h2>SharedPlanは、全員の頭に同じrecipeを複製しない</h2>
+<p>groupがcomplex actionを行うとき、全員が完全なrecipeを知っている必要はない。論文はfull SharedPlanとpartial SharedPlanを区別し、partial SharedPlanではrecipe自体、各subactionのplan、contracting action、未検討subactionのいずれも未完成でよい。</p>
+<p>ただし「知らなくてよい」は無秩序を意味しない。誰か、またはsubgroupが担当するsubactionについて、groupには担当関係と能力・計画に関する必要なmutual beliefがある。担当者はそのsubactionへintention-toを持ち、他のmemberは担当者が成功できることへ一定のintention-thatを持つ。</p>
+<p>情報を完全に中央集約しなくても、必要な関係だけが共有されればjoint activityを進められる。これはmulti-agent systemで、全agentへ全contextを複製する設計とはかなり違う。</p>
+
+<h2>intending-toとintending-thatを分ける</h2>
+<p>論文で中心になる区別が<strong>intending-to</strong>と<strong>intending-that</strong>である。intending-toは「自分がactionを行う」という意図。intending-thatは「あるpropositionが成り立つこと」を意図する態度で、他者のsubtask成功を支える協働関係に使う。</p>
+<p>たとえばAが資料収集を担当し、Bが分析を担当するとする。Bは自分でAの検索を行うintention-toを持つ必要はない。しかし、Aが必要資料を集められることをjoint activity上の目的として扱う。Bが同じAPI枠を使い切る、Aのfileを削除するなど、Aの成功と衝突するintentionを採用しない。必要なら支援可能なactionを検討する。</p>
+<p>この区別によって「担当していないから関係ない」と「自分が代わりに実行する」の間を表せる。</p>
+
+<h2>helpful behaviorは善意ではなく、計画構造から導く</h2>
+<p>SharedPlansではintending-thatがhelpful behaviorの根拠になる。共同actionの一部を担当するmemberが困っているとき、別memberが支援可能で、その支援が自分の他のcommitmentと両立するなら、支援actionを候補として考える。</p>
+<p>論文はこれを「team memberは親切であるべき」と性格特性で置かない。joint activityの成立へ向けたintentionと、能力・cost・他のintentionとの関係から、助ける行動が出てくるようにする。</p>
+<p>AI agent設計へ持ち込むなら、fallbackを個々のagentのpromptへ「困っていたら助けて」と書くより、どのsubtaskの成功へ誰がcommitしているか、どのresourceで代替支援できるかをteam stateとして持つ方が検証可能になる。</p>
+
+<h2>subplanは「個別に正しい」だけでなくmeshingしている必要がある</h2>
+<p>複数agentが各自の担当taskを正しく計画しても、計画同士が同時に成立しないことがある。同じresourceを同時刻に使う、片方が前提とする状態をもう片方が変更する、完了順序が逆になる、といった衝突である。</p>
+<p>SharedPlansはsubplansが<strong>mesh</strong>することを要求する。各agentの局所planは、group action全体を実行可能にする形で組み合わさらなければならない。</p>
+<p>既収録の<a href="coordination-mechanisms.html">Coordination Mechanisms</a>は、protocolとartifactで相互依存する仕事を調整する方法を扱った。SharedPlansはそのさらに内側で、「なぜ担当者間に調整義務が生まれるか」「何を互いの成功として扱うか」をintentional structureから説明する。</p>
+
+<h2>communicationは独立した道徳規則ではなく、協働から派生する</h2>
+<p>論文の面白い点は、「共同作業では必ず何でも伝えよ」というcommunication ruleを最初から置かないことだ。communication needは、joint activityへのcommitment、mutual belief、plan elaboration、intending-thatから派生する。</p>
+<p>担当agentが自分のsubactionを完遂できないと分かったとき、その失敗がgroup actionへ影響するなら、他memberへの通知は計画修復に寄与する。逆に、局所変更が他者のplanへ影響せず、自分で回復できるなら、全員へbroadcastする必要はない。</p>
+<p>論文はcommunication costとerror recovery costのtrade-offにも触れる。常時同期は通信量を増やす。通知を減らしすぎれば、後で大きなrepairが必要になる。重要なのは「共有量を最大化」することではなく、subplanの整合を維持するために必要な情報を流すことだ。</p>
+
+<h2>contracting-out——team外へ任せても責任関係は消えない</h2>
+<p>この版のSharedPlansはcontracting-outも扱う。個人またはgroupが、自分たちのactionの一部を外部agentや外部groupへ依頼できる。</p>
+<p>興味深いのは、依頼した側に「contractorが成功できること」へのcommitmentが残る点である。たとえば車のoil changeを業者へ任せた人は、同じ時間にその車を自分で使う計画を立ててはいけない。作業を外へ出しても、上位planとの整合を守る責任は消えない。</p>
+<p>multi-agent architectureでは、sub-agent callや外部tool callを「委譲したので終了」と扱いがちである。しかし上位agentには、依頼先が必要条件を満たしているか、結果が戻るまで自分のplanをどう保つか、失敗時に再割当てするかが残る。</p>
+
+<h2>「共同目標」を一つ書くだけではteam specificationにならない</h2>
+<p>SharedPlansから実装側へ持ち帰るなら、team specificationを次のように分けられる。</p>
+<ul><li><strong>Group action:</strong> team全体が成立させる結果。</li><li><strong>Recipe:</strong> 既知のsubactionと、まだelaborateが必要な部分。</li><li><strong>Assignment:</strong> 各subactionを個人・subgroup・外部contractorの誰が担うか。</li><li><strong>Mutual belief:</strong> 他memberが調整に必要な範囲で知る担当・能力・状態。</li><li><strong>Intention-to:</strong> 自分が実行するaction。</li><li><strong>Intention-that:</strong> 他者の成功を阻害せず、必要に応じて支える関係。</li><li><strong>Meshing constraints:</strong> resource、順序、state変更などsubplan間の整合条件。</li></ul>
+<p>これなら「Planner agent / Researcher agent / Reviewer agentを置く」という組織図から一段進み、どの関係が壊れるとteamとして失敗するかをtestへ落とせる。</p>
+
+<aside class="everyday-example"><span>原文外の補助例</span><p>調査agentが一次資料を集め、評価agentが証拠の適格性を判定し、回答agentが文章を書く構成を考える。回答agentが「資料取得は自分の担当ではない」として、評価agentが不足を返した後もそのまま書けばteamは壊れる。SharedPlans的には、回答agent自身が検索する必要はなくても、必要な証拠が揃うというpropositionの成立には関与し、再検索や確認へplanを戻せる必要がある。</p></aside>
+
+<h2>Coactive DesignやGroundingと、見ている層が違う</h2>
+<p><a href="coactive-design.html">Coactive Design</a>は、人とagentの相互依存からObservability・Predictability・Directabilityを導く。<a href="grounding-in-communication.html">Grounding in Communication</a>は、相手が十分理解した証拠を共同で作る過程を扱う。</p>
+<p>SharedPlansはその両方の土台になりうる。誰の成功を誰が支えるのか、どのsubplanが互いに依存するのかが分かれば、何をobservableにすべきか、どこでgroundingが必要かを決めやすい。逆に、共同planの関係を定義せずUIだけに進捗表示を増やしても、重要情報の選択基準がない。</p>
+
+<h2>形式化は強いが、そのまま実装仕様ではない</h2>
+<p>原論文は86ページに及ぶformal modelであり、現在のLLM agent frameworkへそのまま貼れるalgorithmではない。著者ら自身、partial planを具体化するreasoning mechanismを完全にはspecifiedしておらず、intending-thatのaxiomも基本部分に限る。intention reconciliationの具体機構やcommitment自体の完全なformalizationも残る。</p>
+<p>また、論文が想定するbelief・intentionは明示的なsymbolic representationである。現在のLLM agentで同じmental stateが内部に存在すると仮定する必要はない。実務で使うなら、内部心理の主張ではなく、外部stateとして「担当」「未解決subtask」「依存関係」「支援義務」「再計画条件」を表現する方が安全である。</p>
+<p>それでもSharedPlansが残す問いは古びていない。teamを構成するagentの数より先に、<strong>誰が何を知らなくてもよいか、何だけは相互に知る必要があるか、他者の成功へどんな責任を持つか</strong>を決める。multi-agent設計の粒度を、一段細かくしてくれる。</p>
+
+<section class="source-box"><h2>原文・関連</h2><p><a href="https://dash.harvard.edu/entities/publication/73120378-7e49-6bd4-e053-0100007fdf3b" target="_blank" rel="noopener">Collaborative Plans for Complex Group Action（Harvard DASH）</a></p><p>関連：<a href="coordination-mechanisms.html">Coordination Mechanisms</a> ／ <a href="grounding-in-communication.html">Grounding in Communication</a> ／ <a href="coactive-design.html">Coactive Design</a></p></section>
+</article></div></main><footer class="site-footer">変な読み物置き場</footer></body></html>
