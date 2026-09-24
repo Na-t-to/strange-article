@@ -1,11 +1,11 @@
 {
-  "date": "2026-09-23",
-  "lastUpdated": "2026-09-23T14:21:30+09:00",
-  "candidateCount": 42,
+  "date": "2026-09-24",
+  "lastUpdated": "2026-09-24T15:16:38+09:00",
+  "candidateCount": 41,
   "adoptedCount": 3,
-  "collectionNote": "要求工学・HCI・認知工学・概念モデリング・RAG・LLM評価・AIエージェント・法務AIまで候補を広くスクリーニングし、原文と既存収録との差分を確認した。今回は、要求・domain knowledge・specificationをR/K/Sとして環境記述へ戻すFour Dark Corners、trustの高さではなくcapabilityに合うrelianceを設計するTrust in Automation、LLM judgeのagreement・consistency・biasを分離して検証するReliability without Validityの3本を採用した。直近記事と重なるRAG/agent候補は数合わせで混ぜなかった。",
+  "collectionNote": "要求工学・HCI・CSCW・multi-agent planning・AI評価・RAG・LLM信頼性・安全工学まで一次資料を横断し、既存収録との重複と全文アクセスを確認した。今回は、実行能力と停止能力をpairで測るAgentAbstain、部分知識のまま共同計画を成立させるSharedPlans、共有DBを意味共有の完成形とみなさず包装・翻訳・再文脈化のworkとして捉えるCommon Information Spacesの3本を採用した。Rasmussenのdynamic risk managementなど有力候補も読んだが、既収録のSTAMP/EIDとの距離が近いため今回は見送った。",
   "selectionTracks": [
-    {"title":"古典・基礎","summary":"要求工学、設計理論、HCI、認知科学、概念モデリングの一次資料から、現在のAI・検索・仕様設計へ再利用できる道具を探す。","criteria":["原文全文または一次資料へ到達できる","後年の要約ではなく一次資料を読む","既存記事と別の道具を持ち帰れる","具体例・論証・限界まで再構成できる"]},
+    {"title":"古典・基礎","summary":"要求工学、設計理論、HCI、CSCW、認知科学、概念モデリング、multi-agent planningの一次資料から、現在のAI・検索・仕様設計へ再利用できる道具を探す。","criteria":["原文全文または一次資料へ到達できる","後年の要約ではなく一次資料を読む","既存記事と別の道具を持ち帰れる","具体例・論証・限界まで再構成できる"]},
     {"title":"新しいAI研究","summary":"RAG・agent・評価・legal AIは方法、失敗条件、適用範囲が明示された研究を探索し、直近収録との重複が大きいものは採用しない。","criteria":["一次または技術報告である","方法・数値・失敗条件が検証可能である","単なる製品紹介や順位表ではない","既出との差分が大きく、後から設計判断へ使える"]}
   ],
   "adoptionRule": "原則3〜5本。通常回は最低2本以上を目指すが、本数確保のため品質基準を下げない。候補が少ない場合は別テーマ・周辺分野・過去の未収録一次情報まで探索範囲を広げ、なお基準を満たさない場合は1本または0本でもよい。"
