@@ -3,147 +3,48 @@
   const noteScript = document.createElement('script');
   noteScript.src = articlePage ? '../assets/notes.js?v=20260904-2' : 'assets/notes.js?v=20260904-2';
   document.head.append(noteScript);
-  const articleHref = (slug) => articlePage ? `${slug}.html` : `articles/${slug}.html`;
+  const hrefFor = (slug) => articlePage ? `${slug}.html` : `articles/${slug}.html`;
   const keys = { favorites: 'sasu-favorites-v1', read: 'sasu-read-v1' };
-  const loadSet = (key) => { try { return new Set(JSON.parse(localStorage.getItem(key) || '[]')); } catch { return new Set(); } };
-  const saveSet = (key, value) => { try { localStorage.setItem(key, JSON.stringify([...value])); } catch { /* optional */ } };
-  const esc = (value) => String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
-  const state = { favorites: loadSet(keys.favorites), read: loadSet(keys.read), query: '', tag: 'すべて', date: 'すべて', savedOnly: false, sort: 'publishedAt', direction: 'desc', page: 1, pageSize: 25 };
+  const getSet = (key) => { try { return new Set(JSON.parse(localStorage.getItem(key) || '[]')); } catch { return new Set(); } };
+  const putSet = (key, set) => { try { localStorage.setItem(key, JSON.stringify([...set])); } catch {} };
+  const esc = (v) => String(v ?? '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;');
+  const state = { favorites:getSet(keys.favorites), read:getSet(keys.read), query:'', tag:'すべて', date:'すべて', savedOnly:false, sort:'publishedAt', direction:'desc', page:1, pageSize:25 };
   let articles = [];
 
-  function syncButtons() {
-    document.querySelectorAll('[data-favorite]').forEach((button) => {
-      const active = state.favorites.has(button.dataset.favorite);
-      button.classList.toggle('is-active', active); button.setAttribute('aria-pressed', String(active));
-      const label = button.querySelector('[data-label]'); if (label) label.textContent = active ? '保存済み' : '保存';
+  function syncButtons(){
+    document.querySelectorAll('[data-favorite]').forEach((b)=>{ const on=state.favorites.has(b.dataset.favorite); b.classList.toggle('is-active',on); b.setAttribute('aria-pressed',String(on)); const l=b.querySelector('[data-label]'); if(l) l.textContent=on?'保存済み':'保存'; });
+    document.querySelectorAll('[data-read]').forEach((b)=>{ const on=state.read.has(b.dataset.read); b.classList.toggle('is-active',on); b.setAttribute('aria-pressed',String(on)); const l=b.querySelector('[data-label]'); if(l) l.textContent=on?'既読':'未読'; });
+    document.querySelectorAll('[data-saved-count]').forEach((n)=>n.textContent=String(state.favorites.size));
+    document.querySelectorAll('[data-saved-wrap],[data-saved-utility]').forEach((n)=>n.hidden=state.favorites.size===0);
+  }
+  if(articlePage){ syncButtons(); return; }
+
+  const filtered = () => {
+    const q=state.query.trim().toLocaleLowerCase('ja');
+    return articles.filter((a)=>{
+      const text=[a.title,a.originalTitle,...(a.authors||[]),...(a.tags||[]),a.excerpt].join(' ').toLocaleLowerCase('ja');
+      return (!q||text.includes(q))&&(state.tag==='すべて'||a.tags.includes(state.tag))&&(state.date==='すべて'||a.publishedAt===state.date)&&(!state.savedOnly||state.favorites.has(a.slug));
     });
-    document.querySelectorAll('[data-read]').forEach((button) => {
-      const active = state.read.has(button.dataset.read);
-      button.classList.toggle('is-active', active); button.setAttribute('aria-pressed', String(active));
-      const label = button.querySelector('[data-label]'); if (label) label.textContent = active ? '既読' : '未読';
-    });
-    document.querySelectorAll('[data-saved-count]').forEach((node) => { node.textContent = String(state.favorites.size); });
-    document.querySelectorAll('[data-saved-wrap]').forEach((node) => { node.hidden = state.favorites.size === 0; });
-    document.querySelectorAll('[data-saved-utility]').forEach((node) => { node.hidden = state.favorites.size === 0; });
-  }
+  };
+  function compare(a,b){ const av=state.sort==='tags'?a.tags.join('、'):a[state.sort]; const bv=state.sort==='tags'?b.tags.join('、'):b[state.sort]; if(av===bv)return 0; const r=typeof av==='number'?av-bv:String(av).localeCompare(String(bv),'ja'); return state.direction==='asc'?r:-r; }
+  function row(a){ const r=state.read.has(a.slug); const author=a.authors.length>2?`${a.authors[0]} ほか${a.authors.length-1}名`:a.authors.join(' / '); return `<tr data-slug="${esc(a.slug)}" class="${r?'is-read':''}"><td class="date-cell">${esc(a.publishedAt)}</td><td class="title-cell"><a href="${esc(hrefFor(a.slug))}">${esc(a.title)}</a><span class="original-title">${esc(a.originalTitle)}</span><div class="row-actions"><button type="button" data-read="${esc(a.slug)}" aria-pressed="${r}">✓ <span data-label>${r?'既読':'未読'}</span></button><button type="button" data-favorite="${esc(a.slug)}" aria-pressed="${state.favorites.has(a.slug)}">♡ <span data-label>${state.favorites.has(a.slug)?'保存済み':'保存'}</span></button></div></td><td class="tag-cell">${a.tags.map((t)=>`<span>${esc(t)}</span>`).join('')}</td><td class="source-cell">${esc(author)}<br><span>${esc(a.year)}</span></td><td class="length-cell">${esc(a.readingMinutes)}分</td></tr>`; }
+  function renderRows(){ const body=document.querySelector('#article-list'); if(!body)return; const list=filtered().sort(compare); document.querySelector('[data-result-count]')?.replaceChildren(`${list.length}本`); const pages=Math.max(1,Math.ceil(list.length/state.pageSize)); state.page=Math.min(state.page,pages); const visible=list.slice((state.page-1)*state.pageSize,state.page*state.pageSize); body.innerHTML=visible.map(row).join(''); const empty=document.querySelector('[data-empty-state]'); if(empty)empty.hidden=visible.length!==0; const nav=document.querySelector('[data-pagination]'); if(nav) nav.innerHTML=pages<=1?'':`<button type="button" data-page-action="prev" ${state.page===1?'disabled':''}>前へ</button><span>${state.page} / ${pages}</span><button type="button" data-page-action="next" ${state.page===pages?'disabled':''}>次へ</button>`; syncButtons(); }
+  function renderFeatured(){ const c=document.querySelector('#featured-article'); if(!c)return; const a=articles.find((x)=>x.featured===true); if(!a){c.innerHTML='<p class="empty-state"><strong>今日は採用なし。</strong>前回の追加は一覧から確認できます。</p>';return;} const visual=a.image?`<figure class="entry-visual"><img src="${esc(a.image)}" alt="${esc(a.imageAlt||'')}" width="800" height="533"><figcaption>${esc(a.imageCaption||'図版：自動生成')}</figcaption></figure>`:''; c.innerHTML=`${visual}<div class="entry-copy"><p class="entry-label">追加日 ${esc(a.publishedAt)}</p><h2><a href="${esc(hrefFor(a.slug))}">${esc(a.title)}</a></h2><p class="original-title">${esc(a.originalTitle)}</p><p class="entry-excerpt">${esc(a.excerpt)}</p><div class="entry-meta"><span>${a.tags.map((t)=>`<span>${esc(t)}</span>`).join('')}</span><span>${esc(a.authors.join(' / '))} · ${esc(a.year)} · 読了 ${esc(a.readingMinutes)}分</span><span class="row-actions"><button type="button" data-read="${esc(a.slug)}"><span data-label></span></button><button type="button" data-favorite="${esc(a.slug)}"><span data-label></span></button></span></div></div>`; syncButtons(); }
+  function renderFilters(){ const tags=['すべて',...new Set(articles.flatMap((a)=>a.tags))]; const dates=['すべて',...new Set(articles.map((a)=>a.publishedAt).sort().reverse())]; const ts=document.querySelector('#tag-filter'); if(ts)ts.innerHTML=tags.map((t)=>`<option value="${esc(t)}">${esc(t)}</option>`).join(''); const ds=document.querySelector('#date-filter'); if(ds)ds.innerHTML=dates.map((d)=>`<option value="${esc(d)}">${esc(d)}</option>`).join(''); }
+  function renderDaily(d){ if(!d)return; const raw=String(d.lastUpdated||`${d.date||''} 10:00`); const stamp=raw.length>=16?raw.slice(0,16).replace('T',' '):raw; document.querySelectorAll('[data-run-summary]').forEach((n)=>n.textContent=`自動収集 / 最終実行 ${stamp} / 候補${d.candidateCount??0}件・採用${d.adoptedCount??0}件`); document.querySelectorAll('[data-collection-note]').forEach((n)=>n.textContent=d.collectionNote||''); const tracks=(d.selectionTracks||[]).map((tr,i)=>`<section class="criteria-track"><h3>${i+1}. ${esc(tr.title)}</h3><p>${esc(tr.summary||'')}</p><ul>${(tr.criteria||[]).map((x)=>`<li>${esc(x)}</li>`).join('')}</ul></section>`).join(''); const rule=d.adoptionRule?`<p class="adoption-rule"><strong>採用条件</strong>${esc(d.adoptionRule)}</p>`:''; document.querySelectorAll('[data-selection-criteria]').forEach((n)=>n.innerHTML=tracks+rule); }
+  function render(){ renderFilters(); renderRows(); renderFeatured(); }
 
-  function filteredArticles() {
-    const query = state.query.trim().toLocaleLowerCase('ja');
-    return articles.filter((article) => {
-      const text = [article.title, article.originalTitle, ...(article.authors || []), ...(article.tags || []), article.excerpt].join(' ').toLocaleLowerCase('ja');
-      return (!query || text.includes(query)) && (state.tag === 'すべて' || article.tags.includes(state.tag)) && (state.date === 'すべて' || article.publishedAt === state.date) && (!state.savedOnly || state.favorites.has(article.slug));
-    });
-  }
+  document.addEventListener('click',(e)=>{ const f=e.target.closest('[data-favorite]'); if(f){e.preventDefault(); const s=f.dataset.favorite; state.favorites.has(s)?state.favorites.delete(s):state.favorites.add(s); putSet(keys.favorites,state.favorites); renderRows(); renderFeatured(); return;} const r=e.target.closest('[data-read]'); if(r){e.preventDefault(); const s=r.dataset.read; state.read.has(s)?state.read.delete(s):state.read.add(s); putSet(keys.read,state.read); renderRows(); renderFeatured(); return;} const so=e.target.closest('[data-sort-key]'); if(so){const k=so.dataset.sortKey;if(state.sort===k)state.direction=state.direction==='asc'?'desc':'asc';else{state.sort=k;state.direction=(k==='title'||k==='tags')?'asc':'desc';}state.page=1;renderRows();return;} const p=e.target.closest('[data-page-action]');if(p){state.page+=p.dataset.pageAction==='next'?1:-1;renderRows();return;} const sf=e.target.closest('[data-saved-filter]');if(sf){state.savedOnly=!state.savedOnly;state.page=1;renderRows();return;} });
+  document.querySelector('#archive-search')?.addEventListener('input',(e)=>{state.query=e.target.value;state.page=1;renderRows();});
+  document.querySelector('#tag-filter')?.addEventListener('change',(e)=>{state.tag=e.target.value;state.page=1;renderRows();});
+  document.querySelector('#date-filter')?.addEventListener('change',(e)=>{state.date=e.target.value;state.page=1;renderRows();});
 
-  function compare(a, b) {
-    const av = state.sort === 'tags' ? a.tags.join('、') : a[state.sort];
-    const bv = state.sort === 'tags' ? b.tags.join('、') : b[state.sort];
-    if (av === bv) return 0;
-    const result = typeof av === 'number' ? av - bv : String(av).localeCompare(String(bv), 'ja');
-    return state.direction === 'asc' ? result : -result;
-  }
-
-  function row(article) {
-    const read = state.read.has(article.slug);
-    const author = article.authors.length > 2 ? `${article.authors[0]} ほか${article.authors.length - 1}名` : article.authors.join(' / ');
-    return `<tr data-slug="${esc(article.slug)}" class="${read ? 'is-read' : ''}"><td class="date-cell">${esc(article.publishedAt)}</td><td class="title-cell"><a href="${esc(articleHref(article.slug))}">${esc(article.title)}</a><span class="original-title">${esc(article.originalTitle)}</span><div class="row-actions"><button type="button" data-read="${esc(article.slug)}" aria-pressed="${read}">✓ <span data-label>${read ? '既読' : '未読'}</span></button><button type="button" data-favorite="${esc(article.slug)}" aria-pressed="${state.favorites.has(article.slug)}">♡ <span data-label>${state.favorites.has(article.slug) ? '保存済み' : '保存'}</span></button></div></td><td class="tag-cell">${article.tags.map((tag) => `<span>${esc(tag)}</span>`).join('')}</td><td class="source-cell">${esc(author)}<br><span>${esc(article.year)}</span></td><td class="length-cell">${esc(article.readingMinutes)}分</td></tr>`;
-  }
-
-  function renderRows() {
-    const body = document.querySelector('#article-list'); if (!body) return;
-    const filtered = filteredArticles().sort(compare); const count = document.querySelector('[data-result-count]');
-    if (count) count.textContent = `${filtered.length}本`;
-    const pages = Math.max(1, Math.ceil(filtered.length / state.pageSize)); state.page = Math.min(state.page, pages);
-    const visible = filtered.slice((state.page - 1) * state.pageSize, state.page * state.pageSize);
-    body.innerHTML = visible.map(row).join('');
-    const empty = document.querySelector('[data-empty-state]'); if (empty) empty.hidden = visible.length !== 0;
-    renderPagination(pages); syncButtons();
-  }
-
-  function renderPagination(pages) {
-    const nav = document.querySelector('[data-pagination]'); if (!nav) return;
-    if (pages <= 1) { nav.innerHTML = ''; return; }
-    nav.innerHTML = `<button type="button" data-page-action="prev" ${state.page === 1 ? 'disabled' : ''}>前へ</button><span>${state.page} / ${pages}</span><button type="button" data-page-action="next" ${state.page === pages ? 'disabled' : ''}>次へ</button>`;
-  }
-
-  function renderFeatured() {
-    const container = document.querySelector('#featured-article'); if (!container) return;
-    const article = articles.find((item) => item.featured === true);
-    if (!article) { container.innerHTML = '<p class="empty-state"><strong>今日は採用なし。</strong>前回の追加は一覧から確認できます。</p>'; return; }
-    const visual = article.image ? `<figure class="entry-visual"><img src="${esc(article.image)}" alt="${esc(article.imageAlt || '')}" width="800" height="533"><figcaption>${esc(article.imageCaption || '図版：自動生成')}</figcaption></figure>` : '';
-    container.innerHTML = `${visual}<div class="entry-copy"><p class="entry-label">追加日 ${esc(article.publishedAt)}</p><h2><a href="${esc(articleHref(article.slug))}">${esc(article.title)}</a></h2><p class="original-title">${esc(article.originalTitle)}</p><p class="entry-excerpt">${esc(article.excerpt)}</p><div class="entry-meta"><span>${article.tags.map((tag) => `<span>${esc(tag)}</span>`).join('')}</span><span>${esc(article.authors.join(' / '))} · ${esc(article.year)} · 読了 ${esc(article.readingMinutes)}分</span><span class="row-actions"><button type="button" data-read="${esc(article.slug)}" aria-pressed="${state.read.has(article.slug)}">✓ <span data-label>${state.read.has(article.slug) ? '既読' : '未読'}</span></button><button type="button" data-favorite="${esc(article.slug)}" aria-pressed="${state.favorites.has(article.slug)}">♡ <span data-label>${state.favorites.has(article.slug) ? '保存済み' : '保存'}</span></button></span></div></div>`;
-    syncButtons();
-  }
-
-  function renderFilters() {
-    const tagSelect = document.querySelector('#tag-filter');
-    if (tagSelect) tagSelect.innerHTML = ['すべて', ...new Set(articles.flatMap((article) => article.tags))].map((tag) => `<option value="${esc(tag)}" ${tag === state.tag ? 'selected' : ''}>${esc(tag)}</option>`).join('');
-    const dateSelect = document.querySelector('#date-filter');
-    if (dateSelect) dateSelect.innerHTML = ['すべて', ...new Set(articles.map((article) => article.publishedAt).sort().reverse())].map((date) => `<option value="${esc(date)}" ${date === state.date ? 'selected' : ''}>${esc(date)}</option>`).join('');
-  }
-
-  function renderCollectionMeta(daily) {
-    if (!daily || typeof daily !== 'object') return;
-    const rawStamp = String(daily.lastUpdated || `${daily.date || ''} 10:00`);
-    const stamp = rawStamp.length >= 16 ? rawStamp.slice(0, 16).replace('T', ' ') : rawStamp;
-    const run = `自動収集 / 最終実行 ${stamp} / 候補${daily.candidateCount ?? 0}件・採用${daily.adoptedCount ?? 0}件`;
-    document.querySelectorAll('[data-run-summary]').forEach((node) => { node.textContent = run; });
-    document.querySelectorAll('[data-collection-note]').forEach((node) => { node.textContent = daily.collectionNote || ''; });
-    const tracks = daily.selectionTracks || [];
-    const renderedTracks = tracks.map((track, index) => `<section class="criteria-track"><h3>${index + 1}. ${esc(track.title)}</h3><p>${esc(track.summary || '')}</p><ul>${(track.criteria || []).map((item) => `<li>${esc(item)}</li>`).join('')}</ul></section>`).join('');
-    const fallback = (daily.selectionCriteria || []).length ? `<ul>${daily.selectionCriteria.map((item) => `<li>${esc(item)}</li>`).join('')}</ul>` : '';
-    const adoption = daily.adoptionRule ? `<p class="adoption-rule"><strong>採用条件</strong>${esc(daily.adoptionRule)}</p>` : '';
-    document.querySelectorAll('[data-selection-criteria]').forEach((node) => { node.innerHTML = `${renderedTracks || fallback}${adoption}`; });
-  }
-
-  document.addEventListener('click', (event) => {
-    const favorite = event.target.closest('[data-favorite]');
-    if (favorite) { event.preventDefault(); const slug = favorite.dataset.favorite; state.favorites.has(slug) ? state.favorites.delete(slug) : state.favorites.add(slug); saveSet(keys.favorites, state.favorites); renderRows(); renderFeatured(); syncButtons(); return; }
-    const read = event.target.closest('[data-read]');
-    if (read) { event.preventDefault(); const slug = read.dataset.read; state.read.has(slug) ? state.read.delete(slug) : state.read.add(slug); saveSet(keys.read, state.read); renderRows(); renderFeatured(); syncButtons(); return; }
-    const sort = event.target.closest('[data-sort-key]');
-    if (sort) { const key = sort.dataset.sortKey; if (state.sort === key) state.direction = state.direction === 'asc' ? 'desc' : 'asc'; else { state.sort = key; state.direction = key === 'title' || key === 'tags' ? 'asc' : 'desc'; } state.page = 1; renderRows(); return; }
-    const page = event.target.closest('[data-page-action]');
-    if (page) { state.page += page.dataset.pageAction === 'next' ? 1 : -1; renderRows(); document.querySelector('#archive')?.scrollIntoView({ behavior: 'smooth' }); return; }
-    const saved = event.target.closest('[data-saved-filter]');
-    if (saved) { state.savedOnly = !state.savedOnly; document.querySelectorAll('[data-saved-filter]').forEach((node) => { node.classList.toggle('is-active', state.savedOnly); node.setAttribute('aria-pressed', String(state.savedOnly)); }); state.page = 1; renderRows(); return; }
-  });
-  document.querySelector('#archive-search')?.addEventListener('input', (event) => { state.query = event.target.value; state.page = 1; renderRows(); });
-  document.querySelector('#tag-filter')?.addEventListener('change', (event) => { state.tag = event.target.value; state.page = 1; renderRows(); });
-  document.querySelector('#date-filter')?.addEventListener('change', (event) => { state.date = event.target.value; state.page = 1; renderRows(); });
-
-  if (articlePage) { syncButtons(); return; }
-
-  const renderArchive = () => { renderFilters(); renderRows(); renderFeatured(); syncButtons(); };
-  const embeddedArticles = () => JSON.parse(document.querySelector('#article-data')?.textContent || '[]');
-
-  (async () => {
-    try {
-      const [articleResponse, additionsResponse, archiveResponse, sep19Response, sep20Response, latestResponse, dailyResponse] = await Promise.all([
-        fetch('data/articles.json', { cache: 'no-store' }),
-        fetch('data/additions.json', { cache: 'no-store' }),
-        fetch('data/additions-2026-09-12.json', { cache: 'no-store' }),
-        fetch('data/additions-2026-09-19.json', { cache: 'no-store' }),
-        fetch('data/additions-2026-09-20.json', { cache: 'no-store' }),
-        fetch('data/additions-2026-09-21.json', { cache: 'no-store' }),
-        fetch('data/daily-current.json', { cache: 'no-store' })
-      ]);
-      const base = articleResponse.ok ? await articleResponse.json() : embeddedArticles();
-      const additions = additionsResponse.ok ? await additionsResponse.json() : [];
-      const archive = archiveResponse.ok ? await archiveResponse.json() : [];
-      const sep19 = sep19Response.ok ? await sep19Response.json() : [];
-      const sep20 = sep20Response.ok ? await sep20Response.json() : [];
-      const latest = latestResponse.ok ? await latestResponse.json() : [];
-      const seen = new Set();
-      articles = [...latest, ...sep20, ...sep19, ...archive, ...additions, ...base].filter((article) => {
-        if (seen.has(article.slug)) return false;
-        seen.add(article.slug);
-        return true;
-      });
-      if (dailyResponse.ok) renderCollectionMeta(await dailyResponse.json());
-      renderArchive();
-    } catch {
-      try { articles = embeddedArticles(); renderArchive(); } catch { syncButtons(); }
-    }
+  const getJson=async(path,fallback=[])=>{try{const r=await fetch(path,{cache:'no-store'});return r.ok?await r.json():fallback;}catch{return fallback;}};
+  (async()=>{
+    const paths=['data/additions-2026-09-24.json','data/additions-2026-09-23.json','data/additions-2026-09-21.json','data/additions-2026-09-20.json','data/additions-2026-09-19.json','data/additions-2026-09-12.json','data/additions.json','data/articles.json'];
+    const [feeds,daily]=await Promise.all([Promise.all(paths.map((p)=>getJson(p,[]))),getJson('data/daily-current.json',null)]);
+    const seen=new Set(); articles=feeds.flat().filter((a)=>a&&a.slug&&!seen.has(a.slug)&&seen.add(a.slug));
+    if(!articles.length){try{articles=JSON.parse(document.querySelector('#article-data')?.textContent||'[]');}catch{articles=[];}}
+    renderDaily(daily); render();
   })();
 })();
