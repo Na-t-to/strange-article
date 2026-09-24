@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>止まるべき時に、止まれるか——AgentAbstainで「行動しない能力」を評価する｜変な読み物置き場</title>
+<meta name="description" content="AgentAbstainを読み、AIエージェントの評価をタスク成功率だけでなく、曖昧さ・矛盾・ツール故障・新しいリスクに遭遇したときに不可逆な操作の前で止まれるかへ広げる。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/agentabstain.html">
+<meta property="og:type" content="article"><meta property="og:title" content="止まるべき時に、止まれるか——AgentAbstainで「行動しない能力」を評価する"><meta property="og:description" content="should-actとshould-abstainを一対にして、AIエージェントが実行能力と抑制能力を両立できるかを測る。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/agentabstain.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-agentabstain.svg">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-agentabstain.svg">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260924-1" defer></script>
+</head><body class="article-page" data-page="article" data-slug="agentabstain">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　AIエージェント</p>
+<header class="article-header"><div class="tags"><span>AIエージェント</span><span>AI評価</span><span>LLM信頼性</span></div><h1>止まるべき時に、止まれるか——AgentAbstainで「行動しない能力」を評価する</h1><p class="original-title">AgentAbstain: Do LLM Agents Know When Not to Act?</p><div class="article-meta-row"><p><strong>Xun Liu / Yi Evie Zhang / Vira Kasprova / Parisa Rabbani / Pardis Sadat Zahraei / Tianyu Zhang / Ali Ebrahimpour-Boroojeny / Varun Chandrasekaran · 2026</strong><br>公開 2026.09.24　／　推定読了 50分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-agentabstain.svg" alt="鋳造工場で、溶けた金属を型へ流す不可逆な工程の直前に、職人が検査灯・圧力計・型の状態を確認し、進行か停止かを判断している古い学術書風の図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">AIエージェントの評価は「依頼を完遂できたか」に寄りやすい。ところが実環境では、進めること自体が失敗になる場面がある。指示が曖昧、制約同士が矛盾している、必要なツールがない、途中で証拠が食い違う、実行すると取り返しがつかない。AgentAbstainは、こうした条件で<strong>実行前または実行途中に、適切に止まれるか</strong>を独立した能力として測る。</p>
+
+<h2>「答えない」と「操作しない」は同じ問題ではない</h2>
+<p>質問応答でのabstentionは、分からない問いへ「分からない」と答える能力として研究されてきた。誤答を返す代わりに保留するので、最悪の失敗は不正確な文章になる。</p>
+<p>ツールを使うAIエージェントでは事情が変わる。メールを送る、予約を取り消す、ファイルを削除する、支払いを確定する、といった操作は環境状態を変える。途中で「やはり実行すべきではなかった」と気づいても、文章上の訂正だけでは戻せない。</p>
+<p>論文の導入例は旅行管理である。利用者が「往路をキャンセルして次便の窓側席へ取り直して」と依頼する。安全な順序は、まず次便の条件と空席を確認し、再予約可能だと分かってから既存便をキャンセルすることだ。ところが一部のエージェントは先にキャンセルし、その後で条件を満たす便がないと知る。最後に「再予約できませんでした」と正しく報告しても、元の予約は消えている。</p>
+<p>ここで必要なのは、最終発話の正直さより<strong>不可逆な境界を越える前に判断すること</strong>である。</p>
+
+<h2>AgentAbstainは「進む例」と「止まる例」を一対にする</h2>
+<p>AgentAbstainの中心はpaired-task designである。一つの課題について、正常に実行すべきshould-act版と、ほぼ同じだが一箇所だけ条件を変えて止まるべきshould-abstain版を作る。</p>
+<p>課題は、利用者のquery <code>q</code>、状態を持つenvironment <code>e</code>、利用可能なtool集合 <code>τ</code>から構成される。should-abstain版では、この三つのどれか一つへcontrolled perturbationを入れる。たとえば必須パラメータを欠かす、指示を曖昧にする、制約を矛盾させる、必要ツールを外す、環境側に食い違う証拠を置く、といった変更である。</p>
+<p>この設計の利点は、単純な「慎重さ」を高得点にできないことにある。何でも実行するagentはshould-actでは通るがshould-abstainで落ちる。何でも拒否するagentは逆になる。論文のPaired Accuracyでは、両方を正しく処理したpairだけが成功なので、常時実行・常時拒否の固定方針は50%を超えられない。</p>
+
+<aside class="everyday-example"><span>原文外の補助例</span><p>契約レビューAIで「この条項を削除して修正版を保存して」と頼むテストだけでは、編集能力しか分からない。対になるテストとして「削除対象の条番号が二つ存在する」「保存先への書込み権限がない」「原本しかなく上書き禁止」と一条件だけ変え、そこで確認要求や停止へ切り替えられるかを見ると、実行と抑制の境界を測れる。</p></aside>
+
+<h2>止まる理由は、実行前に見えるものと途中で初めて見えるものがある</h2>
+<p>benchmarkは8種類のabstention scenarioを二つのphaseへ分ける。pre-executionは、利用者の指示やtool一覧だけで停止理由が分かる。runtimeは、実際にlookupやverifyを進めて初めて問題が現れる。</p>
+<div class="concept-grid"><section><h3>Pre-execution</h3><p>Missing Parameter、Ambiguous Action、Conflicting Constraints、High Stakes、Insufficient Tools。着手前のqueryやtool inventoryに停止理由がある。</p></section><section><h3>Runtime</h3><p>Tool Failure、Conflicting Evidence、Emergent Risk。環境を観測しながら進めた結果、当初は見えなかった停止理由が現れる。</p></section></div>
+<p>この分割は実装にも効く。着手前のguardrailだけではruntime failureを捕まえられない。逆に、毎stepで重い安全判定を走らせても、指示段階で明らかな欠落を早期に処理できなければ無駄が多い。停止条件を「最初に一回判定するpolicy」として置くのではなく、<strong>どの情報が得られた時点で判定を更新するか</strong>として設計する必要がある。</p>
+
+<h2>lookup・verify・commitを分けると、評価対象が明確になる</h2>
+<p>AgentAbstainのsandboxではtoolをlookup、verify、commitに分類する。lookupは読取り、verifyは検証用のgate、commitは環境状態を書き換える操作である。</p>
+<p>operational taskには実行DAGがあり、そのうちstate-mutatingなcommit nodeをcritical action setとして持つ。評価はterminal responseだけでなくtool-call traceも見る。should-abstain課題で、最終文面が拒否になっていても、その前にcritical actionを実行していれば成功扱いしない。</p>
+<p>この設計が重要なのは、自然言語だけのjudgeでは<strong>post-hoc abstention</strong>を褒めてしまうからだ。「危険なので実行しません」と最後に書いてあっても、すでに送信や削除が済んでいれば抑制ではない。システム評価では、説明と状態遷移を別々に観測する必要がある。</p>
+<p>既収録の<a href="agentcheck.html">AgentCheck</a>は、同じ故障条件を再現して修正前後の回復を比較する。本稿はさらに手前で、「故障や矛盾を見たとき、回復処理へ進むべきか、そもそもcritical actionを保留すべきか」という分岐を評価対象にしている。</p>
+
+<h2>263 pair・42環境でも、最良のPaired Accuracyは59.5%</h2>
+<p>benchmarkは263 pair、合計526 taskを42のMCP sandboxへ実装している。環境は合計541 toolsを持ち、lookup 246、verify 119、commit 176。taskはinformational 132 pair、operational 131 pairでほぼ半分ずつである。</p>
+<p>17のfrontier modelを4つのagent harnessで評価した結果、最良のGemini 3.1 Proでも平均Paired Accuracyは59.5%だった。13/17 modelは50%未満で、片側だけ得意な固定方針に近い振る舞いが残る。</p>
+<p>カテゴリ差も大きい。著者らの集計では、Insufficient Toolsのようなcapability limitationは比較的見つけやすく、Conflicting Evidence、Ambiguous Action、Conflicting Constraintsのような情報・論理の問題が難しい。特にConflicting Constraintsではact側のaccuracyが高い一方、abstain側が大きく落ちる。つまり「できないから失敗する」だけでなく、<strong>実行能力はあるのに、実行してはいけない条件を区別できない</strong>。</p>
+
+<h2>不可逆性そのものを、モデルは十分な停止シグナルとして扱っていない</h2>
+<p>論文ではoperational taskとinformational taskも比較している。operational taskは多段tool操作が必要なためact側の難度は高い。しかしabstain accuracyは両者で大きく変わらず、拒否率もほぼ同程度だった。</p>
+<p>著者らは、モデルが「このtool callはstateを変える」という性質を、停止判断を変える強いsignalとして扱っていないと解釈する。これはagent設計上かなり具体的な示唆になる。</p>
+<p>commit toolを単にtool一覧の一員として渡すのではなく、不可逆性、復旧可能性、金銭・法的効果、外部公開の有無などをmetadataとして扱い、実行前にverify gateを要求する設計が考えられる。重要なのは「慎重に考えて」というpromptではなく、critical actionの前へ<strong>構造として確認点を置く</strong>ことだ。</p>
+
+<h2>Conditioned Abstention Rateで「そもそも課題を解けない」を切り離す</h2>
+<p>abstention benchmarkには一つ罠がある。agentがshould-act側の課題自体を解けないなら、should-abstain側で止まっても「適切な判断」なのか単なる能力不足なのか分からない。</p>
+<p>そこで論文はConditioned Abstention Rate（CAR）を使う。対応するshould-act版を正しく処理できたpairに限定し、should-abstain版でも正しく止まれた割合を見る。これによってbaseline capabilityからrestrain能力をある程度分離する。</p>
+<p>これは評価設計一般にも使える発想である。「安全性scoreが高い」の中に、何もできないmodelを混ぜない。能力が成立する条件の中で安全側の分岐を評価する。既収録の<a href="coherent-llm-confidence.html">confidence評価</a>がcalibrationとusefulnessを分けたのと同じく、ここでも一つの総合scoreに異なる能力を押し込めないことが重要になる。</p>
+
+<h2>自動生成benchmarkにも、生成物の検証工程を置いている</h2>
+<p>263 pairを手で作る代わりに、著者らはAbstainGenでsandboxとtask pairを生成する。ここでも「LLMが作ったから完成」とはしていない。DAG構造やperturbation箇所をprogrammatic validatorで確認し、別系統のLLM rubric judgeとfalsification criticを通し、should-act側は実環境でDAG replayして最後まで実行できることを確認する。</p>
+<p>さらに100 pairのsampleを3人が独立評価し、それぞれ96%、94%、98%をwell-designedと判定した。benchmark contaminationへの対策として、新しいtask instanceを再生成できる設計も採る。</p>
+<p>この構成は、生成AIでevaluation setを増やすときの参考になる。生成器、構造validator、反証役、実行replay、人手sample auditを別段階にすることで、「問題文がもっともらしい」だけの評価セットから離れられる。</p>
+
+<h2>法務・業務エージェントへ持ち込むなら「停止理由」を仕様にする</h2>
+<p>法務リサーチや契約業務では、agentの失敗を回答内容だけで定義しない方がよい。たとえば、対象会社が曖昧、準拠法が未指定、最新資料へ到達できない、二つの一次資料が矛盾する、権限がないのに外部送信を求められる、といった状態は「低confidence」より具体的な停止理由になる。</p>
+<p>実装上は、各critical actionについて少なくとも次を持てる。</p>
+<ul><li>実行前に必ず存在すべきparameterとevidence</li><li>矛盾時に自動解消してよい範囲と、人へ返す条件</li><li>commit前にverifyすべき状態</li><li>runtimeで新しいrisk signalが出た場合の停止点</li><li>停止したとき利用者へ返す不足情報と再開条件</li></ul>
+<p>ここで<a href="coactive-design.html">Coactive Design</a>のDirectabilityとも接続する。人が止められるだけでなく、agent側から「この条件では進めない。AかBを指定してほしい」と共同作業を戻せることが、実用上のabstentionになる。</p>
+
+<h2>この論文がまだ測っていないもの</h2>
+<p>著者ら自身、sandboxと実運用の差を大きな限界として挙げる。42環境のtoolは決定的に振る舞うが、現実のAPIは部分故障、非標準error、非同期更新を含む。結果がそのままproductionへ移るとは限らない。</p>
+<p>8 scenarioもsingle-agent・single-turnが中心で、multi-agent delegation、長時間にわたりriskが蓄積するtask、prompt injectionは対象外である。また各model×taskは1回実行なので、確率的なばらつきを測っていない。judgeにもLLMを使うためborderline caseにはbiasが残りうる。</p>
+<p>それでも、評価単位を「最後に正しい結果が出たか」から「いつcritical boundaryを越え、いつ停止理由を観測し、そこで行動を変えたか」へ移した点は強い。agentの信頼性は、より多くの仕事を成功させる能力だけでは完成しない。<strong>進める能力と止まる能力を、同じtask pairで同時に測る</strong>という評価設計が持ち帰れる。</p>
+
+<section class="source-box"><h2>原文・関連</h2><p><a href="https://arxiv.org/html/2607.10059v1" target="_blank" rel="noopener">AgentAbstain: Do LLM Agents Know When Not to Act?（arXiv HTML）</a></p><p>関連：<a href="tau-bench.html">τ-bench</a> ／ <a href="agentcheck.html">AgentCheck</a> ／ <a href="coactive-design.html">Coactive Design</a> ／ <a href="coherent-llm-confidence.html">LLM confidenceのC1評価</a></p></section>
+</article></div></main><footer class="site-footer">変な読み物置き場</footer></body></html>
