@@ -1,0 +1,50 @@
+[
+  {
+    "slug": "agentabstain",
+    "title": "止まるべき時に、止まれるか——AgentAbstainで「行動しない能力」を評価する",
+    "originalTitle": "AgentAbstain: Do LLM Agents Know When Not to Act?",
+    "authors": ["Xun Liu", "Yi Evie Zhang", "Vira Kasprova", "Parisa Rabbani", "Pardis Sadat Zahraei", "Tianyu Zhang", "Ali Ebrahimpour-Boroojeny", "Varun Chandrasekaran"],
+    "year": 2026,
+    "publishedAt": "2026-09-24",
+    "tags": ["AIエージェント", "AI評価", "LLM信頼性"],
+    "readingMinutes": 50,
+    "sourceUrl": "https://arxiv.org/html/2607.10059v1",
+    "excerpt": "should-actとshould-abstainを一条件だけ変えたpairで評価し、不可逆なcommitの前に止まれるかをtool traceまで含めて測る。263 pair・42 sandboxで、最良agentのPaired Accuracyも59.5%。",
+    "image": "assets/visual-agentabstain.svg",
+    "imageAlt": "鋳造工場で、溶けた金属を型へ流す不可逆な工程の直前に、職人が検査灯・圧力計・型の状態を確認し、進行か停止かを判断している古い学術書風の図版",
+    "imageCaption": "図版：自動生成",
+    "featured": true
+  },
+  {
+    "slug": "sharedplans-collaborative-action",
+    "title": "全員が完成手順を知らなくても、共同計画は成立する——SharedPlansで協働を形式化する",
+    "originalTitle": "Collaborative Plans for Complex Group Action",
+    "authors": ["Barbara J. Grosz", "Sarit Kraus"],
+    "year": 1996,
+    "publishedAt": "2026-09-24",
+    "tags": ["AIエージェント", "協働設計", "計画"],
+    "readingMinutes": 54,
+    "sourceUrl": "https://dash.harvard.edu/entities/publication/73120378-7e49-6bd4-e053-0100007fdf3b",
+    "excerpt": "複数agentが完成recipeを全員で共有しなくても、partial plan、役割、mutual belief、intending-that、subplanのmeshingを満たせば共同活動を組み立てられる。委譲後にも上位planとの責任関係が残る。",
+    "image": "assets/visual-sharedplans-collaborative-action.svg",
+    "imageAlt": "氷河を横断する登山隊が一本のロープでつながり、地図を読む者、足場を作る者、仲間を引き上げる者、先の経路を確認する案内人に分かれて協働する古い学術書風の図版",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
+    "slug": "common-information-spaces",
+    "title": "同じ資料を見られるだけでは、共通理解は生まれない——Common Information Spaceを「作る仕事」として捉える",
+    "originalTitle": "Constructing Common Information Spaces",
+    "authors": ["Liam Bannon", "Susanne Bødker"],
+    "year": 1997,
+    "publishedAt": "2026-09-24",
+    "tags": ["HCI", "CSCW", "知識設計"],
+    "readingMinutes": 48,
+    "sourceUrl": "https://dl.eusset.eu/items/b00db215-73bf-49ed-87af-92d9b2282917",
+    "excerpt": "共有DBへ置いただけでは情報はcommonにならない。投入時の包装・portable context・closureと、受け手側の再文脈化に仕事が発生する。RAGのEvidence Setや社内knowledge baseを意味共有の工程として考え直せる。",
+    "image": "assets/visual-common-information-spaces.svg",
+    "imageAlt": "温室の種子交換所で、各地から届いた植物標本や種子箱を中央で包装・分類し、別の庭師たちが地域の地図や栽培条件に照らして読み替えている古い学術書風の図版",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  }
+]
