@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>途中の判断を、結果が出る前に評価できるか——Taste-Benchで長期エージェントの「目利き」を測る｜変な読み物置き場</title>
+<meta name="description" content="Taste-Benchを読み、長期タスクの途中にあるdecision forkを、後続結果を隠したまま評価する方法を整理する。最終成功率だけでは見えない判断品質、time horizon、hindsight supervisionを扱う。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/tasteful-agent.html">
+<meta property="og:type" content="article"><meta property="og:title" content="途中の判断を、結果が出る前に評価できるか——Taste-Benchで長期エージェントの「目利き」を測る"><meta property="og:description" content="長期タスクの途中にある分岐を切り出し、後の結果を隠して「どちらへ進むべきだったか」を測る。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/tasteful-agent.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-tasteful-agent.svg">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-tasteful-agent.svg">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260925-1" defer></script>
+</head><body class="article-page" data-page="article" data-slug="tasteful-agent">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　AIエージェント</p>
+<header class="article-header"><div class="tags"><span>AIエージェント</span><span>AI評価</span><span>長期推論</span></div><h1>途中の判断を、結果が出る前に評価できるか——Taste-Benchで長期エージェントの「目利き」を測る</h1><p class="original-title">The Tasteful Agent: Measuring and Improving Taste in Long-Horizon Tasks</p><div class="article-meta-row"><p><strong>Wenbo Pan / Zhichao Liu / Shujie Liu / Jingying Zeng / Chin-Yew Lin / Xianfeng Tang / Yan Lu / Qi He / Xiaohua Jia · 2026</strong><br>公開 2026.09.25　／　推定読了 42分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-tasteful-agent.svg" alt="葡萄畑の分岐で二つの栽培方針を選ぶ人物と、その先で時間を経て豊作と不作へ分かれた結果を描く古い学術書風の図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">長い仕事をするAIエージェントは、最後に正解へ着いたかだけで評価すると、途中の判断品質が見えにくい。実装方針、検証方法、次に試す仮説。どれも選んだ瞬間には妥当に見え、悪さが分かるのは何十stepも後ということがある。Taste-Benchは、実際のagent trajectoryから<strong>結果を左右した分岐だけを切り出し、後続結果を隠して「その時点で良い方向を選べたか」</strong>を測る。</p>
+<h2>最終成功率だけでは「どこで良い判断をしたか」が分からない</h2>
+<p>long-horizon taskでは、最終結果は途中の判断と実行品質が混ざった結果になる。良い設計方針を選んでも、その後の実装を失敗すればtask全体は失敗する。逆に、途中で遠回りしても後から修正して完遂できれば、end-to-end scoreでは成功になる。</p>
+<p>著者らが「taste」と呼ぶのは、結果が見えていない時点で、後に良い結果へつながる方向を選ぶ能力である。ここでのtasteは美的嗜好ではなく、長期的な帰結を見越した技術判断に近い。</p>
+<p>評価単位はtrajectory全体ではなく<strong>decision fork</strong>になる。ある時点まで同じ状態にいて、その先に複数のもっともらしい方向がある。その分岐だけを切り出し、後の証拠を見せずにどちらへ進むかを選ばせる。</p>
+<h2>ラベルは専門家の直感ではなく「後で実際に起きたこと」から作る</h2>
+<p>難しいのは、分岐時点では正解が見えないことである。Taste-Benchはagentが既に残したtrajectoryを使い、hindsightから比較可能なforkを掘り出す。同じtaskを複数回試したrunが途中で別方向へ分かれ、片方だけ成功したなら、後続結果が分岐の比較材料になる。</p>
+<p>benchmarkは二種類のforkを採る。parallel forkは、同じtaskへの独立した複数runが似たprefixから別方向へ分かれたケース。detour forkは、一つのrunの中でagentがある方針を試し、失敗を観測して後から別方針へ切り替えたケースである。後者は「agent自身が後で撤回した判断」を、撤回する前の時点へ戻して問う。</p>
+<h2>502問は、4,657個の候補分岐から絞られている</h2>
+<p>source trajectoryはsoftware engineeringとAI researchの二領域である。engineering側は517件のSWE-bench Pro taskに対する2,677 rollout、research側はRE-BenchとHCASTの47 taskに対する1,132 runを使う。</p>
+<p>generatorが4,657個のcandidate forkを提案し、そこからtrivialな問題とundecidableな問題を落とす。trivialとはtrajectory prefixを読まなくても選択肢の表面だけで答えが分かるもの。undecidableは、後続記録を見てもどちらが良かったか十分確定できないものだ。最終的に502問、約10.8%だけが残る。</p>
+<p>さらに100問を人間2名がreviewし、後続結果を見た後の明示的A/B判断172件中170件がmined labelと一致した。benchmark生成をLLMに任せつつ、構造filterとhuman auditを重ねている。</p>
+<h2>選択肢の順番を入れ替えても同じ答えを出せるかまで見る</h2>
+<p>二択評価にはposition biasがある。同じ内容でもOption Aに置かれた方を選びやすいmodelがいる。そこで各問を候補順そのままと逆順の二回提示し、<strong>両方で正しい候補を選んだ場合だけ正解</strong>とする。</p>
+<p>この採点ではrandom guessの期待値は25%になる。片方の順番だけ偶然合う回答や、常に先頭を選ぶmodelを高く評価しない。評価protocol自体が測りたい能力を汚していないかを気にしている。</p>
+<h2>最良モデルでも59.7%。「答えが後でしか分からない分岐」が弱い</h2>
+<p>14 modelを比較すると、最良でも平均accuracyは59.7%だった。重要なのは平均値より、forkのtime horizonで差が出ることだ。</p>
+<p>著者らは、正しい方向を支持する決定的な証拠がいつ現れるかを4段階に分ける。prefix中に既にある、prefixから推論できる、次stepで分かる、もっと後の作業を終えて初めて分かる、である。</p>
+<p>14 model平均では、prefix中に決定材料があるforkで62.3%だったaccuracyが、more-workでは21.0%まで落ちる。random guessの25%に近い。長期判断の難しさはcontext量だけではなく、<strong>まだ観測していない未来の作業をどこまで妥当に見積もれるか</strong>にある。</p>
+<h2>「もっと考えさせる」だけでは改善しなかった</h2>
+<p>著者らはreasoning effortを変え、合計6,024 responseを追加評価した。最低から最高のreasoning settingへ上げても改善は小さく、難しいmore-work forkほどmodelは多くのreasoning tokenを使っていた。</p>
+<p>難しさを認識していないわけではない。それでも判断は改善しない。現在のprefixから将来の検証結果を予測する経験や表現が不足しているなら、同じ情報を長く眺めても埋まらない。</p>
+<h2>end-to-endの強さと、途中判断の強さは同じ順位にならない</h2>
+<p>Taste-BenchとSWE-bench Verifiedのmodel順位は部分的には相関するが、同じ能力ではない。11 modelでPearson相関は+0.63、engineering subsetだけでは+0.37だった。SWE-bench Verified上位4 modelは4 point以内に固まる一方、Taste-Bench平均では10.7 point開く。</p>
+<p>「repo taskを最終的に解けるmodel」を選ぶことと、「途中の方針選択がうまいmodel」を選ぶことは別の意思決定になる。plannerとexecutorを分けるなら、この差はそのままcomponent評価へ使える。</p>
+<aside class="everyday-example"><span>原文外の補助例</span><p>法務リサーチで、検索結果が二つ出た時点に「この論点をさらに掘る」「別論点へ移る」というforkがある。最終回答が正しかったかだけでは、その分岐が良かったかは分からない。過去runの後続検索で重要資料が見つかったか、不要な検索が続いたかを使えば、fork単位の評価データへ変えられる。</p></aside>
+<h2>hindsightは評価だけでなくtraining signalにもなる</h2>
+<p>論文は、後続結果を知るteacherのreasoningをstudentへdistillする。studentはfork時点のprefixと二つの候補しか見ないが、teacherは「後から見ればこちらが正しかった」というdemonstrationを持つ。</p>
+<p>task-disjoint splitで評価すると、held-out engineering questionのaccuracyはbase modelの30.0%から47.9%へ上がった。さらに41件のheld-out SWE-bench Pro taskで、固定executorへstudentの助言を入れると成功率は14.6%から33.7%へ上がった。</p>
+<p>ここで持ち帰れるのは、<strong>後から判明した良し悪しを、過去のdecision pointへ帰属させる</strong>ことで途中判断の教師信号を作る発想である。</p>
+<h2>法務リサーチAIなら「検索したか」より「その時点で次に何をしたか」を残す</h2>
+<p>RAGやagentic researchへ持ち込むなら、最終回答だけを保存するのは惜しい。重要forkで、そこまでに得ていたfactsとevidence、選べた次の行動候補、実際に選んだ行動、後続で何が判明したかを残す。</p>
+<p>既収録の<a href="agentic-rag-tracer.html">AgenticRAGTracer</a>はhopごとの失敗位置を診断する。Taste-Benchはさらに「その位置で別のdirectionを選べたか」を問う。前者がtrajectory診断、後者がdecision qualityの比較に近い。</p>
+<h2>限界は、後続結果が「その判断だけの効果」とは限らないこと</h2>
+<p>分岐後のexecution qualityや環境差も結果を左右する。そのため著者らはprefixが等価なparallel attemptを使い、labelが後続記録と明確に対応するforkだけをfilterする。それでも完全な因果推論ではない。</p>
+<p>研究・software engineeringという二領域に限られ、二択へ圧縮したforkが現実のopen-endedな意思決定をすべて表すわけでもない。detourは「後で撤回できた失敗」を拾いやすく、気づかないまま進んだ悪い判断はparallel trajectoryに依存する。</p>
+<p>この限界込みでも、最終成功率の手前に<strong>decision forkという評価単位</strong>を置いた価値は大きい。長期agentを改善するとき、「どのmodelが最後まで強いか」だけでなく、「どの時点の、どんな判断が未来の結果を左右したか」を測れる。</p>
+<section class="source-box"><h2>原文・関連</h2><p><a href="https://arxiv.org/html/2609.25804v2" target="_blank" rel="noopener">The Tasteful Agent: Measuring and Improving Taste in Long-Horizon Tasks（arXiv HTML）</a></p><p>関連：<a href="agentic-rag-tracer.html">AgenticRAGTracer</a> ／ <a href="agentabstain.html">AgentAbstain</a> ／ <a href="rational-design-process.html">A Rational Design Process</a> ／ <a href="reliable-eval.html">ReliableEval</a></p></section>
+</article></div></main><footer class="site-footer">変な読み物置き場</footer></body></html>

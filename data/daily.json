@@ -1,12 +1,30 @@
 {
-  "date": "2026-09-24",
-  "lastUpdated": "2026-09-24T15:16:38+09:00",
-  "candidateCount": 41,
+  "date": "2026-09-25",
+  "lastUpdated": "2026-09-25T15:22:28+09:00",
+  "candidateCount": 43,
   "adoptedCount": 3,
-  "collectionNote": "要求工学・HCI・CSCW・multi-agent planning・AI評価・RAG・LLM信頼性・安全工学まで一次資料を横断し、既存収録との重複と全文アクセスを確認した。今回は、実行能力と停止能力をpairで測るAgentAbstain、部分知識のまま共同計画を成立させるSharedPlans、共有DBを意味共有の完成形とみなさず包装・翻訳・再文脈化のworkとして捉えるCommon Information Spacesの3本を採用した。Rasmussenのdynamic risk managementなど有力候補も読んだが、既収録のSTAMP/EIDとの距離が近いため今回は見送った。",
+  "collectionNote": "要求工学・仕様設計・HCI・CSCW・AI評価・RAG・agent・privacy/情報倫理まで一次資料を広く探索し、既存収録との重複と全文アクセスを確認した。今回は、長期trajectoryの途中判断をhindsightで評価するTaste-Bench、設計の代替案と判断理由をQuestion・Option・Criterionとして残すDesign Space Analysis/QOC、共同tool特有のwork-benefit disparityやcritical massを整理するGrudinのGroupware and Social Dynamicsの3本を採用した。Contextual Integrityなど有力候補も原文まで読んだが、記事本数と今回のテーマ分散を踏まえ次回候補として見送った。",
   "selectionTracks": [
-    {"title":"古典・基礎","summary":"要求工学、設計理論、HCI、CSCW、認知科学、概念モデリング、multi-agent planningの一次資料から、現在のAI・検索・仕様設計へ再利用できる道具を探す。","criteria":["原文全文または一次資料へ到達できる","後年の要約ではなく一次資料を読む","既存記事と別の道具を持ち帰れる","具体例・論証・限界まで再構成できる"]},
-    {"title":"新しいAI研究","summary":"RAG・agent・評価・legal AIは方法、失敗条件、適用範囲が明示された研究を探索し、直近収録との重複が大きいものは採用しない。","criteria":["一次または技術報告である","方法・数値・失敗条件が検証可能である","単なる製品紹介や順位表ではない","既出との差分が大きく、後から設計判断へ使える"]}
+    {
+      "title": "古典・基礎",
+      "summary": "要求工学、design rationale、HCI、CSCW、概念モデリング、哲学×工学から、現在の仕様設計・組織導入へ再利用できる一次資料を探す。",
+      "criteria": [
+        "原文全文または一次資料へ到達できる",
+        "後年の要約ではなく原文を読む",
+        "既存記事と別の道具を持ち帰れる",
+        "具体例・論証・限界まで再構成できる"
+      ]
+    },
+    {
+      "title": "新しいAI研究",
+      "summary": "RAG・agent・評価・LLM信頼性は、最終scoreだけでなく途中の失敗や意思決定を診断できる研究を優先する。",
+      "criteria": [
+        "一次または技術報告である",
+        "方法・数値・失敗条件が検証可能である",
+        "単なる製品紹介や順位表ではない",
+        "既出との差分が大きく、後から評価設計へ使える"
+      ]
+    }
   ],
   "adoptionRule": "原則3〜5本。通常回は最低2本以上を目指すが、本数確保のため品質基準を下げない。候補が少ない場合は別テーマ・周辺分野・過去の未収録一次情報まで探索範囲を広げ、なお基準を満たさない場合は1本または0本でもよい。"
 }

@@ -1,0 +1,79 @@
+[
+  {
+    "slug": "tasteful-agent",
+    "title": "途中の判断を、結果が出る前に評価できるか——Taste-Benchで長期エージェントの「目利き」を測る",
+    "originalTitle": "The Tasteful Agent: Measuring and Improving Taste in Long-Horizon Tasks",
+    "authors": [
+      "Wenbo Pan",
+      "Zhichao Liu",
+      "Shujie Liu",
+      "Jingying Zeng",
+      "Chin-Yew Lin",
+      "Xianfeng Tang",
+      "Yan Lu",
+      "Qi He",
+      "Xiaohua Jia"
+    ],
+    "year": 2026,
+    "publishedAt": "2026-09-25",
+    "tags": [
+      "AIエージェント",
+      "AI評価",
+      "長期推論"
+    ],
+    "readingMinutes": 42,
+    "sourceUrl": "https://arxiv.org/html/2609.25804v2",
+    "excerpt": "長期trajectoryからdecision forkを切り出し、後続結果を隠して判断品質を測るTaste-Bench。502問で最良でも59.7%、more-work forkでは平均21.0%。hindsightを途中判断の教師信号へ変える。",
+    "image": "assets/visual-tasteful-agent.svg",
+    "imageAlt": "葡萄畑の分岐で二つの栽培方針を選ぶ人物と、その先で時間を経て豊作と不作へ分かれた結果を描く古い学術書風の図版",
+    "imageCaption": "図版：自動生成",
+    "featured": true
+  },
+  {
+    "slug": "design-space-analysis-qoc",
+    "title": "決定だけ残すと、なぜそうしたかが消える——QOCで設計空間と理由を保存する",
+    "originalTitle": "Questions, Options, and Criteria: Elements of Design Space Analysis",
+    "authors": [
+      "Allan MacLean",
+      "Richard M. Young",
+      "Victoria M. E. Bellotti",
+      "Thomas P. Moran"
+    ],
+    "year": 1991,
+    "publishedAt": "2026-09-25",
+    "tags": [
+      "仕様設計",
+      "要求工学",
+      "HCI"
+    ],
+    "readingMinutes": 28,
+    "sourceUrl": "https://www.researchgate.net/publication/233367028_Questions_Options_and_Criteria_Elements_of_Design_Space_Analysis",
+    "excerpt": "完成仕様の外側にQuestion・Option・Criterionを残し、捨てた代替案と判断理由まで設計知識にする。OptionとCriterionが互いを更新し、premature commitmentを避ける支援toolの要件も示す。",
+    "image": "assets/visual-design-space-analysis.svg",
+    "imageAlt": "操作順の異なる三つの端末案を利用者が試し、時間・安全・置き忘れを別々の条件として比較する古い学術書風の図版",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
+    "slug": "groupware-eight-challenges",
+    "title": "共同ツールは「使えば全員得する」では動かない——Groupwareの8つの難所",
+    "originalTitle": "Groupware and Social Dynamics: Eight Challenges for Developers",
+    "authors": [
+      "Jonathan Grudin"
+    ],
+    "year": 1994,
+    "publishedAt": "2026-09-25",
+    "tags": [
+      "HCI",
+      "CSCW",
+      "組織設計"
+    ],
+    "readingMinutes": 27,
+    "sourceUrl": "https://www.microsoft.com/en-us/research/wp-content/uploads/2017/01/groupware-and-social-dynamics.pdf",
+    "excerpt": "共同作業toolでは、入力する人と利益を得る人がずれ、critical mass、社会関係、例外処理、長期評価、導入processが失敗要因になる。AI workflow導入にもそのまま効く8つのchallenge。",
+    "image": "assets/visual-groupware-eight-challenges.svg",
+    "imageAlt": "共同の予定盤へ多くの作業者が札を入れる一方、中央の管理者が全体図を見る市場の仕分け場を描く古い学術書風の図版",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  }
+]
