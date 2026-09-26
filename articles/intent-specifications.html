@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>仕様書に「なぜ」を埋め込む——Intent Specificationsで目的から実装までをつなぐ｜変な読み物置き場</title>
+<meta name="description" content="Nancy LevesonのIntent Specificationsを読み、目的・制約・設計原理・振る舞い・実装をmeans-ends関係で結ぶ仕様構造を整理する。">
+<link rel="canonical" href="https://na-t-to.github.io/strange-article/articles/intent-specifications.html">
+<meta property="og:type" content="article"><meta property="og:title" content="仕様書に「なぜ」を埋め込む——Intent Specificationsで目的から実装までをつなぐ"><meta property="og:description" content="仕様の各層を単なる詳細化にせず、上位の目的と下位の手段を双方向に追える構造へする。"><meta property="og:url" content="https://na-t-to.github.io/strange-article/articles/intent-specifications.html"><meta property="og:image" content="https://na-t-to.github.io/strange-article/assets/visual-intent-specifications.webp">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://na-t-to.github.io/strange-article/assets/visual-intent-specifications.webp">
+<link rel="stylesheet" href="../assets/styles.css"><script src="../assets/app.js?v=20260926-1" defer></script>
+</head><body class="article-page" data-page="article" data-slug="intent-specifications">
+<header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a></header>
+<main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　仕様設計</p>
+<header class="article-header"><div class="tags"><span>仕様設計</span><span>要求工学</span><span>安全工学</span></div><h1>仕様書に「なぜ」を埋め込む——Intent Specificationsで目的から実装までをつなぐ</h1><p class="original-title">Intent Specifications: An Approach to Building Human-Centered Specifications</p><div class="article-meta-row"><p><strong>Nancy G. Leveson · 2000</strong><br>公開 2026.09.26　／　推定読了 48分</p></div></header>
+<figure class="article-visual"><img src="../assets/visual-intent-specifications.webp" alt="巨大な飛行船の格納庫で、目的・設計原理・構造・部品へ段階的につながる複数の設計図を技師たちが照合している古い学術書風の図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<div class="article-layout"><article class="article-body">
+<p class="lead-box">仕様書は、完成した「何を作るか」と「どう作るか」を残しやすい。一方で、その構造や制約を<strong>なぜ選んだのか</strong>は別資料や担当者の記憶へ散りやすい。Nancy LevesonのIntent Specificationsは、仕様を人間の問題解決を支える情報構造として捉え、上位の目的・制約と下位の設計・実装を<strong>means-ends関係</strong>で結ぶ。</p>
+
+<h2>仕様言語は、機械だけでなく人間のためにある</h2>
+<p>論文の出発点は、software specificationも人間が使う道具だということである。systemを作る人、reviewする人、変更する人、事故原因を調べる人が、必要な情報へ到達して問題を解ける構造でなければならない。</p>
+<p>大規模systemでは、情報が存在しないとは限らない。requirements、hazard analysis、interface、設計判断、test結果、運用資料はある。それでも別々のdocumentへ散ると、「このconstraintは何のためか」「このcomponentを変えると何へ影響するか」を再構成するのが難しい。Intent Specificationsが主に変えるのは<strong>情報の量より配置と関係</strong>である。</p>
+
+<h2>通常の階層は「細かくする」が得意で、「なぜ」を残しにくい</h2>
+<p>一般的な仕様の階層化には、全体をcomponentへ分けるpart-whole decompositionや、高位の記述を詳細化するrefinementがある。どちらも必要だが、上位と下位が「抽象／詳細」だけで結ばれると、設計理由は関係の外へ落ちやすい。</p>
+<p>Intent Specificationsは縦方向に別の関係を置く。上位levelの情報は、下位levelから見ると達成すべき<strong>end</strong>であり、下位levelの設計はそのendを実現する<strong>means</strong>になる。下へたどれば「この目的を何で実現するか」、上へたどれば「この設計は何のために存在するか」を追える。</p>
+<p>各levelは同じ記述を細かくしただけではない。同じsystemを別の問題解決目的から見るcomplete modelとして扱い、refinementやcomponent分解は各levelの内部で行う。</p>
+
+<h2>七つのlevelは、同じsystemへ七種類の問いを投げる</h2>
+<p>論文のIntent Specificationはlevel 0から6までを持つ。上から大まかに、project management、system purpose、system-level design、black-box behavior、component design・implementation、operationへ降りていく。</p>
+<div class="concept-grid"><section><h3>上位</h3><p>system goal、要求、hazard、環境上の仮定、design constraint、system limitation。何を達成し、何をしてはいけないかを置く。</p></section><section><h3>中位</h3><p>その要求を成立させるdesign principle、system architecture、black-box behavior。system全体がどう振る舞うかを実装詳細から分離して記述する。</p></section><section><h3>下位</h3><p>componentの設計・実装・運用。上位の目的や制約を実際の構成要素と操作へ接続する。</p></section></div>
+<p>重要なのは「七枚のdocumentを作ること」ではない。ある設計itemから上下へたどったとき、目的、制約、実現手段、運用まで意味が切れないことにある。</p>
+
+<h2>縦に「目的」、横に「環境・人・機械」を置く</h2>
+<p>Intent Specificationsはintent abstractionだけでなくpart-whole方向も持つ。さらにLevesonはsystemをsoftware単体で閉じず、environment、human operator、automated systemの関係を同じ仕様空間へ置く。</p>
+<p>航空衝突防止systemならalgorithmだけで安全性を説明できない。地上のair traffic control、他機のtransponder、pilotが受け取る表示と操作、通信の仮定が一緒に効く。design constraintが環境条件やoperator behaviorへ依存するなら、その関係も仕様から追える必要がある。</p>
+<p>この点は既収録の<a href="four-dark-corners-requirements.html">Four Dark Corners of Requirements Engineering</a>に近い。Four Dark Cornersが要求R・domain knowledge K・machine specification Sを分けるのに対し、Intent Specificationsは、その関係を大規模な仕様群の中で<strong>人がたどれる構造</strong>へする。</p>
+
+<h2>「この機能は何のため？」を上へ、「その目的はどこで実現？」を下へ追う</h2>
+<p>level間のlinkは単なる参照ではない。設計判断を上位のgoalやconstraintへ結び、逆方向にはそのgoalを実装するlower-level itemを結ぶ。結果としてtraceabilityがdesign rationaleの一部になる。</p>
+<p>たとえば「危険な状態では自動操作を禁止する」というsystem constraintがあり、それを実現するblack-box behavior、さらにsensor条件・control logic・interface behaviorへ落ちているとする。componentを変更するとき、上へたどれば失ってはいけないconstraintが分かる。要求を変えるときは、下へたどって影響範囲を探せる。</p>
+<p>これは<a href="traceability.html">requirements traceability</a>を「requirements IDとcodeの対応表」より広く捉える発想でもある。linkの価値は存在することより、<strong>なぜその関係なのかを保守時の推論へ使えること</strong>にある。</p>
+
+<h2>TCASでは、形式仕様だけでなく設計理由まで同じ構造へ入れる</h2>
+<p>論文は航空機衝突防止system TCASを使ってIntent Specificationを例示する。TCASでは、衝突回避だけでなく既存のair traffic controlへ干渉しないこと、pilotへ与える情報、監視logicが依存する外部装置の性質など、多数のconstraintが設計へ入る。</p>
+<p>Levesonは一部levelでSpecTRM-RLという形式的なblack-box modelも使う。ここで形式化は全文書を一つのformal languageへ押し込むためではない。数学的に検査したいbehaviorには形式表現を使い、設計理由や環境仮定など形式化しにくい情報も同じ仕様構造から切り離さない。</p>
+<p>完全にinformalな仕様は大規模になると検査が難しい。完全にformalな仕様は必要な情報を全部表せるとは限らない。Intent Specificationsは両者をlevelとlinkで組み合わせる。</p>
+
+<h2>変更に強い仕様は、差分の「意味」を追える</h2>
+<p>大規模systemでは変更そのものを避けられない。そこで重要になるのが「どのfileが変わったか」より「この変更が上位のどの目的・constraintに触れるか」である。</p>
+<p>あるcomponentを別方式へ置き換えても、上位のconstraintを満たすmeansとして同等なら変更できる。逆にlocalな実装だけ見れば改善でも、安全上のdesign decisionを支えていた条件を壊すなら再分析が必要になる。Intent Specificationは、変更時にその理由を再発見するcostを下げることを狙う。</p>
+<p>既収録の<a href="ecological-interface-design.html">Ecological Interface Design</a>と同じく、ここでもabstraction hierarchyは「情報を省略して上位へ行く階層」ではない。上位では下位と違う種類の関係を見せる。EIDがoperation中の判断を支えるのに対し、Intent Specificationsはdevelopment・review・maintenance中の推論を支える。</p>
+
+<aside class="everyday-example"><span>原文外の補助例</span><p>法務リサーチAIなら、上位に「利用者が行動を誤らない」「根拠を追跡できる」といった目的・constraintを置く。次のlevelで「中心法令と一次資料を確認する」「矛盾資料を解消できなければ留保する」というdesign principleを置き、さらに検索・抽出・検収・回答生成のbehavior、tool schemaやpromptへ降ろす。回答生成promptだけ直すときでも、上へたどれば何を守る変更なのか確認できる。</p></aside>
+
+<h2>仕様の「why」を残すことは、説明文を増やすことではない</h2>
+<p>Intentを残すと言うと、各項目へ長い理由欄を足す運用になりやすい。論文の核心はそこではない。必要なのは、goal・constraint・design decision・implementationの<strong>関係そのもの</strong>を構造化することだ。</p>
+<p>理由の自然言語説明が長くても、何を実現する設計なのかlinkがなければ変更分析には使いにくい。逆に短い記述でも「このconstraintを満たすためのmeans」「このbehaviorが実装する上位decision」が明示されていれば、推論の入口になる。</p>
+<p><a href="design-space-analysis-qoc.html">QOC / Design Space Analysis</a>が採用案の周囲にあったOptionとCriterionを残す方法だとすれば、Intent Specificationsは採用された設計をsystem全体の目的・constraintへ縦につなぐ。両方を合わせると「なぜこの案を選んだか」と「その案は上位の何を実現するか」を別々に保持できる。</p>
+
+<h2>この方法自体にも維持costがある</h2>
+<p>論文は実systemでの適用経験を示すが、巨大なcontrolled studyで保守cost削減を定量的に証明した研究ではない。linkを作れば自動的に正しいtraceabilityが得られるわけでもなく、設計判断や仮定が変わればlinkも更新する必要がある。</p>
+<p>また、七levelを形式的に埋めることが目的化すると、document量だけ増える危険がある。使うべきなのはreview・変更・hazard analysis・運用判断で実際に上下をたどる関係である。どの情報をどのlevelへ置くかもsystemの性質に依存する。</p>
+<p>仕様設計へ持ち帰れる問いは明確だ。<strong>下位の設計itemから「なぜ？」を繰り返したとき上位の目的へ届くか。上位のconstraintから「どこで実現？」を繰り返したとき実装へ届くか。</strong> 仕様書を情報の倉庫ではなく、この往復を支えるnavigationとして設計する。</p>
+
+<section class="source-box"><h2>原文・関連</h2><p><a href="https://sunnyday.mit.edu/papers/intent-tse.pdf" target="_blank" rel="noopener">Intent Specifications: An Approach to Building Human-Centered Specifications（著者公開PDF）</a></p><p>関連：<a href="four-dark-corners-requirements.html">Four Dark Corners of Requirements Engineering</a> ／ <a href="traceability.html">Requirements Traceability</a> ／ <a href="ecological-interface-design.html">Ecological Interface Design</a> ／ <a href="design-space-analysis-qoc.html">QOC / Design Space Analysis</a></p></section>
+</article></div></main><footer class="site-footer">変な読み物置き場</footer></body></html>
