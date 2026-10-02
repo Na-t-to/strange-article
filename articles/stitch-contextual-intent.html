@@ -11,7 +11,7 @@
 <header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-19</p></header>
 <main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　AIエージェント</p>
 <header class="article-header"><div class="tags"><span>AIエージェント</span><span>RAG</span><span>メモリ設計</span></div><h1>似ている記憶より、今の目的に合う記憶を取る——STITCHでAgent Memoryを文脈化する</h1><p class="original-title">Grounding Agent Memory in Contextual Intent</p><div class="article-meta-row"><p><strong>Ruozhen Yang / Yucheng Jiang / Yueqi Jiang / Priyanka Kargupta / Yunyi Zhang / Jiawei Han · 2026</strong><br>公開 2026.09.19　／　推定読了 41分</p></div></header>
-<figure class="article-visual"><img src="../assets/visual-stitch-contextual-intent.webp" alt="宿駅の荷物庫で、同じ形の鞄が多数並ぶ中、係員が旅程区間・行為・物の種類を表す複数の札を手掛かりに現在の目的へ合う荷物だけを取り出す図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<figure class="article-visual"><img src="../assets/visual-stitch-contextual-intent.webp" alt="同じホテルの記録を異なる旅程に分け、現在の旅行地に合う一枚を選ぶ記録係" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
 <div class="article-layout"><article class="article-body">
 <p class="lead-box">長期対話の記憶検索で厄介なのは、過去を忘れることだけではない。<strong>よく似ているが、今とは別の目的で出てきた情報を思い出してしまう</strong>ことがある。旅行計画で同じホテル名がDay 1とDay 2に現れ、価格も複数回更新されたなら、「Apollo Hotelの価格」というsemantic similarityだけでは正しい記憶を選べない。STITCHは各履歴へ、現在のテーマ、行為の種類、重要なentity typeを構造化したcontextual intentを付ける。検索時には意味の近さだけでなく、その構造が現在の目的と適合するかを先に見る。</p>
 <h2>長期memoryの問題を「保存容量」から「取り違え」へずらす</h2>
@@ -76,3 +76,4 @@
 <p><a href="https://aclanthology.org/2026.findings-acl.584/" target="_blank" rel="noopener">ACL Anthologyで読む</a>　／　<a href="https://aclanthology.org/2026.findings-acl.584.pdf" target="_blank" rel="noopener">PDF</a></p>
 </article></div></main><footer class="site-footer"><a href="../index.html">アーカイブへ戻る</a></footer>
 </body></html>
+

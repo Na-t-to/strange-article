@@ -11,7 +11,7 @@
 <header class="site-header"><a class="brand" href="../index.html"><strong>変な読み物置き場</strong><small>自動収集される技術・思想・学術の索引</small></a><p class="issue-date">最終更新 2026-09-23</p></header>
 <main class="article-shell"><p class="breadcrumbs"><a href="../index.html">アーカイブ</a>　/　AI評価</p>
 <header class="article-header"><div class="tags"><span>AI評価</span><span>LLM信頼性</span><span>ベンチマーク</span></div><h1>毎回同じ判定でも、正しい評価者とは限らない——LLM-as-a-JudgeのReliabilityとValidityを分ける</h1><p class="original-title">Reliability without Validity: A Systematic, Large-Scale Evaluation of LLM-as-a-Judge Models Across Agreement, Consistency, and Bias</p><div class="article-meta-row"><p><strong>Justin D. Norman / Michael U. Rivera / D. Alex Hughes · 2026</strong><br>公開 2026.09.23　／　推定読了 49分</p></div></header>
-<figure class="article-visual"><img src="../assets/visual-llm-judge-reliability-validity.webp" alt="温室の品評会で、審査員が左右を入れ替えた蘭や別部門の果実を繰り返し採点し、同じ審査員の安定性と位置偏りを確かめる古い学術書風の図版" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
+<figure class="article-visual"><img src="../assets/visual-llm-judge-reliability-validity.webp" alt="同じ丸印を押し続ける機械と、印の付いた木板の歪みを直角定規で確かめる職人" width="800" height="533"><figcaption>図版：自動生成</figcaption></figure>
 <div class="article-layout"><article class="article-body">
 <p class="lead-box">LLM-as-a-Judgeを評価するとき、「人間の判定と85%一致した」「同じ入力なら毎回ほぼ同じ判定を返した」は、どちらも安心材料に見える。だが一つ目はchance agreementを含み、二つ目は<strong>同じbiasを毎回再現しているだけ</strong>かもしれない。Norman、Rivera、Hughesの2026年研究は、21のjudge model、3 benchmark、118 run、約54.1万judgmentを使い、agreement・consistency・biasを分けて測った。評価者をAIへ任せるなら、まず評価者自身を複数の性質に分解して検証する必要がある。</p>
 <h2>LLM judgeの「正しさ」を一つのscoreへ潰さない</h2>

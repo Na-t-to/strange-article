@@ -41,10 +41,9 @@
 
   const getJson=async(path,fallback=[])=>{try{const r=await fetch(path,{cache:'no-store'});return r.ok?await r.json():fallback;}catch{return fallback;}};
   (async()=>{
-    const paths=['data/additions-2026-09-24.json','data/additions-2026-09-23.json','data/additions-2026-09-21.json','data/additions-2026-09-20.json','data/additions-2026-09-19.json','data/additions-2026-09-12.json','data/additions.json','data/articles.json'];
-    const [feeds,daily]=await Promise.all([Promise.all(paths.map((p)=>getJson(p,[]))),getJson('data/daily-current.json',null)]);
-    const seen=new Set(); articles=feeds.flat().filter((a)=>a&&a.slug&&!seen.has(a.slug)&&seen.add(a.slug));
-    if(!articles.length){try{articles=JSON.parse(document.querySelector('#article-data')?.textContent||'[]');}catch{articles=[];}}
+    const [catalog,daily]=await Promise.all([getJson('data/articles.json',null),getJson('data/daily.json',null)]);
+    if(Array.isArray(catalog)) articles=catalog;
+    else {try{articles=JSON.parse(document.querySelector('#article-data')?.textContent||'[]');}catch{articles=[];}}
     renderDaily(daily); render();
   })();
 })();
