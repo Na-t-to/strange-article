@@ -41,3 +41,7 @@ Run research once daily at the user's agreed schedule. Research and editorial ju
 ## Known migration notes
 
 The older catalog contained only 16 articles while browser JavaScript assembled 79 using hard-coded dated feeds. The repaired catalog keeps the existing browser precedence for duplicate slugs and regenerates the static table from the same data. Existing `data/additions*.json` and `data/daily-current.json` are preserved for history, but are no longer runtime dependencies.
+
+## Attribution when combining sources
+
+Make source combinations legible at the relevant paragraph or section, using source names and nearby links. Mark cross-source comparisons, synthesis and inference as editorial reading rather than an original author’s claim. Preserve uncertainty and chronology. A bibliography alone is insufficient; avoid noisy sentence-by-sentence labels.

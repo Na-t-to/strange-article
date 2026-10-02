@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-02",
+  "runType": "reader-requested additional collection",
+  "candidateCount": 3,
+  "adoptedCount": 3,
+  "candidates": [
+    {
+      "slug": "darwin-worms-piano",
+      "sourceUrl": "https://darwin-online.org.uk/converted/published/1881_Worms_F1357/1881_Worms_F1357.html",
+      "status": "adopted",
+      "reason": "書斎の感覚実験と長期間の地質観察を、初期論文・協力者の往復書簡とつなぎ、仮説に都合の悪い結果も含めて読む。"
+    },
+    {
+      "slug": "ango-culture-factory",
+      "sourceUrl": "https://www.aozora.gr.jp/cards/001095/files/42625_21289.html",
+      "status": "adopted",
+      "reason": "日本文化私観の工場礼賛だけでなく、小石・旅芸人・帰宅の感情を読み、前年の文学のふるさととの接続を明示する。"
+    },
+    {
+      "slug": "appert-preserving-bottles",
+      "sourceUrl": "https://www.gutenberg.org/cache/epub/52551/pg52551-images.html",
+      "status": "adopted",
+      "reason": "保存法の道具と失敗例を、審査委員・政府・船からの記録や英国版序文の異なる目的と一緒に読む。現代の安全手順とは明確に分ける。"
+    }
+  ]
+}

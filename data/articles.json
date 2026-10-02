@@ -1,5 +1,73 @@
 [
   {
+    "slug": "darwin-worms-piano",
+    "title": "ミミズにピアノを聴かせ、石が埋まるのを待つ",
+    "originalTitle": "The Formation of Vegetable Mould through the Action of Worms / On the Formation of Mould / Letters to and from L. C. Wedgwood",
+    "authors": [
+      "Charles Darwin",
+      "Lucy Caroline Wedgwood"
+    ],
+    "year": 1881,
+    "publishedAt": "2026-10-02",
+    "tags": [
+      "自然史",
+      "動物行動",
+      "科学史"
+    ],
+    "readingMinutes": 29,
+    "sourceUrl": "https://darwin-online.org.uk/converted/published/1881_Worms_F1357/1881_Worms_F1357.html",
+    "excerpt": "音には動かず、鉢をピアノに載せると逃げる。松葉を縛り、三角の紙を並べ、二十九年後に畑を掘る。ダーウィンの実験と姪からの手紙を読み合わせ、土が動く道を追う。",
+    "image": "assets/visual-darwin-worms-piano.webp",
+    "imageAlt": "ピアノの上の土入りの鉢と、葉を穴へ引き込むミミズ、地中に埋まった石を配した版画風の挿絵",
+    "imageCaption": "図版：自動生成",
+    "featured": true
+  },
+  {
+    "slug": "ango-culture-factory",
+    "title": "法隆寺より、ドライアイス工場に惹かれる",
+    "originalTitle": "日本文化私観 / 文学のふるさと",
+    "authors": [
+      "坂口安吾"
+    ],
+    "year": 1942,
+    "publishedAt": "2026-10-02",
+    "tags": [
+      "文学",
+      "美学",
+      "暮らし"
+    ],
+    "readingMinutes": 36,
+    "sourceUrl": "https://www.aozora.gr.jp/cards/001095/files/42625_21289.html",
+    "excerpt": "金額を書いた祈願の石、芸をしない猫八、誰もいない家で叱られる感覚。坂口安吾「日本文化私観」を、前年の「文学のふるさと」と読み合わせ、工場の美しさに至る寄り道をたどる。",
+    "image": "assets/visual-ango-culture-factory.webp",
+    "imageAlt": "張り巡らされた鋼材と頭上のレールがある工場を背景に、手の中の丸い小石を配した版画風の挿絵",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
+    "slug": "appert-preserving-bottles",
+    "title": "コルクを木槌でたたき、季節を瓶に閉じ込める",
+    "originalTitle": "The Art of Preserving All Kinds of Animal and Vegetable Substances for Several Years",
+    "authors": [
+      "Nicolas Appert",
+      "産業奨励協会の審査委員ほか"
+    ],
+    "year": 1812,
+    "publishedAt": "2026-10-02",
+    "tags": [
+      "食文化",
+      "技術史",
+      "史料"
+    ],
+    "readingMinutes": 20,
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/52551/pg52551-images.html",
+    "excerpt": "季節外れの豆を食べた審査委員、木槌で打ち込むコルク、失われたイチゴの香り。1812年の保存法の本を、証明書と船からの手紙まで読む。",
+    "image": "assets/visual-appert-preserving-bottles.webp",
+    "imageAlt": "木の台に立てた豆入りのガラス瓶へ木槌でコルクを打ち込む職人の手と、布袋に包まれた果物の瓶、奥の湯釜を描いた版画風の挿絵",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
     "slug": "pepys-parmesan-fire",
     "title": "ロンドンが燃える夜、パルメザンを庭に埋める",
     "originalTitle": "The Diary of Samuel Pepys, September 1666 / The Diary of John Evelyn / The London Gazette, no. 85",
@@ -21,7 +89,7 @@
     "image": "assets/visual-pepys-parmesan-fire.webp",
     "imageAlt": "大火の煙が上がるロンドンを背に、庭の穴へチーズを下ろすピープスと、穴の中に並んだワイン瓶を描いた版画風の挿絵",
     "imageCaption": "図版：自動生成",
-    "featured": true
+    "featured": false
   },
   {
     "slug": "cicada-massospora",
