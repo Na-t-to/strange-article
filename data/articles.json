@@ -1,5 +1,27 @@
 [
   {
+    "slug": "brancusi-customs-bird",
+    "title": "鳥に見えない「鳥」に、四〇％の関税がかかる",
+    "originalTitle": "C. Brancusi v. United States",
+    "authors": [
+      "United States Customs Court"
+    ],
+    "year": 1928,
+    "publishedAt": "2026-10-02",
+    "tags": [
+      "美術",
+      "法制史",
+      "史料"
+    ],
+    "readingMinutes": 20,
+    "sourceUrl": "https://jrmccarthy-law.com/wp-content/uploads/2024/03/blog-brancusi-v-us.pdf",
+    "excerpt": "羽も足もない青銅の鳥を、美術品として国境へ通せるか。1928年の判決を、葉付きの水盤とライオン付きの椅子をめぐる先例まで戻って読む。",
+    "image": "assets/visual-brancusi-customs-bird.webp",
+    "imageAlt": "税関の机に立つ細長い青銅の抽象的な鳥、ノギスを持つ検査人の手、開いた木箱に止まる小鳥、白紙の台帳を描いた版画風の挿絵",
+    "imageCaption": "図版：自動生成",
+    "featured": true
+  },
+  {
     "slug": "darwin-worms-piano",
     "title": "ミミズにピアノを聴かせ、石が埋まるのを待つ",
     "originalTitle": "The Formation of Vegetable Mould through the Action of Worms / On the Formation of Mould / Letters to and from L. C. Wedgwood",
@@ -20,7 +42,7 @@
     "image": "assets/visual-darwin-worms-piano.webp",
     "imageAlt": "ピアノの上の土入りの鉢と、葉を穴へ引き込むミミズ、地中に埋まった石を配した版画風の挿絵",
     "imageCaption": "図版：自動生成",
-    "featured": true
+    "featured": false
   },
   {
     "slug": "ango-culture-factory",

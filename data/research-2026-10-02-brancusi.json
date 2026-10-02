@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-02",
+  "runType": "reader-requested selective follow-on collection",
+  "candidateCount": 2,
+  "adoptedCount": 1,
+  "candidates": [
+    {
+      "slug": "brancusi-customs-bird",
+      "status": "adopted",
+      "sourceUrl": "https://jrmccarthy-law.com/wp-content/uploads/2024/03/blog-brancusi-v-us.pdf",
+      "reason": "古い美術評価談義を入口に、課税分類の判断と美術の変化を一次判決から読む。既刊の文化論と論点を分け、資料の切り替わりと本稿の照合を近接表示した。",
+      "readScope": "1928年判決全文3頁。1922年関税法第399項・1704項。Olivotti判決抜粋7〜8頁。美術館の作品記録と関連解説。"
+    },
+    {
+      "title": "Report of the Inquiry into the London Ambulance Service (1993)",
+      "status": "deferred",
+      "reason": "要求工学に近い別候補として所在と概要のみ確認。全文確認・記事化は行わず、今回の採用数へ含めない。"
+    }
+  ]
+}
