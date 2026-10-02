@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-02",
+  "kind": "additional collection",
+  "candidateCount": 3,
+  "adoptedCount": 2,
+  "candidates": [
+    {
+      "topic": "ロンドン大火とパルメザンを埋めた日記",
+      "sourceUrl": "https://www.gutenberg.org/cache/epub/4167/pg4167-images.html",
+      "adopted": true,
+      "slug": "pepys-parmesan-fire",
+      "reason": "日記・官報を読み合わせ、家財、食事、避難、帰宅の生活史を描ける。既収録にない歴史の読み物。"
+    },
+    {
+      "topic": "周期ゼミの求愛と寄生菌",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5780379/",
+      "adopted": true,
+      "slug": "cicada-massospora",
+      "reason": "具体的な生きものの観察から、長い生活環と短い求愛の応答をたどれる。観察と適応の解釈を区別できる。"
+    },
+    {
+      "topic": "マルハナバチのボール遊び",
+      "sourceUrl": "https://chittkalab.sbcs.qmul.ac.uk/2022/Galpayage%20Dona%20H.S.%20Do%20Bumblebees%20Play.pdf",
+      "adopted": false,
+      "reason": "発見段階で保留。今回は上記2本の本文・史料確認と図版に集中し、本数を増やさない。全文読了・不採用の品質評価は主張しない。"
+    }
+  ]
+}

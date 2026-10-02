@@ -1,5 +1,53 @@
 [
   {
+    "slug": "pepys-parmesan-fire",
+    "title": "ロンドンが燃える夜、パルメザンを庭に埋める",
+    "originalTitle": "The Diary of Samuel Pepys, September 1666 / The Diary of John Evelyn / The London Gazette, no. 85",
+    "authors": [
+      "Samuel Pepys",
+      "John Evelyn",
+      "The London Gazette"
+    ],
+    "year": 1666,
+    "publishedAt": "2026-10-02",
+    "tags": [
+      "歴史",
+      "暮らし",
+      "食文化"
+    ],
+    "readingMinutes": 27,
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/4167/pg4167-images.html",
+    "excerpt": "1666年のロンドン大火。寝間着で荷車に乗り、船へ家財を積み、庭に酒とチーズを埋める。ピープスの日記、イーヴリンの記録、当時の官報から、焼け残った家にも戻らない暮らしを追う。",
+    "image": "assets/visual-pepys-parmesan-fire.webp",
+    "imageAlt": "大火の煙が上がるロンドンを背に、庭の穴へチーズを下ろすピープスと、穴の中に並んだワイン瓶を描いた版画風の挿絵",
+    "imageCaption": "図版：自動生成",
+    "featured": true
+  },
+  {
+    "slug": "cicada-massospora",
+    "title": "十七年待ったセミの、求愛の返事を変える菌",
+    "originalTitle": "A specialized fungal parasite (Massospora cicadina) hijacks the sexual signals of periodical cicadas",
+    "authors": [
+      "John R. Cooley",
+      "David C. Marshall",
+      "Kathy B. R. Hill"
+    ],
+    "year": 2018,
+    "publishedAt": "2026-10-02",
+    "tags": [
+      "自然史",
+      "昆虫",
+      "菌類"
+    ],
+    "readingMinutes": 19,
+    "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5780379/",
+    "excerpt": "森の大合唱に混じる、一瞬の翅の返事。周期ゼミに寄生する菌は、その合図とともに広がる。地中の長い年月、損傷しても動く体、野外で重ねた観察から、セミと菌の生活をたどる。",
+    "image": "assets/visual-cicada-massospora.webp",
+    "imageAlt": "木の枝で向き合う二匹の周期ゼミと、地中に広がる木の根。右のセミの腹端には白い胞子の塊が見える",
+    "imageCaption": "図版：自動生成",
+    "featured": false
+  },
+  {
     "slug": "tasteful-agent",
     "title": "途中の判断を、結果が出る前に評価できるか——Taste-Benchで長期エージェントの「目利き」を測る",
     "originalTitle": "The Tasteful Agent: Measuring and Improving Taste in Long-Horizon Tasks",
@@ -27,7 +75,7 @@
     "image": "assets/visual-tasteful-agent.webp",
     "imageAlt": "ブドウ畑の分かれ道に立つ栽培者と、豊作・不作に分かれた収穫風景",
     "imageCaption": "図版：自動生成",
-    "featured": true
+    "featured": false
   },
   {
     "slug": "groupware-eight-challenges",
