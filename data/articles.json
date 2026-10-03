@@ -1,5 +1,27 @@
 [
   {
+    "slug": "clever-hans",
+    "title": "馬の役を引き受け、相手が思った数を当てる",
+    "originalTitle": "Clever Hans (The Horse of Mr. Von Osten): A Contribution to Experimental Animal and Human Psychology",
+    "authors": [
+      "Oskar Pfungst"
+    ],
+    "year": 1911,
+    "publishedAt": "2026-10-03",
+    "tags": [
+      "科学史",
+      "心理学",
+      "動物行動"
+    ],
+    "sourceUrl": "https://www.gutenberg.org/files/33936/33936-h/33936-h.htm",
+    "excerpt": "「計算する馬」を調べた心理学者は、自分が馬の役になり、右手で数をたたいた。二十五人の小さな動き、煤の紙に残した一ミリの合図、知らぬ間に育つ身振りを、1911年の原書から読む。",
+    "image": "assets/visual-clever-hans.webp",
+    "imageAlt": "机を指でたたきながら相手の顔を見つめる研究者と、その手を注視する男性。左下には前脚を上げた馬と質問者の場面を重ねた版画風の挿絵",
+    "imageCaption": "図版：自動生成",
+    "featured": true,
+    "readingMinutes": 27
+  },
+  {
     "slug": "brancusi-customs-bird",
     "title": "鳥に見えない「鳥」に、四〇％の関税がかかる",
     "originalTitle": "C. Brancusi v. United States",
@@ -19,7 +41,7 @@
     "image": "assets/visual-brancusi-customs-bird.webp",
     "imageAlt": "税関の机に立つ細長い青銅の抽象的な鳥、ノギスを持つ検査人の手、開いた木箱に止まる小鳥、白紙の台帳を描いた版画風の挿絵",
     "imageCaption": "図版：自動生成",
-    "featured": true
+    "featured": false
   },
   {
     "slug": "darwin-worms-piano",

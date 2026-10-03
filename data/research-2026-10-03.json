@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-03",
+  "candidateCount": 3,
+  "adoptedCount": 1,
+  "collectionNote": "プフングストの「計算する馬」の調査、マーシャルの凝った氷菓、トウェインの水先案内人の回想を比較した。プフングストの1911年英訳版は本文六章・結論・付録まで確認し、人間が馬役をする実験を中心に一件を採用。氷菓の本は序文と冒頭の調理例、トウェインは初期連載の公開抜粋まで読んで保留した。",
+  "selectionCriteria": "分野や実務への有用性で絞らず、原資料の読み応え、確かめられる具体性、既収録との差、論証と留保の両方を日本語で十分に伝えられるかで選んだ。最低本数や分野別割当は設けない。",
+  "candidates": [
+    {
+      "title": "Clever Hans (The Horse of Mr. Von Osten): A Contribution to Experimental Animal and Human Psychology",
+      "authors": [
+        "Oskar Pfungst"
+      ],
+      "year": 1911,
+      "source": "https://www.gutenberg.org/files/33936/33936-h/33936-h.htm",
+      "status": "adopted",
+      "reason": "馬が人の合図を読むという結論にとどまらず、研究者自身が馬役をする実験、身振りの新しい対応の形成、測定の不調と史料上の留保まで一冊で追える。87本の全カタログに同書・同主題の既収録なし。既存の動物自然史記事とも、主題と史料は異なる。",
+      "readScope": "1911年英訳版の前書き、序文、本文第1〜6章、結論、付録1〜4を通読し、採用箇所を原書の頁へ照合した。1907年独語原著は刊行情報のみ照合し、独語本文は通読していない。本文は全訳ではなく、実験の順序を組み替えた日本語の解説である。"
+    },
+    {
+      "title": "Fancy Ices",
+      "authors": [
+        "Agnes B. Marshall"
+      ],
+      "year": 1894,
+      "source": "https://archive.org/details/b29314501",
+      "status": "deferred",
+      "reason": "型の中心を後から別の果実で満たす氷菓、二段階の冷凍、料理書と自社商品の関係に十分な読物の芽がある。ただし今回読んだのは冒頭で、器具・装飾・後半の技法までつなぐにはさらに通読が要る。ハンスの人間同士の実験の方が、今回確認できた根拠と論旨の厚さで上回った。別記事の自動追加は行わない。",
+      "readScope": "原書PDFを取得。前付の1894年5月付序文・目次および第1章1〜9頁の各種ボンブ、チェリー氷菓、コーヒー氷菓などを読んだ。本文後半・広告は未通読。The Book of Icesの書誌も探索したが、選考単位はFancy Ices一件。"
+    },
+    {
+      "title": "Old Times on the Mississippi",
+      "authors": [
+        "Mark Twain"
+      ],
+      "year": 1875,
+      "source": "https://history.hanover.edu/courses/excerpts/143twain1.html",
+      "status": "deferred",
+      "reason": "水先案内の見習いが、場所の名前だけでなく、夜・上り下り・刻々変わる岸の形を覚える回想は、喜劇的な語りと川の描写が強い。ただし確認した公開資料は抜粋で、実際の航海記録との違いも検討したい。今回は全文を確かめたプフングストの原書を一件だけ採る。",
+      "readScope": "Hanover College掲載の第I〜III回の抜粋を探索し、とくに第II回の見習い開始・夜間の目印、第III回の川の形と変化の箇所を読んだ。原連載全七回および後年のLife on the Mississippi全文は未通読。"
+    }
+  ]
+}
