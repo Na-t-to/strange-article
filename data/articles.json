@@ -1,5 +1,27 @@
 [
   {
+    "slug": "palissy-white-glaze",
+    "title": "白い釉薬を見つけても、窯から出せる皿がない",
+    "originalTitle": "De l’Art de terre, de son utilité : des esmaux et du feu (Discours admirables)",
+    "authors": [
+      "Bernard Palissy"
+    ],
+    "year": 1580,
+    "publishedAt": "2026-10-04",
+    "tags": [
+      "工芸",
+      "技術史",
+      "史料"
+    ],
+    "sourceUrl": "https://fr.wikisource.org/wiki/Œuvres_complètes_de_Bernard_Palissy/Discours_admirables_de_la_Nature_des_eaux_et_fontaines,_etc./De_l’Art_de_terre,_de_son_utilité_:_des_esmaux_et_du_feu",
+    "excerpt": "四時間以内にできた白い試験片。窯壁から飛んだ石、灰に荒らされた器、衣服で払う賃金。パリシーの陶芸の回想を、秘密を守る理由と、最後まで明かされない配合まで読む。",
+    "image": "assets/visual-palissy-white-glaze.webp",
+    "imageAlt": "石の粒が貼りついた白い皿を手に取って調べる職人。机には白い試験片、割れた器、粉末と乳鉢が並び、背後にはれんがの窯が見える版画風の挿絵",
+    "imageCaption": "図版：自動生成",
+    "featured": true,
+    "readingMinutes": 25
+  },
+  {
     "slug": "clever-hans",
     "title": "馬の役を引き受け、相手が思った数を当てる",
     "originalTitle": "Clever Hans (The Horse of Mr. Von Osten): A Contribution to Experimental Animal and Human Psychology",
@@ -18,7 +40,7 @@
     "image": "assets/visual-clever-hans.webp",
     "imageAlt": "机を指でたたきながら相手の顔を見つめる研究者と、その手を注視する男性。左下には前脚を上げた馬と質問者の場面を重ねた版画風の挿絵",
     "imageCaption": "図版：自動生成",
-    "featured": true,
+    "featured": false,
     "readingMinutes": 27
   },
   {

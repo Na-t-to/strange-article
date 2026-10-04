@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-04",
+  "candidateCount": 4,
+  "adoptedCount": 1,
+  "collectionNote": "陶芸の回想、ロンドンの路上労働、ガラスの植物標本、オウムの道具実験を比較。本文全体を読め、失敗の細部から秘密保持の議論まで十分にたどれるパリシーの対話篇を一編採用。",
+  "selectionCriteria": "一次資料の可読性、具体的な観察と生活の厚さ、論証と声の複数性、既出との違い。分野別本数や実務への有用性は条件にしない。",
+  "candidates": [
+    {
+      "title": "De l’Art de terre, de son utilité : des esmaux et du feu",
+      "authors": [
+        "Bernard Palissy"
+      ],
+      "source": "https://fr.wikisource.org/wiki/Œuvres_complètes_de_Bernard_Palissy/Discours_admirables_de_la_Nature_des_eaux_et_fontaines,_etc./De_l’Art_de_terre,_de_son_utilité_:_des_esmaux_et_du_feu",
+      "status": "adopted",
+      "reason": "パリシーの窯焼きは、白い試験片から石・灰・色・天候・資金へと失敗の種類が変わる。章の前後には知識の公開、複製、秘密を守る生計上の理由をめぐる対話があり、努力礼賛では終わらない。既存88本に同じ原資料・主題の収録なし。",
+      "readScope": "1844年カップ校訂版306〜324頁の選定章本文全体と注9件を読んだ。Discours admirables全書は未通読。BnFの書誌記録とMetの作品記録も確認し、後者は帰属と推定年代を保った一段落の照合に用いた。",
+      "year": 1580
+    },
+    {
+      "title": "London Labour and the London Poor, Vol.2, Of the “Pure”-Finders",
+      "authors": [
+        "Henry Mayhew"
+      ],
+      "source": "https://www.gutenberg.org/cache/epub/60440/pg60440-images.html",
+      "status": "deferred",
+      "reason": "犬の糞の売買、混ぜ物、なめし業者の見分け方、採集者の語りは読み応えがある。ただし数量と化学的説明を独立した皮革加工史料で照合し、聞き手の偏見も扱う必要があるため保留。",
+      "readScope": "第2巻の刊行情報、序論の一部とPure-Finders節の全体を確認。巻全体は未通読。女性と別の情報提供者の証言を含む。",
+      "editionNote": "1861〜62年増補版、参照本文は1865年再刊版"
+    },
+    {
+      "title": "Glass Flowers: The Ware Collection of Blaschka Glass Models of Plants",
+      "authors": [
+        "Harvard Museum of Natural History"
+      ],
+      "source": "https://www.hmnh.harvard.edu/glass-flowers",
+      "status": "deferred",
+      "reason": "植物をガラスで再現する技術と標本史は有力だが、取得できた館の概要だけでは十分な厚さに届かない。同ページの種数・開始年にも異なる記載があり、台帳や同時代資料との照合を要する。",
+      "readScope": "所蔵館の紹介ページとFAQ、技法説明を読んだ。制作展のリンク先は取得できず、職人の書簡や当時の年報は未通読。",
+      "editionNote": "現行の所蔵館解説。制作開始年と収蔵種数の差は未解決。"
+    },
+    {
+      "title": "Innovative composite tool use by Goffin’s cockatoos (Cacatua goffiniana)",
+      "authors": [
+        "Osuna-Mascaró et al."
+      ],
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8795444/",
+      "status": "deferred",
+      "reason": "複合道具を使う現代の動物実験として検討した。全文へのアクセスが確認画面で止まり、方法・個体別の試行数・除外条件を読めないため採用しない。直近の動物認知記事との近さも考慮した。",
+      "readScope": "一次論文の検索索引に表示された要旨と序論の範囲のみ確認。本文の方法・結果は未通読で、本日の記事本文には使っていない。",
+      "year": 2022
+    }
+  ]
+}
