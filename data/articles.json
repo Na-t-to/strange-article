@@ -1,5 +1,34 @@
 [
   {
+    "slug": "periodic-egg-cooking",
+    "title": "卵を二分おきに熱湯から引き上げる",
+    "originalTitle": "Periodic cooking of eggs",
+    "authors": [
+      "Emilia Di Lorenzo",
+      "Francesca Romano",
+      "Lidia Ciriaco",
+      "Nunzia Iaccarino",
+      "Luana Izzo",
+      "Antonio Randazzo",
+      "Pellegrino Musto",
+      "Ernesto Di Maio"
+    ],
+    "year": 2025,
+    "publishedAt": "2026-10-05",
+    "tags": [
+      "料理",
+      "食品科学",
+      "伝熱"
+    ],
+    "sourceUrl": "https://www.nature.com/articles/s44172-024-00334-w",
+    "excerpt": "熱湯と三〇度の水を八往復。外側だけに届く温度の揺れで、白身と黄身を別々に調理する。練乳や歯磨き粉を物差しにした先行研究、食感の試験、計算と安全性の限界まで読む。",
+    "readingMinutes": 21,
+    "featured": true,
+    "imageCaption": "図版：自動生成",
+    "image": "assets/visual-periodic-egg-cooking.webp",
+    "imageAlt": "湯気の立つ鍋と静かな水の鍋の間で網杓子が殻付き卵を持ち上げ、手前に黄身の柔らかいゆで卵と砂時計を置いた線画"
+  },
+  {
     "slug": "palissy-white-glaze",
     "title": "白い釉薬を見つけても、窯から出せる皿がない",
     "originalTitle": "De l’Art de terre, de son utilité : des esmaux et du feu (Discours admirables)",
@@ -18,7 +47,7 @@
     "image": "assets/visual-palissy-white-glaze.webp",
     "imageAlt": "石の粒が貼りついた白い皿を手に取って調べる職人。机には白い試験片、割れた器、粉末と乳鉢が並び、背後にはれんがの窯が見える版画風の挿絵",
     "imageCaption": "図版：自動生成",
-    "featured": true,
+    "featured": false,
     "readingMinutes": 25
   },
   {

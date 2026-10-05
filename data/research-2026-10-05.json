@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-05",
+  "candidateCount": 4,
+  "adoptedCount": 1,
+  "collectionNote": "卵の周期加熱、マルハナバチの遊び、ヤドカリの殻交換、タコの睡眠を比較。調理の細部から伝熱、食感、査読の経緯までたどれる卵の研究を一編採用。",
+  "selectionCriteria": "全文の可読性、具体的な現象と説明の厚さ、数値・実験条件の確認、既出との違いを重視。分野の割り当てや仕事への応用可能性は条件にしない。",
+  "candidates": [
+    {
+      "title": "Periodic cooking of eggs",
+      "year": 2025,
+      "source": "https://www.nature.com/articles/s44172-024-00334-w",
+      "stableId": "10.1038/s44172-024-00334-w",
+      "status": "adopted",
+      "reason": "殻付き卵を二つの水浴に往復させる具体的な操作から、白身と黄身の熱履歴と食感を分けて説明できる。2011年の黄身の研究と公開査読記録を照合し、温度だけで決まらない調理、官能評価と機械測定、成分分析の限界まで独自に構成した。既存89本に同じ原資料・主題の収録なし。",
+      "readScope": "2025年本文全体、18頁の補足資料、13頁の査読記録を確認。Culinary Biophysics: on the Nature of the 6X°C Egg（2011年、8頁）も全文確認。表4の概算不整合を独立計算で照合し本文に留保を記した。FDAの家庭向け案内を確認。公開解析データの再解析、シミュレーション再実行、調理実験は未実施。"
+    },
+    {
+      "title": "Do bumble bees play?",
+      "year": 2022,
+      "source": "https://doi.org/10.1016/j.anbehav.2022.08.013",
+      "stableId": "10.1016/j.anbehav.2022.08.013",
+      "status": "deferred",
+      "reason": "木球を転がす行動と報酬の条件づけを区別できる有力な題材。ただし最近の動物認知記事との論点の近さを考慮し、本日は卵を優先。感情の推定と行動基準、後続の議論を十分に確認してから扱いたい。",
+      "readScope": "出版社の要旨、序論・実験1の結果・考察・結論の公開部分を確認。全実験の方法と補足映像、後続論文は未通読。"
+    },
+    {
+      "title": "Social context of shell acquisition in Coenobita clypeatus hermit crabs",
+      "year": 2010,
+      "source": "https://www.bennington.edu/sites/default/files/sources/docs/Social%20context%20of%20shell%20acquisition%20in%20Coenobita%20clypeatus%20hermit%20crabs.pdf",
+      "stableId": "10.1093/beheco/arq027",
+      "status": "deferred",
+      "reason": "一つの空き殻から交換が続く現象と、待機・同時交換の違いは読み物になりうる。野外観察・飼育実験・モデルの条件を全文で読み分ける作業を残し、本日は採用しない。",
+      "readScope": "8頁PDFの要旨と序論冒頭、同時・非同時の殻交換の定義まで確認。方法・結果の全体は未通読。"
+    },
+    {
+      "title": "Wake-like skin patterning and neural activity during octopus sleep",
+      "year": 2023,
+      "source": "https://www.nature.com/articles/s41586-023-06203-4",
+      "stableId": "10.1038/s41586-023-06203-4",
+      "status": "deferred",
+      "reason": "睡眠中の皮膚模様と神経活動を並べて扱える候補。ただし取得できた範囲では夢を見ているとの解釈と測定事実の境界を十分に確認できず、全文確認を残す。",
+      "readScope": "出版社の要旨と導入の索引表示を確認。本文の取得は認証先への転送で完了せず、方法・結果の全文は未通読。"
+    }
+  ]
+}
