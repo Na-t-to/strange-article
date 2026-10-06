@@ -1,5 +1,27 @@
 [
   {
+    "slug": "scott-phonautograph",
+    "title": "声を煤に書きつけ、百四十八年後に聴く",
+    "originalTitle": "Principes de Phonautographie / Le problème de la parole s’écrivant elle-même",
+    "authors": [
+      "Édouard-Léon Scott de Martinville"
+    ],
+    "year": 1878,
+    "publishedAt": "2026-10-06",
+    "tags": [
+      "音の歴史",
+      "発明",
+      "記録"
+    ],
+    "sourceUrl": "https://www.firstsounds.org/publications/articles/Phonautographic-Manuscripts.pdf",
+    "excerpt": "煤を塗った紙へ声を記し、目で読もうとした印刷工。羽と膜の試行錯誤、朗読を大小の文字へ移す工夫、エジソンへの反論、再生速度を半分へ直した現代の復元をたどる。",
+    "readingMinutes": 24,
+    "featured": true,
+    "imageCaption": "図版：自動生成",
+    "image": "assets/visual-scott-phonautograph.webp",
+    "imageAlt": "大きな集音筒と手回しの煤紙円筒を備えたフォノトグラフ。手前には波形の残る黒い紙と音叉が置かれている。"
+  },
+  {
     "slug": "periodic-egg-cooking",
     "title": "卵を二分おきに熱湯から引き上げる",
     "originalTitle": "Periodic cooking of eggs",
@@ -23,7 +45,7 @@
     "sourceUrl": "https://www.nature.com/articles/s44172-024-00334-w",
     "excerpt": "熱湯と三〇度の水を八往復。外側だけに届く温度の揺れで、白身と黄身を別々に調理する。練乳や歯磨き粉を物差しにした先行研究、食感の試験、計算と安全性の限界まで読む。",
     "readingMinutes": 21,
-    "featured": true,
+    "featured": false,
     "imageCaption": "図版：自動生成",
     "image": "assets/visual-periodic-egg-cooking.webp",
     "imageAlt": "湯気の立つ鍋と静かな水の鍋の間で網杓子が殻付き卵を持ち上げ、手前に黄身の柔らかいゆで卵と砂時計を置いた線画"

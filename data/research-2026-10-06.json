@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-06",
+  "candidateCount": 3,
+  "adoptedCount": 1,
+  "collectionNote": "スコットの声の記録、野鳥の歌の採譜、1904年五輪マラソンの当事者記録を比較。声を読むために残した紙が後世に再生されたスコットを一編採用。本人の技術説明と回想、復元者の解釈の変更を区別して構成した。",
+  "selectionCriteria": "一次資料の内容的価値と全文の可読性、具体的な作業・表現・対立の厚さ、資料に残る不確かさ、既存90記事との違いで判断。分野のノルマ、AIや法務技術への接続、実務への教訓を採用条件にしない。",
+  "candidates": [
+    {
+      "title": "スコット・ド・マルタンヴィルのフォノトグラフ関係文書と音声復元記録",
+      "year": 1857,
+      "source": "https://www.firstsounds.org/publications/articles/Phonautographic-Manuscripts.pdf",
+      "stableId": "Scott:Principes de Phonautographie:1857; brevet 31470; Le problème de la parole s’écrivant elle-même:1878",
+      "status": "adopted",
+      "reason": "手回しの紙・煤・羽・膜という具体的な操作、朗読を読むという異なる目標、再生速度の改訂まで、単なる最古競争にしない読み物として展開できる。既存90記事に同一原資料・録音史の主題なし。",
+      "readScope": "The Phonautographic Manuscripts（2009/2010対照版）のうちPrincipes de Phonautographie（4–12頁）、Fixation Graphique de la Voix（23–42頁）、Certificat d’Addition（52–67頁、図版説明を含む）、Inscription automatique...（70–81頁、書き込みを含む）は本文全体を確認。1878年著書は序文3–5頁、第一部7–28頁、契約再録49–52頁を画像からOCRし通読。主要箇所は画像で照合。再録された全資料・全注記を著書の画像版で通読したわけではなく、上記対照版と関連注記を利用。2010年ディスコグラフィーは導入・技法・速度解釈と関連項目を確認し、全項目の通読はしていない。First Soundsの現行音源一覧、旧再生説明、FAQとジョヴァンノーニの回顧を全文確認。2009年協会史研究は関連節を確認。2017年Feaster記事は冒頭の速度解釈・最古の定義を中心に確認し、全アルゴリズムを検証・再実行したわけではない。音源の独立鑑定や復元実験は未実施。"
+    },
+    {
+      "title": "Field Book of Wild Birds and Their Music",
+      "year": 1904,
+      "source": "https://books.google.com/books?id=TO85AAAAMAAJ",
+      "stableId": "Mathews:Field Book of Wild Birds and Their Music:1904",
+      "status": "deferred",
+      "reason": "鳥の声を五線譜へ移す著者の説明と、1905年Nature書評の批判を対比できる有力候補。索引で見えた1921年改訂版の序文はピアノが識別の代用品にならないと自ら断っており、単純な擬人化批判では扱えない。譜例の画像と初版・改訂版の対応を通読してから扱いたい。本日は一次資料一式が揃うスコットを優先。",
+      "readScope": "Google Booksの書誌・目次、公開PDF索引内の序文、1905年Nature評（https://www.nature.com/articles/072602a0）の公開本文を確認。Wikimedia上のPDF全体取得は403で未完了。全鳥種本文や楽譜の通読は未実施。"
+    },
+    {
+      "title": "The Olympic Games, 1904 — The Marathon Race",
+      "year": 1905,
+      "source": "https://www.bandbhac.org.uk/1904lucas.pdf",
+      "stableId": "Lucas:The Olympic Games, 1904:1905:Chapter II",
+      "status": "deferred",
+      "reason": "選手の補助者でもあった著者が、薬剤による介助を堂々と肯定する語りと、車に乗った選手を糾弾する語りを並べている。有名な奇談集にせず、当時の競技観・人種観と当事者の立場を検証する厚みがある。ただし選手名・距離・後世の逸話を同時代の別記録と照合する作業を残すため、本日は採用しない。",
+      "readScope": "175頁PDFを保存。序文・序論、マラソン章の冒頭と主要箇所、章の競技結果を確認。書籍全体や同時代新聞の通読・突き合わせは未実施。"
+    }
+  ]
+}
