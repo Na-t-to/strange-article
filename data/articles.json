@@ -1,5 +1,36 @@
 [
   {
+    "slug": "octopus-fish-hunting",
+    "title": "タコが動かなければ、魚たちは戻ってくる",
+    "originalTitle": "Multidimensional social influence drives leadership and composition-dependent success in octopus–fish hunting groups",
+    "authors": [
+      "Eduardo Sampaio",
+      "Vivek H. Sridhar",
+      "Fritz A. Francisco",
+      "Máté Nagy",
+      "Ada Sacchi",
+      "Ariana Strandburg-Peshkin",
+      "Paul Nührenberg",
+      "Rui Rosa",
+      "Iain D. Couzin",
+      "Simon Gingins"
+    ],
+    "year": 2024,
+    "publishedAt": "2026-10-07",
+    "tags": [
+      "海の生態",
+      "異種間関係",
+      "動物行動"
+    ],
+    "sourceUrl": "https://www.nature.com/articles/s41559-024-02525-2",
+    "excerpt": "魚が行き先を探し、タコが出発を左右する。紅海の13の狩りを追い、動かないことの影響、魚へのパンチ、体の下に隠れた食事を測る実験から、異なる動物が組む狩りを読む。",
+    "readingMinutes": 21,
+    "featured": true,
+    "imageCaption": "図版：自動生成",
+    "image": "assets/visual-octopus-fish-hunting.webp",
+    "imageAlt": "岩の隙間に腕と腕の膜を広げたタコの前を、二本の顎ひげを持つ青いヒメジが進み、奥に黄色いヒメジとハタが泳ぐ線画"
+  },
+  {
     "slug": "scott-phonautograph",
     "title": "声を煤に書きつけ、百四十八年後に聴く",
     "originalTitle": "Principes de Phonautographie / Le problème de la parole s’écrivant elle-même",
@@ -16,7 +47,7 @@
     "sourceUrl": "https://www.firstsounds.org/publications/articles/Phonautographic-Manuscripts.pdf",
     "excerpt": "煤を塗った紙へ声を記し、目で読もうとした印刷工。羽と膜の試行錯誤、朗読を大小の文字へ移す工夫、エジソンへの反論、再生速度を半分へ直した現代の復元をたどる。",
     "readingMinutes": 24,
-    "featured": true,
+    "featured": false,
     "imageCaption": "図版：自動生成",
     "image": "assets/visual-scott-phonautograph.webp",
     "imageAlt": "大きな集音筒と手回しの煤紙円筒を備えたフォノトグラフ。手前には波形の残る黒い紙と音叉が置かれている。"

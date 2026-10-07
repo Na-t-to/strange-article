@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-07",
+  "candidateCount": 3,
+  "adoptedCount": 1,
+  "collectionNote": "タコと魚の共同狩猟、ラムフォードの摩擦熱実験、『ウォールデン』の冬の池を比較。異なる体を持つ動物が、行く先と出発のタイミングを分け合う狩りを一編採用した。野外の移動記録と餌入り管の実験を区別し、パンチや食事量について言い切れない部分も残した。",
+  "selectionCriteria": "一次資料の全文可読性、具体的な観察と論証の厚さ、確かめられたことと推測の境界、既存91記事との違いで判断。分野のノルマ、AI・仕事への応用、実務の教訓は採用条件にしない。",
+  "candidates": [
+    {
+      "title": "Multidimensional social influence drives leadership and composition-dependent success in octopus–fish hunting groups",
+      "year": 2024,
+      "source": "https://www.nature.com/articles/s41559-024-02525-2",
+      "stableId": "doi:10.1038/s41559-024-02525-2",
+      "status": "adopted",
+      "reason": "先へ出る魚と動かないタコの異なる影響、動くカメラからの三次元計測、体の下に隠れる採餌の代理指標、魚への一撃の解釈を、動物たちの狩りとして詳しく読める。既存記事に同一原資料・混群狩猟の主題なし。",
+      "readScope": "2024年論文の本文・Methodsを全文確認。補足図の説明と主要な移動・パンチ解析表、表1・43〜46を確認。種名表と実験図の該当ページを画像で照合。Reporting Summaryは文字抽出の異常があるため2頁を画像で確認。公開査読資料は追従の識別、同種間の影響、反復標本の扱いに関する議論と応答を確認し、全文通読とはしていない。2021年掲載の先行論文は4頁全文を確認。動画全編の視聴、公開コードの再実行、元映像の独立再計測はしていない。",
+      "supportingSources": [
+        "https://doi.org/10.1002/ecy.3266",
+        "https://openoceanproject.org/assets/ecy.32663.pdf"
+      ],
+      "limitations": [
+        "13集団を107区間へ分割した観察であり、107の独立集団ではない。",
+        "魚の構成の違いは観察上の比較であり、魚を取り除く実験ではない。",
+        "web-overの時間は別の野外実験で検討した代理指標であり、自然状態の獲物数・重量・摂取熱量を直接測った値ではない。",
+        "パンチの観察だけでは、罰・報復・相手の学習を実証したことにならない。",
+        "blacktip grouperの学名は本文・補足表と図の説明等で一致していないため、記事内で不一致を明示した。"
+      ]
+    },
+    {
+      "title": "An Inquiry concerning the Source of the Heat Which is Excited by Friction",
+      "year": 1798,
+      "source": "https://academicweb.nd.edu/~powers/ame.20231/thompson1798.pdf",
+      "stableId": "Rumford:An Inquiry concerning the Source of the Heat Which is Excited by Friction:1798",
+      "status": "deferred",
+      "reason": "大砲製造時の切削部、鈍い工具、馬による駆動、水が沸くまでの観察と熱量の比較が揃う有力候補。数値のOCRと原図の照合を残し、本日は海中の観察を優先した。分野の順番を設けるものではない。",
+      "readScope": "公開OCRの全文約6800語を通読。四つの実験、数値による比較、結論、図版説明を確認。原版スキャンは所在を確認し取得したが、数値表記と図版の画像照合は未完了。"
+    },
+    {
+      "title": "Walden — The Pond in Winter",
+      "year": 1854,
+      "source": "https://www.gutenberg.org/files/205/205-h/205-h.htm#chap17",
+      "stableId": "Thoreau:Walden:The Pond in Winter:1854",
+      "status": "deferred",
+      "reason": "底なしと呼ばれた池を測り、氷を切り出す労働を見る章。氷のインド行きという有名な結びに対して、本文では1846〜47年の大きな氷山の多くが現地で融けたとも記す。特定の荷の行先と文学的な想像を混同しないよう、貿易記録の照合をしてから扱いたい。",
+      "readScope": "当該章全文を確認。『ウォールデン』全巻の通読や氷貿易の帳簿との照合はしていない。"
+    }
+  ]
+}
