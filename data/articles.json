@@ -1,5 +1,28 @@
 [
   {
+    "slug": "yap-stone-detroit",
+    "title": "踊りの謝礼になった石が、デトロイトへ渡る",
+    "originalTitle": "The Stone Money of Yap: A Numismatic Survey / The Island of Stone Money: Uap of the Carolines",
+    "authors": [
+      "Cora Lee C. Gillilland",
+      "William Henry Furness III"
+    ],
+    "year": 1975,
+    "publishedAt": "2026-10-08",
+    "tags": [
+      "暮らしの歴史",
+      "貨幣",
+      "博物館"
+    ],
+    "sourceUrl": "https://www.govinfo.gov/content/pkg/GOVPUB-SI-PURL-gpo20857/pdf/GOVPUB-SI-PURL-gpo20857.pdf",
+    "excerpt": "焼けた家の再建、村の踊り、屋根の金属板、家族の世話。一枚の石貨がたどった来歴を、海に沈んだ石の逸話、島での争い、食い違う博物館の説明から読む。",
+    "readingMinutes": 21,
+    "featured": true,
+    "imageCaption": "図版：自動生成",
+    "image": "assets/visual-yap-stone-detroit.webp",
+    "imageAlt": "棒を通した大きな円盤状の石貨が海辺に立ち、手前に屋根用の波板、背後に茅葺きの建物と筏、沖に貨物船が見える版画風の挿絵"
+  },
+  {
     "slug": "octopus-fish-hunting",
     "title": "タコが動かなければ、魚たちは戻ってくる",
     "originalTitle": "Multidimensional social influence drives leadership and composition-dependent success in octopus–fish hunting groups",
@@ -25,7 +48,7 @@
     "sourceUrl": "https://www.nature.com/articles/s41559-024-02525-2",
     "excerpt": "魚が行き先を探し、タコが出発を左右する。紅海の13の狩りを追い、動かないことの影響、魚へのパンチ、体の下に隠れた食事を測る実験から、異なる動物が組む狩りを読む。",
     "readingMinutes": 21,
-    "featured": true,
+    "featured": false,
     "imageCaption": "図版：自動生成",
     "image": "assets/visual-octopus-fish-hunting.webp",
     "imageAlt": "岩の隙間に腕と腕の膜を広げたタコの前を、二本の顎ひげを持つ青いヒメジが進み、奥に黄色いヒメジとハタが泳ぐ線画"
