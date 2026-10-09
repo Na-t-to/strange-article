@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-09",
+  "candidateCount": 3,
+  "adoptedCount": 1,
+  "collectionNote": "モンタギュのオスマン旅行書簡、パリ包囲戦の鳩による写真通信、南極の冬のペンギン卵採集を比較。小物で読む恋文を入口に、浴場、服装、会話、家で働く人々へ視線が移る旅行書簡を採用した。著者自身の見聞と推測、帰国後に整えられた文章、階級によって異なる自由を区別して読む。",
+  "selectionCriteria": [
+    "一次資料の全文可読性、具体的な場面の厚さ、記録と解釈の境界、既存93記事との違いから選定。分野別の割り当て、AI・仕事への応用、教訓の有無を採用条件にしない。"
+  ],
+  "candidates": [
+    {
+      "title": "Letters of the Right Honourable Lady M—y W—y M—e / The Turkish Embassy Letters",
+      "year": 1763,
+      "source": "https://www.gutenberg.org/cache/epub/17520/pg17520-images.html",
+      "stableId": "gutenberg:17520:Montagu:Ottoman-letters",
+      "status": "adopted",
+      "reason": "石鹸や胡椒で読む恋文という具体物から、女性浴場での身体の見られ方、ヴェールによる匿名性、言葉を覚えて変わる会話、多言語の家へと広がる。旅行者の思い込みを批判する著者の文章にも、階級や奴隷制への盲点が残る。既存93記事に同じ著者・資料・場面を主題とする記事なし。",
+      "readScope": "1790年版を底本とする公開本文の第26、27、29、33、37、39、40、41書簡を全文確認。序文と出版説明、初版の年を記すBroadview Pressの校訂版紹介を確認。全書簡集や原稿・実際に投函された全書簡を通読したという意味ではない。",
+      "supportingSources": [
+        "https://www.persee.fr/doc/xvii_0291-3798_1983_num_16_1_1014",
+        "https://broadviewpress.com/product/the-turkish-embassy-letters/"
+      ],
+      "limitations": [
+        "帰国後に整えられた書簡形式の作品を、未編集の現場記録と扱わない。",
+        "浴場はソフィア。第26書簡の発信地表示アドリアノープルと混同しない。",
+        "第40書簡は当該版で3月16日O.S.と印刷され、年が省略される。年を無断で補わない。",
+        "小物の恋文は依頼された見本であり、著者自身の恋の告白ではない。",
+        "多言語の使用や女性の自由に関する一般化は著者の観察・判断として記す。",
+        "奴隷を買う依頼を断念した理由を、奴隷制への反対と置き換えない。",
+        "浴場の相手の考えや会話は著者による再現で、相手側の独立した記録は今回確認していない。"
+      ]
+    },
+    {
+      "title": "La poste par pigeons voyageurs: Souvenir du siège de Paris",
+      "year": 1871,
+      "source": "https://www.gutenberg.org/files/19588/19588-h/19588-h.htm",
+      "stableId": "gutenberg:19588",
+      "status": "deferred",
+      "reason": "気球から脱出し、酒樽に写真機材を隠して移動した当事者が、写真の薄膜を鳩でパリへ送った過程を記す。反復送信や冬の飛行不調、功績をめぐる異議まであり有力だが、本日は旅行書簡一作に絞った。",
+      "readScope": "ダグロンの1871年報告を冒頭から追記まで全文確認。",
+      "limitations": [
+        "約11万5000件は一連の通信、約250万件は複製回数を含む著者の計算として区別が必要。",
+        "製作した枚数・送った回数を受信成功数に変えない。",
+        "功績の独占を主張する追記を、中立的に確定した発明史と扱わない。",
+        "同時代の他者の主張や配達統計の独立検証は未完了。"
+      ]
+    },
+    {
+      "title": "The Worst Journey in the World — The Winter Journey / Scott’s Last Expedition — Winter Journey",
+      "year": 1922,
+      "source": "https://en.wikisource.org/wiki/The_Worst_Journey_in_the_World/Chapter_7",
+      "stableId": "gutenberg:14363:chapter-vii",
+      "status": "deferred",
+      "reason": "南極の冬に採集した三個の卵と、現地での身体・道具・標本処理の細部が豊富。後の科学的検討も追えるが、本日はモンタギュの旅行書簡を採用し、量を増やすための同時採用はしない。",
+      "readScope": "1922年版第7章とEwartの付録、1913年刊のWinter Journey報告を全文確認。Glenister1954年報告は1〜7頁を確認し、歴史記述の2頁は画像でも照合。Parsons1934年の原著は未読。",
+      "supportingSources": [
+        "https://en.wikisource.org/wiki/Scott%27s_Last_Expedition/Volume_2/Winter_Journey",
+        "https://nora.nerc.ac.uk/id/eprint/511121/"
+      ],
+      "limitations": [
+        "採集数は1913年報告で六個、1922年回想で五個。持ち帰った三個は一致する。",
+        "博物館での会話は本人が劇化したと明記する。",
+        "Asshetonが作業に着手しなかったという回想本文を、付録や後年の切片・図の記述と照合する必要がある。",
+        "科学的成果が限定的であることを、卵が放置され無価値だったと単純化しない。",
+        "温度、テント回収距離、帰還時刻に記録間の差があり、偽りの精密さを与えない。"
+      ]
+    }
+  ]
+}

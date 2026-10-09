@@ -1,5 +1,27 @@
 [
   {
+    "slug": "montagu-object-letter",
+    "title": "石鹸と胡椒で、返事を催促する手紙を書く",
+    "originalTitle": "Letters of the Right Honourable Lady M—y W—y M—e（通称 The Turkish Embassy Letters）",
+    "authors": [
+      "Lady Mary Wortley Montagu"
+    ],
+    "year": 1763,
+    "publishedAt": "2026-10-09",
+    "tags": [
+      "旅行記",
+      "手紙",
+      "暮らしの歴史"
+    ],
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/17520/pg17520-images.html",
+    "excerpt": "袋から真珠、石鹸、石炭、胡椒を取り出して読む恋文。モンタギュの旅の手紙から、浴場での勘違い、ヴェールの匿名性、十の言語が響く家、優雅な暮らしを支えた人々をたどる。",
+    "readingMinutes": 20,
+    "featured": true,
+    "imageCaption": "図版：自動生成",
+    "image": "assets/visual-montagu-object-letter.webp",
+    "imageAlt": "小さな袋を開く女性の手と、机に並ぶ真珠、石鹸、石炭、シナモン、薔薇、胡椒、金色の糸。奥の格子窓には帆船と対岸の街が見える版画風の挿絵"
+  },
+  {
     "slug": "yap-stone-detroit",
     "title": "踊りの謝礼になった石が、デトロイトへ渡る",
     "originalTitle": "The Stone Money of Yap: A Numismatic Survey / The Island of Stone Money: Uap of the Carolines",
@@ -17,7 +39,7 @@
     "sourceUrl": "https://www.govinfo.gov/content/pkg/GOVPUB-SI-PURL-gpo20857/pdf/GOVPUB-SI-PURL-gpo20857.pdf",
     "excerpt": "焼けた家の再建、村の踊り、屋根の金属板、家族の世話。一枚の石貨がたどった来歴を、海に沈んだ石の逸話、島での争い、食い違う博物館の説明から読む。",
     "readingMinutes": 21,
-    "featured": true,
+    "featured": false,
     "imageCaption": "図版：自動生成",
     "image": "assets/visual-yap-stone-detroit.webp",
     "imageAlt": "棒を通した大きな円盤状の石貨が海辺に立ち、手前に屋根用の波板、背後に茅葺きの建物と筏、沖に貨物船が見える版画風の挿絵"
