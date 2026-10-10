@@ -1,5 +1,27 @@
 [
   {
+    "slug": "merian-guava-spiders",
+    "title": "鳥を捕らえるクモを、グアバの枝に描く",
+    "originalTitle": "Metamorphosis insectorum Surinamensium（第18図ほか）",
+    "authors": [
+      "Maria Sibylla Merian"
+    ],
+    "year": 1705,
+    "publishedAt": "2026-10-10",
+    "tags": [
+      "博物画",
+      "自然史",
+      "観察"
+    ],
+    "sourceUrl": "https://www.dbnl.org/tekst/meri002meta01_01/meri002meta01_01_0019.php",
+    "excerpt": "グアバの枝には、鳥を押さえるクモ、葉を運ぶアリ、卵のある巣が並ぶ。メーリアンの博物図譜から、標本箱に欠けていた時間、三か月待った羽化、観察と伝聞が同居する一枚を読む。",
+    "readingMinutes": 19,
+    "featured": true,
+    "imageCaption": "図版：自動生成",
+    "image": "assets/visual-merian-guava-spiders.webp",
+    "imageAlt": "グアバの実と食痕のある葉、絹の住居から出るクモ、小鳥を押さえるクモ、葉片を運ぶアリ。下には幼虫、繭、蛾、細筆と標本箱を別々の観察図として並べた版画風の挿絵"
+  },
+  {
     "slug": "montagu-object-letter",
     "title": "石鹸と胡椒で、返事を催促する手紙を書く",
     "originalTitle": "Letters of the Right Honourable Lady M—y W—y M—e（通称 The Turkish Embassy Letters）",
@@ -16,7 +38,7 @@
     "sourceUrl": "https://www.gutenberg.org/cache/epub/17520/pg17520-images.html",
     "excerpt": "袋から真珠、石鹸、石炭、胡椒を取り出して読む恋文。モンタギュの旅の手紙から、浴場での勘違い、ヴェールの匿名性、十の言語が響く家、優雅な暮らしを支えた人々をたどる。",
     "readingMinutes": 20,
-    "featured": true,
+    "featured": false,
     "imageCaption": "図版：自動生成",
     "image": "assets/visual-montagu-object-letter.webp",
     "imageAlt": "小さな袋を開く女性の手と、机に並ぶ真珠、石鹸、石炭、シナモン、薔薇、胡椒、金色の糸。奥の格子窓には帆船と対岸の街が見える版画風の挿絵"

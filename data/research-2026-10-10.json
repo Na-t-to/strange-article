@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-10",
+  "candidateCount": 1,
+  "adoptedCount": 1,
+  "candidates": [
+    {
+      "title": "Metamorphosis insectorum Surinamensium（第18図ほか）",
+      "stableId": "merian:1705:plate18",
+      "status": "adopted",
+      "source": "https://www.dbnl.org/tekst/meri002meta01_01/meri002meta01_01_0019.php",
+      "reason": "図と飼育記録を照合し、グアバをめぐる食事と変態、観察と伝聞の違いを厚く読める。既存94記事に同一著者・原題・資料の重複なし。",
+      "readScope": [
+        {
+          "url": "https://www.dbnl.org/tekst/meri002meta01_01/meri002meta01_01_0001.php",
+          "read": "序文全文",
+          "use": "標本箱に欠けた変態の過程。1699年6月出航・1701年6月帰途・9月23日帰着。暑さを帰国理由として記す。60銅版・約90の変態は本人の説明。現地証言、植物名、Commelinの補注。"
+        },
+        {
+          "url": "https://www.dbnl.org/tekst/meri002meta01_01/meri002meta01_01_0019.php",
+          "read": "第18図説明全文、図像未目視",
+          "use": "グアバの枝を選んだ理由、クモの住居と脱皮、鳥食、葉切り、アリの蛹、身体の橋、家へ入る群れ、聞いた話としての司祭の食事。"
+        },
+        {
+          "url": "https://www.dbnl.org/tekst/meri002meta01_01/meri002meta01_01_0020.php",
+          "read": "第19図説明全文",
+          "use": "グアバ果実と食利用、幼虫の赤点と眼の留保、1699年10月20日蛹化→1月22日羽化、白い蛆→10日後緑色の蠅。"
+        },
+        {
+          "url": "https://www.dbnl.org/tekst/meri002meta01_01/meri002meta01_01_0016.php",
+          "read": "第15図説明全文",
+          "use": "1700年7月5日糸を紡ぐ→8月10日地味な蛾。美しい幼虫への期待が外れた本人の言葉。"
+        },
+        {
+          "url": "https://www.gutenberg.org/files/2440/2440-h/2440-h.htm",
+          "read": "カメタのクモ記述、Foraging Antsの区別と行動説明の該当箇所、第1章葉の用途記述",
+          "use": "フィンチ類2羽の発見、一羽死亡・他方も間もなく死亡。M.aviculariaまたは近縁とする留保。葉切りと肉食行列の混同を指摘。ただし葉の用途を巣の雨除けとした点も現代知識と一致しない。"
+        },
+        {
+          "url": "https://www.americanarachnology.org/journal-joa/joa-all-articles/article/download/arac-49-03-393.pdf/?no_cache=1",
+          "read": "2021年論文全4ページテキスト、表1の注記",
+          "use": "2004年8月29日18時看板支柱の雛摂食、翌日17時支柱外して二羽目。雄Iridopelma vanini。過去の図版再同定は足先の色・住居・地理分布。メーリアンの場面そのものや頻度を証明するものではない。"
+        },
+        {
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0009922",
+          "read": "序論",
+          "use": "葉切りアリは新鮮植物片を用いて共生菌を栽培する。論文全体の研究紹介ではなく補注。"
+        },
+        {
+          "url": "https://www.princeton.edu/news/2015/11/30/ants-build-living-bridges-their-bodies-speak-volumes-about-group-intelligence",
+          "read": "研究機関による研究報告の橋と野外実験箇所",
+          "use": "Eciton hamatum、数cmの生きた橋。メーリアンの風に振られて対岸に届く説明を検証した研究とはしない。"
+        }
+      ],
+      "limitations": [
+        "図譜全60図の通読ではない",
+        "現代の鳥食観察は原図の個別場面や頻度の証明ではない",
+        "アリの習性は複数の群を区別",
+        "図版は原図の複製でなく独自生成"
+      ]
+    }
+  ]
+}
